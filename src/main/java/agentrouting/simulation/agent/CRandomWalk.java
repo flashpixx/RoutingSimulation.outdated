@@ -13,7 +13,8 @@ import java.util.Map;
 /**
  * random-walk agent
  */
-public final class CRandomWalk extends IBaseAgent
+@Deprecated
+public final class CRandomWalk
 {
     /**
      * direction probabilities
@@ -35,11 +36,11 @@ public final class CRandomWalk extends IBaseAgent
                         final String p_color
     )
     {
-        super( p_environment, p_position, p_preference, p_name, p_color );
+        //super( p_environment, p_position, p_preference, p_name, p_color );
         Arrays.stream( EDirection.values() ).forEach( i -> m_directionprobability.put( i, 1.0 / EDirection.values().length ) );
     }
 
-
+/*
     @Override
     public IAgent execute( final int p_step )
     {
@@ -73,5 +74,6 @@ public final class CRandomWalk extends IBaseAgent
         this.updateposition( m_directionprobability, 1 );
         return super.execute( p_step );
     }
+*/
 
 }

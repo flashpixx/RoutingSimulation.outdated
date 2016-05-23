@@ -13,6 +13,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import lightjason.agentspeak.common.CCommon;
+import lightjason.agentspeak.common.CPath;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -114,24 +116,6 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public final List<IElement<?>> perceive( final IntMatrix1D p_position, final int p_distance, final EDirection... p_direction )
-    {
-        return Arrays.stream( p_direction )
-                     .parallel()
-                     .flatMap( i ->
-                                       IntStream.range( 0, p_distance )
-                                                .parallel()
-                                                .mapToObj( j -> {
-                                                    final IntMatrix1D l_position = i.position( p_position, j );
-                                                    return (IElement<?>) m_positions.getQuick( l_position.getQuick( 0 ), l_position.getQuick( 1 ) );
-                                                } )
-                                                .filter( j -> j != null )
-                     )
-                     .collect( Collectors.toList() );
-    }
-
-    @Override
     public final IForce force()
     {
         return m_force;
@@ -200,6 +184,50 @@ public final class CEnvironment implements IEnvironment
         } );
 
         return l_map;
+    }
+
+    /**
+     * @todo put orElseGet with default behaviour
+     */
+    @Override
+    public agentrouting.simulation.agent.IAgent beliefupdate( final agentrouting.simulation.agent.IAgent p_agent )
+    {
+        /*
+        final EDirection l_direction = lightjason.agentspeak.language.CCommon.getRawValue( p_agent.getBeliefBase()
+                                                                                                  .parallelStream( CPath.createPath( "environment/direction" ) )
+                                                                                                  .findFirst()
+                                                                                                  .get()
+                                                                                                  .values()
+                                                                                                  .findFirst()
+                                                                                                  .get()
+        );
+
+
+
+        final Stack<Jumppoint> l_jumppoints = lightjason.agentspeak.language.CCommon.getRawValue( p_agent.getBeliefBase()
+                                                                                                         .parallelStream( CPath.createPath( "environment/jumppoint" ) )
+                                                                                                         .findFirst()
+                                                                                                         .get()
+                                                                                                         .values()
+                                                                                                         .findFirst()
+        )
+
+
+
+        Arrays.stream( p_direction )
+              .parallel()
+              .flatMap( i ->
+                                       IntStream.range( 0, p_distance )
+                                                .parallel()
+                                                .mapToObj( j -> {
+                                                    final IntMatrix1D l_position = i.position( p_position, j );
+                                                    return (IElement<?>) m_positions.getQuick( l_position.getQuick( 0 ), l_position.getQuick( 1 ) );
+                                                } )
+                                                .filter( j -> j != null )
+                     )
+              .collect( Collectors.toList() );
+        */
+        return p_agent;
     }
 
     /**

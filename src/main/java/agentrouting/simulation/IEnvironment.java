@@ -1,9 +1,11 @@
 package agentrouting.simulation;
 
 
+import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.IForce;
 import agentrouting.ui.ITileMap;
 import cern.colt.matrix.tint.IntMatrix1D;
+import lightjason.agentspeak.beliefbase.IBeliefBaseUpdate;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
 /**
  * environment interface
  */
-public interface IEnvironment extends IExecutable<IEnvironment>, ITileMap
+public interface IEnvironment extends IBeliefBaseUpdate<IAgent>, IExecutable<IEnvironment>, ITileMap
 {
 
     /**
@@ -31,16 +33,6 @@ public interface IEnvironment extends IExecutable<IEnvironment>, ITileMap
      * @return updated object or object which uses the cell
      */
     IElement<?> position( final IElement<?> p_object, final IntMatrix1D p_position );
-
-    /**
-     * perceive all elements in the direction and returns a list of all items
-     *
-     * @param p_position current position
-     * @param p_distance distance
-     * @param p_direction directions
-     * @return element list
-     */
-    List<IElement<?>> perceive( final IntMatrix1D p_position, final int p_distance, final EDirection... p_direction );
 
     /**
      * returns the force object

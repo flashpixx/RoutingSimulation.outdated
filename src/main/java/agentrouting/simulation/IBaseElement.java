@@ -2,29 +2,22 @@ package agentrouting.simulation;
 
 import cern.colt.matrix.tint.IntMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.apache.commons.math3.distribution.EnumeratedDistribution;
-import org.apache.commons.math3.random.MersenneTwister;
-import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.commons.math3.util.Pair;
-import org.apache.commons.math3.util.Precision;
+import lightjason.agentspeak.agent.CAgent;
+import lightjason.agentspeak.common.CPath;
+import lightjason.agentspeak.configuration.IAgentConfiguration;
+import lightjason.agentspeak.language.CCommon;
+import lightjason.agentspeak.language.ITerm;
 
+import java.util.AbstractMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 /**
  * abstract class for all preferences access
  */
-public abstract class IBaseElement<T> implements IElement<T>
+public abstract class IBaseElement<T> extends CAgent<IBaseElement<T>> implements IElement<T>
 {
-    /**
-     * thread-safe map with individual preference value,
-     * key-value is always lower-case
-     **/
-    protected final Map<String, Double> m_preference = new ConcurrentHashMap<>();
     /**
      * current position of the agent
      */
@@ -34,10 +27,6 @@ public abstract class IBaseElement<T> implements IElement<T>
      */
     protected final IEnvironment m_environment;
     /**
-     * random generator
-     */
-    private final RandomGenerator m_random = new MersenneTwister();
-    /**
      * sprite object for painting
      */
     private Sprite m_sprite;
@@ -46,30 +35,14 @@ public abstract class IBaseElement<T> implements IElement<T>
      * ctor
      *
      * @param p_environment environment
-     * @param p_position position
+     * @param p_agentconfig agent configuration
+     * @param p_position initial position
      */
-    protected IBaseElement( final IEnvironment p_environment, final IntMatrix1D p_position )
+    protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration p_agentconfig, final IntMatrix1D p_position )
     {
+        super( p_agentconfig );
         m_environment = p_environment;
         m_position = p_position;
-    }
-
-
-    @Override
-    public final double getPreference( final String p_id )
-    {
-        // if not found we return an epsilon value for avoid "division by zero"
-        return m_preference.getOrDefault( p_id.trim().toLowerCase(), Precision.EPSILON );
-    }
-
-    @Override
-    public final void setPreference( final String p_id, final double p_value )
-    {
-        if ( ( p_value < -1 ) || ( p_value > 1 ) )
-            throw new IllegalArgumentException( "preference value must be in [-1,1]" );
-
-        // if value is zero, we set an epsilon value for avoid "division by zero"
-        m_preference.put( p_id.trim().toLowerCase(), p_value == 0 ? Precision.EPSILON : p_value );
     }
 
     @Override
@@ -93,8 +66,18 @@ public abstract class IBaseElement<T> implements IElement<T>
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public T execute( final int p_step )
+    public final T execute( final int p_step )
     {
+        // run agent-cycle
+        try
+        {
+            super.call();
+        }
+        catch ( final Exception p_exception )
+        {
+            LOGGER.warning( p_exception.getMessage() );
+        }
+
         // update sprite for painting (sprit position is x/y position, but position storing is row / column)
         if ( m_sprite != null )
             m_sprite.setPosition( m_position.get( 1 ), m_position.get( 0 ) );
@@ -103,15 +86,14 @@ public abstract class IBaseElement<T> implements IElement<T>
     }
 
     @Override
-    public final Set<String> preference()
-    {
-        return m_preference.keySet();
-    }
-
-    @Override
     public final Stream<Map.Entry<String, Double>> preferences()
     {
-        return m_preference.entrySet().stream();
+        return this.getBeliefBase().stream( CPath.from( "preference" ) )
+                   .map( i -> new AbstractMap.SimpleImmutableEntry<String, Double>(
+                           i.getFQNFunctor().getSuffix(),
+                           CCommon.<Double, ITerm>getRawValue( i.orderedvalues().findFirst().get() )
+                   ) );
+
     }
 
     /**
@@ -125,19 +107,15 @@ public abstract class IBaseElement<T> implements IElement<T>
      */
     protected final IElement<?> updateposition( final Map<EDirection, Double> p_direction, final int p_distance )
     {
+        /*
         return m_environment.position(
                 this,
-
-                new EnumeratedDistribution<>(
-                        m_random,
-                        p_direction.entrySet().stream()
-                                   .map( i -> new Pair<>( i.getKey(), i.getValue() ) )
-                                   .collect( Collectors.toList() )
-                )
-                        .sample()
-                        .position( m_position, p_distance )
+                EDirection.FORWARD.position( m_position, p_distance )
         );
+        */
+        return this;
     }
+
 
     /**
      * create the sprite for painting

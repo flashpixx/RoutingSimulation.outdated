@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import lightjason.agentspeak.configuration.IAgentConfiguration;
 
 import java.text.MessageFormat;
 import java.util.Map;
@@ -38,20 +39,19 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
      *
      * @param p_environment environment
      * @param p_position initialize position
-     * @param p_preference preference value
+     * @param p_agentconfiguration agent configuration
      * @param p_name agent name
      * @param p_color color string in RRGGBBAA
      */
-    protected IBaseAgent( final IEnvironment p_environment, final IntMatrix1D p_position, final Map<String, Double> p_preference, final String p_name,
-                          final String p_color
+    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
+                          final IntMatrix1D p_position, final String p_name, final String p_color
     )
     {
-        super( p_environment, p_position );
-        LOGGER.info( MessageFormat.format( "create agent [{0}] with position / name / color [{1} / {2} / {3}]", this, p_position, p_name, p_color ) );
+        super( p_environment, p_agentconfiguration, p_position );
+        LOGGER.info( MessageFormat.format( "create agent [{0}] with position / name / color / agent data [{1} / {2} / {3} / {4}]", this, p_position, p_name, p_color, p_agentconfiguration ) );
 
         m_name = p_name;
         m_color = Color.valueOf( p_color );
-        p_preference.entrySet().parallelStream().forEach( i -> this.setPreference( i.getKey(), i.getValue() ) );
     }
 
     @Override

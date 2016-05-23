@@ -2,6 +2,7 @@ package agentrouting.simulation;
 
 import agentrouting.ui.ISprite;
 import cern.colt.matrix.tint.IntMatrix1D;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Map;
 import java.util.Set;
@@ -22,30 +23,6 @@ public interface IElement<T> extends IExecutable<T>, ISprite
      * @return preference stream
      */
     Stream<Map.Entry<String, Double>> preferences();
-
-    /**
-     * returns the individual preference value in [-1,1]
-     *
-     * @param p_id identifier name
-     * @return double value in [-1,1]
-     */
-    double getPreference( final String p_id );
-
-    /**
-     * set of preference IDs
-     *
-     * @return set with preferences
-     */
-    Set<String> preference();
-
-    /**
-     * sets the individual preference value
-     *
-     * @param p_id identifier name
-     * @param p_value value in [-1,1]
-     * @returns agent object reference
-     */
-    void setPreference( final String p_id, final double p_value );
 
     /**
      * returns the current position of the object

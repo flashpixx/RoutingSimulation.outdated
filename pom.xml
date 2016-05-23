@@ -26,13 +26,14 @@
 
         <!-- agent behaviour based on my PhD framework - must installed manually into the local Maven repository
              https://github.com/LightJason/AgentSpeak
+        -->
         <dependency>
             <groupId>lightjason</groupId>
             <artifactId>AgentSpeak</artifactId>
             <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        -->
+
 
         <!-- libgdx components -->
         <dependency>
@@ -83,6 +84,15 @@
 
 
         <!-- math structures -->
+        <!--
+        <dependency>
+            <groupId>colt</groupId>
+            <artifactId>colt</artifactId>
+            <version>1.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+        -->
+
         <dependency>
             <groupId>net.sourceforge.parallelcolt</groupId>
             <artifactId>parallelcolt</artifactId>

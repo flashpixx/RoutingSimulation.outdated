@@ -267,6 +267,14 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         if ( !m_screenshottake )
             return this;
 
+
+
+        List<String> x = new ArrayList<>();
+
+        //anotherobject( new ArrayList<>() )
+
+
+
         m_screenshottake = false;
         final byte[] l_pixels = ScreenUtils.getFrameBufferPixels( 0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true );
         final Pixmap l_pixmap = new Pixmap( Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888 );

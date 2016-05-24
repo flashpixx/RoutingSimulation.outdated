@@ -8,9 +8,9 @@
 * [JMX](http://www.eclipse.org/jetty/documentation/current/jmx-chapter.html)
 * [JPS](https://github.com/ClintFMullins/JumpPointSearch-Java) / [Description](https://harablog.wordpress.com/2011/09/07/jump-point-search/)
 * [JPS+ Goal Bounding](https://github.com/SteveRabin/JPSPlusWithGoalBounding)
+* [JPS+ Java (documentated)](https://github.com/kevinsheehan/jps) / [JPS+ Java (undocumented)](https://github.com/unrealgamer/Java-JPS)
 * [Path Finding](http://www.cokeandcode.com/main/tutorials/path-finding/)
 * [CSS Voxels](http://www.voxelcss.com/)
-* [Jar push to local Maven repository](http://stackoverflow.com/questions/4955635/how-to-add-local-jar-files-in-maven-project)
 * [Game Art](http://opengameart.org/)
 * [Routing](http://simblob.blogspot.de/2016/02/updating-my-introduction-to-a.html)
 

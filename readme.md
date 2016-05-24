@@ -1,6 +1,6 @@
-# Light-Jason - Lightwire version of AgentSpeak(L) GridWorld
+# LightJason - GridWorld
 
-![Circle CI](https://circleci.com/gh/LightJason/GridWorld.svg?style=shield)
+![Circle CI](https://circleci.com/gh/flashpixx/RountingSimulation.svg?style=shield)
 
 
 ## <a name="info">Information</a>

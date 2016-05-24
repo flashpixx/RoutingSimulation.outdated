@@ -28,12 +28,6 @@
 * [Source code documentation](http://flashpixx.github.io/Light-Jason-GridWorld/)
 
 
-## <a name="download">Current Developer Download</a>
-
-* [Windows Executable](https://github.com/flashpixx/Light-Jason-GridWorld/raw/binary-master/Light-Jason-GridWorld-0.1.exe)
-* [Native Jar](https://github.com/flashpixx/Light-Jason-GridWorld/raw/binary-master/Light-Jason-GridWorld-0.1.jar)
-
-
 ## <a name="szenario">Szenario</a>
 
 Distribution or standalone grid-world game with [LibGDX](https://libgdx.badlogicgames.com/) and 

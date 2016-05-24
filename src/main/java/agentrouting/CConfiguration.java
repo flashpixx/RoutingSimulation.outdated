@@ -146,10 +146,11 @@ public final class CConfiguration
 
             // create environment
             m_environment = new CEnvironment(
-                ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
-                ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
-                ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "cellsize", -1 ),
-                ERoutingFactory.valueOf( ( (String) l_data.getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
+                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
+                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
+                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "cellsize", -1 ),
+                ERoutingFactory.valueOf( ( (String) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
+                    .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
             );
 
             // create executable object list

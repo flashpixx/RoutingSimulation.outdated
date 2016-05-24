@@ -44,14 +44,6 @@ import java.util.logging.Logger;
 public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
 {
     /**
-     * logger
-     */
-    protected final static Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
-    /**
-     * agent name
-     */
-    private final String m_name;
-    /**
      * color
      */
     private final Color m_color;
@@ -65,20 +57,13 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
      * @param p_agentconfiguration agent configuration
      * @param p_force force model
      * @param p_position initialize position
-     * @param p_name agent name
      * @param p_color color string in RRGGBBAA
      */
     protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
-                          final IForce p_force, final IntMatrix1D p_position, final String p_name, final String p_color
+                          final IForce p_force, final IntMatrix1D p_position, final String p_color
     )
     {
         super( p_environment, p_agentconfiguration, p_force, p_position );
-        LOGGER.info( MessageFormat
-                             .format( "create agent [{0}] with position / name / color / agent data [{1} / {2} / {3} / {4}]", this, p_position, p_name, p_color,
-                                      p_agentconfiguration
-                             ) );
-
-        m_name = p_name;
         m_color = Color.valueOf( p_color );
     }
 

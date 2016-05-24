@@ -20,16 +20,12 @@ screenshot :
 #steps : 2000
 
 
-# force- and routing-algorithm - required
-force   : "sum"
-routing : "jpsplus"
-
-
 # environment (grid) resolution - required
 environment :
     cellsize : 25
     rows     : 500
     columns  : 500
+    routing  : "jpsplus"
 
 
 # agent definition - optional
@@ -41,26 +37,21 @@ agent :
     test1 :
         number : 500
         color  : "ff0000"
-        type   : "randomwalk"
-        preference :
-            coffee : 0.3
-            ticket : -0.3
+        force  : "sum"
+        asl    : "/randomwalk.asl"
 
     test2 :
         number : 500
         color  : "00ff00"
-        type   : "randomwalk"
-        preference :
-            train  : 0.1
-            coffee : -0.8
+        force  : "sum"
+        asl    : "/randomwalk.asl"
 
     test3 :
         number : 500
         color  : "0000ff"
-        type   : "randomwalk"
-        preference :
-            train  : 0.8
-            ticket : 0.4
+        force  : "sum"
+        asl    : "/randomwalk.asl"
+
 
 
 # static environment elements - optional

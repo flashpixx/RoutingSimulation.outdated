@@ -33,7 +33,7 @@ import lightjason.agentspeak.configuration.IAgentConfiguration;
 /**
  * BDI agent
  */
-public class CAgent extends IBaseAgent
+public final class CAgent extends IBaseAgent
 {
 
     /**
@@ -43,15 +43,13 @@ public class CAgent extends IBaseAgent
      * @param p_agentconfiguration agent configuration
      * @param p_position initialize position
      * @param p_force force model
-     * @param p_name agent name
      * @param p_color color string in RRGGBBAA
      */
     public CAgent( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
-                   final IntMatrix1D p_position, final IForce p_force, final String p_name, final String p_color
+                   final IntMatrix1D p_position, final IForce p_force, final String p_color
     )
     {
-        super( p_environment, p_agentconfiguration, p_force, p_position, p_name, p_color );
-        //Arrays.stream( EDirection.values() ).forEach( i -> m_directionprobability.put( i, 1.0 / EDirection.values().length ) );
+        super( p_environment, p_agentconfiguration, p_force, p_position, p_color );
     }
 
 }

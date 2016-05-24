@@ -30,24 +30,26 @@ import agentrouting.simulation.agent.CAgentGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
+import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
+import lightjason.agentspeak.action.IAction;
 import lightjason.agentspeak.generator.IAgentGenerator;
+import lightjason.agentspeak.language.score.CZeroAggregation;
+import lightjason.agentspeak.language.score.IAggregation;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.LogManager;
-import java.util.stream.IntStream;
 
 
 /**
@@ -113,7 +115,7 @@ public final class CConfiguration
     public final CConfiguration load( final String p_input ) throws IOException, URISyntaxException
     {
         try (
-                final InputStream l_stream = CCommon.getResourceURL( p_input ).openStream();
+            final InputStream l_stream = CCommon.getResourceURL( p_input ).openStream();
         )
         {
 
@@ -137,20 +139,17 @@ public final class CConfiguration
             m_dragspeed = m_dragspeed <= 0 ? 1f : m_dragspeed;
 
             m_screenshot = new ImmutableTriple<>(
-                    (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "file", "" ),
-                    (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) )
-                            .getOrDefault( "format", "" ),
-                    (int) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
+                (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "file", "" ),
+                (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "format", "" ),
+                (int) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
             );
 
             // create environment
             m_environment = new CEnvironment(
-                    ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault(
-                            "rows", -1 ),
-                    ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault(
-                            "columns", -1 ),
-                    ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "cellsize", -1 ),
-                    ERoutingFactory.valueOf( ( (String) l_data.getOrDefault( "routing", "" ) ).trim().toUpperCase() ).build()
+                ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
+                ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
+                ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "cellsize", -1 ),
+                ERoutingFactory.valueOf( ( (String) l_data.getOrDefault( "routing", "" ) ).trim().toUpperCase() ).build()
             );
 
             // create executable object list
@@ -257,61 +256,63 @@ public final class CConfiguration
      * @param p_elements element list
      */
     @SuppressWarnings( "unchecked" )
-    private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements )
+    private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements ) throws IOException
     {
         final Random l_random = new Random();
+        final IAggregation l_aggregation = new CZeroAggregation();
         final Map<String, IAgentGenerator<IAgent>> m_agentgenerator = new HashMap<>();
+        final Set<IAction> l_action = lightjason.agentspeak.common.CCommon.getActionsFromPackage();
 
         p_agentconfiguration
-                .entrySet()
-                .stream()
-                .forEach( i ->
-                          {
-                              final Map<String, Object> l_parameter = ( (Map<String, Object>) i.getValue() );
-                              final String l_asl = ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim();
+            .entrySet()
+            .stream()
+            .forEach( i ->
+                      {
+                          final Map<String, Object> l_parameter = ( (Map<String, Object>) i.getValue() );
 
-                              final IAgentGenerator<IAgent> l_generator = m_agentgenerator.getOrDefault( l_asl, new CAgentGenerator() );
+                          // read ASL item from configuration
+                          final String l_asl = ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim();
+
+                          try (
+                              // open filestream of ASL content
+                              final InputStream l_stream = CCommon.getResourceURL( l_asl ).openStream();
+                          )
+                          {
+                              // get existing agent generator or create a new one based on the ASL
+                              // and push it back if generator does not exists
+                              final IAgentGenerator<IAgent> l_generator = m_agentgenerator.getOrDefault(
+                                  l_asl,
+                                  new CAgentGenerator(
+                                      m_environment,
+                                      l_stream,
+                                      l_action,
+                                      l_aggregation
+                                  )
+                              );
                               m_agentgenerator.putIfAbsent( l_asl, l_generator );
 
-                              try
-                              {
-                                  p_elements.addAll( (Collection<IAgent>) l_generator.generate( (int) l_parameter.getOrDefault( "number", 0 ) ) );
-                              }
-                              catch ( final Exception l_exception )
-                              {
+                              // generate agents and put it to the list
+                              l_generator.generatemultiple(
 
-                              }
+                                  (int) l_parameter.getOrDefault( "number", 0 ),
 
+                                  new DenseIntMatrix1D(
+                                      new int[]{m_environment.row() / 2, m_environment.column() / 2}
+                                      //new int[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
+                                  ),
 
-                              IntStream.range( 0, (int) l_parameter.getOrDefault( "number", 0 ) ).forEach(
-                                      j ->
-                                      {
+                                  EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 
+                                  (String) l_parameter.getOrDefault( "color", "ffffff" )
 
-                                          new File( ( )
-                                                    EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim()
-                                                                                                                               .toUpperCase() )
-                                                                 .build();
+                              ).forEach( l -> m_elements.add( l ) );
+                          }
+                          catch ( final Exception l_exception )
+                          {
+                              // @todo add logger
+                          }
 
-                            /*
-                            p_elements.add( EAgentFactory.valueOf( ( (String) l_parameter.getOrDefault( "type", "" ) ).trim().toUpperCase() ).build(
-                                    m_environment,
-                                    new DenseIntMatrix1D(
-                                            new int[]{m_environment.row() / 2, m_environment.column() / 2}
-                                            //new int[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
-                                    ),
-                                    (Map<String, Double>) l_parameter.getOrDefault(
-                                            "preference",
-                                            Collections.<String, Object>emptyMap()
-                                    ),
-                                    MessageFormat.format( i.getKey() + " {0}", j ),
-                                    (String) l_parameter.getOrDefault( "color", "ffffff" )
-                                            )
-                            )
-                            */
-                                      } );
-
-                          } );
+                      } );
     }
 
 }

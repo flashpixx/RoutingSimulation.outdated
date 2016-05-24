@@ -23,15 +23,20 @@
 
 package agentrouting.simulation.agent;
 
+import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.algorithm.force.IForce;
+import cern.colt.matrix.tint.IntMatrix1D;
 import lightjason.agentspeak.action.IAction;
 import lightjason.agentspeak.agent.CAgent;
 import lightjason.agentspeak.agent.IPlanBundle;
 import lightjason.agentspeak.beliefbase.IBeliefBaseUpdate;
+import lightjason.agentspeak.configuration.IAgentConfiguration;
 import lightjason.agentspeak.generator.CDefaultAgentGenerator;
 import lightjason.agentspeak.language.execution.IVariableBuilder;
 import lightjason.agentspeak.language.score.IAggregation;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Set;
 
 
@@ -40,28 +45,37 @@ import java.util.Set;
  */
 public final class CAgentGenerator extends CDefaultAgentGenerator<IAgent>
 {
+    /**
+     * environment reference
+     */
+    private final IEnvironment m_environment;
 
     /**
+     * ctor
+     * @param p_environment environment
      * @param p_stream input asl stream
      * @param p_actions action set
      * @param p_aggregation aggregation set
-     * @param p_planbundle plan bundle set
-     * @param p_beliefbaseupdate beliefbase updater
-     * @param p_variablebuilder variable builder
      * @throws Exception on any error
      */
-    public CAgentGenerator( final InputStream p_stream, final Set<IAction> p_actions, final IAggregation p_aggregation,
-                            final Set<IPlanBundle> p_planbundle,
-                            final IBeliefBaseUpdate<IAgent> p_beliefbaseupdate,
-                            final IVariableBuilder p_variablebuilder
+    public CAgentGenerator( final IEnvironment p_environment, final InputStream p_stream,
+                            final Set<IAction> p_actions, final IAggregation p_aggregation
     ) throws Exception
     {
-        super( p_stream, p_actions, p_aggregation, p_planbundle, p_beliefbaseupdate, p_variablebuilder );
+        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), p_environment, null );
+        m_environment = p_environment;
     }
 
     @Override
-    public lightjason.agentspeak.agent.IAgent<IAgent> generate( final Object... p_data ) throws Exception
+    public final IAgent generatesingle( final Object... p_data ) throws Exception
     {
-        return new CAgent<>( m_configuration );
+        return new agentrouting.simulation.agent.CAgent(
+            m_environment,
+            m_configuration,
+            (IntMatrix1D) p_data[0],
+            (IForce) p_data[1],
+            (String) p_data[2]
+        );
     }
+
 }

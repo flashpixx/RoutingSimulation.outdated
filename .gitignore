@@ -5,6 +5,9 @@
 !*.java
 !*.md
 
+!src/main/resources/**/*.properties
+!src/main/resources/**/*.yaml
+
 !src/main/documentation/*.doxyfile
 !src/main/documentation/*.htm
 !src/main/documentation/*.css

@@ -5,5 +5,8 @@
 !*.java
 !*.md
 
+!src/main/resources/**/*.properties
+!src/main/resources/**/*.yaml
+
 target/**
 

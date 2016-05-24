@@ -1,0 +1,68 @@
+# screen size of the window - optional with default 800x600
+# zoom speed for zoom sensitivity
+# drag speed for dragging sensitive in 1/1000
+window :
+    weight    : 1250
+    height    : 1250
+    zoomspeed : 5
+    dragspeed : 100
+
+# creates on each definied simulation step a screenshoot - optional
+# {0} is replaced by the iteration number, see Java MessageFormat (https://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html),
+# the number format can be defined by Java String Formatter (https://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html)
+screenshot :
+    step   : -1
+    format : "%08d"
+    file   : "image{0}"
+
+
+# number of simulation steps - optional if not set, Integer.Max_Value is used
+#steps : 2000
+
+
+# force- and routing-algorithm - required
+force   : "sum"
+routing : "jpsplus"
+
+
+# environment (grid) resolution - required
+environment :
+    cellsize : 25
+    rows     : 500
+    columns  : 500
+
+
+# agent definition - optional
+agent :
+
+    # agent name, which will be expanded on the item number,
+    # number of generated agents, color for visualzation
+    # type of the agent and individual preferences
+    test1 :
+        number : 500
+        color  : "ff0000"
+        type   : "randomwalk"
+        preference :
+            coffee : 0.3
+            ticket : -0.3
+
+    test2 :
+        number : 500
+        color  : "00ff00"
+        type   : "randomwalk"
+        preference :
+            train  : 0.1
+            coffee : -0.8
+
+    test3 :
+        number : 500
+        color  : "0000ff"
+        type   : "randomwalk"
+        preference :
+            train  : 0.8
+            ticket : 0.4
+
+
+# static environment elements - optional
+element :
+    - not exists

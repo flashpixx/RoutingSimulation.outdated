@@ -5,5 +5,9 @@
 !*.java
 !*.md
 
+!src/main/documentation/*.doxyfile
+!src/main/documentation/*.htm
+!src/main/documentation/*.css
+
 target/**
 

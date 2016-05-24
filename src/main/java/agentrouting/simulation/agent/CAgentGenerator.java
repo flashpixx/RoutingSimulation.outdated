@@ -21,26 +21,47 @@
  * @endcond
  */
 
-package agentrouting.simulation.element;
+package agentrouting.simulation.agent;
 
-import agentrouting.simulation.IElement;
+import lightjason.agentspeak.action.IAction;
+import lightjason.agentspeak.agent.CAgent;
+import lightjason.agentspeak.agent.IPlanBundle;
+import lightjason.agentspeak.beliefbase.IBeliefBaseUpdate;
+import lightjason.agentspeak.generator.CDefaultAgentGenerator;
+import lightjason.agentspeak.language.execution.IVariableBuilder;
+import lightjason.agentspeak.language.score.IAggregation;
+
+import java.io.InputStream;
+import java.util.Set;
 
 
 /**
- * factory for creating any static element
+ * agent generator
  */
-public enum EElementFactory
+public final class CAgentGenerator extends CDefaultAgentGenerator<IAgent>
 {
-    NOONE;
 
     /**
-     * creates a static element
-     *
-     * @return element
+     * @param p_stream input asl stream
+     * @param p_actions action set
+     * @param p_aggregation aggregation set
+     * @param p_planbundle plan bundle set
+     * @param p_beliefbaseupdate beliefbase updater
+     * @param p_variablebuilder variable builder
+     * @throws Exception on any error
      */
-    public final IElement<?> build()
+    public CAgentGenerator( final InputStream p_stream, final Set<IAction> p_actions, final IAggregation p_aggregation,
+                            final Set<IPlanBundle> p_planbundle,
+                            final IBeliefBaseUpdate<IAgent> p_beliefbaseupdate,
+                            final IVariableBuilder p_variablebuilder
+    ) throws Exception
     {
-        return null;
+        super( p_stream, p_actions, p_aggregation, p_planbundle, p_beliefbaseupdate, p_variablebuilder );
     }
 
+    @Override
+    public lightjason.agentspeak.agent.IAgent<IAgent> generate( final Object... p_data ) throws Exception
+    {
+        return new CAgent<>( m_configuration );
+    }
 }

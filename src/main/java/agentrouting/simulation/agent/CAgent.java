@@ -21,26 +21,37 @@
  * @endcond
  */
 
-package agentrouting.simulation.element;
 
-import agentrouting.simulation.IElement;
+package agentrouting.simulation.agent;
+
+import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.algorithm.force.IForce;
+import cern.colt.matrix.tint.IntMatrix1D;
+import lightjason.agentspeak.configuration.IAgentConfiguration;
 
 
 /**
- * factory for creating any static element
+ * BDI agent
  */
-public enum EElementFactory
+public class CAgent extends IBaseAgent
 {
-    NOONE;
 
     /**
-     * creates a static element
+     * ctor
      *
-     * @return element
+     * @param p_environment environment
+     * @param p_agentconfiguration agent configuration
+     * @param p_position initialize position
+     * @param p_force force model
+     * @param p_name agent name
+     * @param p_color color string in RRGGBBAA
      */
-    public final IElement<?> build()
+    public CAgent( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
+                   final IntMatrix1D p_position, final IForce p_force, final String p_name, final String p_color
+    )
     {
-        return null;
+        super( p_environment, p_agentconfiguration, p_force, p_position, p_name, p_color );
+        //Arrays.stream( EDirection.values() ).forEach( i -> m_directionprobability.put( i, 1.0 / EDirection.values().length ) );
     }
 
 }

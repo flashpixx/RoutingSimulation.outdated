@@ -1,7 +1,32 @@
+/**
+ * @cond LICENSE
+ * ######################################################################################
+ * # LGPL License                                                                       #
+ * #                                                                                    #
+ * # This file is part of the LightJason Gridworld                                      #
+ * # Copyright (c) 2015-16, Philipp Kraus (philipp.kraus@tu-clausthal.de)               #
+ * # This program is free software: you can redistribute it and/or modify               #
+ * # it under the terms of the GNU Lesser General Public License as                     #
+ * # published by the Free Software Foundation, either version 3 of the                 #
+ * # License, or (at your option) any later version.                                    #
+ * #                                                                                    #
+ * # This program is distributed in the hope that it will be useful,                    #
+ * # but WITHOUT ANY WARRANTY; without even the implied warranty of                     #
+ * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                      #
+ * # GNU Lesser General Public License for more details.                                #
+ * #                                                                                    #
+ * # You should have received a copy of the GNU Lesser General Public License           #
+ * # along with this program. If not, see http://www.gnu.org/licenses/                  #
+ * ######################################################################################
+ * @endcond
+ */
+
+
 package agentrouting.simulation.agent;
 
 import agentrouting.simulation.IBaseElement;
 import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,7 +35,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import lightjason.agentspeak.configuration.IAgentConfiguration;
 
 import java.text.MessageFormat;
-import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -38,17 +62,21 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
      * ctor
      *
      * @param p_environment environment
-     * @param p_position initialize position
      * @param p_agentconfiguration agent configuration
+     * @param p_force force model
+     * @param p_position initialize position
      * @param p_name agent name
      * @param p_color color string in RRGGBBAA
      */
     protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
-                          final IntMatrix1D p_position, final String p_name, final String p_color
+                          final IForce p_force, final IntMatrix1D p_position, final String p_name, final String p_color
     )
     {
-        super( p_environment, p_agentconfiguration, p_position );
-        LOGGER.info( MessageFormat.format( "create agent [{0}] with position / name / color / agent data [{1} / {2} / {3} / {4}]", this, p_position, p_name, p_color, p_agentconfiguration ) );
+        super( p_environment, p_agentconfiguration, p_force, p_position );
+        LOGGER.info( MessageFormat
+                             .format( "create agent [{0}] with position / name / color / agent data [{1} / {2} / {3} / {4}]", this, p_position, p_name, p_color,
+                                      p_agentconfiguration
+                             ) );
 
         m_name = p_name;
         m_color = Color.valueOf( p_color );

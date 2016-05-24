@@ -1,3 +1,26 @@
+/**
+ * @cond LICENSE
+ * ######################################################################################
+ * # LGPL License                                                                       #
+ * #                                                                                    #
+ * # This file is part of the LightJason Gridworld                                      #
+ * # Copyright (c) 2015-16, Philipp Kraus (philipp.kraus@tu-clausthal.de)               #
+ * # This program is free software: you can redistribute it and/or modify               #
+ * # it under the terms of the GNU Lesser General Public License as                     #
+ * # published by the Free Software Foundation, either version 3 of the                 #
+ * # License, or (at your option) any later version.                                    #
+ * #                                                                                    #
+ * # This program is distributed in the hope that it will be useful,                    #
+ * # but WITHOUT ANY WARRANTY; without even the implied warranty of                     #
+ * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                      #
+ * # GNU Lesser General Public License for more details.                                #
+ * #                                                                                    #
+ * # You should have received a copy of the GNU Lesser General Public License           #
+ * # along with this program. If not, see http://www.gnu.org/licenses/                  #
+ * ######################################################################################
+ * @endcond
+ */
+
 package agentrouting;
 
 
@@ -5,12 +28,9 @@ import agentrouting.ui.CScreen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -31,13 +51,13 @@ public final class CMain
      *
      * @param p_args CLI arguments
      */
-    public static void main( final String[] p_args ) throws FileNotFoundException
+    public static void main( final String[] p_args ) throws IOException, URISyntaxException
     {
         // read configuration on default from the resources
         CConfiguration.INSTANCE.load(
                 p_args.length == 0
-                ? CMain.class.getResourceAsStream( "/configuration.yaml" )
-                : new FileInputStream( new File( p_args[0] ) )
+                ? "/configuration.yaml"
+                : p_args[0]
         );
         LOGGER.info( MessageFormat.format( "read configuration file from [{0}]", p_args.length == 0 ? "-resources-" : p_args[0] ) );
 
@@ -63,21 +83,22 @@ public final class CMain
         // run simulation
         LOGGER.info( MessageFormat.format( "start simulation with [{0}] steps", CConfiguration.INSTANCE.getSimulationSteps() ) );
         IntStream.range( 0, CConfiguration.INSTANCE.getSimulationSteps() )
-                 .mapToObj( i -> {
-                     LOGGER.info( MessageFormat.format( "run simulation step [{0}]", i ) );
+                 .mapToObj( i ->
+                            {
+                                LOGGER.info( MessageFormat.format( "run simulation step [{0}]", i ) );
 
-                     // update screen take screenshot and run object execution
-                     l_screen.iteration( i );
-                     Stream.concat(
-                             Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
-                             CConfiguration.INSTANCE.getObjects().parallelStream()
-                     )
-                           .parallel()
-                           .forEach( j -> j.execute( i ) );
+                                // update screen take screenshot and run object execution
+                                l_screen.iteration( i );
+                                Stream.concat(
+                                        Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
+                                        CConfiguration.INSTANCE.getObjects().parallelStream()
+                                )
+                                      .parallel()
+                                      .forEach( j -> j.execute( i ) );
 
-                     // checks that the simulation is closed
-                     return l_screen.isDisposed();
-                 } ).filter( i -> i ).findFirst();
+                                // checks that the simulation is closed
+                                return l_screen.isDisposed();
+                            } ).filter( i -> i ).findFirst();
     }
 
 }

@@ -1,6 +1,28 @@
+/**
+ * @cond LICENSE
+ * ######################################################################################
+ * # LGPL License                                                                       #
+ * #                                                                                    #
+ * # This file is part of the LightJason Gridworld                                      #
+ * # Copyright (c) 2015-16, Philipp Kraus (philipp.kraus@tu-clausthal.de)               #
+ * # This program is free software: you can redistribute it and/or modify               #
+ * # it under the terms of the GNU Lesser General Public License as                     #
+ * # published by the Free Software Foundation, either version 3 of the                 #
+ * # License, or (at your option) any later version.                                    #
+ * #                                                                                    #
+ * # This program is distributed in the hope that it will be useful,                    #
+ * # but WITHOUT ANY WARRANTY; without even the implied warranty of                     #
+ * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                      #
+ * # GNU Lesser General Public License for more details.                                #
+ * #                                                                                    #
+ * # You should have received a copy of the GNU Lesser General Public License           #
+ * # along with this program. If not, see http://www.gnu.org/licenses/                  #
+ * ######################################################################################
+ * @endcond
+ */
+
 package agentrouting.simulation;
 
-import agentrouting.simulation.algorithm.force.IForce;
 import agentrouting.simulation.algorithm.routing.IRouting;
 import cern.colt.matrix.tint.IntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
@@ -13,19 +35,17 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import lightjason.agentspeak.common.CCommon;
-import lightjason.agentspeak.common.CPath;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
 /**
  * environment class
+ *
+ * @todo put orElseGet with default behaviour (beliefbase update)
  */
 public final class CEnvironment implements IEnvironment
 {
@@ -38,10 +58,6 @@ public final class CEnvironment implements IEnvironment
      * routing algorithm
      */
     private final IRouting m_routing;
-    /**
-     * force algorithm
-     */
-    private final IForce m_force;
     /**
      * row number
      */
@@ -67,19 +83,15 @@ public final class CEnvironment implements IEnvironment
      * @param p_cellcolumns number of column cells
      * @param p_cellsize cell size
      * @param p_routing routing algorithm
-     * @param p_force force algorithm
      */
-    public CEnvironment( final int p_cellrows, final int p_cellcolumns, final int p_cellsize, final IRouting p_routing, final IForce p_force )
+    public CEnvironment( final int p_cellrows, final int p_cellcolumns, final int p_cellsize, final IRouting p_routing )
     {
         if ( ( p_cellcolumns < 1 ) || ( p_cellrows < 1 ) || ( p_cellsize < 1 ) )
             throw new IllegalArgumentException( "environment size must be greater or equal than one" );
-        if ( ( p_routing == null ) || ( p_force == null ) )
-            throw new IllegalArgumentException( "force- and routing-algorithm need not to be null" );
 
         m_row = p_cellrows;
         m_column = p_cellcolumns;
         m_routing = p_routing;
-        m_force = p_force;
         m_cellsize = p_cellsize;
         m_positions = new SparseObjectMatrix2D( m_row, m_column );
         LOGGER.info( MessageFormat.format( "create environment with size [{0}x{1}] and cell size [{2}]", m_row, m_column, p_cellsize ) );
@@ -113,12 +125,6 @@ public final class CEnvironment implements IEnvironment
         m_positions.set( p_element.position().get( 0 ), p_element.position().get( 1 ), p_element );
 
         return p_element;
-    }
-
-    @Override
-    public final IForce force()
-    {
-        return m_force;
     }
 
     @Override
@@ -171,24 +177,23 @@ public final class CEnvironment implements IEnvironment
         final TiledMapTileLayer l_layer = new TiledMapTileLayer( m_column, m_row, m_cellsize, m_cellsize );
         l_map.getLayers().add( l_layer );
 
-        IntStream.range( 0, m_column ).forEach( x -> {
-            IntStream.range( 0, m_row ).forEach( y -> {
-                final TiledMapTileLayer.Cell l_cell = new TiledMapTileLayer.Cell();
-                l_layer.setCell( x, y, l_cell );
-                l_cell.setTile(
-                        y % 2 != 0
-                        ? x % 2 != 0 ? l_region1 : l_region2
-                        : x % 2 != 0 ? l_region2 : l_region1
-                );
-            } );
-        } );
+        IntStream.range( 0, m_column ).forEach( x ->
+                                                {
+                                                    IntStream.range( 0, m_row ).forEach( y ->
+                                                                                         {
+                                                                                             final TiledMapTileLayer.Cell l_cell = new TiledMapTileLayer.Cell();
+                                                                                             l_layer.setCell( x, y, l_cell );
+                                                                                             l_cell.setTile(
+                                                                                                     y % 2 != 0
+                                                                                                     ? x % 2 != 0 ? l_region1 : l_region2
+                                                                                                     : x % 2 != 0 ? l_region2 : l_region1
+                                                                                             );
+                                                                                         } );
+                                                } );
 
         return l_map;
     }
 
-    /**
-     * @todo put orElseGet with default behaviour
-     */
     @Override
     public agentrouting.simulation.agent.IAgent beliefupdate( final agentrouting.simulation.agent.IAgent p_agent )
     {

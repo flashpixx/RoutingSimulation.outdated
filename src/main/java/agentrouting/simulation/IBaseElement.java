@@ -1,5 +1,29 @@
+/**
+ * @cond LICENSE
+ * ######################################################################################
+ * # LGPL License                                                                       #
+ * #                                                                                    #
+ * # This file is part of the LightJason Gridworld                                      #
+ * # Copyright (c) 2015-16, Philipp Kraus (philipp.kraus@tu-clausthal.de)               #
+ * # This program is free software: you can redistribute it and/or modify               #
+ * # it under the terms of the GNU Lesser General Public License as                     #
+ * # published by the Free Software Foundation, either version 3 of the                 #
+ * # License, or (at your option) any later version.                                    #
+ * #                                                                                    #
+ * # This program is distributed in the hope that it will be useful,                    #
+ * # but WITHOUT ANY WARRANTY; without even the implied warranty of                     #
+ * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                      #
+ * # GNU Lesser General Public License for more details.                                #
+ * #                                                                                    #
+ * # You should have received a copy of the GNU Lesser General Public License           #
+ * # along with this program. If not, see http://www.gnu.org/licenses/                  #
+ * ######################################################################################
+ * @endcond
+ */
+
 package agentrouting.simulation;
 
+import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import lightjason.agentspeak.agent.CAgent;
@@ -16,7 +40,7 @@ import java.util.stream.Stream;
 /**
  * abstract class for all preferences access
  */
-public abstract class IBaseElement<T> extends CAgent<IBaseElement<T>> implements IElement<T>
+public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IElement<T>
 {
     /**
      * current position of the agent
@@ -27,6 +51,10 @@ public abstract class IBaseElement<T> extends CAgent<IBaseElement<T>> implements
      */
     protected final IEnvironment m_environment;
     /**
+     * force model
+     */
+    protected final IForce m_force;
+    /**
      * sprite object for painting
      */
     private Sprite m_sprite;
@@ -35,14 +63,18 @@ public abstract class IBaseElement<T> extends CAgent<IBaseElement<T>> implements
      * ctor
      *
      * @param p_environment environment
-     * @param p_agentconfig agent configuration
+     * @param p_agentconfiguration agent configuration
+     * @param p_force force model
      * @param p_position initial position
      */
-    protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration p_agentconfig, final IntMatrix1D p_position )
+    protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
+                            final IForce p_force, final IntMatrix1D p_position
+    )
     {
-        super( p_agentconfig );
+        super( p_agentconfiguration );
         m_environment = p_environment;
         m_position = p_position;
+        m_force = p_force;
     }
 
     @Override
@@ -73,9 +105,9 @@ public abstract class IBaseElement<T> extends CAgent<IBaseElement<T>> implements
         {
             super.call();
         }
-        catch ( final Exception p_exception )
+        catch ( final Exception l_exception )
         {
-            LOGGER.warning( p_exception.getMessage() );
+            LOGGER.warning( l_exception.getMessage() );
         }
 
         // update sprite for painting (sprit position is x/y position, but position storing is row / column)

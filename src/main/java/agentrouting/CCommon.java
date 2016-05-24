@@ -21,26 +21,67 @@
  * @endcond
  */
 
-package agentrouting.simulation.element;
+package agentrouting;
 
-import agentrouting.simulation.IElement;
+import agentrouting.simulation.agent.IAgent;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.logging.Logger;
 
 
 /**
- * factory for creating any static element
+ * common class with main methods
  */
-public enum EElementFactory
+public final class CCommon
 {
-    NOONE;
+    /**
+     * logger
+     */
+    protected final static Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
+
 
     /**
-     * creates a static element
-     *
-     * @return element
+     * ctor
      */
-    public final IElement<?> build()
+    private CCommon()
     {
-        return null;
+
+    }
+
+    /**
+     * returns a file from a resource e.g. Jar file
+     *
+     * @param p_file file
+     * @return URL of file or null
+     */
+    public static URL getResourceURL( final String p_file ) throws MalformedURLException, URISyntaxException
+    {
+        return getResourceURL( new File( p_file ) );
+    }
+
+    /**
+     * returns a file from a resource e.g. Jar file
+     *
+     * @param p_file file relative to the CMain
+     * @return URL of file or null
+     */
+    public static URL getResourceURL( final File p_file ) throws MalformedURLException, URISyntaxException
+    {
+        try
+        {
+            if ( p_file.exists() )
+                return p_file.toURI().normalize().toURL();
+            return CCommon.class.getClassLoader().getResource( p_file.toString().replace( File.separator, "/" ) ).toURI().normalize().toURL();
+        }
+        catch ( final Exception l_exception )
+        {
+            LOGGER.warning( MessageFormat.format( "source [{0}] not found", p_file ) );
+            throw l_exception;
+        }
     }
 
 }

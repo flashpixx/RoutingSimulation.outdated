@@ -1,3 +1,26 @@
+/**
+ * @cond LICENSE
+ * ######################################################################################
+ * # LGPL License                                                                       #
+ * #                                                                                    #
+ * # This file is part of the LightJason Gridworld                                      #
+ * # Copyright (c) 2015-16, Philipp Kraus (philipp.kraus@tu-clausthal.de)               #
+ * # This program is free software: you can redistribute it and/or modify               #
+ * # it under the terms of the GNU Lesser General Public License as                     #
+ * # published by the Free Software Foundation, either version 3 of the                 #
+ * # License, or (at your option) any later version.                                    #
+ * #                                                                                    #
+ * # This program is distributed in the hope that it will be useful,                    #
+ * # but WITHOUT ANY WARRANTY; without even the implied warranty of                     #
+ * # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                      #
+ * # GNU Lesser General Public License for more details.                                #
+ * #                                                                                    #
+ * # You should have received a copy of the GNU Lesser General Public License           #
+ * # along with this program. If not, see http://www.gnu.org/licenses/                  #
+ * ######################################################################################
+ * @endcond
+ */
+
 package agentrouting.ui;
 
 import agentrouting.CConfiguration;
@@ -189,8 +212,8 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         // screenshot-take flag set
         if ( !m_screenshottake )
-            m_screenshottake = ( !m_screenshot.getLeft().isEmpty() ) && ( !m_screenshot.getMiddle().isEmpty() ) &&
-                               ( m_screenshot.getRight() > 0 ) && ( p_iteration % m_screenshot.getRight() == 0 );
+            m_screenshottake = ( !m_screenshot.getLeft().isEmpty() ) && ( !m_screenshot.getMiddle().isEmpty() )
+                               && ( m_screenshot.getRight() > 0 ) && ( p_iteration % m_screenshot.getRight() == 0 );
         return this;
     }
 
@@ -205,13 +228,13 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean keyUp( final int p_i )
+    public final boolean keyUp( final int p_char )
     {
         return false;
     }
 
     @Override
-    public final boolean keyTyped( final char p_c )
+    public final boolean keyTyped( final char p_char )
     {
         return false;
     }
@@ -224,7 +247,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean touchUp( final int p_i, final int p_i1, final int p_i2, final int p_i3 )
+    public final boolean touchUp( final int p_xposition, final int p_yposition, final int p_pointer, final int p_button )
     {
         return false;
     }
@@ -243,7 +266,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean mouseMoved( final int p_i, final int p_i1 )
+    public final boolean mouseMoved( final int p_xpostion, final int p_yposition )
     {
         return false;
     }
@@ -266,14 +289,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     {
         if ( !m_screenshottake )
             return this;
-
-
-
-        List<String> x = new ArrayList<>();
-
-        //anotherobject( new ArrayList<>() )
-
-
 
         m_screenshottake = false;
         final byte[] l_pixels = ScreenUtils.getFrameBufferPixels( 0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true );

@@ -4,7 +4,6 @@ import agentrouting.simulation.EDirection;
 import agentrouting.simulation.IEnvironment;
 import cern.colt.matrix.tint.IntMatrix1D;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

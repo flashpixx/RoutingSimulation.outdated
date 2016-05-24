@@ -24,6 +24,7 @@
 
 package agentrouting.simulation.agent;
 
+import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
@@ -45,7 +46,7 @@ public final class CAgent extends IBaseAgent
      * @param p_force force model
      * @param p_color color string in RRGGBBAA
      */
-    public CAgent( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
+    public CAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
                    final IntMatrix1D p_position, final IForce p_force, final String p_color
     )
     {

@@ -35,22 +35,22 @@ agent :
     # number of generated agents, color for visualzation
     # type of the agent and individual preferences
     test1 :
-        number : 500
+        number : 150
         color  : "ff0000"
         force  : "sum"
-        asl    : "/randomwalk.asl"
+        asl    : "agent.asl"
 
     test2 :
-        number : 500
+        number : 150
         color  : "00ff00"
         force  : "sum"
-        asl    : "/randomwalk.asl"
+        asl    : "agent.asl"
 
     test3 :
-        number : 500
+        number : 150
         color  : "0000ff"
         force  : "sum"
-        asl    : "/randomwalk.asl"
+        asl    : "agent.asl"
 
 
 

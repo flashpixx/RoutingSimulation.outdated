@@ -29,23 +29,30 @@ package agentrouting.simulation.algorithm.routing;
  */
 public enum ERoutingFactory
 {
-    JPSPLUS;
+    JPSPLUS( new CJPSPlus() );
 
     /**
-     * creates the routing object
+     * routing object
+     */
+    private final IRouting m_routing;
+
+    /**
+     * ctor
+     *
+     * @param p_routing routing object
+     */
+    ERoutingFactory( final IRouting p_routing )
+    {
+        m_routing = p_routing;
+    }
+
+    /**
+     * returns routing object
      *
      * @return routing object
      */
-    public final IRouting build()
+    public final IRouting get()
     {
-        switch ( this )
-        {
-            case JPSPLUS:
-                return new CJPSPlus();
-
-            default:
-                throw new IllegalArgumentException( "unknown routing algorithm" );
-        }
-
+        return m_routing;
     }
 }

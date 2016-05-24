@@ -149,7 +149,7 @@ public final class CConfiguration
                 ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
                 ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
                 ( (Map<String, Integer>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "cellsize", -1 ),
-                ERoutingFactory.valueOf( ( (String) l_data.getOrDefault( "routing", "" ) ).trim().toUpperCase() ).build()
+                ERoutingFactory.valueOf( ( (String) l_data.getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
             );
 
             // create executable object list
@@ -260,7 +260,7 @@ public final class CConfiguration
     {
         final Random l_random = new Random();
         final IAggregation l_aggregation = new CZeroAggregation();
-        final Map<String, IAgentGenerator<IAgent>> m_agentgenerator = new HashMap<>();
+        final Map<String, IAgentGenerator<IElement<IAgent>>> m_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = lightjason.agentspeak.common.CCommon.getActionsFromPackage();
 
         p_agentconfiguration
@@ -280,7 +280,7 @@ public final class CConfiguration
                           {
                               // get existing agent generator or create a new one based on the ASL
                               // and push it back if generator does not exists
-                              final IAgentGenerator<IAgent> l_generator = m_agentgenerator.getOrDefault(
+                              final IAgentGenerator<IElement<IAgent>> l_generator = m_agentgenerator.getOrDefault(
                                   l_asl,
                                   new CAgentGenerator(
                                       m_environment,

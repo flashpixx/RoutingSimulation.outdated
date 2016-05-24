@@ -47,7 +47,7 @@ public enum EForceFactory
     }
 
     /**
-     * gets the force model
+     * returns force model
      *
      * @return force object
      */

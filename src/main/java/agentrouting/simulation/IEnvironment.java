@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * environment interface
  */
-public interface IEnvironment extends IBeliefBaseUpdate<IAgent>, IExecutable<IEnvironment>, ITileMap
+public interface IEnvironment extends IBeliefBaseUpdate<IElement<IAgent>>, IExecutable<IEnvironment>, ITileMap
 {
 
     /**

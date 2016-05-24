@@ -23,6 +23,7 @@
 
 package agentrouting.simulation;
 
+import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -67,7 +68,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * @param p_force force model
      * @param p_position initial position
      */
-    protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
+    protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration<IElement<T>> p_agentconfiguration,
                             final IForce p_force, final IntMatrix1D p_position
     )
     {

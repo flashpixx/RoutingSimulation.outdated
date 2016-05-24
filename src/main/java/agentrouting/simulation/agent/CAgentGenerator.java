@@ -23,6 +23,7 @@
 
 package agentrouting.simulation.agent;
 
+import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
@@ -43,7 +44,7 @@ import java.util.Set;
 /**
  * agent generator
  */
-public final class CAgentGenerator extends CDefaultAgentGenerator<IAgent>
+public final class CAgentGenerator extends CDefaultAgentGenerator<IElement<IAgent>>
 {
     /**
      * environment reference
@@ -67,7 +68,7 @@ public final class CAgentGenerator extends CDefaultAgentGenerator<IAgent>
     }
 
     @Override
-    public final IAgent generatesingle( final Object... p_data ) throws Exception
+    public IElement<IAgent> generatesingle( final Object... p_data ) throws Exception
     {
         return new agentrouting.simulation.agent.CAgent(
             m_environment,
@@ -77,5 +78,4 @@ public final class CAgentGenerator extends CDefaultAgentGenerator<IAgent>
             (String) p_data[2]
         );
     }
-
 }

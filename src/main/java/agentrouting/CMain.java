@@ -56,7 +56,7 @@ public final class CMain
         // read configuration on default from the resources
         CConfiguration.INSTANCE.load(
                 p_args.length == 0
-                ? "/configuration.yaml"
+                ? "configuration.yaml"
                 : p_args[0]
         );
         LOGGER.info( MessageFormat.format( "read configuration file from [{0}]", p_args.length == 0 ? "-resources-" : p_args[0] ) );

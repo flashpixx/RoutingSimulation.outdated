@@ -25,6 +25,7 @@
 package agentrouting.simulation.agent;
 
 import agentrouting.simulation.IBaseElement;
+import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
@@ -59,7 +60,7 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
      * @param p_position initialize position
      * @param p_color color string in RRGGBBAA
      */
-    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration p_agentconfiguration,
+    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
                           final IForce p_force, final IntMatrix1D p_position, final String p_color
     )
     {

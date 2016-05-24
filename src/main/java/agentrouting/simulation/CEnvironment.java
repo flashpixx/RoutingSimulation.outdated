@@ -23,6 +23,7 @@
 
 package agentrouting.simulation;
 
+import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.routing.IRouting;
 import cern.colt.matrix.tint.IntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
@@ -194,8 +195,9 @@ public final class CEnvironment implements IEnvironment
         return l_map;
     }
 
+
     @Override
-    public agentrouting.simulation.agent.IAgent beliefupdate( final agentrouting.simulation.agent.IAgent p_agent )
+    public final IElement<IAgent> beliefupdate( final IElement<IAgent> p_agent )
     {
         /*
         final EDirection l_direction = lightjason.agentspeak.language.CCommon.getRawValue( p_agent.getBeliefBase()

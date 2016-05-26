@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 
@@ -135,7 +134,7 @@ public final class CConfiguration
             m_configurationpath = Paths.get( p_input ).normalize().getParent();
 
             // disable logging
-            LogManager.getLogManager().reset();
+            //LogManager.getLogManager().reset();
 
 
             // get initial values
@@ -283,14 +282,15 @@ public final class CConfiguration
                       {
                           final Map<String, Object> l_parameter = ( (Map<String, Object>) i.getValue() );
 
-                          // read ASL item from configuration
-                          final String l_asl = ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim();
+                          // read ASL item from configuration and get the path relative to configuration
+                          final String l_asl = m_configurationpath.resolve( ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim() ).toString();
 
                           try (
                               // open filestream of ASL content
                               final InputStream l_stream = CCommon.getResourceURL( l_asl ).openStream();
                           )
                           {
+
                               // get existing agent generator or create a new one based on the ASL
                               // and push it back if generator does not exists
                               final IAgentGenerator<IElement<IAgent>> l_generator = m_agentgenerator.getOrDefault(
@@ -302,7 +302,6 @@ public final class CConfiguration
                                       l_aggregation
                                   )
                               );
-                              System.out.println( "xxx" );
                               m_agentgenerator.putIfAbsent( l_asl, l_generator );
 
                               // generate agents and put it to the list

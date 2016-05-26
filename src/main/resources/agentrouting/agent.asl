@@ -3,4 +3,4 @@
 
 +!main
     <-
-        generic/print( "agent main" );
+        generic/print( "agent main" ).

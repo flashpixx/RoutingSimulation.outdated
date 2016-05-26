@@ -85,8 +85,6 @@ public final class CMain
         IntStream.range( 0, CConfiguration.INSTANCE.getSimulationSteps() )
                  .mapToObj( i ->
                             {
-                                LOGGER.info( MessageFormat.format( "run simulation step [{0}]", i ) );
-
                                 // update screen take screenshot and run object execution
                                 l_screen.iteration( i );
                                 Stream.concat(

@@ -31,12 +31,12 @@ import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
 import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
-import lightjason.agentspeak.action.IAction;
-import lightjason.agentspeak.generator.IAgentGenerator;
-import lightjason.agentspeak.language.score.CZeroAggregation;
-import lightjason.agentspeak.language.score.IAggregation;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
+import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.generator.IAgentGenerator;
+import org.lightjason.agentspeak.language.score.CZeroAggregation;
+import org.lightjason.agentspeak.language.score.IAggregation;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -275,7 +275,7 @@ public final class CConfiguration
         final Random l_random = new Random();
         final IAggregation l_aggregation = new CZeroAggregation();
         final Map<String, IAgentGenerator<IElement<IAgent>>> m_agentgenerator = new HashMap<>();
-        final Set<IAction> l_action = lightjason.agentspeak.common.CCommon.getActionsFromPackage();
+        final Set<IAction> l_action = org.lightjason.agentspeak.common.CCommon.getActionsFromPackage();
 
         p_agentconfiguration
             .entrySet()

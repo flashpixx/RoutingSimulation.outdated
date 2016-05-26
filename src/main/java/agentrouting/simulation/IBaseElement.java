@@ -23,15 +23,14 @@
 
 package agentrouting.simulation;
 
-import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import lightjason.agentspeak.agent.CAgent;
-import lightjason.agentspeak.common.CPath;
-import lightjason.agentspeak.configuration.IAgentConfiguration;
-import lightjason.agentspeak.language.CCommon;
-import lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.agent.CAgent;
+import org.lightjason.agentspeak.common.CPath;
+import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.language.CCommon;
+import org.lightjason.agentspeak.language.ITerm;
 
 import java.util.AbstractMap;
 import java.util.Map;

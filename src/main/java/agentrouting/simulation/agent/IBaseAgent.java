@@ -33,10 +33,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import lightjason.agentspeak.configuration.IAgentConfiguration;
-
-import java.text.MessageFormat;
-import java.util.logging.Logger;
+import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
 
 /**

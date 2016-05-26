@@ -27,7 +27,7 @@ package agentrouting.simulation;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.ui.ITileMap;
 import cern.colt.matrix.tint.IntMatrix1D;
-import lightjason.agentspeak.beliefbase.IBeliefBaseUpdate;
+import org.lightjason.agentspeak.beliefbase.IBeliefBaseUpdate;
 
 import java.util.List;
 

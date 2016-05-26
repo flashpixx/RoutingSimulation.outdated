@@ -27,14 +27,10 @@ import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
-import lightjason.agentspeak.action.IAction;
-import lightjason.agentspeak.agent.CAgent;
-import lightjason.agentspeak.agent.IPlanBundle;
-import lightjason.agentspeak.beliefbase.IBeliefBaseUpdate;
-import lightjason.agentspeak.configuration.IAgentConfiguration;
-import lightjason.agentspeak.generator.CDefaultAgentGenerator;
-import lightjason.agentspeak.language.execution.IVariableBuilder;
-import lightjason.agentspeak.language.score.IAggregation;
+import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.agent.IPlanBundle;
+import org.lightjason.agentspeak.generator.CDefaultAgentGenerator;
+import org.lightjason.agentspeak.language.score.IAggregation;
 
 import java.io.InputStream;
 import java.util.Collections;

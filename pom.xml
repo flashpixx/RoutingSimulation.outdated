@@ -28,7 +28,7 @@
              https://github.com/LightJason/AgentSpeak
         -->
         <dependency>
-            <groupId>lightjason</groupId>
+            <groupId>org.lightjason</groupId>
             <artifactId>AgentSpeak</artifactId>
             <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>

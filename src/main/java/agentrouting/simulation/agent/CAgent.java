@@ -28,7 +28,7 @@ import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
-import lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
 
 /**

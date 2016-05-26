@@ -49,7 +49,6 @@ public final class CCommon
      */
     private CCommon()
     {
-
     }
 
     /**

@@ -42,6 +42,8 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -50,6 +52,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 
 /**
@@ -62,6 +65,14 @@ public final class CConfiguration
      * singleton instance
      */
     public final static CConfiguration INSTANCE = new CConfiguration();
+    /**
+     * configuration path
+     */
+    public Path m_configurationpath;
+    /**
+     * logger
+     */
+    private final static Logger LOGGER = Logger.getLogger( CConfiguration.class.getName() );
     /**
      * window height
      */
@@ -121,6 +132,7 @@ public final class CConfiguration
 
             // read configuration
             final Map<String, Object> l_data = (Map<String, Object>) new Yaml().load( l_stream );
+            m_configurationpath = Paths.get( p_input ).normalize().getParent();
 
             // disable logging
             LogManager.getLogManager().reset();
@@ -290,6 +302,7 @@ public final class CConfiguration
                                       l_aggregation
                                   )
                               );
+                              System.out.println( "xxx" );
                               m_agentgenerator.putIfAbsent( l_asl, l_generator );
 
                               // generate agents and put it to the list
@@ -310,7 +323,7 @@ public final class CConfiguration
                           }
                           catch ( final Exception l_exception )
                           {
-                              // @todo add logger
+                              LOGGER.warning( l_exception.getMessage() );
                           }
 
                       } );

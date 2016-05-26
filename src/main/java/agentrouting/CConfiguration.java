@@ -44,6 +44,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -159,7 +160,8 @@ public final class CConfiguration
             m_environment = new CEnvironment(
                 (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
                 (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
-                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "cellsize", -1 ),
+                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
+                    .getOrDefault( "cellsize", -1 ),
                 ERoutingFactory.valueOf( ( (String) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
                     .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
             );
@@ -306,7 +308,6 @@ public final class CConfiguration
 
                               // generate agents and put it to the list
                               l_generator.generatemultiple(
-
                                   (int) l_parameter.getOrDefault( "number", 0 ),
 
                                   new DenseIntMatrix1D(
@@ -322,7 +323,7 @@ public final class CConfiguration
                           }
                           catch ( final Exception l_exception )
                           {
-                              LOGGER.warning( l_exception.getMessage() );
+                              LOGGER.warning( MessageFormat.format( "error on agent generation: {0}", l_exception ) );
                           }
 
                       } );

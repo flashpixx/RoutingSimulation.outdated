@@ -35,7 +35,6 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.generator.IAgentGenerator;
-import org.lightjason.agentspeak.language.score.CZeroAggregation;
 import org.lightjason.agentspeak.language.score.IAggregation;
 import org.yaml.snakeyaml.Yaml;
 
@@ -273,7 +272,6 @@ public final class CConfiguration
     private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements ) throws IOException
     {
         final Random l_random = new Random();
-        final IAggregation l_aggregation = new CZeroAggregation();
         final Map<String, IAgentGenerator<IElement<IAgent>>> m_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = org.lightjason.agentspeak.common.CCommon.getActionsFromPackage();
 
@@ -301,7 +299,7 @@ public final class CConfiguration
                                       m_environment,
                                       l_stream,
                                       l_action,
-                                      l_aggregation
+                                      IAggregation.EMPTY
                                   )
                               );
                               m_agentgenerator.putIfAbsent( l_asl, l_generator );

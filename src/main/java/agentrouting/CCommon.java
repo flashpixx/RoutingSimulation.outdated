@@ -26,10 +26,13 @@ package agentrouting;
 import agentrouting.simulation.agent.IAgent;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -81,6 +84,65 @@ public final class CCommon
             LOGGER.warning( MessageFormat.format( "source [{0}] not found", p_file ) );
             throw l_exception;
         }
+    }
+
+
+    /**
+     * returns a void-method from a class
+     *
+     * @param p_class class
+     * @param p_method methodname
+     * @param p_parameter array with type-classes to define method parameter e.g. new Class[]{Integer.TYPE,
+     * Integer.TYPE};
+     * @return method
+     */
+    public static CMethod getClassMethod( final Class<?> p_class, final String p_method, final Class<?>[] p_parameter )
+    throws IllegalArgumentException, IllegalAccessException
+    {
+        Method l_method = null;
+        for ( Class<?> l_class = p_class; ( l_method == null ) && ( l_class != null ); l_class = l_class.getSuperclass() )
+            try
+            {
+                l_method = l_class.getDeclaredMethod( p_method, p_parameter );
+            }
+            catch ( final Exception l_exception )
+            {
+            }
+
+        if ( l_method == null )
+            throw new IllegalArgumentException( CCommon.getResourceString( CReflection.class, "methodnotfound", p_method, p_class.getCanonicalName() ) );
+
+        l_method.setAccessible( true );
+        return new CMethod( l_method );
+    }
+
+    /**
+     * returns filtered methods of a class and the super classes
+     *
+     * @param p_class class
+     * @param p_filter filtering object
+     * @return map with method name
+     */
+    public static Map<String, CMethod> getClassMethods( final Class<?> p_class, final IMethodFilter p_filter )
+    {
+        final Map<String, CMethod> l_methods = new HashMap<>();
+        for ( Class<?> l_class = p_class; l_class != null; l_class = l_class.getSuperclass() )
+            for ( final Method l_method : l_class.getDeclaredMethods() )
+            {
+                l_method.setAccessible( true );
+                if ( ( p_filter != null ) && ( !p_filter.filter( l_method ) ) )
+                    continue;
+
+                try
+                {
+                    l_methods.put( l_method.getName(), new CMethod( l_method ) );
+                }
+                catch ( final IllegalAccessException l_exception )
+                {
+                    CLogger.error( l_exception );
+                }
+            }
+        return l_methods;
     }
 
 }

@@ -26,6 +26,7 @@ package agentrouting;
 import agentrouting.simulation.CEnvironment;
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.agent.CAgent;
 import agentrouting.simulation.agent.CAgentGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
@@ -53,6 +54,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -284,7 +287,10 @@ public final class CConfiguration
     {
         final Random l_random = new Random();
         final Map<String, IAgentGenerator<IElement<IAgent>>> l_agentgenerator = new HashMap<>();
-        final Set<IAction> l_action = org.lightjason.agentspeak.common.CCommon.getActionsFromPackage();
+        final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
+            org.lightjason.agentspeak.common.CCommon.getActionsFromPackage(),
+            org.lightjason.agentspeak.common.CCommon.getActionsFromAgentClass( CAgent.class )
+        ).collect( Collectors.toSet() ) );
 
         p_agentconfiguration
             .entrySet()

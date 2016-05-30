@@ -26,6 +26,8 @@ package agentrouting.simulation;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
+import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
 import org.lightjason.agentspeak.agent.CAgent;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
@@ -40,6 +42,7 @@ import java.util.stream.Stream;
 /**
  * abstract class for all preferences access
  */
+@IAgentActionBlacklist
 public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IElement<T>
 {
     /**
@@ -122,8 +125,8 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     {
         return this.getBeliefBase().stream( CPath.from( "preference" ) )
                    .map( i -> new AbstractMap.SimpleImmutableEntry<String, Double>(
-                           i.getFQNFunctor().getSuffix(),
-                           CCommon.<Double, ITerm>getRawValue( i.orderedvalues().findFirst().get() )
+                       i.getFQNFunctor().getSuffix(),
+                       CCommon.<Double, ITerm>getRawValue( i.orderedvalues().findFirst().get() )
                    ) );
 
     }
@@ -137,6 +140,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * @todo check cells if p_distance > 1
      * @see https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
      */
+    @IAgentActionAllow
     protected final IElement<?> updateposition( final Map<EDirection, Double> p_direction, final int p_distance )
     {
         /*

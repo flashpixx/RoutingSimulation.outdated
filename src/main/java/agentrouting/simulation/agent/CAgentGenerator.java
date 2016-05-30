@@ -50,6 +50,7 @@ public final class CAgentGenerator extends CDefaultAgentGenerator<IElement<IAgen
 
     /**
      * ctor
+     *
      * @param p_environment environment
      * @param p_stream input asl stream
      * @param p_actions action set

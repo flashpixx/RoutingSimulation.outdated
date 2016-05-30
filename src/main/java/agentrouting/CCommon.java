@@ -24,20 +24,13 @@
 package agentrouting;
 
 import agentrouting.simulation.agent.IAgent;
-import org.lightjason.agentspeak.action.annotation.IActionAllow;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 
 /**
@@ -89,68 +82,5 @@ public final class CCommon
             throw l_exception;
         }
     }
-
-
-    /**
-     * returns a void-method from a class
-     *
-     * @param p_class class
-     * @param p_method methodname
-     * @param p_parameter array with type-classes to define method parameter e.g. new Class[]{Integer.TYPE,
-     * Integer.TYPE};
-     * @return method
-     *
-    public static CMethod getClassMethod( final Class<?> p_class, final String p_method, final Class<?>[] p_parameter )
-    throws IllegalArgumentException, IllegalAccessException
-    {
-        Method l_method = null;
-        for ( Class<?> l_class = p_class; ( l_method == null ) && ( l_class != null ); l_class = l_class.getSuperclass() )
-            try
-            {
-                l_method = l_class.getDeclaredMethod( p_method, p_parameter );
-            }
-            catch ( final Exception l_exception )
-            {
-            }
-
-        if ( l_method == null )
-            throw new IllegalArgumentException( CCommon.getResourceString( CReflection.class, "methodnotfound", p_method, p_class.getCanonicalName() ) );
-
-        l_method.setAccessible( true );
-        return new CMethod( l_method );
-    }
-*/
-
-    /**
-     * returns filtered methods of a class and the super classes
-     *
-     * @param p_class class
-     * @param p_filter filtering object
-     * @return map with method name
-     */
-    public static Stream<Method> getClassMethods( final Class<?> p_class, final boolean p_use )
-    {
-        /*
-        Stream.concat(
-            Stream.of( p_class ),
-            Stream.of( p_class.getSuperclass() )
-        )
-        .flatMap( i -> Arraysi.getDeclaredMethods() )
-        */
-
-        return Arrays.stream( p_class.getDeclaredMethods() )
-                     .map( i ->
-                           {
-                               i.setAccessible( true );
-                               return i;
-                           } )
-                     .filter( i -> !Modifier.isAbstract( i.getModifiers() ) )
-                     .filter( i -> !Modifier.isInterface( i.getModifiers() ) )
-                     .filter( i -> !Modifier.isNative( i.getModifiers() ) )
-                     .filter( i -> !Modifier.isStatic( i.getModifiers() ) )
-                     .filter( i -> i.isAnnotationPresent( IActionAllow.class ) || p_use )
-                     .map( i ->  )
-    }
-
 
 }

@@ -185,9 +185,9 @@ public final class CEnvironment implements IEnvironment
                                                                                              final TiledMapTileLayer.Cell l_cell = new TiledMapTileLayer.Cell();
                                                                                              l_layer.setCell( x, y, l_cell );
                                                                                              l_cell.setTile(
-                                                                                                     y % 2 != 0
-                                                                                                     ? x % 2 != 0 ? l_region1 : l_region2
-                                                                                                     : x % 2 != 0 ? l_region2 : l_region1
+                                                                                                 y % 2 != 0
+                                                                                                 ? x % 2 != 0 ? l_region1 : l_region2
+                                                                                                 : x % 2 != 0 ? l_region2 : l_region1
                                                                                              );
                                                                                          } );
                                                 } );

@@ -161,16 +161,16 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_batch.begin();
         m_sprites.stream().forEach( i -> i.sprite().draw( m_batch ) );
         m_font.draw(
-                m_batch,
-                MessageFormat.format(
-                        "FPS: {0} - Iteration {1} - Agents {2} - Environment [{3}x{4}]",
-                        Gdx.graphics.getFramesPerSecond(),
-                        m_iteration,
-                        m_sprites.size(),
-                        m_environment.row(),
-                        m_environment.column()
-                ),
-                10, 20
+            m_batch,
+            MessageFormat.format(
+                "FPS: {0} - Iteration {1} - Agents {2} - Environment [{3}x{4}]",
+                Gdx.graphics.getFramesPerSecond(),
+                m_iteration,
+                m_sprites.size(),
+                m_environment.row(),
+                m_environment.column()
+            ),
+            10, 20
         );
         m_batch.end();
 
@@ -256,10 +256,10 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     public final boolean touchDragged( final int p_screenx, final int p_screeny, final int p_pointer )
     {
         m_camera.translate(
-                new Vector3().set( p_screenx, p_screeny, 0 )
-                             .sub( m_lastTouch )
-                             .scl( -CConfiguration.INSTANCE.dragspeed(), CConfiguration.INSTANCE.dragspeed(), 0 )
-                             .scl( m_camera.zoom )
+            new Vector3().set( p_screenx, p_screeny, 0 )
+                         .sub( m_lastTouch )
+                         .scl( -CConfiguration.INSTANCE.dragspeed(), CConfiguration.INSTANCE.dragspeed(), 0 )
+                         .scl( m_camera.zoom )
         );
         m_lastTouch.set( p_screenx, p_screeny, 0 );
         return false;
@@ -296,8 +296,8 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         BufferUtils.copy( l_pixels, 0, l_pixmap.getPixels(), l_pixels.length );
         PixmapIO.writePNG(
-                new FileHandle( MessageFormat.format( m_screenshot.getLeft(), String.format( m_screenshot.getMiddle(), m_iteration ) ) + ".png" ),
-                l_pixmap
+            new FileHandle( MessageFormat.format( m_screenshot.getLeft(), String.format( m_screenshot.getMiddle(), m_iteration ) ) + ".png" ),
+            l_pixmap
         );
         l_pixmap.dispose();
         return this;

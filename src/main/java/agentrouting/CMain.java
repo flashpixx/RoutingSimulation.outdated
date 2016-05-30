@@ -55,9 +55,9 @@ public final class CMain
     {
         // read configuration on default from the resources
         CConfiguration.INSTANCE.load(
-                p_args.length == 0
-                ? "agentrouting/configuration.yaml"
-                : p_args[0]
+            p_args.length == 0
+            ? "agentrouting/configuration.yaml"
+            : p_args[0]
         );
         LOGGER.info( MessageFormat.format( "read configuration file from [{0}]", p_args.length == 0 ? "-resources-" : p_args[0] ) );
 
@@ -73,9 +73,9 @@ public final class CMain
         // open window
         LOGGER.info( MessageFormat.format( "open window with size [{0}x{1}]", l_config.width, l_config.height ) );
         final CScreen l_screen = new CScreen(
-                CConfiguration.INSTANCE.getObjects(),
-                CConfiguration.INSTANCE.getEnvironment(),
-                CConfiguration.INSTANCE.getScreenshot()
+            CConfiguration.INSTANCE.getObjects(),
+            CConfiguration.INSTANCE.getEnvironment(),
+            CConfiguration.INSTANCE.getScreenshot()
         );
         new LwjglApplication( l_screen, l_config );
 
@@ -88,8 +88,8 @@ public final class CMain
                                 // update screen take screenshot and run object execution
                                 l_screen.iteration( i );
                                 Stream.concat(
-                                        Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
-                                        CConfiguration.INSTANCE.getObjects().parallelStream()
+                                    Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
+                                    CConfiguration.INSTANCE.getObjects().parallelStream()
                                 )
                                       .parallel()
                                       .forEach( j -> j.execute( i ) );

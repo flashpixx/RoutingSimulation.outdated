@@ -1,3 +1,10 @@
+# enable / disable logger
+#logging : false
+
+# number of simulation steps - optional if not set, Integer.Max_Value is used
+#steps : 2000
+
+
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
 # drag speed for dragging sensitive in 1/1000
@@ -14,10 +21,6 @@ screenshot :
     step   : -1
     format : "%08d"
     file   : "image{0}"
-
-
-# number of simulation steps - optional if not set, Integer.Max_Value is used
-#steps : 2000
 
 
 # environment (grid) resolution - required

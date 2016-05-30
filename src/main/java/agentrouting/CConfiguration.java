@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 
@@ -133,12 +134,11 @@ public final class CConfiguration
             final Map<String, Object> l_data = (Map<String, Object>) new Yaml().load( l_stream );
             m_configurationpath = Paths.get( p_input ).normalize().getParent();
 
-            // disable logging
-            //LogManager.getLogManager().reset();
-
-
             // get initial values
             m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
+            if ( !(boolean) l_data.getOrDefault( "logging", false ) )
+                LogManager.getLogManager().reset();
+
 
             m_windowweight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "weight", 800 );
             m_windowheight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "height", 600 );
@@ -165,10 +165,21 @@ public final class CConfiguration
                     .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
             );
 
-            // create executable object list
+            // create executable object list and check number of elements
             final List<IElement<?>> l_elements = new LinkedList<>();
             this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_elements );
             m_elements = Collections.unmodifiableList( l_elements );
+
+            if ( m_elements.size() > m_environment.column() * m_environment.row() / 2 )
+                throw new IllegalArgumentException(
+                    MessageFormat.format(
+                        "number of simulation elements are very large [{0}], so the environment size is too small, the environment [{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
+                        m_elements.size(),
+                        m_environment.row(),
+                        m_environment.column()
+                    )
+                );
+
 
             // run initialization processes
             m_environment.initialize();
@@ -317,7 +328,7 @@ public final class CConfiguration
 
                                   (String) l_parameter.getOrDefault( "color", "ffffff" )
 
-                              ).forEach( l -> m_elements.add( l ) );
+                              ).filter( l -> l != null ).forEach( l -> p_elements.add( l ) );
                           }
                           catch ( final Exception l_exception )
                           {

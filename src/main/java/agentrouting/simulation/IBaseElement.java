@@ -107,7 +107,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
         }
         catch ( final Exception l_exception )
         {
-            LOGGER.warning( l_exception.getMessage() );
+            LOGGER.warning( l_exception.toString() );
         }
 
         // update sprite for painting (sprit position is x/y position, but position storing is row / column)

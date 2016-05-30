@@ -30,6 +30,7 @@ import cern.colt.matrix.tint.IntMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.generator.CDefaultAgentGenerator;
+import org.lightjason.agentspeak.language.execution.IVariableBuilder;
 import org.lightjason.agentspeak.language.score.IAggregation;
 
 import java.io.InputStream;
@@ -59,7 +60,7 @@ public final class CAgentGenerator extends CDefaultAgentGenerator<IElement<IAgen
                             final Set<IAction> p_actions, final IAggregation p_aggregation
     ) throws Exception
     {
-        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), p_environment, null );
+        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), p_environment, IVariableBuilder.EMPTY );
         m_environment = p_environment;
     }
 

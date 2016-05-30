@@ -152,7 +152,7 @@ public final class CConfiguration
             m_screenshot = new ImmutableTriple<>(
                 (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "file", "" ),
                 (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "format", "" ),
-                (int) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
+                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
             );
 
             // create environment
@@ -283,7 +283,7 @@ public final class CConfiguration
     private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements ) throws IOException
     {
         final Random l_random = new Random();
-        final Map<String, IAgentGenerator<IElement<IAgent>>> m_agentgenerator = new HashMap<>();
+        final Map<String, IAgentGenerator<IElement<IAgent>>> l_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = org.lightjason.agentspeak.common.CCommon.getActionsFromPackage();
 
         p_agentconfiguration
@@ -304,7 +304,7 @@ public final class CConfiguration
 
                               // get existing agent generator or create a new one based on the ASL
                               // and push it back if generator does not exists
-                              final IAgentGenerator<IElement<IAgent>> l_generator = m_agentgenerator.getOrDefault(
+                              final IAgentGenerator<IElement<IAgent>> l_generator = l_agentgenerator.getOrDefault(
                                   l_asl,
                                   new CAgentGenerator(
                                       m_environment,
@@ -313,22 +313,22 @@ public final class CConfiguration
                                       IAggregation.EMPTY
                                   )
                               );
-                              m_agentgenerator.putIfAbsent( l_asl, l_generator );
+                              l_agentgenerator.putIfAbsent( l_asl, l_generator );
 
                               // generate agents and put it to the list
                               l_generator.generatemultiple(
                                   (int) l_parameter.getOrDefault( "number", 0 ),
 
                                   new DenseIntMatrix1D(
-                                      new int[]{m_environment.row() / 2, m_environment.column() / 2}
-                                      //new int[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
+                                      //new int[]{m_environment.row() / 2, m_environment.column() / 2}
+                                      new int[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
                                   ),
 
                                   EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 
                                   (String) l_parameter.getOrDefault( "color", "ffffff" )
 
-                              ).filter( l -> l != null ).forEach( l -> p_elements.add( l ) );
+                              ).sequential().forEach( l -> p_elements.add( l ) );
                           }
                           catch ( final Exception l_exception )
                           {

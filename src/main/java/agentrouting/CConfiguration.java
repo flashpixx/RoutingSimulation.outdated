@@ -331,8 +331,7 @@ public final class CConfiguration
                           }
                           catch ( final Exception l_exception )
                           {
-                              System.out.println( l_exception );
-                              LOGGER.warning( MessageFormat.format( "error on agent generation: {0}", l_exception ) );
+                              System.err.println( MessageFormat.format( "error on agent generation: {0}", l_exception ) );
                           }
 
                       } );

@@ -48,8 +48,15 @@ public interface IElement<T> extends IExecutable<T>, ISprite, org.lightjason.age
     /**
      * returns the current position of the object
      *
-     * @return tupel
+     * @return position tupel
      */
     IntMatrix1D position();
+
+    /**
+     * returns the current viewpoint
+     *
+     * @return position tupel
+     */
+    IntMatrix1D viewpoint();
 
 }

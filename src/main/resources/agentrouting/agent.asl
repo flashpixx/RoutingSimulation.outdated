@@ -1,15 +1,15 @@
 !main.
 
 
++!walk
+    <-
+        move/forward();
+        !walk
+.
+
+
 +!main
     <-
-        generic/print( "agent main" );
-
-        foovoid();
-
-        Z = fooreturn();
-        Z = Z + 5;
-        generic/print("return value", Z);
-
-        fooparameter( Z )
+        viewpoint/random( 10 );
+        !!walk
 .

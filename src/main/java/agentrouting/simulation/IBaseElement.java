@@ -152,6 +152,20 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
         return this;
     }
 
+    @IAgentActionAllow
+    private void foovoid()
+    {
+        System.out.println( "das ist fooo void" );
+    }
+
+    @IAgentActionAllow
+    private int fooreturn()
+    {
+        System.out.println( "das ist fooo return" );
+        return -100;
+    }
+
+
 
     /**
      * create the sprite for painting

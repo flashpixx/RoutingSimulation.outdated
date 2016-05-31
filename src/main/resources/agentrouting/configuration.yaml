@@ -38,19 +38,19 @@ agent :
     # number of generated agents, color for visualzation
     # type of the agent and individual preferences
     test1 :
-        number : 0
+        number : 25
         color  : "ff0000"
         force  : "sum"
         asl    : "agent.asl"
 
     test2 :
-        number : 0
+        number : 25
         color  : "00ff00"
         force  : "sum"
         asl    : "agent.asl"
 
     test3 :
-        number : 1
+        number : 25
         color  : "0000ff"
         force  : "sum"
         asl    : "agent.asl"

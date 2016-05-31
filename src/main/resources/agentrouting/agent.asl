@@ -7,9 +7,15 @@
         !walk
 .
 
+-!walk
+    <-
+        viewpoint/random( 150 );
+        !walk
+.
+
 
 +!main
     <-
-        viewpoint/random( 10 );
+        viewpoint/random( 15 );
         !!walk
 .

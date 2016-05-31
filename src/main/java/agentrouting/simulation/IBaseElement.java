@@ -85,13 +85,16 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration<IElement<T>> p_agentconfiguration,
                             final IForce p_force, final IntMatrix1D p_position
-    )
+    ) throws Exception
     {
         super( p_agentconfiguration );
         m_force = p_force;
         m_position = p_position;
         m_environment = p_environment;
         m_viewpoint = new DenseIntMatrix1D( p_position.toArray() );
+
+        // run first cycle
+        super.call();
     }
 
     @Override

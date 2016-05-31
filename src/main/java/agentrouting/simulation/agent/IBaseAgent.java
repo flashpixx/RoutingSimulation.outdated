@@ -59,7 +59,7 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
      */
     protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
                           final IForce p_force, final IntMatrix1D p_position, final String p_color
-    )
+    ) throws Exception
     {
         super( p_environment, p_agentconfiguration, p_force, p_position );
         m_color = Color.valueOf( p_color );

@@ -197,7 +197,7 @@ public final class CEnvironment implements IEnvironment
 
 
     @Override
-    public IElement<IAgent> perceive( final IElement<IAgent> p_agent )
+    public final IElement<IAgent> perceive( final IElement<IAgent> p_agent )
     {
         /*
         final EDirection l_direction = lightjason.agentspeak.language.CCommon.getRawValue( p_agent.getBeliefBase()

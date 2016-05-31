@@ -23,6 +23,7 @@
 
 package agentrouting.simulation;
 
+import agentrouting.simulation.agent.CMovingAgent;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -34,6 +35,7 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.ITerm;
 
+import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -140,7 +142,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * @todo check cells if p_distance > 1
      * @see https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
      */
-    @IAgentActionAllow
+    @IAgentActionAllow( classes = CMovingAgent.class )
     protected final IElement<?> updateposition( final Map<EDirection, Double> p_direction, final int p_distance )
     {
         /*
@@ -152,7 +154,17 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
         return this;
     }
 
-    @IAgentActionAllow
+    /**
+     * create the sprite for painting
+     *
+     * @param p_rows row number
+     * @param p_columns column number
+     * @param p_cellsize cell size
+     * @return sprite object
+     */
+    protected abstract Sprite visualization( final int p_rows, final int p_columns, final int p_cellsize );
+
+    @IAgentActionAllow()
     private void foovoid()
     {
         System.out.println( "das ist fooo void" );
@@ -165,16 +177,10 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
         return -100;
     }
 
-
-
-    /**
-     * create the sprite for painting
-     *
-     * @param p_rows row number
-     * @param p_columns column number
-     * @param p_cellsize cell size
-     * @return sprite object
-     */
-    protected abstract Sprite visualization( final int p_rows, final int p_columns, final int p_cellsize );
+    @IAgentActionAllow
+    private void fooparameter( final Number p_value )
+    {
+        System.out.println( MessageFormat.format( "das ist fooo parameter: {0}", p_value ) );
+    }
 
 }

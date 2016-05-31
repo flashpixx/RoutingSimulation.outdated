@@ -21,67 +21,36 @@
  * @endcond
  */
 
-package agentrouting.simulation;
 
+package agentrouting.simulation.agent;
 
-import agentrouting.simulation.agent.IAgent;
-import agentrouting.ui.ITileMap;
+import agentrouting.simulation.IElement;
+import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
-import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
-
-import java.util.List;
+import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
 
 /**
- * environment interface
+ * BDI agent for static elements
  */
-public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, IExecutable<IEnvironment>, ITileMap
+public final class CStaticAgent extends IBaseAgent
 {
 
     /**
-     * calculate route
+     * ctor
      *
-     * @param p_object element
-     * @param p_target target point
-     * @return list of tuples of the cellindex
+     * @param p_environment environment
+     * @param p_agentconfiguration agent configuration
+     * @param p_position initialize position
+     * @param p_force force model
+     * @param p_color color string in RRGGBBAA
      */
-    List<IntMatrix1D> route( final IElement<?> p_object, final IntMatrix1D p_target );
-
-    /**
-     * sets an object to the position and changes the object position
-     *
-     * @param p_object object, which should be moved (must store the current position)
-     * @param p_position new position
-     * @return updated object or object which uses the cell
-     */
-    IElement<?> position( final IElement<?> p_object, final IntMatrix1D p_position );
-
-    /**
-     * returns the number of rows
-     *
-     * @return rows
-     */
-    int row();
-
-    /**
-     * returns the number of columns
-     *
-     * @return columns
-     */
-    int column();
-
-    /**
-     * returns the cell size
-     *
-     * @return cell size
-     */
-    int cellsize();
-
-    /**
-     * run initialization of the environment
-     *
-     * @return self reference
-     */
-    IEnvironment initialize();
+    public CStaticAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
+                         final IntMatrix1D p_position, final IForce p_force, final String p_color
+    )
+    {
+        super( p_environment, p_agentconfiguration, p_force, p_position, p_color );
+    }
 
 }

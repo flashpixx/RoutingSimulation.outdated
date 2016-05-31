@@ -21,67 +21,59 @@
  * @endcond
  */
 
-package agentrouting.simulation;
+package agentrouting.simulation.agent;
 
-
-import agentrouting.simulation.agent.IAgent;
-import agentrouting.ui.ITileMap;
+import agentrouting.simulation.IElement;
+import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
-import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
+import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.agent.IPlanBundle;
+import org.lightjason.agentspeak.generator.CDefaultAgentGenerator;
+import org.lightjason.agentspeak.language.execution.IVariableBuilder;
+import org.lightjason.agentspeak.language.score.IAggregation;
 
-import java.util.List;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.Set;
 
 
 /**
- * environment interface
+ * agent generator for dynamic / moving agents
  */
-public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, IExecutable<IEnvironment>, ITileMap
+public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IElement<IAgent>>
 {
+    /**
+     * environment reference
+     */
+    private final IEnvironment m_environment;
 
     /**
-     * calculate route
+     * ctor
      *
-     * @param p_object element
-     * @param p_target target point
-     * @return list of tuples of the cellindex
+     * @param p_environment environment
+     * @param p_stream input asl stream
+     * @param p_actions action set
+     * @param p_aggregation aggregation set
+     * @throws Exception on any error
      */
-    List<IntMatrix1D> route( final IElement<?> p_object, final IntMatrix1D p_target );
+    public CMovingAgentGenerator( final IEnvironment p_environment, final InputStream p_stream,
+                                  final Set<IAction> p_actions, final IAggregation p_aggregation
+    ) throws Exception
+    {
+        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), p_environment, IVariableBuilder.EMPTY );
+        m_environment = p_environment;
+    }
 
-    /**
-     * sets an object to the position and changes the object position
-     *
-     * @param p_object object, which should be moved (must store the current position)
-     * @param p_position new position
-     * @return updated object or object which uses the cell
-     */
-    IElement<?> position( final IElement<?> p_object, final IntMatrix1D p_position );
-
-    /**
-     * returns the number of rows
-     *
-     * @return rows
-     */
-    int row();
-
-    /**
-     * returns the number of columns
-     *
-     * @return columns
-     */
-    int column();
-
-    /**
-     * returns the cell size
-     *
-     * @return cell size
-     */
-    int cellsize();
-
-    /**
-     * run initialization of the environment
-     *
-     * @return self reference
-     */
-    IEnvironment initialize();
-
+    @Override
+    public IElement<IAgent> generatesingle( final Object... p_data ) throws Exception
+    {
+        return new CMovingAgent(
+            m_environment,
+            m_configuration,
+            (IntMatrix1D) p_data[0],
+            (IForce) p_data[1],
+            (String) p_data[2]
+        );
+    }
 }

@@ -21,59 +21,36 @@
  * @endcond
  */
 
+
 package agentrouting.simulation.agent;
 
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.tint.IntMatrix1D;
-import org.lightjason.agentspeak.action.IAction;
-import org.lightjason.agentspeak.agent.IPlanBundle;
-import org.lightjason.agentspeak.generator.CDefaultAgentGenerator;
-import org.lightjason.agentspeak.language.execution.IVariableBuilder;
-import org.lightjason.agentspeak.language.score.IAggregation;
-
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.Set;
+import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
 
 /**
- * agent generator
+ * BDI agent for dynamic / moving elements
  */
-public final class CAgentGenerator extends CDefaultAgentGenerator<IElement<IAgent>>
+public final class CMovingAgent extends IBaseAgent
 {
-    /**
-     * environment reference
-     */
-    private final IEnvironment m_environment;
 
     /**
      * ctor
      *
      * @param p_environment environment
-     * @param p_stream input asl stream
-     * @param p_actions action set
-     * @param p_aggregation aggregation set
-     * @throws Exception on any error
+     * @param p_agentconfiguration agent configuration
+     * @param p_position initialize position
+     * @param p_force force model
+     * @param p_color color string in RRGGBBAA
      */
-    public CAgentGenerator( final IEnvironment p_environment, final InputStream p_stream,
-                            final Set<IAction> p_actions, final IAggregation p_aggregation
-    ) throws Exception
+    public CMovingAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
+                         final IntMatrix1D p_position, final IForce p_force, final String p_color
+    )
     {
-        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), p_environment, IVariableBuilder.EMPTY );
-        m_environment = p_environment;
+        super( p_environment, p_agentconfiguration, p_force, p_position, p_color );
     }
 
-    @Override
-    public IElement<IAgent> generatesingle( final Object... p_data ) throws Exception
-    {
-        return new agentrouting.simulation.agent.CAgent(
-            m_environment,
-            m_configuration,
-            (IntMatrix1D) p_data[0],
-            (IForce) p_data[1],
-            (String) p_data[2]
-        );
-    }
 }

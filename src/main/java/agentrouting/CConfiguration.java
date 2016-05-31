@@ -26,8 +26,8 @@ package agentrouting;
 import agentrouting.simulation.CEnvironment;
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
-import agentrouting.simulation.agent.CAgent;
-import agentrouting.simulation.agent.CAgentGenerator;
+import agentrouting.simulation.agent.CMovingAgent;
+import agentrouting.simulation.agent.CMovingAgentGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
@@ -128,71 +128,64 @@ public final class CConfiguration
     @SuppressWarnings( "unchecked" )
     public final CConfiguration load( final String p_input ) throws IOException, URISyntaxException
     {
-        try (
-            final InputStream l_stream = CCommon.getResourceURL( p_input ).openStream();
-        )
-        {
 
-            // read configuration
-            final Map<String, Object> l_data = (Map<String, Object>) new Yaml().load( l_stream );
-            m_configurationpath = Paths.get( p_input ).normalize().getParent();
+        final InputStream l_stream = CCommon.getResourceURL( p_input ).openStream();
 
-            // get initial values
-            m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
-            if ( !(boolean) l_data.getOrDefault( "logging", false ) )
-                LogManager.getLogManager().reset();
+        // read configuration
+        final Map<String, Object> l_data = (Map<String, Object>) new Yaml().load( l_stream );
+        m_configurationpath = Paths.get( p_input ).normalize().getParent();
+
+        // get initial values
+        m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
+        if ( !(boolean) l_data.getOrDefault( "logging", false ) )
+            LogManager.getLogManager().reset();
 
 
-            m_windowweight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "weight", 800 );
-            m_windowheight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "height", 600 );
-            m_zoomspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "zoomspeed", 2 ) /
-                          100f;
-            m_zoomspeed = m_zoomspeed <= 0 ? 0.02f : m_zoomspeed;
-            m_dragspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "dragspeed", 100 ) /
-                          1000f;
-            m_dragspeed = m_dragspeed <= 0 ? 1f : m_dragspeed;
+        m_windowweight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "weight", 800 );
+        m_windowheight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "height", 600 );
+        m_zoomspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "zoomspeed", 2 ) /
+                      100f;
+        m_zoomspeed = m_zoomspeed <= 0 ? 0.02f : m_zoomspeed;
+        m_dragspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "dragspeed", 100 ) /
+                      1000f;
+        m_dragspeed = m_dragspeed <= 0 ? 1f : m_dragspeed;
 
-            m_screenshot = new ImmutableTriple<>(
-                (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "file", "" ),
-                (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "format", "" ),
-                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
+        m_screenshot = new ImmutableTriple<>(
+            (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "file", "" ),
+            (String) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "format", "" ),
+            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
+        );
+
+        // create environment
+        m_environment = new CEnvironment(
+            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
+            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
+            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
+                .getOrDefault( "cellsize", -1 ),
+            ERoutingFactory.valueOf( ( (String) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
+                .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
+        );
+
+        // create executable object list and check number of elements
+        final List<IElement<?>> l_elements = new LinkedList<>();
+        this.createMovingAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_elements );
+        m_elements = Collections.unmodifiableList( l_elements );
+
+        if ( m_elements.size() > m_environment.column() * m_environment.row() / 2 )
+            throw new IllegalArgumentException(
+                MessageFormat.format(
+                    "number of simulation elements are very large [{0}], so the environment size is too small, the environment [{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
+                    m_elements.size(),
+                    m_environment.row(),
+                    m_environment.column()
+                )
             );
 
-            // create environment
-            m_environment = new CEnvironment(
-                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
-                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
-                (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
-                    .getOrDefault( "cellsize", -1 ),
-                ERoutingFactory.valueOf( ( (String) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
-                    .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
-            );
 
-            // create executable object list and check number of elements
-            final List<IElement<?>> l_elements = new LinkedList<>();
-            this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_elements );
-            m_elements = Collections.unmodifiableList( l_elements );
+        // run initialization processes
+        m_environment.initialize();
 
-            if ( m_elements.size() > m_environment.column() * m_environment.row() / 2 )
-                throw new IllegalArgumentException(
-                    MessageFormat.format(
-                        "number of simulation elements are very large [{0}], so the environment size is too small, the environment [{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
-                        m_elements.size(),
-                        m_environment.row(),
-                        m_environment.column()
-                    )
-                );
-
-
-            // run initialization processes
-            m_environment.initialize();
-
-            return this;
-        }
-        catch ( final IOException | URISyntaxException l_exception )
-        {
-            throw l_exception;
-        }
+        return this;
     }
 
     /**
@@ -277,19 +270,19 @@ public final class CConfiguration
 
 
     /**
-     * creates the agent based on the configuration
+     * creates the moving agent based on the configuration
      *
      * @param p_agentconfiguration subsection for agent configuration
      * @param p_elements element list
      */
     @SuppressWarnings( "unchecked" )
-    private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements ) throws IOException
+    private void createMovingAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements ) throws IOException
     {
         final Random l_random = new Random();
         final Map<String, IAgentGenerator<IElement<IAgent>>> l_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
             org.lightjason.agentspeak.common.CCommon.getActionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.getActionsFromAgentClass( CAgent.class )
+            org.lightjason.agentspeak.common.CCommon.getActionsFromAgentClass( CMovingAgent.class )
         ).collect( Collectors.toSet() ) );
 
         p_agentconfiguration
@@ -312,7 +305,7 @@ public final class CConfiguration
                               // and push it back if generator does not exists
                               final IAgentGenerator<IElement<IAgent>> l_generator = l_agentgenerator.getOrDefault(
                                   l_asl,
-                                  new CAgentGenerator(
+                                  new CMovingAgentGenerator(
                                       m_environment,
                                       l_stream,
                                       l_action,
@@ -334,10 +327,11 @@ public final class CConfiguration
 
                                   (String) l_parameter.getOrDefault( "color", "ffffff" )
 
-                              ).sequential().forEach( l -> p_elements.add( l ) );
+                              ).sequential().forEach( p_elements::add );
                           }
                           catch ( final Exception l_exception )
                           {
+                              System.out.println( l_exception );
                               LOGGER.warning( MessageFormat.format( "error on agent generation: {0}", l_exception ) );
                           }
 

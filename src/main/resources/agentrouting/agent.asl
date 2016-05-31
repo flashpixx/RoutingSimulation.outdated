@@ -8,5 +8,8 @@
         foovoid();
 
         Z = fooreturn();
-        generic/print("return value", Z)
+        Z = Z + 5;
+        generic/print("return value", Z);
+
+        fooparameter( Z )
 .

@@ -57,6 +57,14 @@ public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, IExecut
     IElement<?> position( final IElement<?> p_object, final IntMatrix1D p_position );
 
     /**
+     * clip position data
+     *
+     * @param p_values position vector
+     * @return clipped vector
+     */
+    IntMatrix1D clip( final IntMatrix1D p_position );
+
+    /**
      * returns the number of rows
      *
      * @return rows

@@ -26,6 +26,7 @@ package agentrouting.simulation;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.routing.IRouting;
 import cern.colt.matrix.tint.IntMatrix1D;
+import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
 import com.badlogic.gdx.graphics.Color;
@@ -140,24 +141,33 @@ public final class CEnvironment implements IEnvironment
     @SuppressWarnings( "unchecked" )
     public final synchronized IElement<?> position( final IElement<?> p_element, final IntMatrix1D p_position )
     {
-        // clip position values if needed
-        final int l_row = clip( p_position.getQuick( 0 ), m_row );
-        final int l_column = clip( p_position.getQuick( 1 ), m_column );
+        final IntMatrix1D l_position = this.clip( p_position );
 
         // check of the target position is free, if not return object, which blocks the cell
-        final IElement<?> l_object = (IElement<?>) m_positions.getQuick( l_row, l_column );
+        final IElement<?> l_object = (IElement<?>) m_positions.getQuick( l_position.getQuick( 0 ), l_position.getQuick( 1 ) );
         if ( l_object != null )
             return l_object;
 
         // cell is free, move the position and return updated object
         m_positions.set( p_element.position().getQuick( 0 ), p_element.position().getQuick( 1 ), null );
-
-        p_element.position().setQuick( 0, l_row );
-        p_element.position().setQuick( 1, l_column );
+        p_element.position().setQuick( 0, l_position.getQuick( 0 ) );
+        p_element.position().setQuick( 1, l_position.getQuick( 1 ) );
 
         m_positions.set( p_element.position().get( 0 ), p_element.position().get( 1 ), p_element );
 
         return p_element;
+    }
+
+    @Override
+    public final IntMatrix1D clip( final IntMatrix1D p_position )
+    {
+        final IntMatrix1D l_position = new DenseIntMatrix1D( p_position.toArray() );
+
+        // clip position values if needed
+        l_position.setQuick( 0, clip( l_position.getQuick( 0 ), m_row ) );
+        l_position.setQuick( 1, clip( l_position.getQuick( 1 ), m_column ) );
+
+        return l_position;
     }
 
     /**

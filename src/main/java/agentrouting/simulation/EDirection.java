@@ -47,13 +47,16 @@ public enum EDirection
     /**
      * calculates the new position
      *
-     * @param p_viewpoint view point
      * @param p_position current position
+     * @param p_viewpoint view point
+     * @param p_length
      * @return new position
      */
     @SuppressWarnings( "unchecked" )
-    public IntMatrix1D position( final IntMatrix1D p_viewpoint, final IntMatrix1D p_position )
+    public IntMatrix1D position( final IntMatrix1D p_position, final IntMatrix1D p_viewpoint, final int p_length )
     {
+        // https://de.wikipedia.org/wiki/Normalenform
+
         final IntMatrix1D l_return = new DenseIntMatrix1D( 2 );
 
         // calculate the direction and length

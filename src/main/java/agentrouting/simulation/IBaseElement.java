@@ -284,7 +284,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     private void move( final EDirection p_direction )
     {
-        if ( this.equals( m_environment.position( this, p_direction.position( m_position, m_viewpoint, ) ) ) )
+        if ( this.equals( m_environment.position( this, p_direction.position( m_position, m_viewpoint, 1 ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 

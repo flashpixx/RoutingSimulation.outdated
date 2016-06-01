@@ -26,8 +26,6 @@ package agentrouting.simulation;
 import cern.colt.matrix.tint.IntMatrix1D;
 import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
 
-import java.util.Arrays;
-
 
 /**
  * direction enum
@@ -63,44 +61,44 @@ public enum EDirection
         l_return.setQuick( 0, p_viewpoint.getQuick( 0 ) - p_position.getQuick( 0 ) );
         l_return.setQuick( 1, p_viewpoint.getQuick( 1 ) - p_position.getQuick( 1 ) );
 
-        final int l_distance = (int) Math.round( Math.sqrt( Arrays.stream( p_position.toArray() ).asDoubleStream().map( i -> i * i ).sum() ) );
+        //final int l_distance = (int) Math.round( Math.sqrt( Arrays.stream( p_position.toArray() ).asDoubleStream().map( i -> i * i ).sum() ) );
 
         switch ( this )
         {
             case FORWARD:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) + l_distance );
+                l_return.setQuick( 0, l_return.getQuick( 0 ) + p_length );
                 break;
 
             case FORWARDRIGHT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) + l_distance );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) + l_distance );
+                l_return.setQuick( 0, l_return.getQuick( 0 ) + p_length );
+                l_return.setQuick( 1, l_return.getQuick( 1 ) + p_length );
                 break;
 
             case RIGHT:
-                l_return.setQuick( 1, l_return.getQuick( 1 ) + l_distance );
+                l_return.setQuick( 1, l_return.getQuick( 1 ) + p_length );
                 break;
 
             case BACKWARDRIGHT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) - l_distance );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) + l_distance );
+                l_return.setQuick( 0, l_return.getQuick( 0 ) - p_length );
+                l_return.setQuick( 1, l_return.getQuick( 1 ) + p_length );
                 break;
 
             case BACKWARD:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) - l_distance );
+                l_return.setQuick( 0, l_return.getQuick( 0 ) - p_length );
                 break;
 
             case BACKWARDLEFT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) - l_distance );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) - l_distance );
+                l_return.setQuick( 0, l_return.getQuick( 0 ) - p_length );
+                l_return.setQuick( 1, l_return.getQuick( 1 ) - p_length );
                 break;
 
             case LEFT:
-                l_return.setQuick( 1, l_return.getQuick( 1 ) - l_distance );
+                l_return.setQuick( 1, l_return.getQuick( 1 ) - p_length );
                 break;
 
             case FORWARDLEFT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) + l_distance );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) - l_distance );
+                l_return.setQuick( 0, l_return.getQuick( 0 ) + p_length );
+                l_return.setQuick( 1, l_return.getQuick( 1 ) - p_length );
                 break;
 
             default:

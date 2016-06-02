@@ -47,13 +47,17 @@ public enum EDirection
      *
      * @param p_position current position
      * @param p_viewpoint view point
-     * @param p_length
+     * @param p_length number of cells / step size
      * @return new position
      */
     @SuppressWarnings( "unchecked" )
     public IntMatrix1D position( final IntMatrix1D p_position, final IntMatrix1D p_viewpoint, final int p_length )
     {
         // https://de.wikipedia.org/wiki/Normalenform
+
+        // normalvector to the viewpoint:  (p_viewpoint - p_position) -> normal (length 1)
+        // normal vector -> rotation on direction (left = 0°, left fwd = 45°, fwd = 90° ...)
+        // scale normalvector with length -> new position
 
         final IntMatrix1D l_return = new DenseIntMatrix1D( 2 );
 

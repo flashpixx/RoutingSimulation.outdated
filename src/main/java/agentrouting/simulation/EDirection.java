@@ -29,6 +29,7 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.colt.matrix.tint.IntMatrix1D;
+import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
 import cern.jet.math.Functions;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
@@ -75,6 +76,7 @@ public enum EDirection
      * @param p_viewpoint view point
      * @param p_length number of cells / step size
      * @return new position
+     * @todo https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm can be an optimizing
      */
     @SuppressWarnings( "unchecked" )
     public IntMatrix1D position( final IntMatrix1D p_position, final IntMatrix1D p_viewpoint, final int p_length )
@@ -82,7 +84,13 @@ public enum EDirection
         // normalvector to the viewpoint:  (p_viewpoint - p_position) -> normal (length 1)
         // normal vector -> rotation on direction (left = 0°, left fwd = 45°, fwd = 90° ...)
         // scale normalvector with length -> new position
-        return null;
+        final DoubleMatrix1D l_position = new DenseDoubleMatrix1D( Doubles.toArray( Ints.asList( p_position.toArray() ) ) );
+        final DoubleMatrix1D l_return = ALGEBRA.mult( m_rotation, EDirection.normaldirectionvector( l_position, p_viewpoint ) );
+
+        l_return.assign( Functions.mult( p_length ) );
+        l_return.assign( l_position, Functions.plus );
+
+        return new DenseIntMatrix1D( Ints.toArray( Doubles.asList( l_return.toArray() ) ) );
     }
 
     /**
@@ -92,10 +100,10 @@ public enum EDirection
      * @param p_viewpoint viewpoint
      * @return normalized vector to the viewpoint
      */
-    private DoubleMatrix1D normaldirectionvector( final IntMatrix1D p_position, final IntMatrix1D p_viewpoint )
+    private static DoubleMatrix1D normaldirectionvector( final DoubleMatrix1D p_position, final IntMatrix1D p_viewpoint )
     {
         final DoubleMatrix1D l_return = new DenseDoubleMatrix1D( Doubles.toArray( Ints.asList( p_viewpoint.toArray() ) ) );
-        l_return.assign( new DenseDoubleMatrix1D( Doubles.toArray( Ints.asList( p_position.toArray() ) ) ), Functions.minus );
+        l_return.assign( p_position, Functions.minus );
         l_return.assign( Functions.minus( ALGEBRA.norm2( l_return ) ) );
         return l_return;
     }

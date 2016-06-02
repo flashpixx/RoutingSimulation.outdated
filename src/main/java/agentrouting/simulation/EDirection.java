@@ -23,8 +23,15 @@
 
 package agentrouting.simulation;
 
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
 import cern.colt.matrix.tint.IntMatrix1D;
-import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
+import cern.jet.math.Functions;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 
 
 /**
@@ -32,14 +39,33 @@ import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
  */
 public enum EDirection
 {
-    FORWARD,
-    FORWARDRIGHT,
-    RIGHT,
-    BACKWARDRIGHT,
-    BACKWARD,
-    BACKWARDLEFT,
-    LEFT,
-    FORWARDLEFT;
+    FORWARD( 90 ),
+    FORWARDRIGHT( 135 ),
+    RIGHT( 180 ),
+    BACKWARDRIGHT( 225 ),
+    BACKWARD( 270 ),
+    BACKWARDLEFT( 315 ),
+    LEFT( 0 ),
+    FORWARDLEFT( 45 );
+
+    /**
+     * algebra object
+     */
+    private static final Algebra ALGEBRA = new Algebra();
+    /**
+     * rotation-matrix to the normal-viewpoint-vector
+     */
+    private final DoubleMatrix2D m_rotation;
+
+    /**
+     * ctor
+     *
+     * @param p_alpha rotation of the normal-viewpoint-vector
+     */
+    EDirection( final double p_alpha )
+    {
+        m_rotation = EDirection.rotationmatrix( p_alpha );
+    }
 
 
     /**
@@ -53,61 +79,37 @@ public enum EDirection
     @SuppressWarnings( "unchecked" )
     public IntMatrix1D position( final IntMatrix1D p_position, final IntMatrix1D p_viewpoint, final int p_length )
     {
-        // https://de.wikipedia.org/wiki/Normalenform
-
         // normalvector to the viewpoint:  (p_viewpoint - p_position) -> normal (length 1)
         // normal vector -> rotation on direction (left = 0°, left fwd = 45°, fwd = 90° ...)
         // scale normalvector with length -> new position
+        return null;
+    }
 
-        final IntMatrix1D l_return = new DenseIntMatrix1D( 2 );
-
-        // calculate the direction and length
-        l_return.setQuick( 0, p_viewpoint.getQuick( 0 ) - p_position.getQuick( 0 ) );
-        l_return.setQuick( 1, p_viewpoint.getQuick( 1 ) - p_position.getQuick( 1 ) );
-
-        //final int l_distance = (int) Math.round( Math.sqrt( Arrays.stream( p_position.toArray() ).asDoubleStream().map( i -> i * i ).sum() ) );
-
-        switch ( this )
-        {
-            case FORWARD:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) + p_length );
-                break;
-
-            case FORWARDRIGHT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) + p_length );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) + p_length );
-                break;
-
-            case RIGHT:
-                l_return.setQuick( 1, l_return.getQuick( 1 ) + p_length );
-                break;
-
-            case BACKWARDRIGHT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) - p_length );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) + p_length );
-                break;
-
-            case BACKWARD:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) - p_length );
-                break;
-
-            case BACKWARDLEFT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) - p_length );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) - p_length );
-                break;
-
-            case LEFT:
-                l_return.setQuick( 1, l_return.getQuick( 1 ) - p_length );
-                break;
-
-            case FORWARDLEFT:
-                l_return.setQuick( 0, l_return.getQuick( 0 ) + p_length );
-                l_return.setQuick( 1, l_return.getQuick( 1 ) - p_length );
-                break;
-
-            default:
-        }
-
+    /**
+     * creates the normal vector between current position and viewpoint
+     *
+     * @param p_position current position
+     * @param p_viewpoint viewpoint
+     * @return normalized vector to the viewpoint
+     */
+    private DoubleMatrix1D normaldirectionvector( final IntMatrix1D p_position, final IntMatrix1D p_viewpoint )
+    {
+        final DoubleMatrix1D l_return = new DenseDoubleMatrix1D( Doubles.toArray( Ints.asList( p_viewpoint.toArray() ) ) );
+        l_return.assign( new DenseDoubleMatrix1D( Doubles.toArray( Ints.asList( p_position.toArray() ) ) ), Functions.minus );
+        l_return.assign( Functions.minus( ALGEBRA.norm2( l_return ) ) );
         return l_return;
+    }
+
+    /**
+     * creates a rotation matrix
+     *
+     * @param p_alpha degree
+     * @return matrix
+     *
+     * @see https://en.wikipedia.org/wiki/Rotation_matrix
+     */
+    private static DoubleMatrix2D rotationmatrix( final double p_alpha )
+    {
+        return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
     }
 }

@@ -9,13 +9,13 @@
 
 -!walk
     <-
-        viewpoint/random( 150 );
+        viewpoint/random( 10 );
         !walk
 .
 
 
 +!main
     <-
-        viewpoint/random( 15 );
+        viewpoint/random( 20 );
         !!walk
 .

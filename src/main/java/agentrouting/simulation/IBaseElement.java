@@ -163,6 +163,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     {
         m_viewpoint.set( 0, p_row.intValue() );
         m_viewpoint.set( 1, p_column.intValue() );
+        m_environment.clip( m_viewpoint );
     }
 
     /**
@@ -177,6 +178,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     {
         m_viewpoint.set( 0, m_position.get( 0 ) );
         m_viewpoint.set( 1, m_position.get( 1 ) );
+        m_environment.clip( m_viewpoint );
     }
 
     /**
@@ -191,6 +193,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     {
         m_viewpoint.set( 0, m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
         m_viewpoint.set( 1, m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
+        m_environment.clip( m_viewpoint );
     }
 
 
@@ -286,6 +289,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     {
         if ( this.equals( m_environment.position( this, p_direction.position( m_position, m_viewpoint, 1 ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
+
     }
 
 

@@ -113,6 +113,10 @@ public final class CConfiguration
      * visibility of the status line
      */
     private boolean m_statusvisible;
+    /**
+     * thread-sleep time in milliseconds
+     */
+    private int m_threadsleeptime;
 
 
 
@@ -140,6 +144,7 @@ public final class CConfiguration
         m_configurationpath = Paths.get( p_input ).normalize().getParent();
 
         // get initial values
+        m_threadsleeptime = (int) l_data.getOrDefault( "threadsleeptime", 0 );
         m_statusvisible = (boolean) l_data.getOrDefault( "statusvisible", true );
         m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
         if ( !(boolean) l_data.getOrDefault( "logging", false ) )
@@ -281,6 +286,16 @@ public final class CConfiguration
     public final boolean getStatusVisible()
     {
         return m_statusvisible;
+    }
+
+    /**
+     * returns the thread-sleep time
+     *
+     * @return sleep time
+     */
+    public final int getThreadSleepTime()
+    {
+        return m_threadsleeptime;
     }
 
 

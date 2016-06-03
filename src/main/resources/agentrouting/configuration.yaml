@@ -7,6 +7,9 @@ statusvisible : false
 # number of simulation steps - optional if not set, Integer.Max_Value is used
 #steps : 2000
 
+# thread-sleep (in milliseconds) time to slow down the simulation speed
+threadsleeptime : 250
+
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
@@ -29,8 +32,8 @@ screenshot :
 # environment (grid) resolution - required
 environment :
     cellsize : 25
-    rows     : 500
-    columns  : 500
+    rows     : 50
+    columns  : 50
     routing  : "jpsplus"
 
 
@@ -41,19 +44,19 @@ agent :
     # number of generated agents, color for visualzation
     # type of the agent and individual preferences
     test1 :
-        number : 50
+        number : 0
         color  : "ff0000"
         force  : "sum"
         asl    : "agent.asl"
 
     test2 :
-        number : 50
+        number : 0
         color  : "00ff00"
         force  : "sum"
         asl    : "agent.asl"
 
     test3 :
-        number : 50
+        number : 2
         color  : "0000ff"
         force  : "sum"
         asl    : "agent.asl"

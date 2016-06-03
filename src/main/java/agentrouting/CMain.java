@@ -95,6 +95,17 @@ public final class CMain
                                       .parallel()
                                       .forEach( j -> j.execute( i ) );
 
+                                // Thread sleep for slowing down
+                                if ( CConfiguration.INSTANCE.getThreadSleepTime() < 1 )
+                                    try
+                                    {
+                                        Thread.sleep( CConfiguration.INSTANCE.getThreadSleepTime() );
+                                    }
+                                    catch ( final InterruptedException l_exception )
+                                    {
+                                        LOGGER.warning( l_exception.toString() );
+                                    }
+
                                 // checks that the simulation is closed
                                 return l_screen.isDisposed();
                             } ).filter( i -> i ).findFirst();

@@ -96,7 +96,7 @@ public final class CMain
                                       .forEach( j -> j.execute( i ) );
 
                                 // Thread sleep for slowing down
-                                if ( CConfiguration.INSTANCE.getThreadSleepTime() < 1 )
+                                if ( CConfiguration.INSTANCE.getThreadSleepTime() > 0 )
                                     try
                                     {
                                         Thread.sleep( CConfiguration.INSTANCE.getThreadSleepTime() );

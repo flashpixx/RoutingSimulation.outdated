@@ -87,6 +87,9 @@ public enum EDirection
         l_return.assign( Functions.mult( p_length ) );
         l_return.assign( l_position, Functions.plus );
 
+        // round the values to the next for correct grid position
+        l_return.assign( Functions.round( 1 ) );
+
         return l_return;
     }
 

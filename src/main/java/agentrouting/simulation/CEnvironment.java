@@ -29,6 +29,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseObjectMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,11 +38,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import org.lightjason.agentspeak.language.CLiteral;
+import org.lightjason.agentspeak.language.CRawTerm;
+import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
+import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 /**
@@ -54,6 +60,10 @@ public final class CEnvironment implements IEnvironment
      * logger
      */
     private final static Logger LOGGER = Logger.getLogger( CEnvironment.class.getName() );
+    /**
+     * algebra object
+     */
+    private static final Algebra ALGEBRA = new Algebra();
     /**
      * routing algorithm
      */
@@ -236,10 +246,15 @@ public final class CEnvironment implements IEnvironment
     @Override
     public final IElement<IAgent> perceive( final IElement<IAgent> p_agent )
     {
-        // for each agent we check the "near(D)" preference for the
-        // current position and the view point, D is the distances (in cells)
-        // so we trigger the goal "nearby(Y)" and Y is a literal with distance e.g. "viewpoint(D)"
+        // check if the agent reaches the viewpont and returns the goal "viewpointreach"
+        if ( p_agent.position().equals( p_agent.viewpoint() ) )
+            p_agent.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "viewpointreach", Stream.of( CRawTerm.from( p_agent.position() ) ) ) ) );
 
+        //else
+        // otherwise check "near(D)" preference for the current position and the view
+        // point, D is the distances (in cells) so we trigger the goal "nearby(Y)" and
+        // Y is a literal with distance e.g. "viewpoint(D)"
+        //if ( ALGEBRA.mult( p_agent.position(), p_agent.viewpoint() ) )
 
         return p_agent;
     }

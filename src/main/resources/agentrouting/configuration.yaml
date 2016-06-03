@@ -10,7 +10,6 @@ statusvisible : false
 # thread-sleep (in milliseconds) time to slow down the simulation speed
 threadsleeptime : 500
 
-
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
 # drag speed for dragging sensitive in 1/1000
@@ -56,7 +55,7 @@ agent :
         asl    : "agent.asl"
 
     test3 :
-        number : 2
+        number : 1
         color  : "0000ff"
         force  : "sum"
         asl    : "agent.asl"

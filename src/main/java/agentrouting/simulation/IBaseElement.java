@@ -37,7 +37,6 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.ITerm;
 
-import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Random;
@@ -191,8 +190,12 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     @IAgentActionName( name = "viewpoint/random" )
     protected final void viewpointrandom( final Number p_radius )
     {
+        if ( p_radius.intValue() < 1 )
+            throw new RuntimeException( "radius must be greater than zero" );
+
         m_viewpoint.set( 0, m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
         m_viewpoint.set( 1, m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
+
         m_environment.clip( m_viewpoint );
     }
 
@@ -287,9 +290,12 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     private void move( final EDirection p_direction )
     {
+        System.out.println( m_position + "    " + m_viewpoint + "\n" );
+        m_environment.position( this, p_direction.position( m_position, m_viewpoint, 1 ) );
+        /*
         if ( this.equals( m_environment.position( this, p_direction.position( m_position, m_viewpoint, 1 ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
-
+        */
     }
 
 

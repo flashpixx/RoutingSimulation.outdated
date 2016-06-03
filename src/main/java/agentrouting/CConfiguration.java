@@ -109,6 +109,10 @@ public final class CConfiguration
      * dragging speed
      */
     private float m_dragspeed = 1f;
+    /**
+     * visibility of the status line
+     */
+    private boolean m_statusvisible;
 
 
 
@@ -136,6 +140,7 @@ public final class CConfiguration
         m_configurationpath = Paths.get( p_input ).normalize().getParent();
 
         // get initial values
+        m_statusvisible = (boolean) l_data.getOrDefault( "statusvisible", true );
         m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
         if ( !(boolean) l_data.getOrDefault( "logging", false ) )
             LogManager.getLogManager().reset();
@@ -266,6 +271,16 @@ public final class CConfiguration
     public final float dragspeed()
     {
         return m_dragspeed;
+    }
+
+    /**
+     * returns the status visibility
+     *
+     * @return visibility flag
+     */
+    public final boolean getStatusVisible()
+    {
+        return m_statusvisible;
     }
 
 

@@ -1,6 +1,9 @@
 # enable / disable logger
 #logging : true
 
+# enable / disable status line
+statusvisible : false
+
 # number of simulation steps - optional if not set, Integer.Max_Value is used
 #steps : 2000
 

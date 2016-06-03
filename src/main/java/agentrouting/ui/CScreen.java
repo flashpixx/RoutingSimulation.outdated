@@ -73,6 +73,10 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      */
     private final Vector3 m_lastTouch = new Vector3();
     /**
+     * show status visibility
+     */
+    private final boolean m_statusvisibility;
+    /**
      * camera definition
      */
     private OrthographicCamera m_camera;
@@ -109,12 +113,16 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * @param p_sprites list with executables
      * @param p_environment environment reference
      * @param p_screenshot screenshot configuration
+     * @param p_statusvisibility status visibility
      */
-    public CScreen( final List<? extends ISprite> p_sprites, final ITileMap p_environment, final Triple<String, String, Integer> p_screenshot )
+    public CScreen( final List<? extends ISprite> p_sprites, final ITileMap p_environment, final Triple<String, String, Integer> p_screenshot,
+                    final boolean p_statusvisibility
+    )
     {
         m_environment = p_environment;
         m_sprites = p_sprites;
         m_screenshot = p_screenshot;
+        m_statusvisibility = p_statusvisibility;
     }
 
     @Override
@@ -160,18 +168,21 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_batch.setProjectionMatrix( m_camera.combined );
         m_batch.begin();
         m_sprites.stream().forEach( i -> i.sprite().draw( m_batch ) );
-        m_font.draw(
-            m_batch,
-            MessageFormat.format(
-                "FPS: {0} - Iteration {1} - Agents {2} - Environment [{3}x{4}]",
-                Gdx.graphics.getFramesPerSecond(),
-                m_iteration,
-                m_sprites.size(),
-                m_environment.row(),
-                m_environment.column()
-            ),
-            10, 20
-        );
+
+        if ( m_statusvisibility )
+            m_font.draw(
+                m_batch,
+                MessageFormat.format(
+                    "FPS: {0} - Iteration {1} - Agents {2} - Environment [{3}x{4}]",
+                    Gdx.graphics.getFramesPerSecond(),
+                    m_iteration,
+                    m_sprites.size(),
+                    m_environment.row(),
+                    m_environment.column()
+                ),
+                10, 20
+            );
+
         m_batch.end();
 
         // take screenshot at the rendering end

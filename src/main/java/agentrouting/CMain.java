@@ -75,7 +75,8 @@ public final class CMain
         final CScreen l_screen = new CScreen(
             CConfiguration.INSTANCE.getObjects(),
             CConfiguration.INSTANCE.getEnvironment(),
-            CConfiguration.INSTANCE.getScreenshot()
+            CConfiguration.INSTANCE.getScreenshot(),
+            CConfiguration.INSTANCE.getStatusVisible()
         );
         new LwjglApplication( l_screen, l_config );
 

@@ -24,7 +24,7 @@
 package agentrouting.simulation;
 
 import agentrouting.ui.ISprite;
-import cern.colt.matrix.tint.IntMatrix1D;
+import cern.colt.matrix.DoubleMatrix1D;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -50,13 +50,13 @@ public interface IElement<T> extends IExecutable<T>, ISprite, org.lightjason.age
      *
      * @return position tupel
      */
-    IntMatrix1D position();
+    DoubleMatrix1D position();
 
     /**
      * returns the current viewpoint
      *
      * @return position tupel
      */
-    IntMatrix1D viewpoint();
+    DoubleMatrix1D viewpoint();
 
 }

@@ -25,8 +25,8 @@ package agentrouting.simulation;
 
 import agentrouting.simulation.agent.CMovingAgent;
 import agentrouting.simulation.algorithm.force.IForce;
-import cern.colt.matrix.tint.IntMatrix1D;
-import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
 import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
@@ -57,11 +57,11 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     /**
      * viewpoint of the agent
      */
-    protected final IntMatrix1D m_viewpoint;
+    protected final DoubleMatrix1D m_viewpoint;
     /**
      * current position of the agent
      */
-    protected final IntMatrix1D m_position;
+    protected final DoubleMatrix1D m_position;
     /**
      * reference to the environment
      */
@@ -84,14 +84,14 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * @param p_position initial position
      */
     protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration<IElement<T>> p_agentconfiguration,
-                            final IForce p_force, final IntMatrix1D p_position
+                            final IForce p_force, final DoubleMatrix1D p_position
     ) throws Exception
     {
         super( p_agentconfiguration );
         m_force = p_force;
         m_position = p_position;
         m_environment = p_environment;
-        m_viewpoint = new DenseIntMatrix1D( p_position.toArray() );
+        m_viewpoint = new DenseDoubleMatrix1D( p_position.toArray() );
 
         // run first cycle
         super.call();
@@ -113,7 +113,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
 
         // update sprite for painting (sprit position is x/y position, but position storing is row / column)
         if ( m_sprite != null )
-            m_sprite.setPosition( m_position.get( 1 ), m_position.get( 0 ) );
+            m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
 
         return (T) this;
     }
@@ -122,13 +122,13 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     // --- object getter ---------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final IntMatrix1D position()
+    public final DoubleMatrix1D position()
     {
         return m_position;
     }
 
     @Override
-    public final IntMatrix1D viewpoint()
+    public final DoubleMatrix1D viewpoint()
     {
         return m_viewpoint;
     }

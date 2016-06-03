@@ -31,7 +31,7 @@ import agentrouting.simulation.agent.CMovingAgentGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
-import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.lightjason.agentspeak.action.IAction;
@@ -348,9 +348,9 @@ public final class CConfiguration
                               l_generator.generatemultiple(
                                   (int) l_parameter.getOrDefault( "number", 0 ),
 
-                                  new DenseIntMatrix1D(
-                                      //new int[]{m_environment.row() / 2, m_environment.column() / 2}
-                                      new int[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
+                                  new DenseDoubleMatrix1D(
+                                      //new double[]{m_environment.row() / 2, m_environment.column() / 2}
+                                      new double[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
                                   ),
 
                                   EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),

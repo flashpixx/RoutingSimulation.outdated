@@ -24,8 +24,8 @@
 package agentrouting.simulation.algorithm.routing;
 
 import agentrouting.simulation.IElement;
-import cern.colt.matrix.tint.IntMatrix1D;
-import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,14 +43,14 @@ public final class CJPSPlus implements IRouting
     }
 
     @Override
-    public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final IntMatrix1D p_target
+    public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final DoubleMatrix1D p_target
     )
     {
-        return Collections.<IntMatrix1D>emptyList();
+        return Collections.<DoubleMatrix1D>emptyList();
     }
 
     @Override
-    public final double estimatedtime( final ObjectMatrix2D p_objects, final List<IntMatrix1D> p_route, final double p_speed )
+    public final double estimatedtime( final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_route, final double p_speed )
     {
         return 0;
     }

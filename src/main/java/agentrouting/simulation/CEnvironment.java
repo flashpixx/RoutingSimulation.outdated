@@ -25,10 +25,10 @@ package agentrouting.simulation;
 
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.routing.IRouting;
-import cern.colt.matrix.tint.IntMatrix1D;
-import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
-import cern.colt.matrix.tobject.ObjectMatrix2D;
-import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.SparseObjectMatrix2D;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -132,34 +132,34 @@ public final class CEnvironment implements IEnvironment
     // --- grid-access (routing & position) --------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final List<IntMatrix1D> route( final IElement<?> p_element, final IntMatrix1D p_target )
+    public final List<DoubleMatrix1D> route( final IElement<?> p_element, final DoubleMatrix1D p_target )
     {
         return m_routing.route( m_positions, p_element, p_target );
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public final synchronized IElement<?> position( final IElement<?> p_element, final IntMatrix1D p_position )
+    public final synchronized IElement<?> position( final IElement<?> p_element, final DoubleMatrix1D p_position )
     {
-        final IntMatrix1D l_position = this.clip( new DenseIntMatrix1D( p_position.toArray() ) );
+        final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
 
         // check of the target position is free, if not return object, which blocks the cell
-        final IElement<?> l_object = (IElement<?>) m_positions.getQuick( l_position.getQuick( 0 ), l_position.getQuick( 1 ) );
+        final IElement<?> l_object = (IElement<?>) m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) );
         if ( l_object != null )
             return l_object;
 
         // cell is free, move the position and return updated object
-        m_positions.set( l_position.getQuick( 0 ), l_position.getQuick( 1 ), null );
+        m_positions.set( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ), null );
         p_element.position().setQuick( 0, l_position.getQuick( 0 ) );
         p_element.position().setQuick( 1, l_position.getQuick( 1 ) );
 
-        m_positions.set( p_element.position().get( 0 ), p_element.position().get( 1 ), p_element );
+        m_positions.set( (int) p_element.position().get( 0 ), (int) p_element.position().get( 1 ), p_element );
 
         return p_element;
     }
 
     @Override
-    public final IntMatrix1D clip( final IntMatrix1D p_position )
+    public final DoubleMatrix1D clip( final DoubleMatrix1D p_position )
     {
         // clip position values if needed
         p_position.setQuick( 0, clip( p_position.getQuick( 0 ), m_row ) );
@@ -175,7 +175,7 @@ public final class CEnvironment implements IEnvironment
      * @param p_max maximum
      * @return modifed value
      */
-    private static int clip( final int p_value, final int p_max )
+    private static double clip( final double p_value, final double p_max )
     {
         if ( p_value < 0 )
             return p_max + p_value;
@@ -236,6 +236,11 @@ public final class CEnvironment implements IEnvironment
     @Override
     public final IElement<IAgent> perceive( final IElement<IAgent> p_agent )
     {
+        // for each agent we check the "near(D)" preference for the
+        // current position and the view point, D is the distances (in cells)
+        // so we trigger the goal "nearby(Y)" and Y is a literal with distance e.g. "viewpoint(D)"
+
+
         return p_agent;
     }
 

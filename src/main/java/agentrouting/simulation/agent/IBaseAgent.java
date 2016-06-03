@@ -28,7 +28,7 @@ import agentrouting.simulation.IBaseElement;
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
-import cern.colt.matrix.tint.IntMatrix1D;
+import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -58,7 +58,7 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
      * @param p_color color string in RRGGBBAA
      */
     protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
-                          final IForce p_force, final IntMatrix1D p_position, final String p_color
+                          final IForce p_force, final DoubleMatrix1D p_position, final String p_color
     ) throws Exception
     {
         super( p_environment, p_agentconfiguration, p_force, p_position );

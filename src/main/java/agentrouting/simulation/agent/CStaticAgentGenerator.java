@@ -26,7 +26,7 @@ package agentrouting.simulation.agent;
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
-import cern.colt.matrix.tint.IntMatrix1D;
+import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.generator.CDefaultAgentGenerator;
@@ -71,7 +71,7 @@ public final class CStaticAgentGenerator extends CDefaultAgentGenerator<IElement
         return new CStaticAgent(
             m_environment,
             m_configuration,
-            (IntMatrix1D) p_data[0],
+            (DoubleMatrix1D) p_data[0],
             (IForce) p_data[1],
             (String) p_data[2]
         );

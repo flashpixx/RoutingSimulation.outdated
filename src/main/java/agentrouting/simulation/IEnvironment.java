@@ -26,7 +26,7 @@ package agentrouting.simulation;
 
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.ui.ITileMap;
-import cern.colt.matrix.tint.IntMatrix1D;
+import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, IExecut
      * @param p_target target point
      * @return list of tuples of the cellindex
      */
-    List<IntMatrix1D> route( final IElement<?> p_object, final IntMatrix1D p_target );
+    List<DoubleMatrix1D> route( final IElement<?> p_object, final DoubleMatrix1D p_target );
 
     /**
      * sets an object to the position and changes the object position
@@ -54,7 +54,7 @@ public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, IExecut
      * @param p_position new position
      * @return updated object or object which uses the cell
      */
-    IElement<?> position( final IElement<?> p_object, final IntMatrix1D p_position );
+    IElement<?> position( final IElement<?> p_object, final DoubleMatrix1D p_position );
 
     /**
      * clip position data
@@ -62,7 +62,7 @@ public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, IExecut
      * @param p_position position vector
      * @return modified clipped vector
      */
-    IntMatrix1D clip( final IntMatrix1D p_position );
+    DoubleMatrix1D clip( final DoubleMatrix1D p_position );
 
     /**
      * returns the number of rows

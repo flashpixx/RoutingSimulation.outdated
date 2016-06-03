@@ -24,8 +24,8 @@
 package agentrouting.simulation.algorithm.routing;
 
 import agentrouting.simulation.IElement;
-import cern.colt.matrix.tint.IntMatrix1D;
-import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public interface IRouting
      * @param p_target target position
      * @return list of tuples of the cellindex
      */
-    List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final IntMatrix1D p_target );
+    List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final DoubleMatrix1D p_target );
 
     /**
      * calculated the estimated time to move the path
@@ -60,6 +60,6 @@ public interface IRouting
      * @param p_speed estimated speed
      * @return speed of the full path
      */
-    double estimatedtime( final ObjectMatrix2D p_objects, final List<IntMatrix1D> p_route, final double p_speed );
+    double estimatedtime( final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_route, final double p_speed );
 
 }

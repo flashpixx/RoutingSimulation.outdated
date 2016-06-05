@@ -30,6 +30,8 @@ import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
 
+import java.util.Arrays;
+
 
 /**
  * direction enum
@@ -81,6 +83,7 @@ public enum EDirection
         // normalvector to the viewpoint:  (p_viewpoint - p_position) -> normal (length 1)
         // normal vector -> rotation on direction (left = 0°, left fwd = 45°, fwd = 90° ...)
         // scale normalvector with length -> new position
+
         final DoubleMatrix1D l_position = new DenseDoubleMatrix1D( p_position.toArray() );
         final DoubleMatrix1D l_return = ALGEBRA.mult( m_rotation, EDirection.normaldirectionvector( l_position, p_viewpoint ) );
 
@@ -89,6 +92,8 @@ public enum EDirection
 
         // round the values to the next for correct grid position
         l_return.assign( Functions.round( 1 ) );
+
+        System.out.println( Arrays.toString( p_position.toArray() ) + " + l * " + Arrays.toString( p_viewpoint.toArray() ) + "    =>    " + Arrays.toString( l_return.toArray() ) );
 
         return l_return;
     }
@@ -104,8 +109,9 @@ public enum EDirection
     {
         final DoubleMatrix1D l_return = new DenseDoubleMatrix1D( p_viewpoint.toArray() );
         l_return.assign( p_position, Functions.minus );
-        l_return.assign( Functions.minus( ALGEBRA.norm2( l_return ) ) );
-        return l_return;
+        l_return.assign( Functions.div( ALGEBRA.norm2( l_return ) ) );
+
+        return new DenseDoubleMatrix1D( new double[]{ -l_return.getQuick( 1 ), l_return.getQuick( 0 ) } );
     }
 
     /**

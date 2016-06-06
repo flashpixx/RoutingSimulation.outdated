@@ -21,7 +21,7 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
     /**
      * logger
      */
-    protected final static Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
+    protected static final Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
     /**
      * agent name
      */

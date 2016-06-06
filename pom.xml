@@ -9,7 +9,7 @@
     
     <!-- project build configuration -->
     <prerequisites>
-        <maven>3.0.0</maven>
+        <maven>3.0.1</maven>
     </prerequisites>
 
     <!-- sets the properties for the compiler (Java version) and file encoding -->
@@ -108,8 +108,9 @@
         </dependency>
 
     </dependencies>
-
- <!-- reporting plugins -->
+    
+    
+<!-- reporting plugins -->
     <reporting>
 
         <plugins>
@@ -138,8 +139,6 @@
                 <version>3.6</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/CASTVisitorAgent.java</exclude>
-                        <exclude>**/CASTVisitorPlanBundle.java</exclude>
                         <exclude>**/generated/*.java</exclude>
                     </excludes>
                 </configuration>
@@ -165,9 +164,9 @@
 
         </plugins>
 
-    </reporting>    
-    
-    
+    </reporting>      
+
+
     <!-- defines the build settings -->
     <build>
         <!-- default goal is set to package and checking dependency & plugin updates -->
@@ -238,7 +237,7 @@
             <!-- exec plugin is used to build the source documentation with Doxygen (http://www.stack.nl/~dimitri/doxygen/) 
                  and GraphViz (http://www.graphviz.org/), GraphViz generates nice UML diagrams from the Java source code as SVG files,
                  Doxgen and GraphViz must be runable from the command-line, so Maven can call it: Maven -> Doxygen -> GraphViz,
-                 the documentation is stored within target/documentation/html (because Doxygen is configured to create a HTML output,
+                 the documentation is stored within target/site (because Doxygen is configured to create a HTML output,
                  but it can also create a LaTeX output, ...)
             -->
             <plugin>
@@ -257,7 +256,7 @@
                             <executable>doxygen</executable>
                             <arguments>
                                 <!-- in this file the Doxygen / project documentation configuration is stored  -->
-                                <argument>src/main/documentation/configuration.doxyfile</argument>
+                                <argument>src/site/configuration.doxyfile</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -316,6 +315,30 @@
                     </filesets>
                 </configuration>
             </plugin>
+            
+            <!-- checkstyle is perform at compile phase -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.17</version>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>src/analysis/checkstyle/style.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                </configuration>
+            </plugin>
+
 
             <!-- checkstyle is perform at compile phase -->
             <plugin>

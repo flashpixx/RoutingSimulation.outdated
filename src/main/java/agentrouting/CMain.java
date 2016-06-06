@@ -22,12 +22,19 @@ public final class CMain
     /**
      * logger
      */
-    private final static Logger LOGGER = Logger.getLogger( CMain.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( CMain.class.getName() );
 
     /**
-     * main
+     * ctor
+     */
+    private CMain()
+    {}
+
+    /**
+     * initialization
      *
      * @param p_args CLI arguments
+     * @throws FileNotFoundException on configuration file reading
      */
     public static void main( final String[] p_args ) throws FileNotFoundException
     {

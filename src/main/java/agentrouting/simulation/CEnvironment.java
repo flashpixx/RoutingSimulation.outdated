@@ -31,7 +31,7 @@ public final class CEnvironment implements IEnvironment
     /**
      * logger
      */
-    private final static Logger LOGGER = Logger.getLogger( CEnvironment.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( CEnvironment.class.getName() );
     /**
      * routing algorithm
      */

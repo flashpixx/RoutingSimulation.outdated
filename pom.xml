@@ -9,7 +9,7 @@
     
     <!-- project build configuration -->
     <prerequisites>
-        <maven>3.0.0</maven>
+        <maven>3.0.1</maven>
     </prerequisites>
 
     <!-- sets the properties for the compiler (Java version) and file encoding -->
@@ -237,7 +237,7 @@
             <!-- exec plugin is used to build the source documentation with Doxygen (http://www.stack.nl/~dimitri/doxygen/) 
                  and GraphViz (http://www.graphviz.org/), GraphViz generates nice UML diagrams from the Java source code as SVG files,
                  Doxgen and GraphViz must be runable from the command-line, so Maven can call it: Maven -> Doxygen -> GraphViz,
-                 the documentation is stored within target/documentation/html (because Doxygen is configured to create a HTML output,
+                 the documentation is stored within target/site (because Doxygen is configured to create a HTML output,
                  but it can also create a LaTeX output, ...)
             -->
             <plugin>
@@ -256,7 +256,7 @@
                             <executable>doxygen</executable>
                             <arguments>
                                 <!-- in this file the Doxygen / project documentation configuration is stored  -->
-                                <argument>src/main/documentation/configuration.doxyfile</argument>
+                                <argument>src/site/configuration.doxyfile</argument>
                             </arguments>
                         </configuration>
                     </execution>

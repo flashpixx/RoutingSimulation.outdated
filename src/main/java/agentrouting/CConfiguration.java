@@ -11,7 +11,6 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Collections;
@@ -32,7 +31,7 @@ public final class CConfiguration
     /**
      * singleton instance
      */
-    public final static CConfiguration INSTANCE = new CConfiguration();
+    public static final CConfiguration INSTANCE = new CConfiguration();
     /**
      * window height
      */
@@ -83,7 +82,7 @@ public final class CConfiguration
      * @return instance
      */
     @SuppressWarnings( "unchecked" )
-    public final CConfiguration load( final InputStream p_input ) throws FileNotFoundException
+    public final CConfiguration load( final InputStream p_input )
     {
         // read configuration
         final Map<String, Object> l_data = (Map<String, Object>) new Yaml().load( p_input );
@@ -99,8 +98,7 @@ public final class CConfiguration
         m_windowheight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "height", 600 );
         m_zoomspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "zoomspeed", 2 ) / 100f;
         m_zoomspeed = m_zoomspeed <= 0 ? 0.02f : m_zoomspeed;
-        m_dragspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "dragspeed", 100 ) /
-                      1000f;
+        m_dragspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "dragspeed", 100 ) / 1000f;
         m_dragspeed = m_dragspeed <= 0 ? 1f : m_dragspeed;
 
         m_screenshot = new ImmutableTriple<>(
@@ -222,28 +220,34 @@ public final class CConfiguration
     private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements )
     {
         final Random l_random = new Random();
-        p_agentconfiguration.entrySet().stream().forEach( i -> {
+        p_agentconfiguration
+            .entrySet()
+            .stream()
+            .forEach( i -> {
 
-            final Map<String, Object> l_parameter = ( (Map<String, Object>) i.getValue() );
-            IntStream.range( 0, (int) l_parameter.getOrDefault( "number", 0 ) ).forEach(
-                    j ->
-                            p_elements.add( EAgentFactory.valueOf( ( (String) l_parameter.getOrDefault( "type", "" ) ).trim().toUpperCase() ).build(
-                                    m_environment,
-                                    new DenseIntMatrix1D(
-                                            new int[]{m_environment.row() / 2, m_environment.column() / 2}
-                                            //new int[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
-                                    ),
-                                    (Map<String, Double>) l_parameter.getOrDefault(
-                                            "preference",
-                                            Collections.<String, Object>emptyMap()
-                                    ),
-                                    MessageFormat.format( i.getKey() + " {0}", j ),
-                                    (String) l_parameter.getOrDefault( "color", "ffffff" )
-                                            )
+                final Map<String, Object> l_parameter = (Map<String, Object>) i.getValue();
+                IntStream.range( 0, (int) l_parameter.getOrDefault( "number", 0 ) )
+                    .forEach( j ->
+                        p_elements.add(
+                            EAgentFactory.valueOf(
+                                ( (String) l_parameter.getOrDefault( "type", "" ) ).trim().toUpperCase()
+                            ).build(
+                                m_environment,
+                                new DenseIntMatrix1D(
+                                    new int[]{m_environment.row() / 2, m_environment.column() / 2}
+                                    //new int[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
+                                ),
+                                (Map<String, Double>) l_parameter.getOrDefault(
+                                    "preference",
+                                    Collections.<String, Object>emptyMap()
+                                ),
+                                MessageFormat.format( i.getKey() + " {0}", j ),
+                                (String) l_parameter.getOrDefault( "color", "ffffff" )
                             )
-            );
+                        )
+                    );
 
-        } );
+            } );
     }
 
 }

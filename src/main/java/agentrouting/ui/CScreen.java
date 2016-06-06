@@ -189,8 +189,8 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         // screenshot-take flag set
         if ( !m_screenshottake )
-            m_screenshottake = ( !m_screenshot.getLeft().isEmpty() ) && ( !m_screenshot.getMiddle().isEmpty() ) &&
-                               ( m_screenshot.getRight() > 0 ) && ( p_iteration % m_screenshot.getRight() == 0 );
+            m_screenshottake = ( !m_screenshot.getLeft().isEmpty() ) && ( !m_screenshot.getMiddle().isEmpty() )
+                               && ( m_screenshot.getRight() > 0 ) && ( p_iteration % m_screenshot.getRight() == 0 );
         return this;
     }
 
@@ -205,13 +205,13 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean keyUp( final int p_i )
+    public final boolean keyUp( final int p_key )
     {
         return false;
     }
 
     @Override
-    public final boolean keyTyped( final char p_c )
+    public final boolean keyTyped( final char p_character )
     {
         return false;
     }
@@ -224,7 +224,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean touchUp( final int p_i, final int p_i1, final int p_i2, final int p_i3 )
+    public final boolean touchUp( final int p_xposition, final int p_yposition, final int p_pointer, final int p_button )
     {
         return false;
     }
@@ -243,7 +243,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean mouseMoved( final int p_i, final int p_i1 )
+    public final boolean mouseMoved( final int p_xposition, final int p_yposition )
     {
         return false;
     }

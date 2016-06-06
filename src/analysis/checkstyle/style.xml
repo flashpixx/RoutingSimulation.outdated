@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE module PUBLIC
-        "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
-        "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 
 <!--
 
@@ -21,7 +19,6 @@
 
     <property name = "fileExtensions" value = "java, properties" />
 
-
     <!-- <modul name="FileLength"/> -->
 
     <module name = "FileTabCharacter">
@@ -29,7 +26,7 @@
     </module>
 
     <module name = "Header">
-        <!-- <property name = "headerFile" value = "src/main/styleguide/header.txt" /> -->
+        <property name = "headerFile" value = "src/analysis/checkstyle/header.txt" />
         <property name = "fileExtensions" value = "java" />
     </module>
 
@@ -49,6 +46,10 @@
     </module>
 
     <!-- <module name="RegexpSinglelineJava"/> -->
+
+    <module name="SuppressionFilter">
+        <property name="file" value="src/analysis/checkstyle/suppressions.xml"/>
+    </module>
 
     <module name = "Translation" />
 

@@ -41,7 +41,7 @@ public final class CCommon
     /**
      * logger
      */
-    protected final static Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
+    protected static final Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
 
 
     /**
@@ -56,6 +56,8 @@ public final class CCommon
      *
      * @param p_file file
      * @return URL of file or null
+     * @throws MalformedURLException on incorrect URL
+     * @throws URISyntaxException on incorrect URI syntax
      */
     public static URL getResourceURL( final String p_file ) throws MalformedURLException, URISyntaxException
     {
@@ -67,6 +69,8 @@ public final class CCommon
      *
      * @param p_file file relative to the CMain
      * @return URL of file or null
+     * @throws MalformedURLException on incorrect URL
+     * @throws URISyntaxException on incorrect URI syntax
      */
     public static URL getResourceURL( final File p_file ) throws MalformedURLException, URISyntaxException
     {

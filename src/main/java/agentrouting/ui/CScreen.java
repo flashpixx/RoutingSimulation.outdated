@@ -239,7 +239,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean keyUp( final int p_char )
+    public final boolean keyUp( final int p_key )
     {
         return false;
     }
@@ -277,7 +277,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public final boolean mouseMoved( final int p_xpostion, final int p_yposition )
+    public final boolean mouseMoved( final int p_xposition, final int p_yposition )
     {
         return false;
     }

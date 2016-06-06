@@ -67,15 +67,15 @@ public final class CConfiguration
     /**
      * singleton instance
      */
-    public final static CConfiguration INSTANCE = new CConfiguration();
-    /**
-     * configuration path
-     */
-    public Path m_configurationpath;
+    public static final CConfiguration INSTANCE = new CConfiguration();
     /**
      * logger
      */
-    private final static Logger LOGGER = Logger.getLogger( CConfiguration.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( CConfiguration.class.getName() );
+    /**
+     * configuration path
+     */
+    private Path m_configurationpath;
     /**
      * window height
      */
@@ -132,11 +132,12 @@ public final class CConfiguration
      *
      * @param p_input YAML configuration file
      * @return instance
+     * @throws IOException on io errors
+     * @throws URISyntaxException on URI syntax error
      */
     @SuppressWarnings( "unchecked" )
     public final CConfiguration load( final String p_input ) throws IOException, URISyntaxException
     {
-
         final InputStream l_stream = CCommon.getResourceURL( p_input ).openStream();
 
         // read configuration
@@ -153,11 +154,9 @@ public final class CConfiguration
 
         m_windowweight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "weight", 800 );
         m_windowheight = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "height", 600 );
-        m_zoomspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "zoomspeed", 2 ) /
-                      100f;
+        m_zoomspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "zoomspeed", 2 ) / 100f;
         m_zoomspeed = m_zoomspeed <= 0 ? 0.02f : m_zoomspeed;
-        m_dragspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "dragspeed", 100 ) /
-                      1000f;
+        m_dragspeed = ( (Map<String, Integer>) l_data.getOrDefault( "window", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "dragspeed", 100 ) / 1000f;
         m_dragspeed = m_dragspeed <= 0 ? 1f : m_dragspeed;
 
         m_screenshot = new ImmutableTriple<>(
@@ -184,7 +183,8 @@ public final class CConfiguration
         if ( m_elements.size() > m_environment.column() * m_environment.row() / 2 )
             throw new IllegalArgumentException(
                 MessageFormat.format(
-                    "number of simulation elements are very large [{0}], so the environment size is too small, the environment [{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
+                    "number of simulation elements are very large [{0}], so the environment size is too small, the environment "
+                    + "[{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
                     m_elements.size(),
                     m_environment.row(),
                     m_environment.column()
@@ -319,52 +319,51 @@ public final class CConfiguration
             .entrySet()
             .stream()
             .forEach( i ->
-                      {
-                          final Map<String, Object> l_parameter = ( (Map<String, Object>) i.getValue() );
+            {
+                final Map<String, Object> l_parameter = (Map<String, Object>) i.getValue();
 
-                          // read ASL item from configuration and get the path relative to configuration
-                          final String l_asl = m_configurationpath.resolve( ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim() ).toString();
+                // read ASL item from configuration and get the path relative to configuration
+                final String l_asl = m_configurationpath.resolve( ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim() ).toString();
 
-                          try (
-                              // open filestream of ASL content
-                              final InputStream l_stream = CCommon.getResourceURL( l_asl ).openStream();
-                          )
-                          {
+                try (
+                    // open filestream of ASL content
+                    final InputStream l_stream = CCommon.getResourceURL( l_asl ).openStream();
+                )
+                {
+                    // get existing agent generator or create a new one based on the ASL
+                    // and push it back if generator does not exists
+                    final IAgentGenerator<IElement<IAgent>> l_generator = l_agentgenerator.getOrDefault(
+                        l_asl,
+                        new CMovingAgentGenerator(
+                            m_environment,
+                            l_stream,
+                            l_action,
+                            IAggregation.EMPTY
+                        )
+                    );
+                    l_agentgenerator.putIfAbsent( l_asl, l_generator );
 
-                              // get existing agent generator or create a new one based on the ASL
-                              // and push it back if generator does not exists
-                              final IAgentGenerator<IElement<IAgent>> l_generator = l_agentgenerator.getOrDefault(
-                                  l_asl,
-                                  new CMovingAgentGenerator(
-                                      m_environment,
-                                      l_stream,
-                                      l_action,
-                                      IAggregation.EMPTY
-                                  )
-                              );
-                              l_agentgenerator.putIfAbsent( l_asl, l_generator );
+                    // generate agents and put it to the list
+                    l_generator.generatemultiple(
+                        (int) l_parameter.getOrDefault( "number", 0 ),
 
-                              // generate agents and put it to the list
-                              l_generator.generatemultiple(
-                                  (int) l_parameter.getOrDefault( "number", 0 ),
+                        new DenseDoubleMatrix1D(
+                            //new double[]{m_environment.row() / 2, m_environment.column() / 2}
+                            new double[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
+                        ),
 
-                                  new DenseDoubleMatrix1D(
-                                      //new double[]{m_environment.row() / 2, m_environment.column() / 2}
-                                      new double[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
-                                  ),
+                        EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 
-                                  EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
+                        (String) l_parameter.getOrDefault( "color", "ffffff" )
 
-                                  (String) l_parameter.getOrDefault( "color", "ffffff" )
+                    ).sequential().forEach( p_elements::add );
+                }
+                catch ( final Exception l_exception )
+                {
+                    System.err.println( MessageFormat.format( "error on agent generation: {0}", l_exception ) );
+                }
 
-                              ).sequential().forEach( p_elements::add );
-                          }
-                          catch ( final Exception l_exception )
-                          {
-                              System.err.println( MessageFormat.format( "error on agent generation: {0}", l_exception ) );
-                          }
-
-                      } );
+            } );
     }
 
 }

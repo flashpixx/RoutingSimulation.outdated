@@ -44,12 +44,20 @@ public final class CMain
     /**
      * logger
      */
-    private final static Logger LOGGER = Logger.getLogger( CMain.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( CMain.class.getName() );
 
     /**
-     * main
+     * ctor
+     */
+    private CMain()
+    {}
+
+    /**
+     * initialization
      *
      * @param p_args CLI arguments
+     * @throws IOException on configuration file reading
+     * @throws URISyntaxException on URI sytax definition
      */
     public static void main( final String[] p_args ) throws IOException, URISyntaxException
     {
@@ -83,32 +91,35 @@ public final class CMain
 
         // run simulation
         LOGGER.info( MessageFormat.format( "start simulation with [{0}] steps", CConfiguration.INSTANCE.getSimulationSteps() ) );
-        IntStream.range( 0, CConfiguration.INSTANCE.getSimulationSteps() )
-                 .mapToObj( i ->
-                            {
-                                // update screen take screenshot and run object execution
-                                l_screen.iteration( i );
-                                Stream.concat(
-                                    Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
-                                    CConfiguration.INSTANCE.getObjects().parallelStream()
-                                )
-                                      .parallel()
-                                      .forEach( j -> j.execute( i ) );
+        IntStream
+                .range( 0, CConfiguration.INSTANCE.getSimulationSteps() )
+                .mapToObj( i ->
+                {
+                    // update screen take screenshot and run object execution
+                    l_screen.iteration( i );
+                    Stream.concat(
+                        Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
+                        CConfiguration.INSTANCE.getObjects().parallelStream()
+                    )
+                        .parallel()
+                        .forEach( j -> j.execute( i ) );
 
-                                // Thread sleep for slowing down
-                                if ( CConfiguration.INSTANCE.getThreadSleepTime() > 0 )
-                                    try
-                                    {
-                                        Thread.sleep( CConfiguration.INSTANCE.getThreadSleepTime() );
-                                    }
-                                    catch ( final InterruptedException l_exception )
-                                    {
-                                        LOGGER.warning( l_exception.toString() );
-                                    }
+                    // thread sleep for slowing down
+                    if ( CConfiguration.INSTANCE.getThreadSleepTime() > 0 )
+                        try
+                        {
+                            Thread.sleep( CConfiguration.INSTANCE.getThreadSleepTime() );
+                        }
+                        catch ( final InterruptedException l_exception )
+                        {
+                            LOGGER.warning( l_exception.toString() );
+                        }
 
-                                // checks that the simulation is closed
-                                return l_screen.isDisposed();
-                            } ).filter( i -> i ).findFirst();
+                    // checks that the simulation is closed
+                    return l_screen.isDisposed();
+                } )
+                .filter( i -> i )
+                .findFirst();
     }
 
 }

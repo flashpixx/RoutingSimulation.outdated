@@ -1,6 +1,7 @@
-# Light-Jason - Lightwire version of AgentSpeak(L) GridWorld
+# LightJason - GridWorld
 
-![Circle CI](https://circleci.com/gh/LightJason/GridWorld.svg?style=shield)
+![Circle CI](https://circleci.com/gh/flashpixx/RountingSimulation.svg?style=shield&circle-token=9805649be1f19d5cc4468e7168db970d47eefc2e)
+
 
 
 ## <a name="info">Information</a>
@@ -8,9 +9,9 @@
 * [JMX](http://www.eclipse.org/jetty/documentation/current/jmx-chapter.html)
 * [JPS](https://github.com/ClintFMullins/JumpPointSearch-Java) / [Description](https://harablog.wordpress.com/2011/09/07/jump-point-search/)
 * [JPS+ Goal Bounding](https://github.com/SteveRabin/JPSPlusWithGoalBounding)
+* [JPS+ Java (documentated)](https://github.com/kevinsheehan/jps) / [JPS+ Java (undocumented)](https://github.com/unrealgamer/Java-JPS)
 * [Path Finding](http://www.cokeandcode.com/main/tutorials/path-finding/)
 * [CSS Voxels](http://www.voxelcss.com/)
-* [Jar push to local Maven repository](http://stackoverflow.com/questions/4955635/how-to-add-local-jar-files-in-maven-project)
 * [Game Art](http://opengameart.org/)
 * [Routing](http://simblob.blogspot.de/2016/02/updating-my-introduction-to-a.html)
 
@@ -25,12 +26,6 @@
 * [Maven 3 or higher](http://maven.apache.org/)
 * [Doxygen](http://www.doxygen.org/) with [GraphViz](http://www.graphviz.org/)
 * [Source code documentation](http://flashpixx.github.io/Light-Jason-GridWorld/)
-
-
-## <a name="download">Current Developer Download</a>
-
-* [Windows Executable](https://github.com/flashpixx/Light-Jason-GridWorld/raw/binary-master/Light-Jason-GridWorld-0.1.exe)
-* [Native Jar](https://github.com/flashpixx/Light-Jason-GridWorld/raw/binary-master/Light-Jason-GridWorld-0.1.jar)
 
 
 ## <a name="szenario">Szenario</a>

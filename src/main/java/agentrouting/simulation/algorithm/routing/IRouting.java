@@ -37,7 +37,9 @@ public interface IRouting
 {
 
     /**
-     * @param p_objects full initialized environment grid
+     * runs the initialization process from the environment
+     *
+     * @param p_objects full initialized environment grid (static elements)
      * @return self reference
      */
     IRouting initialize( final ObjectMatrix2D p_objects );

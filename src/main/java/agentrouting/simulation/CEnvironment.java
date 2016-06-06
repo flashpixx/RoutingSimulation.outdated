@@ -59,7 +59,7 @@ public final class CEnvironment implements IEnvironment
     /**
      * logger
      */
-    private final static Logger LOGGER = Logger.getLogger( CEnvironment.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( CEnvironment.class.getName() );
     /**
      * algebra object
      */
@@ -172,8 +172,8 @@ public final class CEnvironment implements IEnvironment
     public final DoubleMatrix1D clip( final DoubleMatrix1D p_position )
     {
         // clip position values if needed
-        p_position.setQuick( 0, clip( p_position.getQuick( 0 ), m_row ) );
-        p_position.setQuick( 1, clip( p_position.getQuick( 1 ), m_column ) );
+        p_position.setQuick( 0, CEnvironment.clip( p_position.getQuick( 0 ), m_row ) );
+        p_position.setQuick( 1, CEnvironment.clip( p_position.getQuick( 1 ), m_column ) );
 
         return p_position;
     }
@@ -221,21 +221,20 @@ public final class CEnvironment implements IEnvironment
         IntStream
             .range( 0, m_column )
             .forEach( x ->
-                      {
-                          IntStream
-                              .range( 0, m_row )
-                              .forEach( y ->
-                                        {
-
-                                            final TiledMapTileLayer.Cell l_cell = new TiledMapTileLayer.Cell();
-                                            l_layer.setCell( x, y, l_cell );
-                                            l_cell.setTile(
-                                                y % 2 != 0
-                                                ? x % 2 != 0 ? l_region1 : l_region2
-                                                : x % 2 != 0 ? l_region2 : l_region1
-                                            );
-                                        } );
-                      } );
+            {
+                IntStream
+                    .range( 0, m_row )
+                    .forEach( y ->
+                    {
+                        final TiledMapTileLayer.Cell l_cell = new TiledMapTileLayer.Cell();
+                        l_layer.setCell( x, y, l_cell );
+                        l_cell.setTile(
+                            y % 2 != 0
+                            ? x % 2 != 0 ? l_region1 : l_region2
+                            : x % 2 != 0 ? l_region2 : l_region1
+                        );
+                    } );
+            } );
 
         return l_map;
     }

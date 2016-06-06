@@ -34,7 +34,7 @@ public enum EForceFactory
     /**
      * force object
      */
-    final IForce m_force;
+    private final IForce m_force;
 
     /**
      * ctor

@@ -93,7 +93,11 @@ public enum EDirection
         // round the values to the next for correct grid position
         l_return.assign( Functions.round( 1 ) );
 
-        System.out.println( Arrays.toString( p_position.toArray() ) + " + l * " + Arrays.toString( p_viewpoint.toArray() ) + "    =>    " + Arrays.toString( l_return.toArray() ) );
+        System.out.println(
+                Arrays.toString( p_position.toArray() )
+                        + " + l * " + Arrays.toString( p_viewpoint.toArray() )
+                        + "    =>    " + Arrays.toString( l_return.toArray() )
+        );
 
         return l_return;
     }
@@ -111,7 +115,7 @@ public enum EDirection
         l_return.assign( p_position, Functions.minus );
         l_return.assign( Functions.div( ALGEBRA.norm2( l_return ) ) );
 
-        return new DenseDoubleMatrix1D( new double[]{ -l_return.getQuick( 1 ), l_return.getQuick( 0 ) } );
+        return new DenseDoubleMatrix1D( new double[]{-l_return.getQuick( 1 ), l_return.getQuick( 0 )} );
     }
 
     /**

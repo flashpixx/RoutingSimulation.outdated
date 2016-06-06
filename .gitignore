@@ -12,5 +12,9 @@
 !src/main/documentation/*.htm
 !src/main/documentation/*.css
 
+!src/analysis/**/*.xml
+!src/analysis/**/*.txt
+!src/analysis/**/*.md
+
 target/**
 

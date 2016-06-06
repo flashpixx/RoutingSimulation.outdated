@@ -20,7 +20,7 @@
 +!viewpointreach(P)
      <-
         generic/print( "position reached", P );
-        generic/sleep(25)
+        generic/sleep(5)
 .
 
 

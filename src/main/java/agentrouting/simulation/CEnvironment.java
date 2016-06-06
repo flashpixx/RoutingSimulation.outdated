@@ -44,6 +44,7 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
@@ -151,12 +152,19 @@ public final class CEnvironment implements IEnvironment
     @SuppressWarnings( "unchecked" )
     public final synchronized IElement<?> position( final IElement<?> p_element, final DoubleMatrix1D p_position )
     {
+        System.out.println(
+            "from " + Arrays.toString( p_element.position().toArray() )
+            + " to " + Arrays.toString( p_position.toArray() )
+        );
+
         final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
 
         // check of the target position is free, if not return object, which blocks the cell
         final IElement<?> l_object = (IElement<?>) m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) );
         if ( l_object != null )
             return l_object;
+
+        // System.out.println( l_position + "  /  " + p_element.position() );
 
         // cell is free, move the position and return updated object
         m_positions.set( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ), null );

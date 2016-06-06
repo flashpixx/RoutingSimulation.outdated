@@ -3,6 +3,10 @@ general:
         only:
             - master
         ignore:
+            - developing
+            - /hotfix-.*/
+            - /release-.*/
+            - /support-.*/
             - /dev-.*/
             - /gh-.*/
             - /binary-.*/
@@ -30,12 +34,14 @@ test:
         - mvn site
 
     post:
-        # Maven site CircleCI build
+
+        # Maven Site CircleCI build
         - mkdir -p $CIRCLE_TEST_REPORTS/junit/
         - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-        # documentation build
+
+        # Documentation Build with Update to GH-Pages Branch
         - git checkout master
-        - mv target/documentation/html /tmp
+        - mv target/site /tmp
         - git checkout gh-pages
         - mv circle.yml /tmp
         - mv .gitignore /tmp
@@ -46,7 +52,7 @@ test:
         - rm -Rf *
         - mv /tmp/.gitignore .
         - mv /tmp/circle.yml .
-        - mv /tmp/html/* .
+        - mv /tmp/site/* .
         - git add --all .
         - git commit -m "current documentation"
         - git push origin gh-pages

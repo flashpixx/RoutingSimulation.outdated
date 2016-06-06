@@ -31,7 +31,6 @@ import agentrouting.simulation.agent.CMovingAgentGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
-import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.lightjason.agentspeak.action.IAction;
@@ -50,7 +49,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -308,7 +306,6 @@ public final class CConfiguration
     @SuppressWarnings( "unchecked" )
     private void createMovingAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements ) throws IOException
     {
-        final Random l_random = new Random();
         final Map<String, IAgentGenerator<IElement<IAgent>>> l_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
             org.lightjason.agentspeak.common.CCommon.getActionsFromPackage(),
@@ -346,11 +343,6 @@ public final class CConfiguration
                     // generate agents and put it to the list
                     l_generator.generatemultiple(
                         (int) l_parameter.getOrDefault( "number", 0 ),
-
-                        new DenseDoubleMatrix1D(
-                            //new double[]{m_environment.row() / 2, m_environment.column() / 2}
-                            new double[]{l_random.nextInt( m_environment.row() ), l_random.nextInt( m_environment.column() )}
-                        ),
 
                         EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 

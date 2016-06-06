@@ -26,7 +26,7 @@ package agentrouting.simulation.agent;
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
-import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.generator.CDefaultAgentGenerator;
@@ -35,6 +35,7 @@ import org.lightjason.agentspeak.language.score.IAggregation;
 
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -47,6 +48,10 @@ public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IElement
      * environment reference
      */
     private final IEnvironment m_environment;
+    /**
+     * random generator
+     */
+    private final Random m_random = new Random();
 
     /**
      * ctor
@@ -71,9 +76,15 @@ public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IElement
         return new CMovingAgent(
             m_environment,
             m_configuration,
-            (DoubleMatrix1D) p_data[0],
-            (IForce) p_data[1],
-            (String) p_data[2]
+
+            new DenseDoubleMatrix1D(
+                //new double[]{m_environment.row() / 2, m_environment.column() / 2}
+                new double[]{m_random.nextInt( m_environment.row() ), m_random.nextInt( m_environment.column() )}
+            ),
+
+            (IForce) p_data[0],
+
+            (String) p_data[1]
         );
     }
 }

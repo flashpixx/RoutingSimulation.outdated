@@ -446,11 +446,9 @@
 
         <module name = "TypecastParenPad" />
 
-        <!--
         <module name = "UncommentedMain">
-            <property name = "excludedClasses" value = "Test.*$" />
+            <property name = "excludedClasses" value = "((Test.*)|(CMain))$" />
         </module>
-        -->
 
         <module name = "UnnecessaryParentheses" />
 

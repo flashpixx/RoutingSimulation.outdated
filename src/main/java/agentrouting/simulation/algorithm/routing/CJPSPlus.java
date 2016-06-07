@@ -2,14 +2,18 @@ package agentrouting.simulation.algorithm.routing;
 
 import agentrouting.simulation.IElement;
 import cern.colt.matrix.tint.IntMatrix1D;
+import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
+import cern.jet.math.tint.IntFunctions;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 
 /**
@@ -22,7 +26,7 @@ public final class CJPSPlus implements IRouting
      * map with position (y/x) and the jump-point
      * @todo if you are putting data in parallel to the map, use instead of a HashMap a ConcurrentHashMap (https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html)
      */
-    private final Map<Pair<Integer,Integer>, CJumpPoint> m_staticjumppoints = new HashMap<>();
+    private final Map<Pair<Integer, Integer>, CJumpPoint> m_staticjumppoints = new HashMap<>();
 
 
 
@@ -47,7 +51,27 @@ public final class CJPSPlus implements IRouting
     {
         // just cloning the map with static jump-points
         // we are coping the referenced jump-points to a local map and work with the local map (removing elements is possible without any problems)
-        final Map<Pair<Integer,Integer>, CJumpPoint> l_dynamicjumppoints = new HashMap<>( m_staticjumppoints );
+        final Map<Pair<Integer, Integer>, CJumpPoint> l_dynamicjumppoints = new HashMap<>( m_staticjumppoints );
+
+        // calculating the vector between target position and current agent position - defined in vector-structur: p_target - p_position
+        final IntMatrix1D l_return = new DenseIntMatrix1D( p_target.toArray() );
+        l_return.assign( p_element.position(), IntFunctions.minus );
+
+        // summerize all g- score values depend on the current agent position
+        IntStream
+            // create a range over the position
+            // @todo check for correct index values
+            .range( 0, l_return.getQuick( 0 ) )
+
+            // try get a jump-point, if there is no existing, return the defined zero-jump-point
+            .mapToObj( i -> l_dynamicjumppoints.getOrDefault( new ImmutablePair<>( i, l_return.getQuick( 1 ) ), CJumpPoint.ZERO ) )
+
+            // we have got a jump-point and get the g-score value
+            .mapToInt( CJumpPoint::gscore )
+
+            // sum all values
+            .sum();
+
 
         return Collections.<IntMatrix1D>emptyList();
     }
@@ -69,6 +93,11 @@ public final class CJPSPlus implements IRouting
     private static final class CJumpPoint
     {
         /**
+         * for avoid zero-jump-points we create exaktly one
+         */
+        public static final CJumpPoint ZERO = new CJumpPoint();
+
+        /**
          * jump-point g-score value
          * @todo some description, what a g-score value is
          */
@@ -83,7 +112,7 @@ public final class CJPSPlus implements IRouting
         /**
          * ctor - with default values
          */
-        public CJumpPoint()
+        private CJumpPoint()
         {
             this( 0, 0 );
         }

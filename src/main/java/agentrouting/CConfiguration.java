@@ -314,7 +314,6 @@ public final class CConfiguration
 
         p_agentconfiguration
             .entrySet()
-            .stream()
             .forEach( i ->
             {
                 final Map<String, Object> l_parameter = (Map<String, Object>) i.getValue();

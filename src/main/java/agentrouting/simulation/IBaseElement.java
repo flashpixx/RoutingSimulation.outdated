@@ -74,6 +74,10 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * sprite object for painting
      */
     private Sprite m_sprite;
+    /**
+     * current moving speed
+     */
+    private int m_speed = 1;
 
     /**
      * ctor
@@ -291,8 +295,17 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     private void move( final EDirection p_direction )
     {
-        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, m_viewpoint, 1 ) ) ) )
+        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, m_viewpoint, m_speed ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
+    }
+
+    @IAgentActionName( name = "speed" )
+    @IAgentActionAllow( classes = CMovingAgent.class )
+    protected final void speed( final int p_speed )
+    {
+        if ( p_speed < 1 )
+            throw new RuntimeException( "speed cannot be less than one" );
+        m_speed = p_speed;
     }
 
 

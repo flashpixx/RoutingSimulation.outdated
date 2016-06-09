@@ -23,6 +23,7 @@
 
 package agentrouting.simulation;
 
+import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
@@ -36,69 +37,70 @@ import cern.jet.math.Functions;
  */
 public enum EDirection
 {
-    FORWARD,
-    FORWARDRIGHT,
-    RIGHT,
-    BACKWARDRIGHT(),
-    BACKWARD,
-    BACKWARDLEFT,
-    LEFT,
-    FORWARDLEFT;
+    FORWARD( 0 ),
+    FORWARDLEFT( 45 ),
+    LEFT( 90 ),
+    BACKWARDLEFT( 135 ),
+    BACKWARD( 180 ),
+    BACKWARDRIGHT( 225 ),
+    RIGHT( 270 ),
+    FORWARDRIGHT( 315 );
+
 
     /**
      * algebra object
      */
     private static final Algebra ALGEBRA = new Algebra();
+    /**
+     * round function
+     */
+    private static final DoubleFunction ROUND = new DoubleFunction()
+    {
+        @Override
+        public final double apply( final double p_value )
+        {
+            return Math.round( p_value );
+        }
+    };
+    /**
+     * rotation-matrix to the normal-viewpoint-vector
+     */
+    private final DoubleMatrix2D m_rotation;
 
+    /**
+     * ctor
+     *
+     * @param p_alpha rotation of the normal-viewpoint-vector
+     */
+    EDirection( final double p_alpha )
+    {
+        m_rotation = EDirection.rotationmatrix( Math.toRadians( p_alpha ) );
+    }
 
     /**
      * calculates the new position
      *
      * @param p_position current position
      * @param p_viewpoint view point
-     * @param p_length number of cells / step size
+     * @param p_speed number of cells / step size
      * @return new position
-     *
-     * @todo https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm can be an optimizing
-     * @see https://www.opengl.org/sdk/docs/man2/xhtml/gluLookAt.xml
-     * @see http://stackoverflow.com/questions/21830340/understanding-glmlookat
-     * @todo tansform
      */
     @SuppressWarnings( "unchecked" )
-    public DoubleMatrix1D position( final DoubleMatrix1D p_position, final DoubleMatrix1D p_viewpoint, final int p_length )
+    public DoubleMatrix1D position( final DoubleMatrix1D p_position, final DoubleMatrix1D p_viewpoint, final int p_speed )
     {
-        // normalvector to the viewpoint:  (p_viewpoint - p_position) -> normal (length 1)
-        // normal vector -> rotation on direction (left = 0°, left fwd = 45°, fwd = 90° ...)
-        // scale normalvector with length -> new position
-
-        // https://solarianprogrammer.com/2013/05/22/opengl-101-matrices-projection-view-model/
-        final DoubleMatrix1D l_direction = new DenseDoubleMatrix1D( new double[]{p_viewpoint.getQuick( 0 ), p_viewpoint.getQuick( 1 ), 0} );
-        l_direction
-            .assign( p_position, Functions.minus )
-            .assign( Functions.div( ALGEBRA.norm2( l_direction ) ) );
-
-        final DoubleMatrix1D l_up = new DenseDoubleMatrix1D( l_direction.toArray() )
-            .assign( Functions.mult( p_length ) )
-            .assign( Functions.div( ALGEBRA.norm2( l_direction ) ) );
-
-
-        return l_direction;
-    }
-
-    /**
-     * creates the normal vector between current position and viewpoint
-     *
-     * @param p_position current position
-     * @param p_viewpoint viewpoint
-     * @return normalized vector to the viewpoint
-     */
-    private static DoubleMatrix1D normaldirectionvector( final DoubleMatrix1D p_position, final DoubleMatrix1D p_viewpoint )
-    {
-        final DoubleMatrix1D l_return = new DenseDoubleMatrix1D( p_viewpoint.toArray() );
-        l_return.assign( p_position, Functions.minus );
-        l_return.assign( Functions.div( ALGEBRA.norm2( l_return ) ) );
-
-        return new DenseDoubleMatrix1D( new double[]{-l_return.getQuick( 1 ), l_return.getQuick( 0 )} );
+        // calculate the stright line by: p_position + l * (viewpoint - p_position)
+        // normalize direction and rotate the normalized vector based on the direction
+        // calculate the target position based by: p_position + speed * rotate( normalize( viewpoint - p_position ) )
+        final DoubleMatrix1D l_view = new DenseDoubleMatrix1D( p_viewpoint.toArray() );
+        return ALGEBRA.mult(
+                    m_rotation,
+                    l_view
+                        .assign( p_position, Functions.minus )
+                        .assign( Functions.div( ALGEBRA.norm2( l_view ) ) )
+        )
+        .assign( Functions.mult( p_speed ) )
+        .assign( p_position, Functions.plus )
+        .assign( ROUND );
     }
 
     /**

@@ -30,41 +30,25 @@ import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
 
-import java.util.Arrays;
-
 
 /**
  * direction enum
  */
 public enum EDirection
 {
-    FORWARD( 90 ),
-    FORWARDRIGHT( 135 ),
-    RIGHT( 180 ),
-    BACKWARDRIGHT( 225 ),
-    BACKWARD( 270 ),
-    BACKWARDLEFT( 315 ),
-    LEFT( 0 ),
-    FORWARDLEFT( 45 );
+    FORWARD,
+    FORWARDRIGHT,
+    RIGHT,
+    BACKWARDRIGHT(),
+    BACKWARD,
+    BACKWARDLEFT,
+    LEFT,
+    FORWARDLEFT;
 
     /**
      * algebra object
      */
     private static final Algebra ALGEBRA = new Algebra();
-    /**
-     * rotation-matrix to the normal-viewpoint-vector
-     */
-    private final DoubleMatrix2D m_rotation;
-
-    /**
-     * ctor
-     *
-     * @param p_alpha rotation of the normal-viewpoint-vector
-     */
-    EDirection( final double p_alpha )
-    {
-        m_rotation = EDirection.rotationmatrix( p_alpha );
-    }
 
 
     /**
@@ -76,6 +60,9 @@ public enum EDirection
      * @return new position
      *
      * @todo https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm can be an optimizing
+     * @see https://www.opengl.org/sdk/docs/man2/xhtml/gluLookAt.xml
+     * @see http://stackoverflow.com/questions/21830340/understanding-glmlookat
+     * @todo tansform
      */
     @SuppressWarnings( "unchecked" )
     public DoubleMatrix1D position( final DoubleMatrix1D p_position, final DoubleMatrix1D p_viewpoint, final int p_length )
@@ -84,22 +71,18 @@ public enum EDirection
         // normal vector -> rotation on direction (left = 0°, left fwd = 45°, fwd = 90° ...)
         // scale normalvector with length -> new position
 
-        final DoubleMatrix1D l_position = new DenseDoubleMatrix1D( p_position.toArray() );
-        final DoubleMatrix1D l_return = ALGEBRA.mult( m_rotation, EDirection.normaldirectionvector( l_position, p_viewpoint ) );
+        // https://solarianprogrammer.com/2013/05/22/opengl-101-matrices-projection-view-model/
+        final DoubleMatrix1D l_direction = new DenseDoubleMatrix1D( new double[]{p_viewpoint.getQuick( 0 ), p_viewpoint.getQuick( 1 ), 0} );
+        l_direction
+            .assign( p_position, Functions.minus )
+            .assign( Functions.div( ALGEBRA.norm2( l_direction ) ) );
 
-        l_return.assign( Functions.mult( p_length ) );
-        l_return.assign( l_position, Functions.plus );
+        final DoubleMatrix1D l_up = new DenseDoubleMatrix1D( l_direction.toArray() )
+            .assign( Functions.mult( p_length ) )
+            .assign( Functions.div( ALGEBRA.norm2( l_direction ) ) );
 
-        // round the values to the next for correct grid position
-        l_return.assign( Functions.round( 1 ) );
 
-        System.out.println(
-                Arrays.toString( p_position.toArray() )
-                        + " + l * " + Arrays.toString( p_viewpoint.toArray() )
-                        + "    =>    " + Arrays.toString( l_return.toArray() )
-        );
-
-        return l_return;
+        return l_direction;
     }
 
     /**

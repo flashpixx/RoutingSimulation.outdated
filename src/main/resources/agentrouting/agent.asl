@@ -1,23 +1,38 @@
-!main.
+!start.
 
 
-+!walk
++!start
+    <-
+        viewpoint/random( 100 );
+        !!movement/walk
+.
+
+
++!movement/walk
     <-
         generic/print( "walk forward" );
         move/forward();
-        !walk
+        !movement/walk
 .
 
 
--!walk
+-!movement/walk
     <-
         generic/print( "walk fails" );
-        viewpoint/random( 1 );
-        !walk
+        viewpoint/random( 10 );
+        !movement/walk
+.
+
++!movement/standstill
+    <-
+        generic/print( "standstill" );
+        speed/increment(5);
+        !!movement/walk
 .
 
 
-+!viewpointreach(P)
+
++!viewpoint/reach(P)
      <-
         generic/print( "position reached", P );
         generic/sleep(5)
@@ -28,12 +43,6 @@
     <-
         generic/print("wakeup");
         viewpoint/random( 10 );
-        !walk
-.
-
-
-+!main
-    <-
-        viewpoint/random( 10 );
-        !!walk
+        speed/set(1);
+        !!movement/walk
 .

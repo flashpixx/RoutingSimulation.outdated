@@ -247,7 +247,7 @@ public final class CEnvironment implements IEnvironment
     {
         // check if the agent reaches the viewpont and returns the goal "viewpointreach"
         if ( p_agent.position().equals( p_agent.viewpoint() ) )
-            p_agent.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "viewpointreach", Stream.of( CRawTerm.from( p_agent.position() ) ) ) ) );
+            p_agent.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "viewpoint/reach", Stream.of( CRawTerm.from( p_agent.position() ) ) ) ) );
 
         //else
         // otherwise check "near(D)" preference for the current position and the view

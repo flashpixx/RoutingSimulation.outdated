@@ -35,7 +35,10 @@ import org.lightjason.agentspeak.agent.CAgent;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CCommon;
+import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
+import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
 import java.util.AbstractMap;
@@ -106,6 +109,8 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     public final T execute( final int p_step )
     {
         // run agent-cycle
+        // cache current position to generate non-moving plan
+        final DenseDoubleMatrix1D l_postion = new DenseDoubleMatrix1D( m_position.toArray() );
         try
         {
             super.call();
@@ -115,12 +120,17 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
             LOGGER.warning( l_exception.toString() );
         }
 
+        // if position is not changed run not-moved plan
+        if ( m_position.equals( l_postion ) )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
+
         // update sprite for painting (sprit position is x/y position, but position storing is row / column)
         if ( m_sprite != null )
             m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
 
         return (T) this;
     }
+
 
 
     // --- object getter ---------------------------------------------------------------------------------------------------------------------------------------
@@ -153,7 +163,36 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
 
-    // --- agent-viewpoint actions -----------------------------------------------------------------------------------------------------------------------------
+
+    // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
+    // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
+
+    @IAgentActionName( name = "speed/set" )
+    @IAgentActionAllow( classes = CMovingAgent.class )
+    protected final void setspeed( final Number p_speed )
+    {
+        if ( p_speed.intValue() < 1 )
+            throw new RuntimeException( "speed cannot be less than one" );
+        m_speed = p_speed.intValue();
+    }
+
+    @IAgentActionName( name = "speed/increment" )
+    @IAgentActionAllow( classes = CMovingAgent.class )
+    protected final void incrementspeed( final Number p_speed )
+    {
+        if ( p_speed.intValue() < 1 )
+            throw new RuntimeException( "speed cannot be less than one" );
+        m_speed += p_speed.intValue();
+    }
+
+    @IAgentActionName( name = "speed/decrement" )
+    @IAgentActionAllow( classes = CMovingAgent.class )
+    protected final void decrementspeed( final Number p_speed )
+    {
+        if ( ( p_speed.intValue() < 1 ) || ( m_speed - p_speed.intValue() < 1 ) )
+            throw new RuntimeException( "speed cannot be less than one or cannot be smaler than one" );
+        m_speed -= p_speed.intValue();
+    }
 
     /**
      * changes the current viewpoint
@@ -162,26 +201,11 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * @param p_column column position
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "viewpoint/change" )
-    protected final void viewpointchange( final Number p_row, final Number p_column )
+    @IAgentActionName( name = "viewpoint/set" )
+    protected final void viewpointset( final Number p_row, final Number p_column )
     {
         m_viewpoint.set( 0, p_row.intValue() );
         m_viewpoint.set( 1, p_column.intValue() );
-        m_environment.clip( m_viewpoint );
-    }
-
-    /**
-     * sets the viewpoint to the current position
-     *
-     * @param p_row new row position
-     * @param p_column new column position
-     */
-    @IAgentActionAllow
-    @IAgentActionName( name = "viewpoint/tocurrent" )
-    protected final void viewpointtocurrent( final Number p_row, final Number p_column )
-    {
-        m_viewpoint.set( 0, m_position.get( 0 ) );
-        m_viewpoint.set( 1, m_position.get( 1 ) );
         m_environment.clip( m_viewpoint );
     }
 
@@ -203,10 +227,6 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
 
         m_environment.clip( m_viewpoint );
     }
-
-
-    // --- agent-moving actions --------------------------------------------------------------------------------------------------------------------------------
-    // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
 
     /**
      * move forward into viewpoint direction
@@ -299,14 +319,6 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 
-    @IAgentActionName( name = "speed" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
-    protected final void speed( final int p_speed )
-    {
-        if ( p_speed < 1 )
-            throw new RuntimeException( "speed cannot be less than one" );
-        m_speed = p_speed;
-    }
 
 
     // --- visualization ---------------------------------------------------------------------------------------------------------------------------------------

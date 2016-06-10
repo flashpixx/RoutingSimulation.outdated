@@ -42,17 +42,22 @@
 
 // --- other calls ---------------------------------------------------------------------------------------------------------------------------------------------
 
-+!viewpoint/reach(P)
+// is called if the agent achieves the goal position,
+// than the agent will sleep 5 cycles
++!goal/achieve(P)
      <-
-        generic/print( "position reached", P );
+        generic/print( "position achieved", P );
         generic/sleep(5)
 .
 
 
+// if the agent is wake-uped a new goal position
+// is taken by random around the current position
+// and than starts walking with the initial speed
 +!wakeup
     <-
         generic/print("wakeup");
-        goal/random( 10 );
+        goal/random( 50 );
         speed/set(1);
         !!movement/walk/forward
 .

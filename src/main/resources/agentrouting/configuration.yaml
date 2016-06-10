@@ -36,14 +36,12 @@ environment :
     routing  : "jpsplus"
 
 
-# agent definition - optional
+# agent definition
 agent :
 
-    # agent name, which will be expanded on the item number,
-    # number of generated agents, color for visualzation
-    # type of the agent and individual preferences
+    # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
     test1 :
-        number : 0
+        number : 5
         color  : "ff0000"
         force  : "sum"
         asl    : "agent.asl"
@@ -55,7 +53,7 @@ agent :
         asl    : "agent.asl"
 
     test3 :
-        number : 1
+        number : 5
         color  : "0000ff"
         force  : "sum"
         asl    : "agent.asl"

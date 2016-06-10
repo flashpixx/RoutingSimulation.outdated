@@ -27,9 +27,15 @@ package agentrouting;
 import agentrouting.ui.CScreen;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
@@ -61,13 +67,76 @@ public final class CMain
      */
     public static void main( final String[] p_args ) throws IOException, URISyntaxException
     {
-        // read configuration on default from the resources
+        // --- define CLI options ------------------------------------------------------------------------------------------------------------------------------
+
+        final Options l_clioptions = new Options();
+        l_clioptions.addOption( "help", false, "shows this information" );
+        l_clioptions.addOption( "generate", true, "generates an example configuration within the current directory" );
+        l_clioptions.addOption( "configuration", true, "defines the simulation configuration" );
+
+        final CommandLine l_cli;
+        try
+        {
+            l_cli = new DefaultParser().parse( l_clioptions, p_args );
+        }
+        catch ( final Exception l_exception )
+        {
+            System.err.println( "command-line arguments parsing error" );
+            System.exit( -1 );
+            return;
+        }
+
+
+
+        // --- process CLI arguments and initialize configuration ----------------------------------------------------------------------------------------------
+
+        if ( l_cli.hasOption( "help" ) )
+        {
+            new HelpFormatter().printHelp( new java.io.File( CMain.class.getProtectionDomain().getCodeSource().getLocation().getPath() ).getName(), l_clioptions );
+            System.exit( 0 );
+            return;
+        }
+
+
+        if ( l_cli.hasOption( "generate" ) )
+        {
+            System.exit(
+                Stream.of(
+                    "agent.asl",
+                    "configuration.yaml"
+                )
+                .parallel()
+                .map( i ->
+                {
+                    try
+                    {
+                        FileUtils.copyURLToFile(
+                            CCommon.getResourceURL( "agentrouting/" + i ),
+                            Paths.get( l_cli.getOptionValue( "generate" ), i ).normalize().toFile()
+                        );
+                        return true;
+                    }
+                    catch ( final IOException | URISyntaxException l_exception )
+                    {
+                        System.err.println( l_exception );
+                        return false;
+                    }
+                } ).allMatch( i -> i )
+                ? 0
+                : -1
+            );
+            return;
+        }
+
+
+
+        // --- read configuration and initialize simulation ui -------------------------------------------------------------------------------------------------
+
         CConfiguration.INSTANCE.load(
-            p_args.length == 0
-            ? "agentrouting/configuration.yaml"
-            : p_args[0]
+            l_cli.hasOption( "configuration" )
+            ? l_cli.getOptionValue( "configuration" )
+            : "agentrouting/configuration.yaml"
         );
-        LOGGER.info( MessageFormat.format( "read configuration file from [{0}]", p_args.length == 0 ? "-resources-" : p_args[0] ) );
 
 
         // force-exit must be disabled for avoid error exiting
@@ -89,7 +158,9 @@ public final class CMain
         new LwjglApplication( l_screen, l_config );
 
 
-        // run simulation
+
+        // --- run simulation ----------------------------------------------------------------------------------------------------------------------------------
+
         LOGGER.info( MessageFormat.format( "start simulation with [{0}] steps", CConfiguration.INSTANCE.getSimulationSteps() ) );
         IntStream
                 .range( 0, CConfiguration.INSTANCE.getSimulationSteps() )

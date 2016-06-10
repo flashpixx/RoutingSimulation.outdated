@@ -23,7 +23,6 @@
 
 package agentrouting.simulation;
 
-import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
@@ -52,18 +51,7 @@ public enum EDirection
      */
     private static final Algebra ALGEBRA = new Algebra();
     /**
-     * round function
-     */
-    private static final DoubleFunction ROUND = new DoubleFunction()
-    {
-        @Override
-        public final double apply( final double p_value )
-        {
-            return Math.round( p_value );
-        }
-    };
-    /**
-     * rotation-matrix to the normal-viewpoint-vector
+     * rotation-matrix for the direction vector
      */
     private final DoubleMatrix2D m_rotation;
 
@@ -81,17 +69,17 @@ public enum EDirection
      * calculates the new position
      *
      * @param p_position current position
-     * @param p_viewpoint view point
+     * @param p_goalposition goal position
      * @param p_speed number of cells / step size
      * @return new position
      */
     @SuppressWarnings( "unchecked" )
-    public DoubleMatrix1D position( final DoubleMatrix1D p_position, final DoubleMatrix1D p_viewpoint, final int p_speed )
+    public DoubleMatrix1D position( final DoubleMatrix1D p_position, final DoubleMatrix1D p_goalposition, final int p_speed )
     {
-        // calculate the stright line by: p_position + l * (viewpoint - p_position)
+        // calculate the stright line by: current position + l * (goal position - current position)
         // normalize direction and rotate the normalized vector based on the direction
-        // calculate the target position based by: p_position + speed * rotate( normalize( viewpoint - p_position ) )
-        final DoubleMatrix1D l_view = new DenseDoubleMatrix1D( p_viewpoint.toArray() );
+        // calculate the target position based by: current position + speed * rotate( normalize( goal position - current position ) )
+        final DoubleMatrix1D l_view = new DenseDoubleMatrix1D( p_goalposition.toArray() );
         return ALGEBRA.mult(
                     m_rotation,
                     l_view
@@ -100,13 +88,13 @@ public enum EDirection
         )
         .assign( Functions.mult( p_speed ) )
         .assign( p_position, Functions.plus )
-        .assign( ROUND );
+        .assign( Math::round );
     }
 
     /**
      * creates a rotation matrix
      *
-     * @param p_alpha degree
+     * @param p_alpha degree in radians
      * @return matrix
      *
      * @see https://en.wikipedia.org/wiki/Rotation_matrix

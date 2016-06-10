@@ -57,6 +57,6 @@ public interface IElement<T> extends IExecutable<T>, ISprite, org.lightjason.age
      *
      * @return position tupel
      */
-    DoubleMatrix1D viewpoint();
+    DoubleMatrix1D goal();
 
 }

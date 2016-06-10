@@ -77,10 +77,7 @@ public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IElement
             m_environment,
             m_configuration,
 
-            new DenseDoubleMatrix1D(
-                //new double[]{m_environment.row() / 2, m_environment.column() / 2}
-                new double[]{m_random.nextInt( m_environment.row() ), m_random.nextInt( m_environment.column() )}
-            ),
+            new DenseDoubleMatrix1D( new double[]{m_random.nextInt( m_environment.row() ), m_random.nextInt( m_environment.column() )} ),
 
             (IForce) p_data[0],
 

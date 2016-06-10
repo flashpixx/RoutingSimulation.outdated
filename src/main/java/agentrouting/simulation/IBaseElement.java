@@ -58,9 +58,9 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     protected final Random m_random = new Random();
     /**
-     * viewpoint of the agent
+     * goal-position of the agent
      */
-    protected final DoubleMatrix1D m_viewpoint;
+    protected final DoubleMatrix1D m_goal;
     /**
      * current position of the agent
      */
@@ -98,7 +98,10 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
         m_force = p_force;
         m_position = p_position;
         m_environment = p_environment;
-        m_viewpoint = new DenseDoubleMatrix1D( p_position.toArray() );
+
+        // create a viewpoint based on the current position
+        m_goal = new DenseDoubleMatrix1D( 2 );
+        this.viewpointrandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
 
         // run first cycle
         super.call();
@@ -142,9 +145,9 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     @Override
-    public final DoubleMatrix1D viewpoint()
+    public final DoubleMatrix1D goal()
     {
-        return m_viewpoint;
+        return m_goal;
     }
 
     @Override
@@ -201,12 +204,12 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * @param p_column column position
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "viewpoint/set" )
+    @IAgentActionName( name = "goal/set" )
     protected final void viewpointset( final Number p_row, final Number p_column )
     {
-        m_viewpoint.set( 0, p_row.intValue() );
-        m_viewpoint.set( 1, p_column.intValue() );
-        m_environment.clip( m_viewpoint );
+        m_goal.set( 0, p_row.intValue() );
+        m_goal.set( 1, p_column.intValue() );
+        m_environment.clip( m_goal );
     }
 
     /**
@@ -216,16 +219,16 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      * @param p_radius distance (in cells)
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "viewpoint/random" )
+    @IAgentActionName( name = "goal/random" )
     protected final void viewpointrandom( final Number p_radius )
     {
         if ( p_radius.intValue() < 1 )
             throw new RuntimeException( "radius must be greater than zero" );
 
-        m_viewpoint.set( 0, m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
-        m_viewpoint.set( 1, m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
+        m_goal.set( 0, m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
+        m_goal.set( 1, m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
 
-        m_environment.clip( m_viewpoint );
+        m_environment.clip( m_goal );
     }
 
     /**
@@ -315,7 +318,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     private void move( final EDirection p_direction )
     {
-        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, m_viewpoint, m_speed ) ) ) )
+        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, m_goal, m_speed ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 

@@ -46,7 +46,8 @@ public final class CJPSPlus implements IRouting
 {
     /**
      * map with position (y/x) and the jump-point
-     * @todo if you are putting data in parallel to the map, use instead of a HashMap a ConcurrentHashMap (https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html)
+     * @todo if you are putting data in parallel to the map, use instead
+     * of a HashMap a ConcurrentHashMap (https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html)
      */
     private final Map<Pair<Integer, Integer>, CJumpPoint> m_staticjumppoints = new HashMap<>();
 
@@ -62,7 +63,8 @@ public final class CJPSPlus implements IRouting
         // for creating a jump-point (see for parallel @todo on top)
         // the pair represent the coordination of the jump-point, but it can be also represent as an IntMatrix1D
         // and the jump-point is put in, if there not exists a jump-point on the position,
-        // within the Apache Commons library exists more other container elements see http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/tuple/package-summary.html
+        // within the Apache Commons library exists more other container elements
+        // see http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/tuple/package-summary.html
         m_staticjumppoints.putIfAbsent( new ImmutablePair<>( 2, 5 ), new CJumpPoint() );
 
         return this;

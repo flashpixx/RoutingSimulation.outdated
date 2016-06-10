@@ -277,7 +277,7 @@
         </module>
 
         <module name = "MethodLength">
-            <property name = "max" value = "100" />
+            <property name = "max" value = "105" />
             <property name = "countEmpty" value = "false" />
         </module>
 

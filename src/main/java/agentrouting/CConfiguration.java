@@ -31,6 +31,7 @@ import agentrouting.simulation.agent.CMovingAgentGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.lightjason.agentspeak.action.IAction;
@@ -41,8 +42,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,7 +73,7 @@ public final class CConfiguration
     /**
      * configuration path
      */
-    private Path m_configurationpath;
+    private String m_configurationpath;
     /**
      * window height
      */
@@ -136,11 +136,11 @@ public final class CConfiguration
     @SuppressWarnings( "unchecked" )
     public final CConfiguration load( final String p_input ) throws IOException, URISyntaxException
     {
-        final InputStream l_stream = CCommon.getResourceURL( p_input ).openStream();
+        final URL l_path = CCommon.getResourceURL( p_input );
 
         // read configuration
-        final Map<String, Object> l_data = (Map<String, Object>) new Yaml().load( l_stream );
-        m_configurationpath = Paths.get( p_input ).normalize().getParent();
+        final Map<String, Object> l_data = (Map<String, Object>) new Yaml().load( l_path.openStream() );
+        m_configurationpath = FilenameUtils.getPath( l_path.toString() );
 
         // get initial values
         m_threadsleeptime = (int) l_data.getOrDefault( "threadsleeptime", 0 );
@@ -319,11 +319,11 @@ public final class CConfiguration
                 final Map<String, Object> l_parameter = (Map<String, Object>) i.getValue();
 
                 // read ASL item from configuration and get the path relative to configuration
-                final String l_asl = m_configurationpath.resolve( ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim() ).toString();
+                final String l_asl = m_configurationpath + ( (String) l_parameter.getOrDefault( "asl", "" ) ).trim();
 
                 try (
                     // open filestream of ASL content
-                    final InputStream l_stream = CCommon.getResourceURL( l_asl ).openStream();
+                    final InputStream l_stream = new URL( l_asl ).openStream();
                 )
                 {
                     // get existing agent generator or create a new one based on the ASL

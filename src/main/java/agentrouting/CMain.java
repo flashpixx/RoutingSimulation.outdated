@@ -173,7 +173,17 @@ public final class CMain
                         CConfiguration.INSTANCE.getObjects().parallelStream()
                     )
                         .parallel()
-                        .forEach( j -> j.execute( i ) );
+                        .forEach( j ->
+                        {
+                            try
+                            {
+                                j.execute( i );
+                            }
+                            catch ( final Exception l_exception )
+                            {
+                                LOGGER.warning( l_exception.toString() );
+                            }
+                        } );
 
                     // thread sleep for slowing down
                     if ( CConfiguration.INSTANCE.getThreadSleepTime() > 0 )

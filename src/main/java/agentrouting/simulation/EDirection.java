@@ -103,4 +103,20 @@ public enum EDirection
     {
         return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
     }
+
+    /**
+     * returns the distance between to points
+     *
+     * @param p_first vector
+     * @param p_second vector
+     * @return distance
+     */
+    public static double distance( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
+    {
+        return ALGEBRA.norm2(
+            new DenseDoubleMatrix1D( p_second.toArray() )
+            .assign( p_first, Functions.minus )
+        );
+    }
+
 }

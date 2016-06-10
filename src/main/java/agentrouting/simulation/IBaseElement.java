@@ -110,37 +110,35 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public final T execute( final int p_step )
+    public final T execute( final int p_step ) throws Exception
     {
-        // run agent-cycle
+        // --- agent-cycle -------------------------------------------------------------------------
+
         // cache current position to generate non-moving trigger
         final DenseDoubleMatrix1D l_postion = new DenseDoubleMatrix1D( m_position.toArray() );
-        try
-        {
-            super.call();
-        }
-        catch ( final Exception l_exception )
-        {
-            LOGGER.warning( l_exception.toString() );
-        }
+
+        // call cycle
+        super.call();
 
         // if position is not changed run not-moved plan
         if ( m_position.equals( l_postion ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
-
         // check if the agent reaches the goal-position
         if ( m_position.equals( m_goal ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve", Stream.of( CRawTerm.from( m_position ) ) ) ) );
+        else
+        {
+            // otherwise check "nearby(D)" preference for the current position and the goal
+            // position, D is the radius (in cells) so we trigger the goal "nearby(Y)" and
+            // Y is a literal with distance
+            final double l_distance = EDirection.distance( m_position, m_goal );
+            if ( l_distance <= 5 )
+                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/nearby", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
+        }
 
-        //else
-        // otherwise check "near(D)" preference for the current position and the view
-        // point, D is the distances (in cells) so we trigger the goal "nearby(Y)" and
-        // Y is a literal with distance e.g. "viewpoint(D)"
-        //if ( ALGEBRA.mult( p_agent.position(), p_agent.viewpoint() ) )
 
-
-
+        // --- visualization -----------------------------------------------------------------------
 
         // update sprite for painting (sprit position is x/y position, but position storing is row / column)
         if ( m_sprite != null )

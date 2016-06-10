@@ -39,6 +39,15 @@
 
 // --- other calls ---------------------------------------------------------------------------------------------------------------------------------------------
 
+// is called if the distance to the goal position less equal than the
+// belief preference/nearby(V)
++!goal/nearby(D)
+    <-
+        generic/print( "nearby", D );
+        speed/set(1)
+.
+
+
 // is called if the agent achieves the goal position, than the agent
 // will sleep 5 cycles
 +!goal/achieve(P)
@@ -53,7 +62,8 @@
 +!wakeup
     <-
         generic/print("wakeup");
-        goal/random( 50 );
+        //goal/random( 50 );
+        goal/set(10,10);
         speed/set(1);
         !!movement/walk/forward
 .

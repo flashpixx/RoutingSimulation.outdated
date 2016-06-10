@@ -35,6 +35,6 @@ public interface IExecutable<T>
      * @param p_step current iteration
      * @return self reference
      */
-    T execute( final int p_step );
+    T execute( final int p_step ) throws Exception;
 
 }

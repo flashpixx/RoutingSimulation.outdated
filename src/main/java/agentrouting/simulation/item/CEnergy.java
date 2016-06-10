@@ -23,7 +23,6 @@
 
 package agentrouting.simulation.item;
 
-import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,13 +36,11 @@ public final class CEnergy
     /**
      * ctor
      *
-     * @param p_environment environment
      * @param p_force force model
      * @param p_position initial position
      */
-    protected CEnergy( final IEnvironment p_environment,  final IForce p_force, final DoubleMatrix1D p_position )
+    protected CEnergy( final IForce p_force, final DoubleMatrix1D p_position )
     {
-        //super( p_environment, p_agentconfiguration, p_force, p_position );
     }
 
     //@Override

@@ -66,7 +66,7 @@ public final class CStaticAgentGenerator extends CDefaultAgentGenerator<IElement
     }
 
     @Override
-    public IElement<IAgent> generatesingle( final Object... p_data ) throws RuntimeException
+    public IElement<IAgent> generatesingle( final Object... p_data )
     {
         return new CStaticAgent(
             m_environment,

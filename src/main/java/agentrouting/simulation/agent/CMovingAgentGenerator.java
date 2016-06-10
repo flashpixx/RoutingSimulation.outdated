@@ -23,8 +23,7 @@
 
 package agentrouting.simulation.agent;
 
-import agentrouting.simulation.IElement;
-import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
@@ -42,7 +41,7 @@ import java.util.Set;
 /**
  * agent generator for dynamic / moving agents
  */
-public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IElement<IAgent>>
+public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IAgent>
 {
     /**
      * environment reference
@@ -71,7 +70,7 @@ public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IElement
     }
 
     @Override
-    public IElement<IAgent> generatesingle( final Object... p_data )
+    public IAgent generatesingle( final Object... p_data )
     {
         return new CMovingAgent(
             m_environment,

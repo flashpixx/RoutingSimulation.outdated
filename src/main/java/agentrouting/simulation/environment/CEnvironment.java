@@ -21,8 +21,9 @@
  * @endcond
  */
 
-package agentrouting.simulation;
+package agentrouting.simulation.environment;
 
+import agentrouting.simulation.IElement;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.routing.IRouting;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -238,7 +239,7 @@ public final class CEnvironment implements IEnvironment
     // --- agent behaviour / access ----------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final IElement<IAgent> perceive( final IElement<IAgent> p_agent )
+    public IAgent perceive( final IAgent p_agent )
     {
         return p_agent;
     }

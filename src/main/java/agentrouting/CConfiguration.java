@@ -23,14 +23,13 @@
 
 package agentrouting;
 
-import agentrouting.simulation.CEnvironment;
-import agentrouting.simulation.IElement;
-import agentrouting.simulation.IEnvironment;
 import agentrouting.simulation.agent.CMovingAgent;
 import agentrouting.simulation.agent.CMovingAgentGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
+import agentrouting.simulation.environment.CEnvironment;
+import agentrouting.simulation.environment.IEnvironment;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
@@ -87,9 +86,9 @@ public final class CConfiguration
      */
     private int m_simulationstep;
     /**
-     * simulating elements without environment
+     * agent elements
      */
-    private List<IElement<?>> m_elements;
+    private List<IAgent> m_agents;
     /**
      * environment
      */
@@ -130,6 +129,7 @@ public final class CConfiguration
      *
      * @param p_input YAML configuration file
      * @return instance
+     *
      * @throws IOException on io errors
      * @throws URISyntaxException on URI syntax error
      */
@@ -174,16 +174,16 @@ public final class CConfiguration
         );
 
         // create executable object list and check number of elements
-        final List<IElement<?>> l_elements = new LinkedList<>();
+        final List<IAgent> l_elements = new LinkedList<>();
         this.createMovingAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_elements );
-        m_elements = Collections.unmodifiableList( l_elements );
+        m_agents = Collections.unmodifiableList( l_elements );
 
-        if ( m_elements.size() > m_environment.column() * m_environment.row() / 2 )
+        if ( m_agents.size() > m_environment.column() * m_environment.row() / 2 )
             throw new IllegalArgumentException(
                 MessageFormat.format(
                     "number of simulation elements are very large [{0}], so the environment size is too small, the environment "
                     + "[{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
-                    m_elements.size(),
+                    m_agents.size(),
                     m_environment.row(),
                     m_environment.column()
                 )
@@ -231,9 +231,9 @@ public final class CConfiguration
      *
      * @return object list
      */
-    public final List<IElement<?>> getObjects()
+    public final List<IAgent> getAgents()
     {
-        return m_elements;
+        return m_agents;
     }
 
     /**
@@ -304,9 +304,9 @@ public final class CConfiguration
      * @param p_elements element list
      */
     @SuppressWarnings( "unchecked" )
-    private void createMovingAgent( final Map<String, Object> p_agentconfiguration, final List<IElement<?>> p_elements ) throws IOException
+    private void createMovingAgent( final Map<String, Object> p_agentconfiguration, final List<IAgent> p_elements ) throws IOException
     {
-        final Map<String, IAgentGenerator<IElement<IAgent>>> l_agentgenerator = new HashMap<>();
+        final Map<String, IAgentGenerator<IAgent>> l_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
             org.lightjason.agentspeak.common.CCommon.getActionsFromPackage(),
             org.lightjason.agentspeak.common.CCommon.getActionsFromAgentClass( CMovingAgent.class )
@@ -328,7 +328,7 @@ public final class CConfiguration
                 {
                     // get existing agent generator or create a new one based on the ASL
                     // and push it back if generator does not exists
-                    final IAgentGenerator<IElement<IAgent>> l_generator = l_agentgenerator.getOrDefault(
+                    final IAgentGenerator<IAgent> l_generator = l_agentgenerator.getOrDefault(
                         l_asl,
                         new CMovingAgentGenerator(
                             m_environment,

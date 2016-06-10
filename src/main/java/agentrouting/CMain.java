@@ -150,7 +150,7 @@ public final class CMain
         // open window
         LOGGER.info( MessageFormat.format( "open window with size [{0}x{1}]", l_config.width, l_config.height ) );
         final CScreen l_screen = new CScreen(
-            CConfiguration.INSTANCE.getObjects(),
+            CConfiguration.INSTANCE.getAgents(),
             CConfiguration.INSTANCE.getEnvironment(),
             CConfiguration.INSTANCE.getScreenshot(),
             CConfiguration.INSTANCE.getStatusVisible()
@@ -171,7 +171,7 @@ public final class CMain
                     l_screen.iteration( i );
                     Stream.concat(
                         Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
-                        CConfiguration.INSTANCE.getObjects().parallelStream()
+                        CConfiguration.INSTANCE.getAgents().parallelStream()
                     )
                         .parallel()
                         .forEach( j ->

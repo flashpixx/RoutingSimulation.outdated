@@ -21,36 +21,77 @@
  * @endcond
  */
 
+package agentrouting.simulation.environment;
 
-package agentrouting.simulation.agent;
 
 import agentrouting.simulation.IElement;
-import agentrouting.simulation.IEnvironment;
-import agentrouting.simulation.algorithm.force.IForce;
+import agentrouting.simulation.agent.IAgent;
+import agentrouting.ui.ITileMap;
 import cern.colt.matrix.DoubleMatrix1D;
-import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
+
+import java.util.List;
+import java.util.concurrent.Callable;
 
 
 /**
- * BDI agent for static elements
+ * environment interface
  */
-public final class CStaticAgent extends IBaseAgent
+public interface IEnvironment extends IBeliefPerceive<IAgent>, Callable<IEnvironment>, ITileMap
 {
 
     /**
-     * ctor
+     * calculate route
      *
-     * @param p_environment environment
-     * @param p_agentconfiguration agent configuration
-     * @param p_position initialize position
-     * @param p_force force model
-     * @param p_color color string in RRGGBBAA
+     * @param p_object element
+     * @param p_target target point
+     * @return list of tuples of the cellindex
      */
-    public CStaticAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
-                         final DoubleMatrix1D p_position, final IForce p_force, final String p_color
-    )
-    {
-        super( p_environment, p_agentconfiguration, p_force, p_position, p_color );
-    }
+    List<DoubleMatrix1D> route( final IElement<?> p_object, final DoubleMatrix1D p_target );
+
+    /**
+     * sets an object to the position and changes the object position
+     *
+     * @param p_object object, which should be moved (must store the current position)
+     * @param p_position new position
+     * @return updated object or object which uses the cell
+     */
+    IElement<?> position( final IElement<?> p_object, final DoubleMatrix1D p_position );
+
+    /**
+     * clip position data
+     *
+     * @param p_position position vector
+     * @return modified clipped vector
+     */
+    DoubleMatrix1D clip( final DoubleMatrix1D p_position );
+
+    /**
+     * returns the number of rows
+     *
+     * @return rows
+     */
+    int row();
+
+    /**
+     * returns the number of columns
+     *
+     * @return columns
+     */
+    int column();
+
+    /**
+     * returns the cell size
+     *
+     * @return cell size
+     */
+    int cellsize();
+
+    /**
+     * run initialization of the environment
+     *
+     * @return self reference
+     */
+    IEnvironment initialize();
 
 }

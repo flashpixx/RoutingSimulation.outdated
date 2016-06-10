@@ -24,8 +24,7 @@
 
 package agentrouting.simulation.agent;
 
-import agentrouting.simulation.IElement;
-import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
@@ -47,7 +46,7 @@ public final class CMovingAgent extends IBaseAgent
      * @param p_color color string in RRGGBBAA
      * @throws Exception is thrown on parsing error
      */
-    public CMovingAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
+    public CMovingAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
                          final DoubleMatrix1D p_position, final IForce p_force, final String p_color
     )
     {

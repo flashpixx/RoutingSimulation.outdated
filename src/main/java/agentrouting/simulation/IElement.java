@@ -35,7 +35,7 @@ import java.util.stream.Stream;
  * executable within the simulation (so position
  * and preferences are required)
  */
-public interface IElement<T> extends ISprite, org.lightjason.agentspeak.agent.IAgent<IElement<T>>
+public interface IElement<T> extends ISprite
 {
 
     /**
@@ -51,12 +51,5 @@ public interface IElement<T> extends ISprite, org.lightjason.agentspeak.agent.IA
      * @return position tupel
      */
     DoubleMatrix1D position();
-
-    /**
-     * returns the current viewpoint
-     *
-     * @return position tupel
-     */
-    DoubleMatrix1D goal();
 
 }

@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package agentrouting.simulation;
+package agentrouting.simulation.environment;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;

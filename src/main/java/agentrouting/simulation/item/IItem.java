@@ -24,12 +24,11 @@
 package agentrouting.simulation.item;
 
 import agentrouting.simulation.IElement;
-import agentrouting.simulation.agent.IAgent;
 
 
 /**
  * interface for all items
  */
-public interface IItem extends IElement<IAgent>
+public interface IItem extends IElement<IItem>
 {
 }

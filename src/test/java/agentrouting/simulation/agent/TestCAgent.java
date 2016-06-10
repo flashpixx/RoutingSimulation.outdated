@@ -1,7 +1,7 @@
 package agentrouting.simulation.agent;
 
-import agentrouting.simulation.CEnvironment;
-import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.environment.CEnvironment;
+import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
 import org.junit.Assume;

@@ -23,12 +23,10 @@
 
 package agentrouting.simulation.item;
 
-import agentrouting.simulation.IElement;
-import agentrouting.simulation.IEnvironment;
+import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
 
 /**
@@ -40,15 +38,10 @@ public final class CEnergy
      * ctor
      *
      * @param p_environment environment
-     * @param p_agentconfiguration agent configuration
      * @param p_force force model
      * @param p_position initial position
      */
-    protected CEnergy( final IEnvironment p_environment,
-                       final IAgentConfiguration<IElement<IItem>> p_agentconfiguration,
-                       final IForce p_force,
-                       final DoubleMatrix1D p_position
-    )
+    protected CEnergy( final IEnvironment p_environment,  final IForce p_force, final DoubleMatrix1D p_position )
     {
         //super( p_environment, p_agentconfiguration, p_force, p_position );
     }

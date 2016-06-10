@@ -161,7 +161,8 @@ public final class CMain
 
         // --- run simulation ----------------------------------------------------------------------------------------------------------------------------------
 
-        LOGGER.info( MessageFormat.format( "start simulation with [{0}] steps", CConfiguration.INSTANCE.getSimulationSteps() ) );
+        //final ExecutorService l_pool = Executors.newWorkStealingPool();
+
         IntStream
                 .range( 0, CConfiguration.INSTANCE.getSimulationSteps() )
                 .mapToObj( i ->
@@ -177,7 +178,7 @@ public final class CMain
                         {
                             try
                             {
-                                j.execute( i );
+                                j.call();
                             }
                             catch ( final Exception l_exception )
                             {
@@ -202,5 +203,6 @@ public final class CMain
                 .filter( i -> i )
                 .findFirst();
     }
+
 
 }

@@ -93,24 +93,21 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     protected IBaseElement( final IEnvironment p_environment, final IAgentConfiguration<IElement<T>> p_agentconfiguration,
                             final IForce p_force, final DoubleMatrix1D p_position
-    ) throws Exception
+    )
     {
         super( p_agentconfiguration );
         m_force = p_force;
         m_position = p_position;
         m_environment = p_environment;
 
-        // create a viewpoint based on the current position
+        // create a goal based on the current position
         m_goal = new DenseDoubleMatrix1D( 2 );
         this.goalrandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
-
-        // run first cycle
-        super.call();
     }
 
+
     @Override
-    @SuppressWarnings( "unchecked" )
-    public final T execute( final int p_step ) throws Exception
+    public IElement<T> call() throws Exception
     {
         // --- agent-cycle -------------------------------------------------------------------------
 
@@ -144,7 +141,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
         if ( m_sprite != null )
             m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
 
-        return (T) this;
+        return this;
     }
 
 
@@ -211,7 +208,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * changes the current viewpoint
+     * changes the current goal
      *
      * @param p_row row position
      * @param p_column column position
@@ -226,7 +223,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * creates a new viewpoint depend on the
+     * creates a new goal depend on the
      * distance around the current position
      *
      * @param p_radius distance (in cells)
@@ -245,7 +242,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move forward into viewpoint direction
+     * move forward into goal direction
      */
     @IAgentActionName( name = "move/forward" )
     @IAgentActionAllow( classes = CMovingAgent.class )
@@ -255,7 +252,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move left forward into viewpoint direction
+     * move left forward into goal direction
      */
     @IAgentActionName( name = "move/forwardright" )
     @IAgentActionAllow( classes = CMovingAgent.class )
@@ -265,7 +262,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move right to the viewpoint direction
+     * move right to the goal direction
      */
     @IAgentActionName( name = "move/right" )
     @IAgentActionAllow( classes = CMovingAgent.class )
@@ -275,7 +272,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move backward right from viewpoint direction
+     * move backward right from goal direction
      */
     @IAgentActionName( name = "move/backwardright" )
     @IAgentActionAllow( classes = CMovingAgent.class )
@@ -285,7 +282,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move backward from viewpoint direction
+     * move backward from goal direction
      */
     @IAgentActionName( name = "move/backward" )
     @IAgentActionAllow( classes = CMovingAgent.class )
@@ -295,7 +292,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move backward right from viewpoint direction
+     * move backward right from goal direction
      */
     @IAgentActionName( name = "move/backwardleft" )
     @IAgentActionAllow( classes = CMovingAgent.class )
@@ -305,7 +302,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move left to the viewpoint
+     * move left to the goal
      */
     @IAgentActionName( name = "move/left" )
     @IAgentActionAllow( classes = CMovingAgent.class )
@@ -315,7 +312,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
     }
 
     /**
-     * move forward left into viewpoint direction
+     * move forward left into goal direction
      */
     @IAgentActionName( name = "move/forwardleft" )
     @IAgentActionAllow( classes = CMovingAgent.class )

@@ -59,9 +59,11 @@ public abstract class IBaseAgent extends IBaseElement<IAgent> implements IAgent
      */
     protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
                           final IForce p_force, final DoubleMatrix1D p_position, final String p_color
-    ) throws Exception
+    )
     {
         super( p_environment, p_agentconfiguration, p_force, p_position );
+        if ( p_color.isEmpty() )
+            throw new RuntimeException( "color need not to be empty" );
         m_color = Color.valueOf( p_color );
     }
 

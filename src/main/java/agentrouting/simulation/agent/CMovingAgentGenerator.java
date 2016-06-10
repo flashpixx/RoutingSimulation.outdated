@@ -71,7 +71,7 @@ public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IElement
     }
 
     @Override
-    public IElement<IAgent> generatesingle( final Object... p_data ) throws Exception
+    public IElement<IAgent> generatesingle( final Object... p_data ) throws RuntimeException
     {
         return new CMovingAgent(
             m_environment,

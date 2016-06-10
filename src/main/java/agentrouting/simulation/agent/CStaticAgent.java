@@ -48,7 +48,7 @@ public final class CStaticAgent extends IBaseAgent
      */
     public CStaticAgent( final IEnvironment p_environment, final IAgentConfiguration<IElement<IAgent>> p_agentconfiguration,
                          final DoubleMatrix1D p_position, final IForce p_force, final String p_color
-    ) throws Exception
+    )
     {
         super( p_environment, p_agentconfiguration, p_force, p_position, p_color );
     }

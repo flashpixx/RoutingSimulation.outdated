@@ -30,12 +30,13 @@ import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 
 /**
  * environment interface
  */
-public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, IExecutable<IEnvironment>, ITileMap
+public interface IEnvironment extends IBeliefPerceive<IElement<IAgent>>, Callable<IEnvironment>, ITileMap
 {
 
     /**

@@ -345,7 +345,7 @@ public final class CConfiguration
 
                         EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 
-                        (String) l_parameter.getOrDefault( "color", "ffffff" )
+                        (String) l_parameter.getOrDefault( "color", "" )
 
                     ).sequential().forEach( p_elements::add );
                 }

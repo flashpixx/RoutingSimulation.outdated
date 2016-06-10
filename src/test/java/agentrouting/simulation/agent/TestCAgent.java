@@ -12,6 +12,7 @@ import org.lightjason.agentspeak.language.score.IAggregation;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.logging.LogManager;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,6 +38,9 @@ public final class TestCAgent
     @Before
     public void initialize()
     {
+        // disable logging
+        LogManager.getLogManager().reset();
+
         m_environment = new CEnvironment( 100, 100, 25, ERoutingFactory.JPSPLUS.get() );
 
         m_actions = Collections.unmodifiableSet( Stream.concat(

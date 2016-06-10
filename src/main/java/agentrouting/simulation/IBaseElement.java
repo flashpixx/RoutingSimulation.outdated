@@ -102,7 +102,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
 
         // create a viewpoint based on the current position
         m_goal = new DenseDoubleMatrix1D( 2 );
-        this.viewpointrandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
+        this.goalrandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
 
         // run first cycle
         super.call();
@@ -220,7 +220,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     @IAgentActionAllow
     @IAgentActionName( name = "goal/set" )
-    protected final void viewpointset( final Number p_row, final Number p_column )
+    protected final void goalset( final Number p_row, final Number p_column )
     {
         m_goal.set( 0, p_row.intValue() );
         m_goal.set( 1, p_column.intValue() );
@@ -235,7 +235,7 @@ public abstract class IBaseElement<T> extends CAgent<IElement<T>> implements IEl
      */
     @IAgentActionAllow
     @IAgentActionName( name = "goal/random" )
-    protected final void viewpointrandom( final Number p_radius )
+    protected final void goalrandom( final Number p_radius )
     {
         if ( p_radius.intValue() < 1 )
             throw new RuntimeException( "radius must be greater than zero" );

@@ -5,6 +5,10 @@
 !*.java
 !*.md
 
+!src/analysis/**/*.xml
+!src/analysis/**/*.txt
+!src/analysis/**/*.md
+
 !src/main/resources/**/*.properties
 !src/main/resources/**/*.yaml
 !src/main/resources/**/*.asl

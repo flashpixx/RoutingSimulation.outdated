@@ -159,7 +159,7 @@
 
     </reporting>      
 
-    
+
     <!-- defines the build settings -->
     <build>
         <!-- default goal is set to package and checking dependency & plugin updates -->
@@ -331,7 +331,6 @@
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                 </configuration>
             </plugin>
-
 
         </plugins>
     </build>

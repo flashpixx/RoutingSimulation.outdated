@@ -57,7 +57,7 @@
 .
 
 
-// if the agent is wake-uped a new goal position is taken by random
+// if the agent is wake-uped a new goal position is taken by random or fixed
 // around the current position and than starts walking with the initial speed
 +!wakeup
     <-

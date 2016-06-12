@@ -161,7 +161,8 @@ public final class CMain
 
         // --- run simulation ----------------------------------------------------------------------------------------------------------------------------------
 
-        //final ExecutorService l_pool = Executors.newWorkStealingPool();
+        // https://www.infoq.com/articles/Functional-Style-Callbacks-Using-CompletableFuture
+        // final ExecutorService l_pool = Executors.newWorkStealingPool();
 
         IntStream
                 .range( 0, CConfiguration.INSTANCE.getSimulationSteps() )

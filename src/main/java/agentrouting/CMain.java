@@ -162,6 +162,7 @@ public final class CMain
         // --- run simulation ----------------------------------------------------------------------------------------------------------------------------------
 
         // https://www.infoq.com/articles/Functional-Style-Callbacks-Using-CompletableFuture
+        // http://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples/
         // final ExecutorService l_pool = Executors.newWorkStealingPool();
 
         IntStream

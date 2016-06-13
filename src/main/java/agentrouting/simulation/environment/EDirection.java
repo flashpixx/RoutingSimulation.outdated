@@ -73,7 +73,6 @@ public enum EDirection
      * @param p_speed number of cells / step size
      * @return new position
      */
-    @SuppressWarnings( "unchecked" )
     public DoubleMatrix1D position( final DoubleMatrix1D p_position, final DoubleMatrix1D p_goalposition, final int p_speed )
     {
         // calculate the stright line by: current position + l * (goal position - current position)

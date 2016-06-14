@@ -36,7 +36,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
 import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
-import org.lightjason.agentspeak.agent.CAgent;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CCommon;
@@ -57,7 +56,7 @@ import java.util.stream.Stream;
  * agent class for modelling individual behaviours
  */
 @IAgentActionBlacklist
-public abstract class IBaseAgent extends CAgent<IAgent> implements IAgent
+public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
 {
     /**
      * random generator

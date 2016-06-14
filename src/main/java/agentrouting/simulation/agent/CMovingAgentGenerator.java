@@ -28,7 +28,7 @@ import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
-import org.lightjason.agentspeak.generator.CDefaultAgentGenerator;
+import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
 import org.lightjason.agentspeak.language.execution.IVariableBuilder;
 import org.lightjason.agentspeak.language.score.IAggregation;
 
@@ -41,7 +41,7 @@ import java.util.Set;
 /**
  * agent generator for dynamic / moving agents
  */
-public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IAgent>
+public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
 {
     /**
      * environment reference
@@ -83,4 +83,5 @@ public final class CMovingAgentGenerator extends CDefaultAgentGenerator<IAgent>
             (String) p_data[1]
         );
     }
+
 }

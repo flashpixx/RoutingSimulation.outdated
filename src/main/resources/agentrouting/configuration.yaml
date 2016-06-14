@@ -41,7 +41,7 @@ agent :
 
     # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
     test1 :
-        number : 0
+        number : 5
         color  : "ff0000"
         force  : "sum"
         asl    : "agent.asl"

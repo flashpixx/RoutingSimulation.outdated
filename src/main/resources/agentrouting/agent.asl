@@ -1,3 +1,7 @@
+// individual behaviours
+preferences/nearby(5).
+
+
 // the agent starts walking start-position and goal-position
 // are initialize on the underlying structures (random on default)
 !movement/walk/forward.
@@ -10,9 +14,22 @@
     <-
         generic/print( "walk forward" );
         move/forward();
-        !movement/walk/forward
+        !movement/walk/forward;
+        +preferences/nearby(6);
+        +foo(3)
 .
 
+
++foo(X)
+    <-
+        generic/print( "foo belief modified to [", X ,"]" )
+.
+
+
++preferences/nearby(X)
+    <-
+        generic/print( "nearby preference belief modified to [", X ,"]" )
+.
 
 // walk straight forwad fails e.g. the is an obstacle, than calculate
 // a new goal position within the next 10 cells around the current position

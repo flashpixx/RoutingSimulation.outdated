@@ -32,6 +32,7 @@ import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
 import org.lightjason.agentspeak.beliefbase.CBeliefBase;
 import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
 import org.lightjason.agentspeak.beliefbase.IView;
+import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
 import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
 import org.lightjason.agentspeak.configuration.CDefaultAgentConfiguration;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
@@ -139,10 +140,11 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
         @Override
         public final IView<IAgent> getBeliefbase()
         {
-            final IView<IAgent> l_beliefbase = super.getBeliefbase();
-
-            // add preference part
+            final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_beliefbaseupdate ) ).create( BELIEFBASEROOTNAME );
             l_beliefbase.add( new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( "preferences" ) );
+
+            m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
+            l_beliefbase.getTrigger();
 
             return l_beliefbase;
         }

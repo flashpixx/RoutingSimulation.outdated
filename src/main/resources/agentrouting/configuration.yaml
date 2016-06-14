@@ -8,7 +8,7 @@ statusvisible : false
 #steps : 2000
 
 # thread-sleep (in milliseconds) time to slow down the simulation speed
-threadsleeptime : 500
+threadsleeptime : 1500
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
@@ -41,7 +41,7 @@ agent :
 
     # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
     test1 :
-        number : 5
+        number : 0
         color  : "ff0000"
         force  : "sum"
         asl    : "agent.asl"
@@ -53,7 +53,7 @@ agent :
         asl    : "agent.asl"
 
     test3 :
-        number : 5
+        number : 1
         color  : "0000ff"
         force  : "sum"
         asl    : "agent.asl"

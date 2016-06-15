@@ -239,9 +239,7 @@ public final class CEnvironment implements IEnvironment
     // --- agent behaviour / access ----------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public IAgent perceive( final IAgent p_agent )
-    {
-        return p_agent;
-    }
+    public void perceive( final IAgent p_agent )
+    {}
 
 }

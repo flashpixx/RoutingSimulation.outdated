@@ -49,6 +49,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -78,14 +80,14 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
                                   final Set<IAction> p_actions, final IAggregation p_aggregation
     ) throws Exception
     {
-        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), p_environment, IVariableBuilder.EMPTY );
+        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), Stream.of( p_environment ).collect( Collectors.toSet() ), IVariableBuilder.EMPTY );
         m_environment = p_environment;
     }
 
 
     @Override
     protected final IAgentConfiguration<IAgent> configuration( final IFuzzy<Boolean, IAgent> p_fuzzy, final Collection<ILiteral> p_initalbeliefs,
-                                                         final IBeliefPerceive<IAgent> p_beliefperceive, final Set<IPlan> p_plans, final Set<IRule> p_rules,
+                                                         final Set<IBeliefPerceive<IAgent>> p_beliefperceive, final Set<IPlan> p_plans, final Set<IRule> p_rules,
                                                          final ILiteral p_initialgoal, final IUnifier p_unifier, final IAggregation p_aggregation,
                                                          final IVariableBuilder p_variablebuilder
     )
@@ -129,7 +131,7 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
          * @param p_variablebuilder variable builder
          */
         CAgentConfiguration( final IFuzzy<Boolean, IAgent> p_fuzzy, final Collection<ILiteral> p_initalbeliefs,
-                                    final IBeliefPerceive<IAgent> p_beliefperceive, final Set<IPlan> p_plans,
+                                    final Set<IBeliefPerceive<IAgent>> p_beliefperceive, final Set<IPlan> p_plans,
                                     final Set<IRule> p_rules, final ILiteral p_initialgoal, final IUnifier p_unifier, final IAggregation p_aggregation,
                                     final IVariableBuilder p_variablebuilder
         )
@@ -140,8 +142,8 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
         @Override
         public final IView<IAgent> getBeliefbase()
         {
-            final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_beliefbaseupdate ) ).create( BELIEFBASEROOTNAME );
-            l_beliefbase.add( new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( "preferences" ) );
+            final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_perceivable ) ).create( BELIEFBASEROOTNAME );
+            new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( "preferences", l_beliefbase );
 
             m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
             l_beliefbase.getTrigger();

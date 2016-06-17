@@ -143,10 +143,11 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
         public final IView<IAgent> getBeliefbase()
         {
             final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_perceivable ) ).create( BELIEFBASEROOTNAME );
-            new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( "preferences", l_beliefbase );
+            System.out.println( "####> " + new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( "preferences", l_beliefbase ) );
+
+            System.out.println( "####> " + l_beliefbase );
 
             m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
-            l_beliefbase.getTrigger();
 
             return l_beliefbase;
         }

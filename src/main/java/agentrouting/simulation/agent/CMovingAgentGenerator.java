@@ -32,8 +32,10 @@ import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
 import org.lightjason.agentspeak.beliefbase.CBeliefBase;
 import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
 import org.lightjason.agentspeak.beliefbase.IView;
+import org.lightjason.agentspeak.beliefbase.IViewGenerator;
 import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
 import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
+import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.CDefaultAgentConfiguration;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;
@@ -140,15 +142,23 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
         }
 
         @Override
+        @SuppressWarnings( "unchecked" )
         public final IView<IAgent> getBeliefbase()
         {
-            final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_perceivable ) ).create( BELIEFBASEROOTNAME );
-            System.out.println( "####> " + new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( "preferences", l_beliefbase ) );
-
-            System.out.println( "####> " + l_beliefbase );
+            final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_perceivable ) )
+                                                .create( BELIEFBASEROOTNAME )
+                                                .generate( new IViewGenerator()
+                                                {
+                                                    @Override
+                                                    public final IView generate( final String p_name, final IView p_parent )
+                                                    {
+                                                        return new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
+                                                    }
+                                                },
+                                                CPath.from( "preferences" )
+                                                );
 
             m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
-
             return l_beliefbase;
         }
 

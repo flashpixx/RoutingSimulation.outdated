@@ -144,8 +144,14 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
             // otherwise check "nearby(D)" preference for the current position and the goal
             // position, D is the radius (in cells) so we trigger the goal "nearby(Y)" and
             // Y is a literal with distance
+            final Number l_nearby = CCommon.raw(
+                this.beliefbase().stream( CPath.from( "preferences/nearby" ) )
+                    .findFirst()
+                    .orElseGet( () -> CLiteral.from( "preferences/nearby", Stream.of( CRawTerm.from( 0 ) ) ) )
+                .values().findFirst().get()
+            );
             final double l_distance = EDirection.distance( m_position, m_goal );
-            if ( l_distance <= 5 )
+            if ( l_distance <= l_nearby.doubleValue() )
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/nearby", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
 
@@ -178,10 +184,10 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     @Override
     public final Stream<Map.Entry<String, Double>> preferences()
     {
-        return this.beliefbase().stream( CPath.from( "preference" ) )
+        return this.beliefbase().stream( CPath.from( "preferences" ) )
                    .map( i -> new AbstractMap.SimpleImmutableEntry<String, Double>(
                        i.fqnfunctor().getSuffix(),
-                       CCommon.<Double, ITerm>getRawValue(
+                       CCommon.<Double, ITerm>raw(
                            i.orderedvalues()
                             .findFirst()
                             .get()

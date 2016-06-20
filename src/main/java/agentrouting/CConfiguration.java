@@ -308,8 +308,8 @@ public final class CConfiguration
     {
         final Map<String, IAgentGenerator<IAgent>> l_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
-            org.lightjason.agentspeak.common.CCommon.getActionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.getActionsFromAgentClass( CMovingAgent.class )
+            org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
+            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CMovingAgent.class )
         ).collect( Collectors.toSet() ) );
 
         p_agentconfiguration

@@ -44,8 +44,8 @@ public final class TestCAgent
         m_environment = new CEnvironment( 100, 100, 25, ERoutingFactory.JPSPLUS.get() );
 
         m_actions = Collections.unmodifiableSet( Stream.concat(
-            org.lightjason.agentspeak.common.CCommon.getActionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.getActionsFromAgentClass( CMovingAgent.class )
+            org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
+            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CMovingAgent.class )
         ).collect( Collectors.toSet() ) );
     }
 

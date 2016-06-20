@@ -17,13 +17,7 @@ preferences/nearby(5).
         !movement/walk/forward
 .
 
-
-+foo(X)
-    <-
-        generic/print( "foo belief modified to [", X ,"]" )
-.
-
-
+// nearby belief change
 +preferences/nearby(X)
     <-
         generic/print( "nearby preference belief modified to [", X ,"]" )
@@ -74,12 +68,20 @@ preferences/nearby(5).
 
 // if the agent is wake-uped a new goal position is taken by random or fixed
 // around the current position and than starts walking with the initial speed
+// and a random nearby definition
 +!wakeup
     <-
         generic/print("wakeup");
-        //goal/random( 50 );
-        goal/set(10,10);
+
+        goal/random( 25 );
+        //goal/set(10,10);
+
+        N = math/statistic/randomsimple();
+        N = N*10;
+        +preferences/nearby(N);
+
         speed/set(1);
+
         !!movement/walk/forward
 .
 

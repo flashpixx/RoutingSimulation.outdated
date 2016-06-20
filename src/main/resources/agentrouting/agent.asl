@@ -14,9 +14,7 @@ preferences/nearby(5).
     <-
         generic/print( "walk forward" );
         move/forward();
-        !movement/walk/forward;
-        +preferences/nearby(6);
-        +foo(3)
+        !movement/walk/forward
 .
 
 

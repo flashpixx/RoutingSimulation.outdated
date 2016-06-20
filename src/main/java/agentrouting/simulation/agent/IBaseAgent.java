@@ -178,9 +178,9 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     @Override
     public final Stream<Map.Entry<String, Double>> preferences()
     {
-        return this.getBeliefBase().stream( CPath.from( "preference" ) )
+        return this.beliefbase().stream( CPath.from( "preference" ) )
                    .map( i -> new AbstractMap.SimpleImmutableEntry<String, Double>(
-                       i.getFQNFunctor().getSuffix(),
+                       i.fqnfunctor().getSuffix(),
                        CCommon.<Double, ITerm>getRawValue(
                            i.orderedvalues()
                             .findFirst()

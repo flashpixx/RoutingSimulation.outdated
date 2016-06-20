@@ -143,14 +143,14 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
 
         @Override
         @SuppressWarnings( "unchecked" )
-        public final IView<IAgent> getBeliefbase()
+        public final IView<IAgent> beliefbase()
         {
             final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_perceivable ) )
                                                 .create( BELIEFBASEROOTNAME )
-                                                .generate( new IViewGenerator()
+                                                .generate( new IViewGenerator<IAgent>()
                                                 {
                                                     @Override
-                                                    public final IView generate( final String p_name, final IView p_parent )
+                                                    public IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
                                                     {
                                                         return new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
                                                     }

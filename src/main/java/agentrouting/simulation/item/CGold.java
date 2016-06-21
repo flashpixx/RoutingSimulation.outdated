@@ -31,7 +31,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * energy items
  */
-public final class CEnergy
+public final class CGold
 {
     /**
      * ctor
@@ -39,7 +39,7 @@ public final class CEnergy
      * @param p_force force model
      * @param p_position initial position
      */
-    protected CEnergy( final IForce p_force, final DoubleMatrix1D p_position )
+    protected CGold( final IForce p_force, final DoubleMatrix1D p_position )
     {
     }
 

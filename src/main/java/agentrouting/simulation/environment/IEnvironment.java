@@ -28,7 +28,7 @@ import agentrouting.simulation.IElement;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.ui.ITileMap;
 import cern.colt.matrix.DoubleMatrix1D;
-import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
+import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
 
 import java.util.List;
 import java.util.concurrent.Callable;

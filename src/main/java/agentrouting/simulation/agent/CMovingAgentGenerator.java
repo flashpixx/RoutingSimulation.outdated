@@ -29,12 +29,12 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
-import org.lightjason.agentspeak.beliefbase.CBeliefBase;
-import org.lightjason.agentspeak.beliefbase.IBeliefPerceive;
-import org.lightjason.agentspeak.beliefbase.IView;
-import org.lightjason.agentspeak.beliefbase.IViewGenerator;
+import org.lightjason.agentspeak.beliefbase.CBeliefBasePersistent;
 import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
 import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
+import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
+import org.lightjason.agentspeak.beliefbase.view.IView;
+import org.lightjason.agentspeak.beliefbase.view.IViewGenerator;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.CDefaultAgentConfiguration;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
@@ -89,9 +89,9 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
 
     @Override
     protected final IAgentConfiguration<IAgent> configuration( final IFuzzy<Boolean, IAgent> p_fuzzy, final Collection<ILiteral> p_initalbeliefs,
-                                                         final Set<IBeliefPerceive<IAgent>> p_beliefperceive, final Set<IPlan> p_plans, final Set<IRule> p_rules,
-                                                         final ILiteral p_initialgoal, final IUnifier p_unifier, final IAggregation p_aggregation,
-                                                         final IVariableBuilder p_variablebuilder
+                                                               final Set<IBeliefPerceive<IAgent>> p_beliefperceive, final Set<IPlan> p_plans, final Set<IRule> p_rules,
+                                                               final ILiteral p_initialgoal, final IUnifier p_unifier, final IAggregation p_aggregation,
+                                                               final IVariableBuilder p_variablebuilder
     )
     {
         return new CAgentConfiguration( p_fuzzy, p_initalbeliefs, p_beliefperceive, p_plans, p_rules, p_initialgoal, p_unifier, p_aggregation, p_variablebuilder );
@@ -145,18 +145,31 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
         @SuppressWarnings( "unchecked" )
         public final IView<IAgent> beliefbase()
         {
-            final IView<IAgent> l_beliefbase = new CBeliefBase<>( new CMultiStorage<>( m_perceivable ) )
+            // generate root beliefbase without perceiveable objects
+            final IView<IAgent> l_beliefbase = new CBeliefBasePersistent<>( new CMultiStorage<ILiteral, IView<IAgent>, IAgent>() )
                                                 .create( BELIEFBASEROOTNAME )
+
+                                                // generates beliefbase with individual preferences
                                                 .generate( new IViewGenerator<IAgent>()
                                                 {
                                                     @Override
                                                     public IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
                                                     {
-                                                        return new CBeliefBase<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
+                                                        return new CBeliefBasePersistent<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
                                                     }
                                                 },
                                                 CPath.from( "preferences" )
-                                                );
+                                                )
+
+                                                // generates on-demand beliefbase with environment data
+                                                .generate( new IViewGenerator<IAgent>()
+                                                {
+                                                    @Override
+                                                    public IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
+                                                    {
+                                                        return null;
+                                                    }
+                                                } );
 
             m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
             return l_beliefbase;

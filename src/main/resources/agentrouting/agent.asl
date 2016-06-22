@@ -1,5 +1,6 @@
 // individual behaviours
 preferences/nearby(5).
+preferences/viewradius(3).
 
 
 // the agent starts walking start-position and goal-position

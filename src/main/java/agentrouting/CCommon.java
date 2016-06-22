@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 /**
  * common class with main methods
  */
-public final class CCommon
+final class CCommon
 {
     /**
      * logger

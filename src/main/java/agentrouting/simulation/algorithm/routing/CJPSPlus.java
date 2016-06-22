@@ -42,7 +42,7 @@ import java.util.stream.IntStream;
  * JPS+ algorithm
  * @todo for all current Java componentes read https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html first
  */
-public final class CJPSPlus implements IRouting
+final class CJPSPlus implements IRouting
 {
     /**
      * map with position (y/x) and the jump-point

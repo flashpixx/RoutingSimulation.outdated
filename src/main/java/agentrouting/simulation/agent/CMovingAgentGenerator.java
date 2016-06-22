@@ -30,6 +30,7 @@ import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
 import org.lightjason.agentspeak.beliefbase.CBeliefBasePersistent;
+import org.lightjason.agentspeak.beliefbase.IBeliefBaseOnDemand;
 import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
 import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
 import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
@@ -51,8 +52,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 /**
@@ -82,7 +81,7 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
                                   final Set<IAction> p_actions, final IAggregation p_aggregation
     ) throws Exception
     {
-        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), Stream.of( p_environment ).collect( Collectors.toSet() ), IVariableBuilder.EMPTY );
+        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), Collections.<IBeliefPerceive<IAgent>>emptySet(), IVariableBuilder.EMPTY );
         m_environment = p_environment;
     }
 
@@ -158,7 +157,7 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
                                                         return new CBeliefBasePersistent<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
                                                     }
                                                 },
-                                                CPath.from( "preferences" )
+                                                CPath.from( IBaseAgent.PREFERENCE )
                                                 )
 
                                                 // generates on-demand beliefbase with environment data
@@ -174,6 +173,37 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
             m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
             return l_beliefbase;
         }
+
+    }
+
+
+    /**
+     * on-demand beliefbase
+     */
+    private static final class CEnvironmentBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    {
+        /**
+         * environment reference
+         */
+        private final IEnvironment m_environment;
+
+        /**
+         * ctor
+         * @param p_environment environment
+         */
+        public CEnvironmentBeliefbase( final IEnvironment p_environment )
+        {
+            m_environment = p_environment;
+        }
+
+        @Override
+        public final IAgent update( final IAgent p_agent )
+        {
+            super.update( p_agent );
+
+            return p_agent;
+        }
+
 
     }
 

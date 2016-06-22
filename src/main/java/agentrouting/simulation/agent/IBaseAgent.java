@@ -41,13 +41,11 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
-import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
-import java.util.AbstractMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -56,28 +54,28 @@ import java.util.stream.Stream;
  * agent class for modelling individual behaviours
  */
 @IAgentActionBlacklist
-public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
+abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
 {
+    /**
+     * name of the beliefbase for individual preferences
+     */
+    public static final String PREFERENCE = "preferences";
     /**
      * random generator
      */
-    protected final Random m_random = new Random();
+    private final Random m_random = new Random();
     /**
      * goal-position of the agent
      */
-    protected final DoubleMatrix1D m_goal;
+    private final DoubleMatrix1D m_goal;
     /**
      * current position of the agent
      */
-    protected final DoubleMatrix1D m_position;
+    private final DoubleMatrix1D m_position;
     /**
      * reference to the environment
      */
-    protected final IEnvironment m_environment;
-    /**
-     * force model
-     */
-    protected final IForce m_force;
+    private final IEnvironment m_environment;
     /**
      * color
      */
@@ -103,15 +101,14 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      * @param p_position initialize position
      * @param p_color color string in RRGGBBAA
      */
-    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                          final IForce p_force, final DoubleMatrix1D p_position, final String p_color
+    IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
+                final IForce p_force, final DoubleMatrix1D p_position, final String p_color
     )
     {
         super( p_agentconfiguration );
         if ( p_color.isEmpty() )
             throw new RuntimeException( "color need not to be empty" );
 
-        m_force = p_force;
         m_position = p_position;
         m_environment = p_environment;
         m_color = Color.valueOf( p_color );
@@ -124,7 +121,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     @Override
     public IAgent call() throws Exception
     {
-        // --- agent-cycle -------------------------------------------------------------------------
+        // --- agent-cycle to create goal-trigger --------------------------------------------------
 
         // cache current position to generate non-moving trigger
         final DenseDoubleMatrix1D l_postion = new DenseDoubleMatrix1D( m_position.toArray() );
@@ -144,14 +141,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
             // otherwise check "nearby(D)" preference for the current position and the goal
             // position, D is the radius (in cells) so we trigger the goal "nearby(Y)" and
             // Y is a literal with distance
-            final Number l_nearby = CCommon.raw(
-                this.beliefbase().stream( CPath.from( "preferences/nearby" ) )
-                    .findFirst()
-                    .orElseGet( () -> CLiteral.from( "preferences/nearby", Stream.of( CRawTerm.from( 0 ) ) ) )
-                .values().findFirst().get()
-            );
             final double l_distance = EDirection.distance( m_position, m_goal );
-            if ( l_distance <= l_nearby.doubleValue() )
+            if ( l_distance <= this.preference( "nearby", 0 ).doubleValue() )
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/nearby", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
 
@@ -182,18 +173,9 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     }
 
     @Override
-    public final Stream<Map.Entry<String, Double>> preferences()
+    public final Stream<ILiteral> preferences()
     {
-        return this.beliefbase().stream( CPath.from( "preferences" ) )
-                   .map( i -> new AbstractMap.SimpleImmutableEntry<String, Double>(
-                       i.fqnfunctor().getSuffix(),
-                       CCommon.<Double, ITerm>raw(
-                           i.orderedvalues()
-                            .findFirst()
-                            .get()
-                       )
-                   ) );
-
+        return this.beliefbase().stream( CPath.from( PREFERENCE ) );
     }
 
 
@@ -353,7 +335,18 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 
-
+    @Override
+    public final <N> N preference( final String p_name, final N p_default )
+    {
+        return CCommon.raw(
+            this.beliefbase().stream( CPath.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ) ) )
+                .findFirst()
+                .orElseGet( () -> CLiteral.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ), Stream.of( CRawTerm.from( p_default ) ) ) )
+                .values()
+                .findFirst()
+                .orElse( CRawTerm.from( p_default ) )
+        );
+    }
 
     // --- visualization ---------------------------------------------------------------------------------------------------------------------------------------
 

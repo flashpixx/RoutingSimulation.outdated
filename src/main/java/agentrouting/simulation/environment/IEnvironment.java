@@ -25,19 +25,18 @@ package agentrouting.simulation.environment;
 
 
 import agentrouting.simulation.IElement;
-import agentrouting.simulation.agent.IAgent;
 import agentrouting.ui.ITileMap;
 import cern.colt.matrix.DoubleMatrix1D;
-import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.stream.Stream;
 
 
 /**
  * environment interface
  */
-public interface IEnvironment extends IBeliefPerceive<IAgent>, Callable<IEnvironment>, ITileMap
+public interface IEnvironment extends Callable<IEnvironment>, ITileMap
 {
 
     /**
@@ -93,5 +92,14 @@ public interface IEnvironment extends IBeliefPerceive<IAgent>, Callable<IEnviron
      * @return self reference
      */
     IEnvironment initialize();
+
+    /**
+     * stream to get all items around a position
+     *
+     * @param p_position center position
+     * @param p_radius radius around the center in cells
+     * @return stream over elements
+     */
+    Stream<? extends IElement<?>> around( final DoubleMatrix1D p_position, final int p_radius );
 
 }

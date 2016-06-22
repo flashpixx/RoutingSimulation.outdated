@@ -1,11 +1,22 @@
-// individual behaviours
+// --- individual behaviours -----------------------------------------------------------------------------------------------------------------------------------
+
+// nearby belief to define the radius around the goal position to trigger the nearby plan
 preferences/nearby(5).
-preferences/viewradius(3).
+
+// belief for definining the view radius into forward-backward direction
+preferences/viewforwardbackwardradius(3).
+
+// belief for defining the view radius into left-right direction
+preferences/viewleftrightradius(1).
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 // the agent starts walking start-position and goal-position
 // are initialize on the underlying structures (random on default)
 !movement/walk/forward.
+
 
 
 // --- movement plans ------------------------------------------------------------------------------------------------------------------------------------------

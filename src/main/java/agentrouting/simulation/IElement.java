@@ -25,8 +25,8 @@ package agentrouting.simulation;
 
 import agentrouting.ui.ISprite;
 import cern.colt.matrix.DoubleMatrix1D;
+import org.lightjason.agentspeak.language.ILiteral;
 
-import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -43,7 +43,17 @@ public interface IElement<T> extends ISprite
      *
      * @return preference stream
      */
-    Stream<Map.Entry<String, Double>> preferences();
+    Stream<ILiteral> preferences();
+
+    /**
+     * returns a single preference
+     *
+     * @param p_name name of the preference
+     * @param p_default default value if preference not exists
+     * @tparam N any object type
+     * @return preference value
+     */
+    <N> N preference( final String p_name, final N p_default );
 
     /**
      * returns the current position of the object

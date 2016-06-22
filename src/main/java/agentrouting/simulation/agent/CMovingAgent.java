@@ -44,7 +44,6 @@ public final class CMovingAgent extends IBaseAgent
      * @param p_position initialize position
      * @param p_force force model
      * @param p_color color string in RRGGBBAA
-     * @throws Exception is thrown on parsing error
      */
     public CMovingAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
                          final DoubleMatrix1D p_position, final IForce p_force, final String p_color

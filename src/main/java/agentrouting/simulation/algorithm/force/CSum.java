@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 /**
  * sum force value
  */
-public final class CSum implements IForce
+final class CSum implements IForce
 {
     @Override
     public final double calculate( final IElement<?> p_self, final Stream<IElement<?>> p_other )

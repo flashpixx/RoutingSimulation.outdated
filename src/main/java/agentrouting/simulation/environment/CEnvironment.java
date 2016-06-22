@@ -24,7 +24,6 @@
 package agentrouting.simulation.environment;
 
 import agentrouting.simulation.IElement;
-import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.routing.IRouting;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
@@ -44,6 +43,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 /**
@@ -108,6 +108,23 @@ public final class CEnvironment implements IEnvironment
     {
         m_routing.initialize( m_positions );
         return this;
+    }
+
+    @Override
+    public final Stream<? extends IElement<?>> around( final DoubleMatrix1D p_position, final int p_radius )
+    {
+        return IntStream.range( -p_radius, p_radius )
+                .parallel()
+                .boxed()
+                .flatMap( i -> IntStream.range( -p_radius, p_radius )
+                                 .boxed()
+                                 .map( j -> (IElement<?>) m_positions.getQuick(
+                                                        (int) CEnvironment.clip( p_position.get( 0 ) + i, m_row ),
+                                                        (int) CEnvironment.clip( p_position.getQuick( 1 ) + j, m_column )
+                                            )
+                                 )
+                )
+                .filter( i -> i != null );
     }
 
     @Override
@@ -234,12 +251,5 @@ public final class CEnvironment implements IEnvironment
 
         return l_map;
     }
-
-
-    // --- agent behaviour / access ----------------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public void perceive( final IAgent p_agent )
-    {}
 
 }

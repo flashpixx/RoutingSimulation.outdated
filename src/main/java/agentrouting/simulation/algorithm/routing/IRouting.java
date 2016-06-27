@@ -41,4 +41,5 @@ public interface IRouting
      */
     double estimatedtime( final ObjectMatrix2D p_objects, final List<IntMatrix1D> p_route, final double p_speed );
 
+    //boolean isOccupied(final int l_row, final int l_column);
 }

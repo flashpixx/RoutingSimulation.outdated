@@ -138,12 +138,12 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve", Stream.of( CRawTerm.from( m_position ) ) ) ) );
         else
         {
-            // otherwise check "nearby(D)" preference for the current position and the goal
-            // position, D is the radius (in cells) so we trigger the goal "nearby(Y)" and
+            // otherwise check "near-by(D)" preference for the current position and the goal
+            // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
             // Y is a literal with distance
             final double l_distance = EDirection.distance( m_position, m_goal );
-            if ( l_distance <= this.preference( "nearby", 0 ).doubleValue() )
-                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/nearby", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
+            if ( l_distance <= this.preference( "near-by", 0 ).doubleValue() )
+                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
 
 

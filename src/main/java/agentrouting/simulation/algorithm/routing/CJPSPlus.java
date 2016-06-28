@@ -18,21 +18,18 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
-
 /**
  * JPS+ algorithm
  */
 public final class CJPSPlus implements IRouting
 {
-    
-    
+        
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
         return this;
     }
-     
-    
+       
     @Override
     //can just change the return type to Immutable pair (one possibility)
     public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final IntMatrix1D p_target )
@@ -52,7 +49,7 @@ public final class CJPSPlus implements IRouting
     		
     		ImmutablePair<Integer, Integer> l_target=new ImmutablePair<>(p_target.getQuick(0),p_target.getQuick(1));
     		//if the current node is the end node
-    		if(l_currentnode.coordinate().getLeft() == l_target.getLeft()&&l_currentnode.coordinate().getRight() == l_target.getRight())
+    		if(l_currentnode.coordinate().equals(l_target))
     		{   
     			l_finalpath.add(p_target);
     	        CJumpPoint l_parent = l_currentnode.parent();
@@ -74,15 +71,13 @@ public final class CJPSPlus implements IRouting
     	}	
     	return Collections.<IntMatrix1D>emptyList();
     }
-    
-    
+        
     @Override
     public final double estimatedtime( final ObjectMatrix2D p_objects, final List<IntMatrix1D> p_route, final double p_speed )
     {
         return 0;
     }
-    
-    
+        
     /**
      * individual jump point successors are identified and add to the open list
      * @param p_objects Snapshot of the environment 
@@ -101,37 +96,27 @@ public final class CJPSPlus implements IRouting
         	IntStream.range( -1,2 )
         	//.parallel()
         	.forEach(j->
-        	{
-        	  if(i != 0 && j != 0 )
-        	  {  
-        		if(isNotValidNeighbour(p_objects,p_currentnode.coordinate().getLeft()+i, p_currentnode.coordinate().getRight()+j,p_closedlist)==false)	
+        	{ 
+        		if((i != 0 && j != 0 )&&!isNotValidNeighbour(p_objects,p_currentnode.coordinate().getLeft()+i, p_currentnode.coordinate().getRight()+j,p_closedlist)&&!isOccupied(p_objects,p_currentnode.coordinate().getLeft()+i,p_currentnode.coordinate().getRight()+j))	
         		{
-        			if(isOccupied(p_objects,p_currentnode.coordinate().getLeft()+i,p_currentnode.coordinate().getRight()+j)==false) 
-        		   {
         			   ImmutablePair<Integer, Integer> l_nextjumpnode = jumppointSearch(p_currentnode.coordinate(),p_target, i, j,p_objects);
-                       if(l_nextjumpnode != null)
+                       if(l_nextjumpnode != null && (!p_closedlist.contains(l_nextjumpnode)))
                        {
-                           if(!p_closedlist.contains(l_nextjumpnode))
-                           {
+                          
                         	   CJumpPoint l_jumpnode=new CJumpPoint(l_nextjumpnode,p_currentnode);
                                calculateScore(l_jumpnode,p_target);//Calculate its score to sort it in the open list later
                         	   
                                //checking that the jump point is already exists in open list or not, if yes then check their fscore to make decision 
                         	   boolean l_checkscore= p_openlist.parallelStream()
-                     				  .filter(s->s.coordinate().getLeft()==l_nextjumpnode.getLeft() && s.coordinate().getRight()==l_nextjumpnode.getRight())
+                     				  .filter(s->s.coordinate().equals(l_nextjumpnode))
                      				  .anyMatch(s->s.fscore()<l_jumpnode.fscore());
                         	   
-                        	   if(l_checkscore==false)
-                        	   {
-                                   p_openlist.add(l_jumpnode); // Add it to the open list for continuing the path
-                               }    
-                           }//end of if
-                       }//end of if
-        		   }//end of if
-        	    }//end of if	
-        	 }//end of if
-          });//end of inner foreach
-       });//end of outer foreach
+                        	   if(!l_checkscore)                      	   
+                                  p_openlist.add(l_jumpnode); // Add it to the open list for continuing the path                                  
+                       }    		  	
+        	     } 
+            });//end of inner foreach
+         });//end of outer foreach
 
     }//end of function
     
@@ -152,23 +137,21 @@ public final class CJPSPlus implements IRouting
         ImmutablePair<Integer, Integer> l_nextnode = new ImmutablePair<>(l_nextrow,l_nextcolumn);
         
         // If the l_nextnode is outside the grid or occupied then return null
-        if(isOccupied(p_objects,l_nextrow,l_nextcolumn)==true || isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn)==true) return null;
+        if(isOccupied(p_objects,l_nextrow,l_nextcolumn)|| isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn)) return null;
         
         //If the l_nextnode is the target node then return it
-        if(p_target.getLeft()== l_nextrow&&p_target.getRight()== l_nextcolumn) return l_nextnode;
+        if(p_target.equals(l_nextnode)) return l_nextnode;
         
         //If we are going in a diagonal direction check for forced neighbors
         if(p_row != 0 && p_column != 0)
         {
             //If neighbors do exist and are forced (top or bottom grid coordinate of l_nextnode is occupied)
-            if(isNotValidCoordinate(p_objects,l_nextrow-p_row,l_nextcolumn)== false && isNotValidCoordinate(p_objects,l_nextrow-p_row,l_nextcolumn+p_column)== false)
-                if(isOccupied(p_objects,l_nextrow-p_row,l_nextcolumn)==true && isOccupied(p_objects,l_nextrow-p_row,l_nextcolumn+p_column)==false)
-                    return l_nextnode;
+            if(!isNotValidCoordinate(p_objects,l_nextrow-p_row,l_nextcolumn) && !isNotValidCoordinate(p_objects,l_nextrow-p_row,l_nextcolumn+p_column) && isOccupied(p_objects,l_nextrow-p_row,l_nextcolumn) && !isOccupied(p_objects,l_nextrow-p_row,l_nextcolumn+p_column))
+                 return l_nextnode;
             
             //If neighbors do exist and are forced (left or right grid coordinate of l_nextnode is occupied)
-            if(isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn-p_column)== false && isNotValidCoordinate(p_objects,l_nextrow+p_row,l_nextcolumn-p_column)== false)
-                if(isOccupied(p_objects,l_nextrow,l_nextcolumn-p_column)==true && isOccupied(p_objects,l_nextrow,l_nextcolumn-p_column)== false)
-                	return l_nextnode;
+            if(!isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn-p_column)&& !isNotValidCoordinate(p_objects,l_nextrow+p_row,l_nextcolumn-p_column) && isOccupied(p_objects,l_nextrow,l_nextcolumn-p_column)&& !isOccupied(p_objects,l_nextrow,l_nextcolumn-p_column))
+                 return l_nextnode;
             
             //before each diagonal step the algorithm must first fail to detect any straight jump points 
             if(jumppointSearch(l_nextnode,p_target,p_row, 0,p_objects) != null || jumppointSearch(l_nextnode,p_target, 0,p_column,p_objects) != null)
@@ -176,42 +159,33 @@ public final class CJPSPlus implements IRouting
         }
         else
         {	
-            if(p_row != 0) //Horizontal Case
-            {   
-        	   if(isNotValidCoordinate(p_objects,l_nextrow+p_row,l_nextcolumn)==false && isOccupied(p_objects,l_nextrow+p_row,l_nextcolumn)==false )
-        	   {	
-        		  //If neighbors do exist and are forced (right side grid coordinate of l_nextnode is occupied) 
-        		  if(isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn+1)==false)
-                     if(isOccupied(p_objects,l_nextrow,l_nextcolumn+1)==true)
-            	        if(isOccupied(p_objects,l_nextrow+p_row,l_nextcolumn+1)==false)
-            	           return l_nextnode;
+            //Horizontal Case  
+        	if(p_row != 0 && !isNotValidCoordinate(p_objects,l_nextrow+p_row,l_nextcolumn)&& !isOccupied(p_objects,l_nextrow+p_row,l_nextcolumn))
+        	{	
+        		//If neighbors do exist and are forced (right side grid coordinate of l_nextnode is occupied) 
+        	    if(!isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn+1) && isOccupied(p_objects,l_nextrow,l_nextcolumn+1) && !isOccupied(p_objects,l_nextrow+p_row,l_nextcolumn+1))                    
+            	    return l_nextnode;       		  
         		  
-        		  //If neighbors do exist and are forced (left side grid coordinate of l_nextnode is occupied)
-        		  if(isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn-1)==false)
-                     if(isOccupied(p_objects,l_nextrow,l_nextcolumn-1)==true)
-                        if(isOccupied(p_objects,l_nextrow+p_row,l_nextcolumn-1)==false)
-                           return l_nextnode;
-        	   }
+        		//If neighbors do exist and are forced (left side grid coordinate of l_nextnode is occupied)
+        		if(!isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn-1) && isOccupied(p_objects,l_nextrow,l_nextcolumn-1) && !isOccupied(p_objects,l_nextrow+p_row,l_nextcolumn-1))
+                    return l_nextnode;
+        	   
             }//end of Horizontal Case
             
-            if(p_column !=0) //Vertical Case
-            {   
-        	   if(isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn+p_column)==false && isOccupied(p_objects,l_nextrow,l_nextcolumn+p_column)==false)
-        	   {	
-        		   //If neighbors do exist and are forced (top grid coordinate of l_nextnode is occupied)
-        		   if(isNotValidCoordinate(p_objects,l_nextrow+1,l_nextcolumn)==false)
-                     if(isOccupied(p_objects,l_nextrow+1,l_nextcolumn)==true)
-                        if(isOccupied(p_objects,l_nextrow+1,l_nextcolumn+p_column)==false)	
-                           return l_nextnode;
+            //Vertical Case 
+        	if(p_column !=0&&!isNotValidCoordinate(p_objects,l_nextrow,l_nextcolumn+p_column) && !isOccupied(p_objects,l_nextrow,l_nextcolumn+p_column))
+        	{	
+        		//If neighbors do exist and are forced (top grid coordinate of l_nextnode is occupied)
+        		if(!isNotValidCoordinate(p_objects,l_nextrow+1,l_nextcolumn) && isOccupied(p_objects,l_nextrow+1,l_nextcolumn) && !isOccupied(p_objects,l_nextrow+1,l_nextcolumn+p_column))
+                    return l_nextnode;
         		   
-        		   //If neighbors do exist and are forced (bottom grid coordinate of l_nextnode is occupied)
-        		   if(isNotValidCoordinate(p_objects,l_nextrow-1,l_nextcolumn)==false)
-                     if(isOccupied(p_objects,l_nextrow-1,l_nextcolumn)==true)
-                        if(isOccupied(p_objects,l_nextrow-1,l_nextcolumn+p_column)==false)
-                           return l_nextnode;
-        	   }
+        		//If neighbors do exist and are forced (bottom grid coordinate of l_nextnode is occupied)
+        		if(!isNotValidCoordinate(p_objects,l_nextrow-1,l_nextcolumn) && isOccupied(p_objects,l_nextrow-1,l_nextcolumn)&& !isOccupied(p_objects,l_nextrow-1,l_nextcolumn+p_column))
+                    return l_nextnode;
+        	   
             }//end of vertical case
         }//end of else
+        
         return jumppointSearch(l_nextnode,p_target, p_row, p_column,p_objects);
     	
     }
@@ -225,8 +199,7 @@ public final class CJPSPlus implements IRouting
     public final boolean isOccupied(ObjectMatrix2D p_objects,final int p_row,final int p_column)       
     {   
     	final IElement<?> l_object = (IElement<?>) p_objects.getQuick( p_row, p_column );
-    	return (l_object != null) ? true : false;
-         
+    	return (l_object != null);       
     }
     
     /**
@@ -237,8 +210,7 @@ public final class CJPSPlus implements IRouting
      */
     public final boolean isNotValidCoordinate(ObjectMatrix2D p_objects,final int p_row,final int p_column)       
     {   
-    	return (p_column<0 || p_column>=p_objects.columns() || p_row<0 || p_row>=p_objects.rows()) ? true : false;
-         
+    	return (p_column<0 || p_column>=p_objects.columns() || p_row<0 || p_row>=p_objects.rows());       
     }
     
     /**
@@ -250,8 +222,7 @@ public final class CJPSPlus implements IRouting
      */
     public final boolean isNotValidNeighbour(ObjectMatrix2D p_objects,final int p_row,final int p_column,ArrayList<ImmutablePair<Integer, Integer>> p_closedlist)       
     {   
-    	return (p_closedlist.contains(new ImmutablePair<>( p_row, p_column ))||p_column<0 || p_column>=p_objects.columns() || p_row<0 || p_row>=p_objects.rows()) ? true : false;
-         
+    	return (p_closedlist.contains(new ImmutablePair<>( p_row, p_column ))||p_column<0 || p_column>=p_objects.columns() || p_row<0 || p_row>=p_objects.rows());       
     }
     
     /**
@@ -398,9 +369,8 @@ public final class CJPSPlus implements IRouting
         public int hashCode()
         {
         	return m_hscore+m_gscore;
-        }
-        
-        
-    }
-
+        }               
+    
+    }//end of CJumpPoint    
+    
 }

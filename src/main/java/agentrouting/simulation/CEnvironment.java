@@ -219,6 +219,5 @@ public final class CEnvironment implements IEnvironment
 
         return p_value;
     }
-    
 
 }

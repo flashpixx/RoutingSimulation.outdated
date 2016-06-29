@@ -71,7 +71,7 @@ preferences/viewleftrightradius(1).
 
 // is called if the agent achieves the goal position, than the agent
 // will sleep 5 cycles
-+!goal/achieve(P)
++!goal/achieve-position(P)
      <-
         generic/print( "position achieved", P );
         generic/sleep(5)

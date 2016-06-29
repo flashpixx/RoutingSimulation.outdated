@@ -135,7 +135,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
         // check if the agent reaches the goal-position
         if ( m_position.equals( m_goal ) )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve", Stream.of( CRawTerm.from( m_position ) ) ) ) );
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
         else
         {
             // otherwise check "near-by(D)" preference for the current position and the goal

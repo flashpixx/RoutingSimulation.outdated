@@ -16,6 +16,7 @@ import cern.colt.matrix.tobject.ObjectMatrix2D;
 
 /**
  * JPS+ algorithm
+ * @todo think about visibility public and static methods
  */
 public final class CJPSPlus implements IRouting
 {
@@ -28,7 +29,7 @@ public final class CJPSPlus implements IRouting
 
     @Override
     //can just change the return type to Immutable pair (one possibility)
-    public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final IntMatrix1D p_target )
+    public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )
     {
         final Set<CJumpPoint> l_openlist = Collections.synchronizedSet( new HashSet<CJumpPoint>() );
 
@@ -36,7 +37,7 @@ public final class CJPSPlus implements IRouting
 
         final List<IntMatrix1D> l_finalpath = new ArrayList<>();
 
-        l_openlist.add( new CJumpPoint( new ImmutablePair<>( p_element.position().getQuick( 0 ), p_element.position().getQuick( 1 ) ), null ) );
+        l_openlist.add( new CJumpPoint( new ImmutablePair<>( p_currentposition.getQuick( 0 ), p_currentposition.getQuick( 1 ) ), null ) );
 
         while ( !l_openlist.isEmpty() )
         {
@@ -44,11 +45,11 @@ public final class CJPSPlus implements IRouting
             final CJumpPoint l_currentnode = l_openlist.iterator().next();
             l_openlist.remove( l_currentnode );
 
-            final ImmutablePair<Integer, Integer> l_target = new ImmutablePair<>( p_target.getQuick( 0 ), p_target.getQuick( 1 ) );
+            final ImmutablePair<Integer, Integer> l_target = new ImmutablePair<>( p_targetposition.getQuick( 0 ), p_targetposition.getQuick( 1 ) );
             //if the current node is the end node
             if ( l_currentnode.coordinate().equals( l_target ) )
             {
-                l_finalpath.add( p_target );
+                l_finalpath.add( p_targetposition );
                 CJumpPoint l_parent = l_currentnode.parent();
                 while ( l_parent != null )
                 {
@@ -84,6 +85,7 @@ public final class CJPSPlus implements IRouting
      * @param p_target the goal node
      * @param p_closedlist the list of coordinate that already explored
      * @param p_openlist the set of CJumpPoint that will be explored
+     * @todo remove if-condition -> with filter
      */
     public final void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final ImmutablePair<Integer, Integer> p_target,
                                   final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist, final Set<CJumpPoint> p_openlist )
@@ -180,6 +182,7 @@ public final class CJPSPlus implements IRouting
      * @param p_col vertical direction
      * @param p_objects Snapshot of the environment
      * @return p_nextnode diagonal jump point
+     * @todo https://dst.lbl.gov/ACSSoftware/colt/api/cern/colt/matrix/DoubleMatrix2D.html#viewSelection(int[], int[])
      */
     public final ImmutablePair<Integer, Integer> diagjump( final int p_nextrow, final int p_nextcolumn, final ImmutablePair<Integer, Integer> p_nextnode,
                                        final ImmutablePair<Integer, Integer> p_target, final int p_row, final int p_col, final ObjectMatrix2D p_objects )
@@ -272,8 +275,6 @@ public final class CJPSPlus implements IRouting
      * Calculates the given node's score using the Manhattan distance formula
      * @param p_jumpnode The node to calculate
      * @param p_target the target node
-     * @param p_row horizontal direction
-     * @param p_column vertical direction
      */
     private void calculateScore( final CJumpPoint p_jumpnode, final ImmutablePair<Integer, Integer> p_target )
     {

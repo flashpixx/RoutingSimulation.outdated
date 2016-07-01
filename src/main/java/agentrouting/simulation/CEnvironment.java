@@ -86,7 +86,7 @@ public final class CEnvironment implements IEnvironment
     @Override
     public List<IntMatrix1D> route( final IElement<?> p_element, final IntMatrix1D p_target )
     {
-        return m_routing.route( m_positions, p_element, p_target );
+        return m_routing.route( m_positions, p_element.position(), p_target );
     }
 
     @Override

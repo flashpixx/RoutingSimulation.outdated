@@ -1,6 +1,5 @@
 package agentrouting.simulation.algorithm.routing;
 
-import agentrouting.simulation.IElement;
 import cern.colt.matrix.tint.IntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 
@@ -25,11 +24,11 @@ public interface IRouting
      * routing algorithm
      *
      * @param p_objects object matrix
-     * @param p_element element
-     * @param p_target target position
+     * @param p_currentposition element
+     * @param p_targetposition target position
      * @return list of tuples of the cellindex
      */
-    List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final IntMatrix1D p_target );
+    List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition );
 
     /**
      * calculated the estimated time to move the path

@@ -29,13 +29,13 @@ public final class CJPSPlus implements IRouting
 
     @Override
     //can just change the return type to Immutable pair (one possibility)
-    public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )
+    public final List<ImmutablePair<Integer, Integer>> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )
     {
         final Set<CJumpPoint> l_openlist = Collections.synchronizedSet( new HashSet<CJumpPoint>() );
 
         final ArrayList<ImmutablePair<Integer, Integer>> l_closedlist = new ArrayList<>();
 
-        final List<IntMatrix1D> l_finalpath = new ArrayList<>();
+        final List<ImmutablePair<Integer, Integer>> l_finalpath = new ArrayList<>();
 
         l_openlist.add( new CJumpPoint( new ImmutablePair<>( p_currentposition.getQuick( 0 ), p_currentposition.getQuick( 1 ) ), null ) );
 
@@ -49,13 +49,13 @@ public final class CJPSPlus implements IRouting
             //if the current node is the end node
             if ( l_currentnode.coordinate().equals( l_target ) )
             {
-                l_finalpath.add( p_targetposition );
+                l_finalpath.add( l_target );
                 CJumpPoint l_parent = l_currentnode.parent();
                 while ( l_parent != null )
                 {
-                    //l_finalpath.add(l_parent.coordinate());(for immutable pair)
+                    l_finalpath.add(l_parent.coordinate());
                     //for return type IntMatrix1D (another possibility)
-                    l_finalpath.add( (IntMatrix1D)p_objects.getQuick( l_parent.coordinate().getLeft(), l_parent.coordinate().getRight() ) );
+                    //l_finalpath.add( (IntMatrix1D)p_objects.getQuick( l_parent.coordinate().getLeft(), l_parent.coordinate().getRight() ) );
                     l_parent = l_parent.parent();
                 }
                 Collections.reverse( l_finalpath );
@@ -69,7 +69,7 @@ public final class CJPSPlus implements IRouting
             l_closedlist.add( l_currentnode.coordinate() );
 
         }
-        return Collections.<IntMatrix1D>emptyList();
+        return Collections.<ImmutablePair<Integer, Integer>>emptyList();
     }
 
     @Override
@@ -98,7 +98,7 @@ public final class CJPSPlus implements IRouting
                 IntStream.range( -1, 2 )
                     .forEach( j->
                     {
-                        if ( ( i != 0 && j != 0 ) && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getLeft() + i, p_curnode.coordinate().getRight() + j,
+                        if ( ( i != 0 || j != 0 ) && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getLeft() + i, p_curnode.coordinate().getRight() + j,
                              p_closedlist ) && !this.isOccupied( p_objects, p_curnode.coordinate().getLeft() + i, p_curnode.coordinate().getRight() + j ) )
                         {
                             final ImmutablePair<Integer, Integer> l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects );
@@ -106,7 +106,6 @@ public final class CJPSPlus implements IRouting
                         }
                     } );
             } );
-
     }
 
     /**
@@ -122,6 +121,7 @@ public final class CJPSPlus implements IRouting
     {
         if ( p_nextjumpnode != null && ( !p_closedlist.contains( p_nextjumpnode ) ) )
         {
+            //System.out.println( "jump"+p_nextjumpnode );
             final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
             this.calculateScore( l_jumpnode, p_target );
 
@@ -161,7 +161,12 @@ public final class CJPSPlus implements IRouting
         //If we are going in a diagonal direction check for forced neighbors
         if ( p_row != 0 && p_col != 0 )
         {
-            this.diagjump( l_nextrow, l_nextcol, l_nextnode, p_target, p_row, p_col, p_objects );
+           final ImmutablePair<Integer, Integer> l_node = this.diagjump( l_nextrow, l_nextcol, l_nextnode, p_target, p_row, p_col, p_objects );
+           if(l_node!=null)
+           {
+               return l_node;
+           }
+
         }
         else
         {

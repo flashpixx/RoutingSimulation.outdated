@@ -1,9 +1,11 @@
 package agentrouting.simulation.algorithm.routing;
 
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import cern.colt.matrix.tint.IntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
-
-import java.util.List;
 
 
 /**
@@ -28,7 +30,7 @@ public interface IRouting
      * @param p_targetposition target position
      * @return list of tuples of the cellindex
      */
-    List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition );
+    List<ImmutablePair<Integer, Integer>> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition );
 
     /**
      * calculated the estimated time to move the path

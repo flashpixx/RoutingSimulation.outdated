@@ -25,7 +25,7 @@ public final class TestCJPSPlus
     @Test
     public void testrouting()
     {
-        System.out.println( new CJPSPlus().route( m_grid, new DenseIntMatrix1D( new int[]{2, 3} ) , new DenseIntMatrix1D( new int[]{8, 6} ) ) );
+        System.out.println( new CJPSPlus().route( m_grid, new DenseIntMatrix1D( new int[]{2, 3} ), new DenseIntMatrix1D( new int[]{6, 9} ) ) );
     }
 
     @Test
@@ -46,9 +46,14 @@ public final class TestCJPSPlus
        // System.out.println(new CJPSPlus().horizontal(2, 3, -1, m_grid, 1));
     }
 
-
-
-
+    /**
+     * it is recommand, that each test-class uses also
+     * a main-method, which calls the test-methods manually,
+     * because the Maven-test calls does not allow any debugging
+     * with the IDE, so this main-method allows to start the
+     * test through the IDE and run the IDE debugger
+     * @param p_args input arguments
+     **/
     public static void main( final String[] p_args )
     {
         new TestCJPSPlus().testrouting();

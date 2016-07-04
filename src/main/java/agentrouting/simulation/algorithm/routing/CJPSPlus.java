@@ -28,7 +28,6 @@ public final class CJPSPlus implements IRouting
     }
 
     @Override
-    //can just change the return type to Immutable pair (one possibility)
     public final List<ImmutablePair<Integer, Integer>> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )
     {
         final Set<CJumpPoint> l_openlist = Collections.synchronizedSet( new HashSet<CJumpPoint>() );
@@ -53,15 +52,12 @@ public final class CJPSPlus implements IRouting
                 CJumpPoint l_parent = l_currentnode.parent();
                 while ( l_parent != null )
                 {
-                    l_finalpath.add(l_parent.coordinate());
-                    //for return type IntMatrix1D (another possibility)
-                    //l_finalpath.add( (IntMatrix1D)p_objects.getQuick( l_parent.coordinate().getLeft(), l_parent.coordinate().getRight() ) );
+                    l_finalpath.add( l_parent.coordinate() );
                     l_parent = l_parent.parent();
                 }
                 Collections.reverse( l_finalpath );
                 return l_finalpath;
             }
-
             //Find the successors to current node (add them to the open list)
             this.successors( p_objects, l_currentnode, l_target, l_closedlist, l_openlist );
 
@@ -85,9 +81,8 @@ public final class CJPSPlus implements IRouting
      * @param p_target the goal node
      * @param p_closedlist the list of coordinate that already explored
      * @param p_openlist the set of CJumpPoint that will be explored
-     * @todo remove if-condition -> with filter
      */
-    public final void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final ImmutablePair<Integer, Integer> p_target,
+    private final void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final ImmutablePair<Integer, Integer> p_target,
                                   final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist, final Set<CJumpPoint> p_openlist )
     {
 
@@ -96,14 +91,12 @@ public final class CJPSPlus implements IRouting
             .forEach( i ->
             {
                 IntStream.range( -1, 2 )
+                    .filter( j-> ( i != 0 || j != 0 ) && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getLeft() + i, p_curnode.coordinate().getRight() + j,
+                        p_closedlist ) && !this.isOccupied( p_objects, p_curnode.coordinate().getLeft() + i, p_curnode.coordinate().getRight() + j ) )
                     .forEach( j->
                     {
-                        if ( ( i != 0 || j != 0 ) && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getLeft() + i, p_curnode.coordinate().getRight() + j,
-                             p_closedlist ) && !this.isOccupied( p_objects, p_curnode.coordinate().getLeft() + i, p_curnode.coordinate().getRight() + j ) )
-                        {
-                            final ImmutablePair<Integer, Integer> l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects );
-                            this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
-                        }
+                        final ImmutablePair<Integer, Integer> l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects );
+                        this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
                     } );
             } );
     }
@@ -116,12 +109,11 @@ public final class CJPSPlus implements IRouting
      * @param p_curnode the current node to search for successors
      * @param p_target the goal node
      */
-    public final void addsuccessors( final ImmutablePair<Integer, Integer> p_nextjumpnode, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist,
+    private final void addsuccessors( final ImmutablePair<Integer, Integer> p_nextjumpnode, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist,
                                      final Set<CJumpPoint> p_openlist, final CJumpPoint p_curnode, final ImmutablePair<Integer, Integer> p_target )
     {
         if ( p_nextjumpnode != null && ( !p_closedlist.contains( p_nextjumpnode ) ) )
         {
-            //System.out.println( "jump"+p_nextjumpnode );
             final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
             this.calculateScore( l_jumpnode, p_target );
 
@@ -144,7 +136,7 @@ public final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return l_nextnode next jump point
      */
-    public final ImmutablePair<Integer, Integer> jump( final ImmutablePair<Integer, Integer> p_curnode, final ImmutablePair<Integer, Integer> p_target,
+    private final ImmutablePair<Integer, Integer> jump( final ImmutablePair<Integer, Integer> p_curnode, final ImmutablePair<Integer, Integer> p_target,
                                                        final int p_row, final int p_col, final ObjectMatrix2D p_objects )
     {
         //The next nodes details
@@ -161,12 +153,8 @@ public final class CJPSPlus implements IRouting
         //If we are going in a diagonal direction check for forced neighbors
         if ( p_row != 0 && p_col != 0 )
         {
-           final ImmutablePair<Integer, Integer> l_node = this.diagjump( l_nextrow, l_nextcol, l_nextnode, p_target, p_row, p_col, p_objects );
-           if(l_node!=null)
-           {
-               return l_node;
-           }
-
+            final ImmutablePair<Integer, Integer> l_node = this.diagjump( l_nextrow, l_nextcol, l_nextnode, p_target, p_row, p_col, p_objects );
+            if ( l_node != null ) return l_node;
         }
         else
         {
@@ -189,7 +177,7 @@ public final class CJPSPlus implements IRouting
      * @return p_nextnode diagonal jump point
      * @todo https://dst.lbl.gov/ACSSoftware/colt/api/cern/colt/matrix/DoubleMatrix2D.html#viewSelection(int[], int[])
      */
-    public final ImmutablePair<Integer, Integer> diagjump( final int p_nextrow, final int p_nextcolumn, final ImmutablePair<Integer, Integer> p_nextnode,
+    private final ImmutablePair<Integer, Integer> diagjump( final int p_nextrow, final int p_nextcolumn, final ImmutablePair<Integer, Integer> p_nextnode,
                                        final ImmutablePair<Integer, Integer> p_target, final int p_row, final int p_col, final ObjectMatrix2D p_objects )
     {
         //If neighbors do exist and are forced (top or bottom grid coordinate of l_nextnode is occupied)
@@ -217,7 +205,7 @@ public final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return p_value to check the top and down grids
      */
-    public final boolean horizontal( final int p_nextrow, final int p_nextcol, final int p_row, final ObjectMatrix2D p_objects, final int p_value )
+    private final boolean horizontal( final int p_nextrow, final int p_nextcol, final int p_row, final ObjectMatrix2D p_objects, final int p_value )
     {
         return p_row != 0 && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcol ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol )
                   && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_value ) && this.isOccupied( p_objects, p_nextrow, p_nextcol + p_value )
@@ -232,7 +220,7 @@ public final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return p_value to check the left and right side grids
      */
-    public final boolean vertical( final int p_nextrow, final int p_nextcol, final int p_col, final ObjectMatrix2D p_objects, final int p_value )
+    private final boolean vertical( final int p_nextrow, final int p_nextcol, final int p_col, final ObjectMatrix2D p_objects, final int p_value )
     {
         return p_col != 0 && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_col ) && !this.isOccupied( p_objects, p_nextrow, p_nextcol + p_col )
                 && !this.isNotCoordinate( p_objects, p_nextrow + p_value, p_nextcol ) && this.isOccupied( p_objects, p_nextrow + p_value, p_nextcol )
@@ -246,7 +234,7 @@ public final class CJPSPlus implements IRouting
      * @param p_column the column number of the coordinate to check
      * @return return true or false
      */
-    public final boolean isOccupied( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
+    private final boolean isOccupied( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
     {
         final IElement<?> l_object = (IElement<?>) p_objects.getQuick( p_row, p_column );
         return l_object != null;
@@ -259,7 +247,7 @@ public final class CJPSPlus implements IRouting
      * @param p_column the column number of the coordinate to check
      * @return return true or false
      */
-    public final boolean isNotCoordinate( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
+    private final boolean isNotCoordinate( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
     {
         return p_column < 0 || p_column >= p_objects.columns() || p_row < 0 || p_row >= p_objects.rows();
     }
@@ -271,7 +259,7 @@ public final class CJPSPlus implements IRouting
      * @param p_column the column number of the coordinate to check
      * @param p_closedlist the list of coordinate that already explored
      */
-    public final boolean isNotNeighbour( final ObjectMatrix2D p_objects, final int p_row, final int p_column, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist )
+    private final boolean isNotNeighbour( final ObjectMatrix2D p_objects, final int p_row, final int p_column, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist )
     {
         return p_closedlist.contains( new ImmutablePair<>( p_row, p_column ) ) || p_column < 0 || p_column >= p_objects.columns() || p_row < 0 || p_row >= p_objects.rows();
     }

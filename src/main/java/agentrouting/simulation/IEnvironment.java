@@ -3,8 +3,6 @@ package agentrouting.simulation;
 
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
 import agentrouting.simulation.algorithm.force.IForce;
 import agentrouting.ui.ITileMap;
 import cern.colt.matrix.tint.IntMatrix1D;
@@ -23,7 +21,7 @@ public interface IEnvironment extends IExecutable<IEnvironment>, ITileMap
      * @param p_target target point
      * @return list of tuples of the cellindex
      */
-    List<ImmutablePair<Integer, Integer>> route( final IElement<?> p_object, final IntMatrix1D p_target );
+    List<IntMatrix1D> route( final IElement<?> p_object, final IntMatrix1D p_target );
 
     /**
      * sets an object to the position and changes the object position

@@ -5,11 +5,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import agentrouting.simulation.IElement;
 import cern.colt.matrix.tint.IntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 
@@ -17,6 +18,7 @@ import cern.colt.matrix.tobject.ObjectMatrix2D;
 /**
  * JPS+ algorithm
  * @todo think about visibility public and static methods
+ * @todo change Immutable -Integer, Integer- to IntMatrix
  */
 public final class CJPSPlus implements IRouting
 {
@@ -28,7 +30,7 @@ public final class CJPSPlus implements IRouting
     }
 
     @Override
-    public final List<ImmutablePair<Integer, Integer>> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )
+    public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )
     {
         final Set<CJumpPoint> l_openlist = Collections.synchronizedSet( new HashSet<CJumpPoint>() );
 
@@ -56,7 +58,7 @@ public final class CJPSPlus implements IRouting
                     l_parent = l_parent.parent();
                 }
                 Collections.reverse( l_finalpath );
-                return l_finalpath;
+                return l_finalpath.stream().map( i -> new DenseIntMatrix1D( new int[]{i.getLeft(), i.getRight()} ) ).collect( Collectors.toList() );
             }
             //Find the successors to current node (add them to the open list)
             this.successors( p_objects, l_currentnode, l_target, l_closedlist, l_openlist );
@@ -65,7 +67,7 @@ public final class CJPSPlus implements IRouting
             l_closedlist.add( l_currentnode.coordinate() );
 
         }
-        return Collections.<ImmutablePair<Integer, Integer>>emptyList();
+        return Collections.<IntMatrix1D>emptyList();
     }
 
     @Override

@@ -1,11 +1,19 @@
 package agentrouting.simulation.algorithm.routing;
 
+import cern.colt.matrix.tint.IntMatrix1D;
 import org.junit.Before;
 import org.junit.Test;
 
 import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
 import cern.colt.matrix.tobject.ObjectMatrix2D;
 import cern.colt.matrix.tobject.impl.SparseObjectMatrix2D;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -15,6 +23,7 @@ public final class TestCJPSPlus
 {
     private ObjectMatrix2D m_grid;
 
+
     @Before
     public void initialize()
     {
@@ -22,25 +31,35 @@ public final class TestCJPSPlus
     }
 
 
+    /**
+     * test of a correct working route without obstacles
+     */
     @Test
     public void testrouting()
     {
-        System.out.println( new CJPSPlus().route( m_grid, new DenseIntMatrix1D( new int[]{2, 3} ), new DenseIntMatrix1D( new int[]{6, 9} ) ) );
+        final List<IntMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseIntMatrix1D( new int[]{2, 3} ), new DenseIntMatrix1D( new int[]{6, 9} ) );
+        final List<IntMatrix1D> l_waypoint = Stream.of(
+            new DenseIntMatrix1D( new int[]{2, 3} ),
+            new DenseIntMatrix1D( new int[]{6, 7} ),
+            new DenseIntMatrix1D( new int[]{6, 9} )
+        ).collect( Collectors.toList() );
+
+        assertEquals( l_route.size(), l_waypoint.size() );
+        IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_route.get( i ) ) );
     }
 
-    @Test
+
     public void testjump()
     {
         //System.out.println( new CJPSPlus().jump(new ImmutablePair<>(2,3),new ImmutablePair<>(5,4) , 0, 1, m_grid));
     }
 
-    @Test
     public void isOccupied()
     {
         //System.out.println(new CJPSPlus().isOccupied(m_grid, 2, 3 + 1 ));
     }
 
-    @Test
+
     public void isnotNeighbour()
     {
        // System.out.println(new CJPSPlus().horizontal(2, 3, -1, m_grid, 1));

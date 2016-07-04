@@ -7,8 +7,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -87,7 +85,7 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
-    public List<ImmutablePair<Integer, Integer>> route( final IElement<?> p_element, final IntMatrix1D p_target )
+    public List<IntMatrix1D> route( final IElement<?> p_element, final IntMatrix1D p_target )
     {
         return m_routing.route( m_positions, p_element.position(), p_target );
     }

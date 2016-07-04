@@ -82,7 +82,7 @@ public final class CJPSPlus implements IRouting
      * @param p_closedlist the list of coordinate that already explored
      * @param p_openlist the set of CJumpPoint that will be explored
      */
-    private final void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final ImmutablePair<Integer, Integer> p_target,
+    private void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final ImmutablePair<Integer, Integer> p_target,
                                   final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist, final Set<CJumpPoint> p_openlist )
     {
 
@@ -109,22 +109,22 @@ public final class CJPSPlus implements IRouting
      * @param p_curnode the current node to search for successors
      * @param p_target the goal node
      */
-    private final void addsuccessors( final ImmutablePair<Integer, Integer> p_nextjumpnode, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist,
+    private void addsuccessors( final ImmutablePair<Integer, Integer> p_nextjumpnode, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist,
                                      final Set<CJumpPoint> p_openlist, final CJumpPoint p_curnode, final ImmutablePair<Integer, Integer> p_target )
     {
-        if ( p_nextjumpnode != null && ( !p_closedlist.contains( p_nextjumpnode ) ) )
-        {
-            final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
-            this.calculateScore( l_jumpnode, p_target );
+        if ( !( p_nextjumpnode != null && ( !p_closedlist.contains( p_nextjumpnode ) ) ) )
+            return;
 
-            //checking that the jump point is already exists in open list or not, if yes then check their fscore to make decision
-            final boolean l_checkscore = p_openlist.parallelStream()
-                                                   .filter( s -> s.coordinate().equals( p_nextjumpnode ) )
-                                                   .anyMatch( s -> s.fscore() < l_jumpnode.fscore() );
+        final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
+        this.calculateScore( l_jumpnode, p_target );
 
-            if ( !l_checkscore )
-                p_openlist.add( l_jumpnode );
-        }
+        //checking that the jump point is already exists in open list or not, if yes then check their fscore to make decision
+        final boolean l_checkscore = p_openlist.parallelStream()
+                                     .filter( s -> s.coordinate().equals( p_nextjumpnode ) )
+                                     .anyMatch( s -> s.fscore() < l_jumpnode.fscore() );
+
+        if ( !l_checkscore )
+            p_openlist.add( l_jumpnode );
     }
 
     /**
@@ -136,7 +136,7 @@ public final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return l_nextnode next jump point
      */
-    private final ImmutablePair<Integer, Integer> jump( final ImmutablePair<Integer, Integer> p_curnode, final ImmutablePair<Integer, Integer> p_target,
+    private ImmutablePair<Integer, Integer> jump( final ImmutablePair<Integer, Integer> p_curnode, final ImmutablePair<Integer, Integer> p_target,
                                                        final int p_row, final int p_col, final ObjectMatrix2D p_objects )
     {
         //The next nodes details
@@ -205,7 +205,7 @@ public final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return p_value to check the top and down grids
      */
-    private final boolean horizontal( final int p_nextrow, final int p_nextcol, final int p_row, final ObjectMatrix2D p_objects, final int p_value )
+    private boolean horizontal( final int p_nextrow, final int p_nextcol, final int p_row, final ObjectMatrix2D p_objects, final int p_value )
     {
         return p_row != 0 && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcol ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol )
                   && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_value ) && this.isOccupied( p_objects, p_nextrow, p_nextcol + p_value )
@@ -220,7 +220,7 @@ public final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return p_value to check the left and right side grids
      */
-    private final boolean vertical( final int p_nextrow, final int p_nextcol, final int p_col, final ObjectMatrix2D p_objects, final int p_value )
+    private boolean vertical( final int p_nextrow, final int p_nextcol, final int p_col, final ObjectMatrix2D p_objects, final int p_value )
     {
         return p_col != 0 && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_col ) && !this.isOccupied( p_objects, p_nextrow, p_nextcol + p_col )
                 && !this.isNotCoordinate( p_objects, p_nextrow + p_value, p_nextcol ) && this.isOccupied( p_objects, p_nextrow + p_value, p_nextcol )
@@ -234,10 +234,9 @@ public final class CJPSPlus implements IRouting
      * @param p_column the column number of the coordinate to check
      * @return return true or false
      */
-    private final boolean isOccupied( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
+    private boolean isOccupied( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
     {
-        final IElement<?> l_object = (IElement<?>) p_objects.getQuick( p_row, p_column );
-        return l_object != null;
+        return p_objects.getQuick( p_row, p_column ) != null;
     }
 
     /**
@@ -247,7 +246,7 @@ public final class CJPSPlus implements IRouting
      * @param p_column the column number of the coordinate to check
      * @return return true or false
      */
-    private final boolean isNotCoordinate( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
+    private boolean isNotCoordinate( final ObjectMatrix2D p_objects, final int p_row, final int p_column )
     {
         return p_column < 0 || p_column >= p_objects.columns() || p_row < 0 || p_row >= p_objects.rows();
     }
@@ -259,7 +258,7 @@ public final class CJPSPlus implements IRouting
      * @param p_column the column number of the coordinate to check
      * @param p_closedlist the list of coordinate that already explored
      */
-    private final boolean isNotNeighbour( final ObjectMatrix2D p_objects, final int p_row, final int p_column, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist )
+    private boolean isNotNeighbour( final ObjectMatrix2D p_objects, final int p_row, final int p_column, final ArrayList<ImmutablePair<Integer, Integer>> p_closedlist )
     {
         return p_closedlist.contains( new ImmutablePair<>( p_row, p_column ) ) || p_column < 0 || p_column >= p_objects.columns() || p_row < 0 || p_row >= p_objects.rows();
     }

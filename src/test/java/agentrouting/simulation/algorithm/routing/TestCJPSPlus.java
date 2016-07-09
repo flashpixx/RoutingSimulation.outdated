@@ -56,6 +56,7 @@ public final class TestCJPSPlus
     {
         m_occupiedgrid = new SparseObjectMatrix2D( 10, 10 );
         IntStream.range( 0, m_occupiedgrid.rows() )
+            .parallel()
             .forEach( i->
             {
                 IntStream.range( 0, m_occupiedgrid.columns() )
@@ -104,16 +105,17 @@ public final class TestCJPSPlus
     @Test
     public void testemptygrid()
     {
-        final List<IntMatrix1D> l_route = new CJPSPlus().route( m_emptygrid, new DenseIntMatrix1D( new int[]{2, 3} ), new DenseIntMatrix1D( new int[]{6, 9} ) );
+        final IRouting l_route = new CJPSPlus().initialize( m_grid );
 
-        final List<IntMatrix1D> l_waypoint = Stream.of(
-            new DenseIntMatrix1D( new int[]{2, 3} ),
-            new DenseIntMatrix1D( new int[]{6, 7} ),
-            new DenseIntMatrix1D( new int[]{6, 9} )
-        ).collect( Collectors.toList() );
+    }
 
-        assertEquals( l_route.size(), l_waypoint.size() );
-        IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_route.get( i ) ) );
+    /**
+     * test the static jump points based on static obstacles
+     */
+    @Test
+    public void teststaticjumppoints()
+    {
+        new CJPSPlus().route( m_emptygrid, new DenseIntMatrix1D( new int[]{2, 3} ), new DenseIntMatrix1D( new int[]{6, 9} ) );
     }
 
     /**
@@ -129,6 +131,7 @@ public final class TestCJPSPlus
         new TestCJPSPlus().testemptygrid();
         new TestCJPSPlus().testoccupiedgrid();
         new TestCJPSPlus().testrouting();
+        new TestCJPSPlus().teststaticjumppoints();
     }
 
 

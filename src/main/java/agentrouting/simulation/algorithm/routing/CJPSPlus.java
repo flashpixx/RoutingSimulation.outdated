@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import cern.colt.matrix.tint.IntMatrix1D;
 import cern.colt.matrix.tint.impl.DenseIntMatrix1D;
@@ -18,11 +19,48 @@ import cern.colt.matrix.tobject.ObjectMatrix2D;
 public final class CJPSPlus implements IRouting
 {
 
+    private List<IntMatrix1D> m_staticjumppoints;
+
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
+        m_staticjumppoints =  Collections.synchronizedList( new ArrayList<>() );
+
+        IntStream.range( 0, p_objects.rows() )
+            .parallel()
+            .forEach( i->
+            {
+                IntStream.range( 0, p_objects.columns() )
+                    .filter( j -> this.isOccupied( p_objects, i, j ) )
+                    .forEach( j ->
+                    {
+                        //System.out.println( "i " + i + " j " + j );
+                        this.createstaticjump( m_staticjumppoints, i, j, p_objects );
+                    } );
+            } );
+
+        System.out.println( m_staticjumppoints );
         return this;
     }
+
+    /**
+     * to create static jump points
+     * @param p_staticjumppoints list of the static jump points
+     * @param p_row row number of the grid cell
+     * @param p_column column number of the grid cell
+     * @param p_objects Snapshot of the environment
+     */
+    private void createstaticjump( final List<IntMatrix1D> p_staticjumppoints, final int p_row, final int p_column, final ObjectMatrix2D p_objects )
+    {
+
+        Stream.of( new DenseIntMatrix1D( new int[]{p_row + 1, p_column} ), new DenseIntMatrix1D( new int[]{p_row - 1, p_column} ),
+                new DenseIntMatrix1D( new int[]{p_row, p_column + 1} ), new DenseIntMatrix1D( new int[]{p_row, p_column - 1} ) )
+            .parallel()
+            .filter( s-> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
+                     && !p_staticjumppoints.contains( s ) )
+            .forEach( s-> p_staticjumppoints.add( s ) );
+    }
+
 
     @Override
     public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )

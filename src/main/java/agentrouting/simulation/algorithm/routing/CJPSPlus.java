@@ -126,8 +126,8 @@ public final class CJPSPlus implements IRouting
      * In order to identify individual jump point successors heading in a given direction (run recursively until find a jump point or failure)
      * @param p_curnode the current node to search for
      * @param p_target the goal node
-     * @param p_row horizontal direction
-     * @param p_col vertical direction
+     * @param p_row to increase or decrease row by adding p_row
+     * @param p_col to increase or decrease column by adding p_col
      * @param p_objects Snapshot of the environment
      * @return l_nextnode next jump point
      */
@@ -166,23 +166,15 @@ public final class CJPSPlus implements IRouting
      * @param p_nextrow row of the next node to search for
      * @param p_nextcolumn column of the next node to search for
      * @param p_target the goal node
-     * @param p_row horizontal direction
-     * @param p_col vertical direction
+     * @param p_row to increase or decrease row by adding p_row
+     * @param p_col to increase or decrease column by adding p_col
      * @param p_objects Snapshot of the environment
      * @return p_nextnode diagonal jump point
-     * @todo https://dst.lbl.gov/ACSSoftware/colt/api/cern/colt/matrix/DoubleMatrix2D.html#viewSelection(int[], int[])
      */
     private final IntMatrix1D diagjump( final int p_nextrow, final int p_nextcolumn, final IntMatrix1D p_nextnode, final IntMatrix1D p_target,
                                         final int p_row, final int p_col, final ObjectMatrix2D p_objects )
     {
-        //If neighbors do exist and are forced (top or bottom grid coordinate of l_nextnode is occupied)
-        if ( !this.isNotCoordinate( p_objects, p_nextrow - p_row, p_nextcolumn ) && !this.isNotCoordinate( p_objects, p_nextrow - p_row, p_nextcolumn + p_col )
-            && this.isOccupied( p_objects, p_nextrow - p_row, p_nextcolumn ) && !this.isOccupied( p_objects, p_nextrow - p_row, p_nextcolumn + p_col ) )
-            return p_nextnode;
-
-        //If neighbors do exist and are forced (left or right grid coordinate of l_nextnode is occupied)
-        if ( !this.isNotCoordinate( p_objects, p_nextrow, p_nextcolumn - p_col ) && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcolumn - p_col )
-             && this.isOccupied( p_objects, p_nextrow, p_nextcolumn - p_col ) && !this.isOccupied( p_objects, p_nextrow, p_nextcolumn - p_col ) )
+        if ( this.diagonal( p_nextrow, p_nextcolumn, -p_row, p_col, p_row, 0, p_objects ) || this.diagonal( p_nextrow, p_nextcolumn, p_row, -p_col, 0, p_col, p_objects ) )
             return p_nextnode;
 
         //before each diagonal step the algorithm must first fail to detect any straight jump points
@@ -193,12 +185,30 @@ public final class CJPSPlus implements IRouting
     }
 
     /**
+     * Helper function to identify diagonal jump point
+     * @param p_nextrow row of the next node to search for
+     * @param p_nextcol column of the next node to search for
+     * @param p_row to increase or decrease row by adding p_row
+     * @param p_col to increase or decrease column by adding p_col
+     * @param p_hzon top or bottom direction
+     * @param p_ver left or right direction
+     * @param p_objects Snapshot of the environment
+     * @return true or false
+     */
+    private final boolean diagonal( final int p_nextrow, final int p_nextcolumn, final int p_row, final int p_col, final int p_hzon, final int p_ver,
+                                       final ObjectMatrix2D p_objects )
+    {
+        return !this.isNotCoordinate( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcolumn + p_col )
+            && this.isOccupied( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcolumn + p_col );
+    }
+
+    /**
      * Helper function to identify horizontal jump point
      * @param p_nextrow row of the next node to search for
      * @param p_nextcol column of the next node to search for
-     * @param p_row horizontal direction
+     * @param p_row to increase or decrease row by adding p_row
      * @param p_objects Snapshot of the environment
-     * @return p_value to check the top and down grids
+     * @return true or false
      */
     private boolean horizontal( final int p_nextrow, final int p_nextcol, final int p_row, final ObjectMatrix2D p_objects, final int p_value )
     {
@@ -211,9 +221,9 @@ public final class CJPSPlus implements IRouting
      * Helper function to identify vertical jump point
      * @param p_nextrow row of the next node to search for
      * @param p_nextcol column of the next node to search for
-     * @param p_col vertical direction
+     * @param p_col to increase or decrease column by adding p_col
      * @param p_objects Snapshot of the environment
-     * @return p_value to check the left and right side grids
+     * @return true or false
      */
     private boolean vertical( final int p_nextrow, final int p_nextcol, final int p_col, final ObjectMatrix2D p_objects, final int p_value )
     {

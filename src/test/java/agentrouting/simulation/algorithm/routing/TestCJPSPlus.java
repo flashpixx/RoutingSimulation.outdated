@@ -25,9 +25,9 @@ public final class TestCJPSPlus
     private ObjectMatrix2D m_grid;
     private ObjectMatrix2D m_occupiedgrid;
     private ObjectMatrix2D m_emptygrid;
-
+    private ObjectMatrix2D m_staticgrid;
     /**
-     * initialize class with static data
+     * initialize class with static data for routing algorithm test
      */
     @Before
     public void initialize()
@@ -37,6 +37,19 @@ public final class TestCJPSPlus
         m_grid.setQuick( 4, 2, new Object() );
         m_grid.setQuick( 4, 3, new Object() );
         m_grid.setQuick( 3, 2, new Object() );
+    }
+
+    /**
+     * initialize class with static data for static jump points test
+     */
+    @Before
+    public void initializestaticjumppoints()
+    {
+        m_staticgrid = new SparseObjectMatrix2D( 10, 10 );
+
+        m_staticgrid.setQuick( 4, 2, new Object() );
+        m_staticgrid.setQuick( 4, 6, new Object() );
+        m_staticgrid.setQuick( 5, 2, new Object() );
     }
 
     /**
@@ -92,10 +105,10 @@ public final class TestCJPSPlus
     @Test
     public void testoccupiedgrid()
     {
-        final List<IntMatrix1D> l_route = new CJPSPlus().route( m_occupiedgrid, new DenseIntMatrix1D( new int[]{8, 0} ), new DenseIntMatrix1D( new int[]{2, 3} ) );
+        final List<IntMatrix1D> l_occupiedroute = new CJPSPlus().route( m_occupiedgrid, new DenseIntMatrix1D( new int[]{8, 0} ), new DenseIntMatrix1D( new int[]{2, 3} ) );
 
         final List<IntMatrix1D> l_waypoint = Collections.<IntMatrix1D>emptyList();
-        assertEquals( l_route.size(), l_waypoint.size() );
+        assertEquals( l_occupiedroute.size(), l_waypoint.size() );
 
     }
 
@@ -105,17 +118,25 @@ public final class TestCJPSPlus
     @Test
     public void testemptygrid()
     {
-        final IRouting l_route = new CJPSPlus().initialize( m_grid );
+        final List<IntMatrix1D> l_emptyroute = new CJPSPlus().route( m_emptygrid, new DenseIntMatrix1D( new int[]{2, 3} ), new DenseIntMatrix1D( new int[]{6, 9} ) );
+        final List<IntMatrix1D> l_waypoint = Stream.of(
+                new DenseIntMatrix1D( new int[]{2, 3} ),
+                new DenseIntMatrix1D( new int[]{6, 7} ),
+                new DenseIntMatrix1D( new int[]{6, 9} )
+            ).collect( Collectors.toList() );
 
+        assertEquals( l_emptyroute.size(), l_waypoint.size() );
+        IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_emptyroute.get( i ) ) );
     }
 
     /**
      * test the static jump points based on static obstacles
      */
+
     @Test
     public void teststaticjumppoints()
     {
-        new CJPSPlus().route( m_emptygrid, new DenseIntMatrix1D( new int[]{2, 3} ), new DenseIntMatrix1D( new int[]{6, 9} ) );
+        new CJPSPlus().initialize( m_staticgrid );
     }
 
     /**

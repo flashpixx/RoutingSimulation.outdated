@@ -24,7 +24,7 @@ public final class CJPSPlus implements IRouting
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
-        m_staticjumppoints =  Collections.synchronizedList( new ArrayList<>() );
+        this.setstaticjumppoints( Collections.synchronizedList( new ArrayList<>() ) );
 
         IntStream.range( 0, p_objects.rows() )
             .parallel()
@@ -34,12 +34,11 @@ public final class CJPSPlus implements IRouting
                     .filter( j -> this.isOccupied( p_objects, i, j ) )
                     .forEach( j ->
                     {
-                        //System.out.println( "i " + i + " j " + j );
-                        this.createstaticjump( m_staticjumppoints, i, j, p_objects );
+                        this.createstaticjump( this.getstaticjumppoints(), i, j, p_objects );
                     } );
             } );
 
-        System.out.println( m_staticjumppoints );
+        System.out.println( this.getstaticjumppoints() );
         return this;
     }
 
@@ -65,6 +64,8 @@ public final class CJPSPlus implements IRouting
     @Override
     public final List<IntMatrix1D> route( final ObjectMatrix2D p_objects, final IntMatrix1D p_currentposition, final IntMatrix1D p_targetposition )
     {
+        //final ArrayList<IntMatrix1D> l_staticjumppoints = new ArrayList<>(m_staticjumppoints);
+
         final Set<CJumpPoint> l_openlist = Collections.synchronizedSet( new HashSet<CJumpPoint>() );
 
         final ArrayList<IntMatrix1D> l_closedlist = new ArrayList<>();
@@ -324,6 +325,17 @@ public final class CJPSPlus implements IRouting
         final int l_gscore = ( l_row == 0 && l_column == 0 ) ? Math.abs( 14 * l_row ) : Math.abs( 10 * Math.max( l_row, l_column ) );
 
         p_jumpnode.setgscore( p_jumpnode.parent().gscore() + l_gscore );
+    }
+
+
+    public List<IntMatrix1D> getstaticjumppoints()
+    {
+        return m_staticjumppoints;
+    }
+
+    public void setstaticjumppoints( final List<IntMatrix1D> p_staticjumppoints )
+    {
+        this.m_staticjumppoints = p_staticjumppoints;
     }
 
 

@@ -23,7 +23,8 @@
 
 package agentrouting.simulation.algorithm.routing;
 
-import agentrouting.simulation.IElement;
+
+
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 
@@ -48,11 +49,12 @@ public interface IRouting
      * routing algorithm
      *
      * @param p_objects object matrix
-     * @param p_element element
+     * @param p_source current position
      * @param p_target target position
      * @return list of tuples of the cellindex
      */
-    List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final IElement<?> p_element, final DoubleMatrix1D p_target );
+    List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_source, final DoubleMatrix1D p_target );
+
 
     /**
      * calculated the estimated time to move the path
@@ -63,5 +65,6 @@ public interface IRouting
      * @return speed of the full path
      */
     double estimatedtime( final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_route, final double p_speed );
+
 
 }

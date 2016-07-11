@@ -24,6 +24,7 @@ preferences/viewleftrightradius(1).
 // walk straight forward into the direction of the goal-position
 +!movement/walk/forward
     <-
+        route/calculate(8,9);
         generic/print( "walk forward" );
         move/forward();
         !movement/walk/forward

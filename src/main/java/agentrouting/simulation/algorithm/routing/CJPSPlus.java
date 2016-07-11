@@ -48,6 +48,7 @@ final class CJPSPlus implements IRouting
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
+        /*
         this.setstaticjumppoints( Collections.synchronizedList( new ArrayList<>() ) );
 
         IntStream.range( 0, p_objects.rows() )
@@ -63,6 +64,7 @@ final class CJPSPlus implements IRouting
             } );
 
         System.out.println( this.getstaticjumppoints() );
+        */
         return this;
     }
 

@@ -244,6 +244,21 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         m_environment.clip( m_goal );
     }
 
+
+    /**
+     * route calculation
+     *
+     * @param p_row row position
+     * @param p_column column position
+     * @todo remove println
+     */
+    @IAgentActionAllow
+    @IAgentActionName( name = "route/calculate" )
+    protected final void route( final Number p_row, final Number p_column )
+    {
+        System.out.println( m_environment.route( this, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
+    }
+
     /**
      * move forward into goal direction
      */

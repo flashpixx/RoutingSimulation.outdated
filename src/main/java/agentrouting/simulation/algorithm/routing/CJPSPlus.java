@@ -57,7 +57,7 @@ public final class CJPSPlus implements IRouting
             .parallel()
             .filter( s-> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
                      && !p_staticjumppoints.contains( s ) )
-            .forEach( s-> p_staticjumppoints.add( s ) );
+            .forEach( p_staticjumppoints::add );
     }
 
 

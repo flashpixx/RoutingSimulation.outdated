@@ -105,11 +105,10 @@ public final class TestCJPSPlus
     @Test
     public void testoccupiedgrid()
     {
-        final List<IntMatrix1D> l_occupiedroute = new CJPSPlus().route( m_occupiedgrid, new DenseIntMatrix1D( new int[]{8, 0} ), new DenseIntMatrix1D( new int[]{2, 3} ) );
-
-        final List<IntMatrix1D> l_waypoint = Collections.<IntMatrix1D>emptyList();
-        assertEquals( l_occupiedroute.size(), l_waypoint.size() );
-
+        assertEquals(
+            new CJPSPlus().route( m_occupiedgrid, new DenseIntMatrix1D( new int[]{8, 0} ), new DenseIntMatrix1D( new int[]{2, 3} ) ),
+            Collections.<IntMatrix1D>emptyList()
+        );
     }
 
     /**

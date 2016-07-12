@@ -86,9 +86,9 @@ public final class CConfiguration
      */
     private int m_simulationstep;
     /**
-     * agent elements
+     * simulation elements
      */
-    private List<IAgent> m_agents;
+    private List<IAgent> m_elements;
     /**
      * environment
      */
@@ -176,14 +176,14 @@ public final class CConfiguration
         // create executable object list and check number of elements
         final List<IAgent> l_elements = new LinkedList<>();
         this.createMovingAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_elements );
-        m_agents = Collections.unmodifiableList( l_elements );
+        m_elements = Collections.unmodifiableList( l_elements );
 
-        if ( m_agents.size() > m_environment.column() * m_environment.row() / 2 )
+        if ( m_elements.size() > m_environment.column() * m_environment.row() / 2 )
             throw new IllegalArgumentException(
                 MessageFormat.format(
                     "number of simulation elements are very large [{0}], so the environment size is too small, the environment "
                     + "[{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
-                    m_agents.size(),
+                    m_elements.size(),
                     m_environment.row(),
                     m_environment.column()
                 )
@@ -201,7 +201,7 @@ public final class CConfiguration
      *
      * @return height
      */
-    public final int getWindowHeight()
+    public final int windowheight()
     {
         return m_windowheight;
     }
@@ -211,7 +211,7 @@ public final class CConfiguration
      *
      * @return weight
      */
-    public final int getWindowWeight()
+    public final int windowweight()
     {
         return m_windowweight;
     }
@@ -221,7 +221,7 @@ public final class CConfiguration
      *
      * @return steps
      */
-    public final int getSimulationSteps()
+    public final int simulationsteps()
     {
         return m_simulationstep;
     }
@@ -231,9 +231,9 @@ public final class CConfiguration
      *
      * @return object list
      */
-    public final List<IAgent> getAgents()
+    public final List<IAgent> elements()
     {
-        return m_agents;
+        return m_elements;
     }
 
     /**
@@ -241,7 +241,7 @@ public final class CConfiguration
      *
      * @return environment
      */
-    public final IEnvironment getEnvironment()
+    public final IEnvironment environment()
     {
         return m_environment;
     }
@@ -251,7 +251,7 @@ public final class CConfiguration
      *
      * @return triple of screenshot information
      */
-    public final Triple<String, String, Integer> getScreenshot()
+    public final Triple<String, String, Integer> screenshot()
     {
         return m_screenshot;
     }
@@ -281,7 +281,7 @@ public final class CConfiguration
      *
      * @return visibility flag
      */
-    public final boolean getStatusVisible()
+    public final boolean statusvisible()
     {
         return m_statusvisible;
     }
@@ -291,7 +291,7 @@ public final class CConfiguration
      *
      * @return sleep time
      */
-    public final int getThreadSleepTime()
+    public final int threadsleeptime()
     {
         return m_threadsleeptime;
     }

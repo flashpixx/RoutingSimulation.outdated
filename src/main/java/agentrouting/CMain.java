@@ -143,17 +143,17 @@ public final class CMain
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
 
         l_config.forceExit = false;
-        l_config.width = CConfiguration.INSTANCE.getWindowWeight();
-        l_config.height = CConfiguration.INSTANCE.getWindowHeight();
+        l_config.width = CConfiguration.INSTANCE.windowweight();
+        l_config.height = CConfiguration.INSTANCE.windowheight();
 
 
         // open window
         LOGGER.info( MessageFormat.format( "open window with size [{0}x{1}]", l_config.width, l_config.height ) );
         final CScreen l_screen = new CScreen(
-            CConfiguration.INSTANCE.getAgents(),
-            CConfiguration.INSTANCE.getEnvironment(),
-            CConfiguration.INSTANCE.getScreenshot(),
-            CConfiguration.INSTANCE.getStatusVisible()
+            CConfiguration.INSTANCE.elements(),
+            CConfiguration.INSTANCE.environment(),
+            CConfiguration.INSTANCE.screenshot(),
+            CConfiguration.INSTANCE.statusvisible()
         );
         new LwjglApplication( l_screen, l_config );
 
@@ -166,14 +166,14 @@ public final class CMain
         // final ExecutorService l_pool = Executors.newWorkStealingPool();
 
         IntStream
-                .range( 0, CConfiguration.INSTANCE.getSimulationSteps() )
+                .range( 0, CConfiguration.INSTANCE.simulationsteps() )
                 .mapToObj( i ->
                 {
                     // update screen take screenshot and run object execution
                     l_screen.iteration( i );
                     Stream.concat(
-                        Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
-                        CConfiguration.INSTANCE.getAgents().parallelStream()
+                        Stream.of( CConfiguration.INSTANCE.environment() ),
+                        CConfiguration.INSTANCE.elements().parallelStream()
                     )
                         .parallel()
                         .forEach( j ->
@@ -189,10 +189,10 @@ public final class CMain
                         } );
 
                     // thread sleep for slowing down
-                    if ( CConfiguration.INSTANCE.getThreadSleepTime() > 0 )
+                    if ( CConfiguration.INSTANCE.threadsleeptime() > 0 )
                         try
                         {
-                            Thread.sleep( CConfiguration.INSTANCE.getThreadSleepTime() );
+                            Thread.sleep( CConfiguration.INSTANCE.threadsleeptime() );
                         }
                         catch ( final InterruptedException l_exception )
                         {

@@ -62,4 +62,13 @@ agent :
 
 # static environment elements - optional
 element :
-    -
+
+    - static :
+        left  : [ 30, 30 ]
+        right : [ 50, 60 ]
+        color : "ffff00"
+
+    - static :
+        left  : [ 90, 100 ]
+        right : [ 110, 120 ]
+        color : "ffff00"

@@ -23,28 +23,25 @@
 
 package agentrouting.simulation.item;
 
-import agentrouting.simulation.algorithm.force.IForce;
-import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
 /**
- * energy items
+ * static wall item
  */
-public final class CGold
+public abstract class IBaseItem implements IItem
 {
-    /**
-     * ctor
-     *
-     * @param p_force force model
-     * @param p_position initial position
-     */
-    protected CGold( final IForce p_force, final DoubleMatrix1D p_position )
+
+
+
+    @Override
+    public Sprite sprite()
     {
+        return null;
     }
 
-    //@Override
-    protected final Sprite visualization( final int p_rows, final int p_columns, final int p_cellsize )
+    @Override
+    public Sprite spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize )
     {
         return null;
     }

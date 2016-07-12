@@ -31,4 +31,13 @@ import agentrouting.simulation.IElement;
  */
 public interface IItem extends IElement<IItem>
 {
+
+    /**
+     * returns an element that can whiped by the agent
+     *
+     * @return whipable flag
+     */
+    boolean whipeable();
+
+
 }

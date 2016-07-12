@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
@@ -43,49 +42,12 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
  */
 final class CJPSPlus implements IRouting
 {
-    private List<DoubleMatrix1D> m_staticjumppoints;
 
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
-        /*
-        this.setstaticjumppoints( Collections.synchronizedList( new ArrayList<>() ) );
-
-        IntStream.range( 0, p_objects.rows() )
-            .parallel()
-            .forEach( i->
-            {
-                IntStream.range( 0, p_objects.columns() )
-                    .filter( j -> this.isOccupied( p_objects, i, j ) )
-                    .forEach( j ->
-                    {
-                        this.createstaticjump( this.getstaticjumppoints(), i, j, p_objects );
-                    } );
-            } );
-
-        System.out.println( this.getstaticjumppoints() );
-        */
         return this;
     }
-
-    /**
-     * to create static jump points
-     * @param p_staticjumppoints list of the static jump points
-     * @param p_row row number of the grid cell
-     * @param p_column column number of the grid cell
-     * @param p_objects Snapshot of the environment
-     */
-    private void createstaticjump( final List<DoubleMatrix1D> p_staticjumppoints, final int p_row, final int p_column, final ObjectMatrix2D p_objects )
-    {
-
-        Stream.of( new DenseDoubleMatrix1D( new double[]{p_row + 1, p_column} ), new DenseDoubleMatrix1D( new double[]{p_row - 1, p_column} ),
-                new DenseDoubleMatrix1D( new double[]{p_row, p_column + 1} ), new DenseDoubleMatrix1D( new double[]{p_row, p_column - 1} ) )
-            .parallel()
-            .filter( s -> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
-                     && !p_staticjumppoints.contains( s ) )
-            .forEach( p_staticjumppoints::add );
-    }
-
 
     @Override
     public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
@@ -342,17 +304,6 @@ final class CJPSPlus implements IRouting
         final double l_gscore = ( l_row == 0 && l_column == 0 ) ? Math.abs( 14 * l_row ) : Math.abs( 10 * Math.max( l_row, l_column ) );
 
         p_jumpnode.setgscore( p_jumpnode.parent().gscore() + l_gscore );
-    }
-
-
-    public List<DoubleMatrix1D> getstaticjumppoints()
-    {
-        return m_staticjumppoints;
-    }
-
-    public void setstaticjumppoints( final List<DoubleMatrix1D> p_staticjumppoints )
-    {
-        this.m_staticjumppoints = p_staticjumppoints;
     }
 
 

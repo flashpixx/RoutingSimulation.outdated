@@ -117,23 +117,30 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         m_color = Color.valueOf( p_color );
 
         // create a random route
-        //this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
-        m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
+        this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
+        //m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
     }
 
     @Override
     public IAgent call() throws Exception
     {
-        // --- agent-cycle to create goal-trigger --------------------------------------------------
-
         // cache current position to generate non-moving trigger
-        final DenseDoubleMatrix1D l_postion = new DenseDoubleMatrix1D( m_position.toArray() );
+        final DenseDoubleMatrix1D l_position = new DenseDoubleMatrix1D( m_position.toArray() );
+
+        // --- visualization -----------------------------------------------------------------------
+
+        // update sprite for painting (sprit position is x/y position, but position storing is row / column)
+        if ( m_sprite != null )
+            m_sprite.setPosition( (float) l_position.get( 1 ), (float) l_position.get( 0 ) );
+
+
+        // --- agent-cycle to create goal-trigger --------------------------------------------------
 
         // call cycle
         super.call();
 
         // if position is not changed run not-moved plan
-        if ( m_position.equals( l_postion ) )
+        if ( m_position.equals( l_position ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
         // check if the agent reaches the goal-position, if it reachs, remove it from the route queue
@@ -152,13 +159,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             if ( l_distance <= this.preference( "near-by", 0 ).doubleValue() )
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
-
-
-        // --- visualization -----------------------------------------------------------------------
-
-        // update sprite for painting (sprit position is x/y position, but position storing is row / column)
-        if ( m_sprite != null )
-            m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
 
         return this;
     }

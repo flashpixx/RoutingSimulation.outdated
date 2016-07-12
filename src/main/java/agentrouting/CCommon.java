@@ -24,6 +24,7 @@
 package agentrouting;
 
 import agentrouting.simulation.agent.IAgent;
+import cern.colt.matrix.doublealgo.Formatter;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -36,12 +37,23 @@ import java.util.logging.Logger;
 /**
  * common class with main methods
  */
-final class CCommon
+public final class CCommon
 {
+    /**
+     * matrix formatter
+     */
+    public static final Formatter MATRIXFORMAT = new Formatter();
     /**
      * logger
      */
-    protected static final Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
+
+    static
+    {
+        MATRIXFORMAT.setRowSeparator( "; " );
+        MATRIXFORMAT.setColumnSeparator( "," );
+        MATRIXFORMAT.setPrintShape( false );
+    }
 
 
     /**

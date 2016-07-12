@@ -172,11 +172,10 @@ public final class CEnvironment implements IEnvironment
             return l_object;
 
         // cell is free, move the position and return updated object
-        m_positions.set( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ), null );
+        m_positions.set( (int) p_element.position().get( 0 ), (int) p_element.position().get( 1 ), null );
+        m_positions.set( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ), p_element );
         p_element.position().setQuick( 0, l_position.getQuick( 0 ) );
         p_element.position().setQuick( 1, l_position.getQuick( 1 ) );
-
-        m_positions.set( (int) p_element.position().get( 0 ), (int) p_element.position().get( 1 ), p_element );
 
         return p_element;
     }

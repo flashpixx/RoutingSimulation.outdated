@@ -13,7 +13,6 @@ import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseObjectMatrix2D;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -114,7 +113,7 @@ public final class TestCJPSPlus
         assertEquals( l_emptyroute.size(), l_waypoint.size() );
         IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_emptyroute.get( i ) ) );
     }
-   
+
     /**
      * it is recommand, that each test-class uses also
      * a main-method, which calls the test-methods manually,

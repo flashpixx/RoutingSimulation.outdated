@@ -24,10 +24,6 @@
 package agentrouting.simulation.algorithm.routing;
 
 
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.ObjectMatrix2D;
-import cern.colt.matrix.impl.DenseDoubleMatrix1D;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,6 +31,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 
 
 
@@ -140,7 +140,6 @@ final class CJPSPlus implements IRouting
                              final Set<CJumpPoint> p_openlist )
     {
         IntStream.range( -1, 2 )
-            .parallel()
             .forEach( i ->
             {
                 IntStream.range( -1, 2 )

@@ -24,7 +24,6 @@ preferences/viewleftrightradius(1).
 // walk straight forward into the direction of the goal-position
 +!movement/walk/forward
     <-
-        route/calculate(8,9);
         generic/print( "walk forward" );
         move/forward();
         !movement/walk/forward
@@ -37,11 +36,11 @@ preferences/viewleftrightradius(1).
 .
 
 // walk straight forwad fails e.g. the is an obstacle, than calculate
-// a new goal position within the next 10 cells around the current position
+// a new route position within the next 10 cells around the current position
 -!movement/walk/forward
     <-
         generic/print( "walk forward fails" );
-        goal/random( 10 );
+        route/random( 10 );
         !movement/walk/forward
 .
 
@@ -79,15 +78,15 @@ preferences/viewleftrightradius(1).
 .
 
 
-// if the agent is wake-uped a new goal position is taken by random or fixed
+// if the agent is wake-uped a new route is taken by random or fixed
 // around the current position and than starts walking with the initial speed
 // and a random near-by definition
 +!wakeup
     <-
         generic/print("wakeup");
 
-        goal/random( 25 );
-        //goal/set(10,10);
+        route/random( 25 );
+        // route/random( 10, 10 );
 
         N = math/statistic/randomsimple();
         N = N*10;

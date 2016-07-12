@@ -52,6 +52,7 @@ public interface IRouting
      * @param p_source current position
      * @param p_target target position
      * @return list of tuples of the cellindex
+     * @todo change list to a queue
      */
     List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_source, final DoubleMatrix1D p_target );
 

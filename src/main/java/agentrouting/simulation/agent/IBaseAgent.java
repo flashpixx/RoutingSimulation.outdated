@@ -46,7 +46,10 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
+import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -64,10 +67,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * random generator
      */
     private final Random m_random = new Random();
-    /**
-     * goal-position of the agent
-     */
-    private final DoubleMatrix1D m_goal;
     /**
      * current position of the agent
      */
@@ -88,6 +87,10 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * current moving speed
      */
     private int m_speed = 1;
+    /**
+     * route
+     */
+    private final Queue<DoubleMatrix1D> m_route = new ConcurrentLinkedQueue<>();
 
 
 
@@ -113,9 +116,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         m_environment = p_environment;
         m_color = Color.valueOf( p_color );
 
-        // create a goal based on the current position
-        m_goal = new DenseDoubleMatrix1D( 2 );
-        this.goalrandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
+        // create a random route
+        this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
     }
 
     @Override
@@ -134,14 +136,15 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
         // check if the agent reaches the goal-position
-        if ( m_position.equals( m_goal ) )
+        final DoubleMatrix1D l_goalposition = this.goal();
+        if ( m_position.equals( l_goalposition ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
         else
         {
             // otherwise check "near-by(D)" preference for the current position and the goal
             // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
             // Y is a literal with distance
-            final double l_distance = EDirection.distance( m_position, m_goal );
+            final double l_distance = EDirection.distance( m_position, l_goalposition );
             if ( l_distance <= this.preference( "near-by", 0 ).doubleValue() )
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
@@ -169,7 +172,9 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     @Override
     public final DoubleMatrix1D goal()
     {
-        return m_goal;
+        return m_route.isEmpty()
+            ? m_position
+            : m_route.peek();
     }
 
     @Override
@@ -211,52 +216,66 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
     /**
-     * changes the current goal
+     * route calculation
      *
      * @param p_row row position
      * @param p_column column position
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "goal/set" )
-    protected final void goalset( final Number p_row, final Number p_column )
+    @IAgentActionName( name = "route/set" )
+    protected final void route( final Number p_row, final Number p_column )
     {
-        m_goal.set( 0, p_row.intValue() );
-        m_goal.set( 1, p_column.intValue() );
-        m_environment.clip( m_goal );
+        m_route.addAll( m_environment.route( this, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
     }
 
     /**
-     * creates a new goal depend on the
+     * creates a new route depend on the
      * distance around the current position
      *
      * @param p_radius distance (in cells)
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "goal/random" )
-    protected final void goalrandom( final Number p_radius )
+    @IAgentActionName( name = "route/random" )
+    protected final void routerandom( final Number p_radius )
     {
         if ( p_radius.intValue() < 1 )
             throw new RuntimeException( "radius must be greater than zero" );
 
-        m_goal.set( 0, m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
-        m_goal.set( 1, m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue() );
-
-        m_environment.clip( m_goal );
+        m_route.addAll(
+            m_environment.route(
+                this,
+                new DenseDoubleMatrix1D(
+                    new double[]{
+                        m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
+                        m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
+                    }
+                )
+            )
+        );
     }
 
-
     /**
-     * route calculation
-     *
-     * @param p_row row position
-     * @param p_column column position
-     * @todo remove println
+     * skips the current goal-position of the routing queue
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "route/calculate" )
-    protected final void route( final Number p_row, final Number p_column )
+    @IAgentActionName( name = "route/skipcurrent" )
+    protected final void routskipcurrent()
     {
-        System.out.println( m_environment.route( this, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
+        m_route.poll();
+    }
+
+    /**
+     * skips the current n-elements of the routing queue
+     * @param p_value number of elements
+     */
+    @IAgentActionAllow
+    @IAgentActionName( name = "route/skipelements" )
+    protected final void routskipcurrent( final Number p_value )
+    {
+        if ( p_value.intValue() < 1 )
+            throw new RuntimeException( "value must be greater than zero" );
+
+        IntStream.range( 0, p_value.intValue() ).forEach( i -> m_route.poll() );
     }
 
     /**
@@ -346,7 +365,11 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      */
     private void move( final EDirection p_direction )
     {
-        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, m_goal, m_speed ) ) ) )
+        final DoubleMatrix1D l_goalposition = this.goal();
+        if ( l_goalposition.equals( m_position ) )
+            return;
+
+        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 

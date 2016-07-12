@@ -81,7 +81,7 @@ final class CJPSPlus implements IRouting
         Stream.of( new DenseDoubleMatrix1D( new double[]{p_row + 1, p_column} ), new DenseDoubleMatrix1D( new double[]{p_row - 1, p_column} ),
                 new DenseDoubleMatrix1D( new double[]{p_row, p_column + 1} ), new DenseDoubleMatrix1D( new double[]{p_row, p_column - 1} ) )
             .parallel()
-            .filter( s-> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
+            .filter( s -> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
                      && !p_staticjumppoints.contains( s ) )
             .forEach( p_staticjumppoints::add );
     }
@@ -90,12 +90,8 @@ final class CJPSPlus implements IRouting
     @Override
     public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
     {
-        //final ArrayList<IntMatrix1D> l_staticjumppoints = new ArrayList<>(m_staticjumppoints);
-
         final Set<CJumpPoint> l_openlist = Collections.synchronizedSet( new HashSet<CJumpPoint>() );
-
         final ArrayList<DoubleMatrix1D> l_closedlist = new ArrayList<>();
-
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
 
         l_openlist.add( new CJumpPoint( p_currentposition, null ) );

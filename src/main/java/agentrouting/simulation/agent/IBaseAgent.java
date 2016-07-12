@@ -117,7 +117,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         m_color = Color.valueOf( p_color );
 
         // create a random route
-        this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
+        //this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
+        m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
     }
 
     @Override
@@ -135,10 +136,13 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         if ( m_position.equals( l_postion ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
-        // check if the agent reaches the goal-position
+        // check if the agent reaches the goal-position, if it reachs, remove it from the route queue
         final DoubleMatrix1D l_goalposition = this.goal();
         if ( m_position.equals( l_goalposition ) )
+        {
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
+            m_route.poll();
+        }
         else
         {
             // otherwise check "near-by(D)" preference for the current position and the goal

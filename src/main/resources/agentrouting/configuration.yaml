@@ -30,9 +30,9 @@ screenshot :
 
 # environment (grid) resolution - required
 environment :
-    cellsize : 25
-    rows     : 50
-    columns  : 50
+    cellsize : 20
+    rows     : 150
+    columns  : 150
     routing  : "jpsplus"
 
 
@@ -47,13 +47,13 @@ agent :
         asl    : "agent.asl"
 
     test2 :
-        number : 1
+        number : 0
         color  : "00ff00"
         force  : "sum"
         asl    : "agent.asl"
 
     test3 :
-        number : 1
+        number : 0
         color  : "0000ff"
         force  : "sum"
         asl    : "agent.asl"
@@ -62,4 +62,4 @@ agent :
 
 # static environment elements - optional
 element :
-    - not implemented yet
+    -

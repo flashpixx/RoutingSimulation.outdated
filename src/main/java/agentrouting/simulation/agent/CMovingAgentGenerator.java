@@ -99,11 +99,18 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
     @Override
     public IAgent generatesingle( final Object... p_data )
     {
+        final DenseDoubleMatrix1D l_position = new DenseDoubleMatrix1D( new double[]{m_random.nextInt( m_environment.row() ), m_random.nextInt( m_environment.column() )} );
+        while ( !m_environment.empty( l_position ) )
+        {
+            l_position.setQuick( 0, m_random.nextInt( m_environment.row() ) );
+            l_position.setQuick( 1, m_random.nextInt( m_environment.column() ) );
+        }
+
         return new CMovingAgent(
             m_environment,
             m_configuration,
 
-            new DenseDoubleMatrix1D( new double[]{m_random.nextInt( m_environment.row() ), m_random.nextInt( m_environment.column() )} ),
+            l_position,
 
             (IForce) p_data[0],
 

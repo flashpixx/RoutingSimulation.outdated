@@ -58,6 +58,14 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
     IElement<?> position( final IElement<?> p_object, final DoubleMatrix1D p_position );
 
     /**
+     * checks if a position is empty
+     *
+     * @param p_position position
+     * @return boolean result
+     */
+    boolean empty( final DoubleMatrix1D p_position );
+
+    /**
      * clip position data
      *
      * @param p_position position vector

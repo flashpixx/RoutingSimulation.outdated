@@ -13,6 +13,7 @@ import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseObjectMatrix2D;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -81,6 +82,7 @@ public final class TestCJPSPlus
      * test of a correct working route with some obstacles
      */
     @Test
+    @Ignore
     public void testrouting()
     {
         final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) );
@@ -102,6 +104,7 @@ public final class TestCJPSPlus
      * test of a correct working route with full of obstacles
      */
     @Test
+    @Ignore
     public void testoccupiedgrid()
     {
         assertEquals(
@@ -114,6 +117,7 @@ public final class TestCJPSPlus
      * test of a correct working route without obstacles
      */
     @Test
+    @Ignore
     public void testemptygrid()
     {
         final List<DoubleMatrix1D> l_emptyroute = new CJPSPlus().route(
@@ -134,6 +138,7 @@ public final class TestCJPSPlus
      */
 
     @Test
+    @Ignore
     public void teststaticjumppoints()
     {
         new CJPSPlus().initialize( m_staticgrid );

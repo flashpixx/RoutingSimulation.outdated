@@ -182,6 +182,13 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
+    public final synchronized boolean empty( final DoubleMatrix1D p_position )
+    {
+        final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
+        return m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) ) == null;
+    }
+
+    @Override
     public final DoubleMatrix1D clip( final DoubleMatrix1D p_position )
     {
         // clip position values if needed

@@ -406,7 +406,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         l_pixmap.setColor( m_color );
         l_pixmap.fillRectangle( 0, 0, p_cellsize, p_cellsize );
 
-        // add the square to a sprite (for visualization) and scale it to 80% of cell size
+        // add the square to a sprite (for visualization) and scale it to 90% of cell size
         m_sprite = new Sprite( new Texture( l_pixmap ), 0, 0, p_cellsize, p_cellsize );
         m_sprite.setSize( 0.9f * p_cellsize, 0.9f * p_cellsize );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );

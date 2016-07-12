@@ -59,7 +59,6 @@ public final class TestCAgent
     {
         Assume.assumeNotNull( m_environment );
         Assume.assumeNotNull( m_actions );
-        System.out.println( m_actions );
         new CMovingAgentGenerator(
             m_environment,
             TestCAgent.class.getResourceAsStream( "/agentrouting/agent.asl" ),

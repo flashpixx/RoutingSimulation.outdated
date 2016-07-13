@@ -51,4 +51,10 @@ public final class CStatic extends IBaseItem
     {
         return false;
     }
+
+    @Override
+    public final IItem call() throws Exception
+    {
+        return this;
+    }
 }

@@ -94,7 +94,7 @@ public final class CConfiguration
     /**
      * simulation static elements
      */
-    private List<IItem> m_static;
+    private List<IItem> m_staticelements;
     /**
      * environment
      */
@@ -187,7 +187,7 @@ public final class CConfiguration
         // create static objects
         final List<IItem> l_static = new LinkedList<>();
         this.createStatic( (List<Map<String, Object>>) l_data.getOrDefault( "element", Collections.<Map<String, Object>>emptyList() ), l_static );
-        m_static = Collections.unmodifiableList( l_static );
+        m_staticelements = Collections.unmodifiableList( l_static );
 
 
         if ( m_agents.size() > m_environment.column() * m_environment.row() / 2 )
@@ -236,6 +236,16 @@ public final class CConfiguration
     public final int simulationsteps()
     {
         return m_simulationstep;
+    }
+
+    /**
+     * return all static elements
+     *
+     * @return object list
+     */
+    public final List<IItem> staticelements()
+    {
+        return m_staticelements;
     }
 
     /**

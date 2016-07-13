@@ -30,6 +30,8 @@ import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
 import agentrouting.simulation.environment.CEnvironment;
 import agentrouting.simulation.environment.IEnvironment;
+import agentrouting.simulation.item.CStatic;
+import agentrouting.simulation.item.IItem;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
@@ -86,9 +88,13 @@ public final class CConfiguration
      */
     private int m_simulationstep;
     /**
-     * simulation elements
+     * simulation dynamic elements
      */
-    private List<IAgent> m_elements;
+    private List<IAgent> m_agents;
+    /**
+     * simulation static elements
+     */
+    private List<IItem> m_static;
     /**
      * environment
      */
@@ -174,16 +180,22 @@ public final class CConfiguration
         );
 
         // create executable object list and check number of elements
-        final List<IAgent> l_elements = new LinkedList<>();
-        this.createMovingAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_elements );
-        m_elements = Collections.unmodifiableList( l_elements );
+        final List<IAgent> l_agents = new LinkedList<>();
+        this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_agents );
+        m_agents = Collections.unmodifiableList( l_agents );
 
-        if ( m_elements.size() > m_environment.column() * m_environment.row() / 2 )
+        // create static objects
+        final List<IItem> l_static = new LinkedList<>();
+        this.createStatic( (List<Map<String, Object>>) l_data.getOrDefault( "element", Collections.<Map<String, Object>>emptyList() ), l_static );
+        m_static = Collections.unmodifiableList( l_static );
+
+
+        if ( m_agents.size() > m_environment.column() * m_environment.row() / 2 )
             throw new IllegalArgumentException(
                 MessageFormat.format(
                     "number of simulation elements are very large [{0}], so the environment size is too small, the environment "
                     + "[{1}x{2}] must define a number of cells which is greater than the two-time number of elements",
-                    m_elements.size(),
+                    m_agents.size(),
                     m_environment.row(),
                     m_environment.column()
                 )
@@ -231,9 +243,9 @@ public final class CConfiguration
      *
      * @return object list
      */
-    public final List<IAgent> elements()
+    public final List<IAgent> agents()
     {
-        return m_elements;
+        return m_agents;
     }
 
     /**
@@ -302,9 +314,10 @@ public final class CConfiguration
      *
      * @param p_agentconfiguration subsection for agent configuration
      * @param p_elements element list
+     * @throws IOException thrown on ASL reading error
      */
     @SuppressWarnings( "unchecked" )
-    private void createMovingAgent( final Map<String, Object> p_agentconfiguration, final List<IAgent> p_elements ) throws IOException
+    private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IAgent> p_elements ) throws IOException
     {
         final Map<String, IAgentGenerator<IAgent>> l_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
@@ -355,6 +368,29 @@ public final class CConfiguration
                 }
 
             } );
+    }
+
+    /**
+     * creates the static elements
+     *
+     * @param p_elementconfiguration subsection of static elements
+     * @param p_elements element list
+     */
+    @SuppressWarnings( "unchecked" )
+    private void createStatic( final List<Map<String, Object>> p_elementconfiguration, final List<IItem> p_elements )
+    {
+        p_elementconfiguration
+            .stream()
+            .map( i -> (Map<String, Object>) i.get( "static" ) )
+            .filter( i -> i != null )
+            .map( i -> new CStatic(
+                (List<Integer>) i.get( "left" ),
+                (List<Integer>) i.get( "right" ),
+                (Map<String, ?>) i.getOrDefault( "preferences", Collections.emptyMap() ),
+                (String) i.getOrDefault( "color", "" )
+            ) )
+            .forEach( p_elements::add );
+
     }
 
 }

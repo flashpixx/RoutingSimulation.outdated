@@ -33,12 +33,10 @@ import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
-import org.lightjason.agentspeak.language.ITerm;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -65,22 +63,30 @@ public abstract class IBaseItem implements IItem
     private Sprite m_sprite;
 
     /**
-     *
      * @param p_leftupper left-upper position
      * @param p_rightbottom right-bottom position
+     * @param p_preference preference map
      * @param p_color color
-     * @param p_preference preference set
      */
-    protected IBaseItem( final DoubleMatrix1D p_leftupper, final DoubleMatrix1D p_rightbottom, final Color p_color, final Set<ILiteral> p_preference )
+    protected IBaseItem( final List<Integer> p_leftupper, final List<Integer> p_rightbottom, final Map<String, ?> p_preference, final String p_color
+    )
     {
-        m_color = p_color;
+        if ( p_color.isEmpty() )
+            throw new RuntimeException( "color need not to be empty" );
+        if ( ( p_leftupper == null ) || ( p_leftupper.size() != 2 ) )
+            throw new RuntimeException( "left-upper corner is not set" );
+        if ( ( p_rightbottom == null ) || ( p_rightbottom.size() != 2 ) )
+            throw new RuntimeException( "right-bottom corner is not set" );
+
+        m_color = Color.valueOf( p_color );
         m_position = new DenseDoubleMatrix1D( new double[]{
-            Math.min( p_leftupper.getQuick( 0 ), p_rightbottom.getQuick( 0 ) ),
-            Math.min( p_leftupper.getQuick( 1 ), p_rightbottom.getQuick( 1 ) ),
-            Math.abs( p_rightbottom.getQuick( 0 ) - p_leftupper.getQuick( 0 ) ),
-            Math.abs( p_rightbottom.getQuick( 1 ) - p_leftupper.getQuick( 1 ) )
+            Math.min( p_leftupper.get( 0 ), p_rightbottom.get( 0 ) ),
+            Math.min( p_leftupper.get( 1 ), p_rightbottom.get( 1 ) ),
+            Math.abs( p_rightbottom.get( 0 ) - p_leftupper.get( 0 ) ),
+            Math.abs( p_rightbottom.get( 1 ) - p_leftupper.get( 1 ) )
         } );
-        m_preferences = Collections.unmodifiableMap( p_preference.parallelStream().collect( Collectors.toMap( ITerm::functor, i -> i ) ) );
+        //m_preferences = Collections.unmodifiableMap( p_preference.parallelStream().collect( Collectors.toMap( ITerm::functor, i -> i ) ) );
+        m_preferences = Collections.emptyMap();
     }
 
     @Override

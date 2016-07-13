@@ -23,11 +23,8 @@
 
 package agentrouting.simulation.item;
 
-import cern.colt.matrix.DoubleMatrix1D;
-import com.badlogic.gdx.graphics.Color;
-import org.lightjason.agentspeak.language.ILiteral;
-
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,18 +34,16 @@ public final class CStatic extends IBaseItem
 {
     /**
      * ctor
-     *
      * @param p_leftupper left-upper position
      * @param p_rightbottom right-bottom position
+     * @param p_preference map with preferences
      * @param p_color color
-     * @param p_preference preference set
      */
-    public CStatic( final DoubleMatrix1D p_leftupper, final DoubleMatrix1D p_rightbottom,
-                       final Color p_color,
-                       final Set<ILiteral> p_preference
+    public CStatic( final List<Integer> p_leftupper, final List<Integer> p_rightbottom,
+                    final Map<String, ?> p_preference, final String p_color
     )
     {
-        super( p_leftupper, p_rightbottom, p_color, p_preference );
+        super( p_leftupper, p_rightbottom, p_preference, p_color );
     }
 
     @Override

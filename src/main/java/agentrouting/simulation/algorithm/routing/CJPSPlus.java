@@ -26,9 +26,10 @@ package agentrouting.simulation.algorithm.routing;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.IntStream;
 
 import cern.colt.matrix.DoubleMatrix1D;
@@ -52,7 +53,7 @@ final class CJPSPlus implements IRouting
     @Override
     public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
     {
-        final Set<CJumpPoint> l_openlist = Collections.synchronizedSet( new HashSet<CJumpPoint>() );
+        final TreeSet<CJumpPoint> l_openlist = new TreeSet<CJumpPoint>( new CompareJumpPoint() );
         final ArrayList<DoubleMatrix1D> l_closedlist = new ArrayList<>();
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
 
@@ -60,9 +61,7 @@ final class CJPSPlus implements IRouting
 
         while ( !l_openlist.isEmpty() )
         {
-            //take the first element from set
-            final CJumpPoint l_currentnode = l_openlist.iterator().next();
-            l_openlist.remove( l_currentnode );
+            CJumpPoint l_currentnode = l_openlist.pollFirst();
 
             //if the current node is the end node
             if ( l_currentnode.coordinate().equals( p_targetposition ) )
@@ -94,6 +93,14 @@ final class CJPSPlus implements IRouting
         return 0;
     }
 
+    /**
+     * individual jump point successors are identified
+     * @param p_objects Snapshot of the environment
+     * @param p_curnode the current node to search for successors
+     * @param p_target the goal node
+     * @param p_closedlist the list of coordinate that already explored
+     * @param p_openlist the set of CJumpPoint that will be explored
+     */
     private void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final DoubleMatrix1D p_target, final ArrayList<DoubleMatrix1D> p_closedlist,
                              final Set<CJumpPoint> p_openlist )
     {
@@ -301,11 +308,25 @@ final class CJPSPlus implements IRouting
         final double l_row = Math.abs( p_jumpnode.parent().coordinate().getQuick( 0 ) - p_jumpnode.coordinate().getQuick( 0 ) );
         final double l_column = Math.abs( p_jumpnode.parent().coordinate().getQuick( 1 ) - p_jumpnode.coordinate().getQuick( 1 ) );
 
-        final double l_gscore = ( l_row == 0 && l_column == 0 ) ? Math.abs( 14 * l_row ) : Math.abs( 10 * Math.max( l_row, l_column ) );
+        final double l_gscore = ( l_row != 0 && l_column != 0 ) ? Math.abs( 14 * l_row ) : Math.abs( 10 * Math.max( l_row, l_column ) );
 
         p_jumpnode.setgscore( p_jumpnode.parent().gscore() + l_gscore );
     }
 
+    /**
+     * class to compare two jump-points
+     */
+    private class CompareJumpPoint implements Comparator<CJumpPoint>
+    {
+        @Override
+        public int compare( CJumpPoint p_jumppoint1, CJumpPoint p_jumppoint2 ) {
+            if( p_jumppoint1.fscore() > p_jumppoint2.fscore() ){
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
 
     /**
      * jump-point with a static class
@@ -385,7 +406,7 @@ final class CJPSPlus implements IRouting
          */
         public final double fscore()
         {
-            return m_gscore + m_hscore;
+            return m_hscore + m_gscore + m_hscore;
         }
 
         /**
@@ -420,11 +441,5 @@ final class CJPSPlus implements IRouting
             return this;
         }
 
-
-        @Override
-        public int hashCode()
-        {
-            return (int)( m_hscore + m_gscore );
-        }
     }
 }

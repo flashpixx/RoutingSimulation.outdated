@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.lightjason</groupId>
             <artifactId>AgentSpeak</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 

@@ -38,6 +38,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -150,7 +151,10 @@ public final class CMain
         // open window
         LOGGER.info( MessageFormat.format( "open window with size [{0}x{1}]", l_config.width, l_config.height ) );
         final CScreen l_screen = new CScreen(
-            CConfiguration.INSTANCE.agents(),
+            Stream.concat(
+                CConfiguration.INSTANCE.staticelements().parallelStream(),
+                CConfiguration.INSTANCE.agents().parallelStream()
+            ).collect( Collectors.toList() ),
             CConfiguration.INSTANCE.environment(),
             CConfiguration.INSTANCE.screenshot(),
             CConfiguration.INSTANCE.statusvisible()

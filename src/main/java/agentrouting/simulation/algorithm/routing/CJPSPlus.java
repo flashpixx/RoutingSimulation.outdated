@@ -61,7 +61,7 @@ final class CJPSPlus implements IRouting
 
         while ( !l_openlist.isEmpty() )
         {
-            CJumpPoint l_currentnode = l_openlist.pollFirst();
+            final CJumpPoint l_currentnode = l_openlist.pollFirst();
 
             //if the current node is the end node
             if ( l_currentnode.coordinate().equals( p_targetposition ) )
@@ -104,14 +104,14 @@ final class CJPSPlus implements IRouting
     private void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final DoubleMatrix1D p_target, final ArrayList<DoubleMatrix1D> p_closedlist,
                              final Set<CJumpPoint> p_openlist )
     {
-        IntStream.range( -1, 2 )
+        IntStream.rangeClosed( -1, 1 )
             .forEach( i ->
             {
-                IntStream.range( -1, 2 )
-                    .filter( j-> ( i != 0 || j != 0 )
+                IntStream.rangeClosed( -1, 1 )
+                    .filter( j -> ( i != 0 || j != 0 )
                                  && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j, p_closedlist )
                                  && !this.isOccupied( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j ) )
-                    .forEach( j->
+                    .forEach( j ->
                     {
                         final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects );
                         this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
@@ -315,9 +315,14 @@ final class CJPSPlus implements IRouting
 
     /**
      * class to compare two jump-points
+     * @bug styleguide naming convention !!
+     * @bug fix finale
+     * @bug fix static class
+     * @bug short the code of method compare !!
      */
     private class CompareJumpPoint implements Comparator<CJumpPoint>
     {
+
         @Override
         public int compare( CJumpPoint p_jumppoint1, CJumpPoint p_jumppoint2 ) {
             if( p_jumppoint1.fscore() > p_jumppoint2.fscore() ){

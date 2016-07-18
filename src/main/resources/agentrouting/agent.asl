@@ -24,7 +24,7 @@ preferences/viewleftrightradius(1).
 // walk straight forward into the direction of the goal-position
 +!movement/walk/forward
     <-
-        //generic/print( "walk forward" );
+        generic/print( "walk forward" );
         move/forward();
         !movement/walk/forward
 .
@@ -39,8 +39,8 @@ preferences/viewleftrightradius(1).
 // a new route position within the next 10 cells around the current position
 -!movement/walk/forward
     <-
-        //generic/print( "walk forward fails" );
-        route/random( 10 );
+        generic/print( "walk forward fails" );
+        //route/random( 10 );
         !movement/walk/forward
 .
 
@@ -49,8 +49,8 @@ preferences/viewleftrightradius(1).
 // the current speed
 +!movement/standstill
     <-
-        //generic/print( "standstill" );
-        speed/increment(5);
+        generic/print( "standstill" );
+        speed/increment( 1 );
         !!movement/walk/forward
 .
 
@@ -64,7 +64,7 @@ preferences/viewleftrightradius(1).
 // belief preference/near-by(V)
 +!goal/near-by(D)
     <-
-        //generic/print( "near-by", D );
+        generic/print( "near-by", D );
         speed/set(1)
 .
 
@@ -73,7 +73,8 @@ preferences/viewleftrightradius(1).
 // will sleep 5 cycles
 +!goal/achieve-position(P)
      <-
-        //generic/print( "position achieved", P );
+        generic/print( "position achieved", P );
+        route/skipcurrent();
         generic/sleep(5)
 .
 
@@ -83,14 +84,14 @@ preferences/viewleftrightradius(1).
 // and a random near-by definition
 +!wakeup
     <-
-        //generic/print("wakeup");
+        generic/print("wakeup");
 
-        route/random( 25 );
-        // route/random( 10, 10 );
+        // route/random( 25 );
+        route/random( 10, 10 );
 
-        N = math/statistic/randomsimple();
-        N = N*10;
-        +preferences/near-by(N);
+        //N = math/statistic/randomsimple();
+        //N = N*10;
+        //+preferences/near-by(N);
 
         speed/set(1);
 

@@ -46,6 +46,7 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -148,10 +149,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         // check if the agent reaches the goal-position, if it reachs, remove it from the route queue
         final DoubleMatrix1D l_goalposition = this.goal();
         if ( m_position.equals( l_goalposition ) )
-        {
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
-            m_route.poll();
-        }
         else
         {
             // otherwise check "near-by(D)" preference for the current position and the goal
@@ -231,7 +229,12 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     @IAgentActionName( name = "route/set" )
     protected final void route( final Number p_row, final Number p_column )
     {
-        m_route.addAll( m_environment.route( this, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
+        final List<DoubleMatrix1D> l_route = m_environment.route( this, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) );
+        // @bug the first item must be removed, because it is the current position
+        if ( l_route.size() > 1 )
+            l_route.remove( 0 );
+
+        m_route.addAll( l_route );
     }
 
     /**
@@ -375,7 +378,12 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         if ( l_goalposition.equals( m_position ) )
             return;
 
-        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
+        final DoubleMatrix1D l_next = p_direction.position( m_position, l_goalposition, m_speed );
+
+        System.out.println( agentrouting.CCommon.MATRIXFORMAT.toString( m_position )
+                            + "    ->     " + agentrouting.CCommon.MATRIXFORMAT.toString( l_goalposition )
+                            + "     =     " + agentrouting.CCommon.MATRIXFORMAT.toString( l_next ) );
+        if ( !this.equals( m_environment.position( this, l_next ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 

@@ -169,16 +169,6 @@ public final class CConfiguration
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
         );
 
-        // create environment
-        m_environment = new CEnvironment(
-            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
-            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
-            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
-                .getOrDefault( "cellsize", -1 ),
-            ERoutingFactory.valueOf( ( (String) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
-                .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
-        );
-
         // create executable object list and check number of elements
         final List<IAgent> l_agents = new LinkedList<>();
         this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_agents );
@@ -189,8 +179,18 @@ public final class CConfiguration
         this.createStatic( (List<Map<String, Object>>) l_data.getOrDefault( "element", Collections.<Map<String, Object>>emptyList() ), l_static );
         m_staticelements = Collections.unmodifiableList( l_static );
 
+        // create environment
+        m_environment = new CEnvironment(
+            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
+            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
+            (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
+                .getOrDefault( "cellsize", -1 ),
+            ERoutingFactory.valueOf( ( (String) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
+                .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get(),
+            m_staticelements
+        );
 
-        if ( m_agents.size() > m_environment.column() * m_environment.row() / 2 )
+        if ( m_agents.size() + m_staticelements.size() > m_environment.column() * m_environment.row() / 2 )
             throw new IllegalArgumentException(
                 MessageFormat.format(
                     "number of simulation elements are very large [{0}], so the environment size is too small, the environment "

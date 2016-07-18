@@ -25,6 +25,7 @@ package agentrouting.simulation.environment;
 
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.algorithm.routing.IRouting;
+import agentrouting.simulation.item.IItem;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
@@ -89,8 +90,9 @@ public final class CEnvironment implements IEnvironment
      * @param p_cellcolumns number of column cells
      * @param p_cellsize cell size
      * @param p_routing routing algorithm
+     * @param p_obstacles static obstacles
      */
-    public CEnvironment( final int p_cellrows, final int p_cellcolumns, final int p_cellsize, final IRouting p_routing )
+    public CEnvironment( final int p_cellrows, final int p_cellcolumns, final int p_cellsize, final IRouting p_routing, final List<? extends IItem> p_obstacles )
     {
         if ( ( p_cellcolumns < 1 ) || ( p_cellrows < 1 ) || ( p_cellsize < 1 ) )
             throw new IllegalArgumentException( "environment size must be greater or equal than one" );
@@ -100,6 +102,14 @@ public final class CEnvironment implements IEnvironment
         m_routing = p_routing;
         m_cellsize = p_cellsize;
         m_positions = new SparseObjectMatrix2D( m_row, m_column );
+
+        // add all obstacles to the position matrix
+        p_obstacles.forEach( i ->
+                             {
+                                 IntStream.range( (int) i.position().get( 0 ), (int) ( i.position().get( 0 ) + i.position().getQuick( 2 ) ) )
+
+                             } );
+
         LOGGER.info( MessageFormat.format( "create environment with size [{0}x{1}] and cell size [{2}]", m_row, m_column, p_cellsize ) );
     }
 

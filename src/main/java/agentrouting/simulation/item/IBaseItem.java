@@ -88,8 +88,6 @@ public abstract class IBaseItem implements IItem
         } );
         //m_preferences = Collections.unmodifiableMap( p_preference.parallelStream().collect( Collectors.toMap( ITerm::functor, i -> i ) ) );
         m_preferences = Collections.emptyMap();
-
-        System.out.println( agentrouting.CCommon.MATRIXFORMAT.toString( m_position ) );
     }
 
     @Override
@@ -113,6 +111,7 @@ public abstract class IBaseItem implements IItem
     @Override
     public final Sprite spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize )
     {
+        // variables are defined as size1 = y-size & size2 = x-size
         final float l_size1 = p_cellsize * (int) m_position.getQuick( 2 );
         final float l_size2 = p_cellsize * (int) m_position.getQuick( 3 );
 
@@ -124,7 +123,7 @@ public abstract class IBaseItem implements IItem
         // add the square to a sprite (for visualization) and use 100% of cell size
         m_sprite = new Sprite( new Texture( l_pixmap ), 0, 0, p_cellsize, p_cellsize );
         m_sprite.setSize( l_size1, l_size2 );
-        //m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
+        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
 
         return m_sprite;

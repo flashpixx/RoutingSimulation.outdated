@@ -53,7 +53,7 @@ final class CJPSPlus implements IRouting
     @Override
     public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
     {
-        final TreeSet<CJumpPoint> l_openlist = new TreeSet<CJumpPoint>( new CompareJumpPoint() );
+        final TreeSet<CJumpPoint> l_openlist = new TreeSet<CJumpPoint>( new CCompareJumpPoint() );
         final ArrayList<DoubleMatrix1D> l_closedlist = new ArrayList<>();
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
 
@@ -68,7 +68,7 @@ final class CJPSPlus implements IRouting
             {
                 l_finalpath.add( p_targetposition );
                 CJumpPoint l_parent = l_currentnode.parent();
-                while ( l_parent != null )
+                while ( !l_parent.coordinate().equals( p_currentposition ) )
                 {
                     l_finalpath.add( l_parent.coordinate() );
                     l_parent = l_parent.parent();
@@ -315,21 +315,13 @@ final class CJPSPlus implements IRouting
 
     /**
      * class to compare two jump-points
-     * @bug styleguide naming convention !!
-     * @bug fix finale
-     * @bug fix static class
-     * @bug short the code of method compare !!
      */
-    private class CompareJumpPoint implements Comparator<CJumpPoint>
+    private static class CCompareJumpPoint implements Comparator<CJumpPoint>
     {
-
         @Override
-        public int compare( CJumpPoint p_jumppoint1, CJumpPoint p_jumppoint2 ) {
-            if( p_jumppoint1.fscore() > p_jumppoint2.fscore() ){
-                return 1;
-            } else {
-                return -1;
-            }
+        public int compare( final CJumpPoint p_jumppoint1, final CJumpPoint p_jumppoint2 )
+        {
+            return ( p_jumppoint1.fscore() > p_jumppoint2.fscore() ) ? 1 : -1;
         }
     }
 

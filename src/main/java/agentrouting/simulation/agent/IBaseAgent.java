@@ -25,6 +25,7 @@
 package agentrouting.simulation.agent;
 
 import agentrouting.simulation.environment.EDirection;
+import agentrouting.simulation.environment.EQuadrant;
 import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -152,6 +153,9 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
         else
         {
+            // check if the direction between current position and goal position is changed, than we have missed the goal-position
+
+
             // otherwise check "near-by(D)" preference for the current position and the goal
             // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
             // Y is a literal with distance
@@ -380,9 +384,9 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
         final DoubleMatrix1D l_next = p_direction.position( m_position, l_goalposition, m_speed );
 
-        System.out.println( agentrouting.CCommon.MATRIXFORMAT.toString( m_position )
-                            + "    ->     " + agentrouting.CCommon.MATRIXFORMAT.toString( l_goalposition )
-                            + "     =     " + agentrouting.CCommon.MATRIXFORMAT.toString( l_next ) );
+        EQuadrant.quadrant( l_goalposition, m_position );
+        EQuadrant.quadrant( l_goalposition, l_next );
+
         if ( !this.equals( m_environment.position( this, l_next ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }

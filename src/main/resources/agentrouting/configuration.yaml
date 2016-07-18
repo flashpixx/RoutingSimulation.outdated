@@ -64,8 +64,8 @@ agent :
 element :
 
     - static :
-        left  : [ 30, 30 ]
-        right : [ 50, 60 ]
+        left  : [ 0, 0 ]
+        right : [ 10, 20 ]
         color : "ffff00"
 
     - static :

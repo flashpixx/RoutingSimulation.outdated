@@ -82,6 +82,7 @@ public abstract class IBaseItem implements IItem
         m_position = new DenseDoubleMatrix1D( new double[]{
             Math.min( p_leftupper.get( 0 ), p_rightbottom.get( 0 ) ),
             Math.min( p_leftupper.get( 1 ), p_rightbottom.get( 1 ) ),
+
             Math.abs( p_rightbottom.get( 0 ) - p_leftupper.get( 0 ) ),
             Math.abs( p_rightbottom.get( 1 ) - p_leftupper.get( 1 ) )
         } );
@@ -112,15 +113,18 @@ public abstract class IBaseItem implements IItem
     @Override
     public final Sprite spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize )
     {
+        final float l_size1 = p_cellsize * (int) m_position.getQuick( 2 );
+        final float l_size2 = p_cellsize * (int) m_position.getQuick( 3 );
+
         // create a colored block of the item
         final Pixmap l_pixmap = new Pixmap( p_cellsize, p_cellsize, Pixmap.Format.RGBA8888 );
         l_pixmap.setColor( m_color );
-        l_pixmap.fillRectangle( 0, 0, p_cellsize * (int) m_position.getQuick( 2 ), p_cellsize * (int) m_position.getQuick( 3 ) );
+        l_pixmap.fillRectangle( 0, 0, (int) l_size2, (int) l_size1 );
 
         // add the square to a sprite (for visualization) and use 100% of cell size
         m_sprite = new Sprite( new Texture( l_pixmap ), 0, 0, p_cellsize, p_cellsize );
-        m_sprite.setSize( p_cellsize, p_cellsize );
-        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
+        m_sprite.setSize( l_size1, l_size2 );
+        //m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
 
         return m_sprite;

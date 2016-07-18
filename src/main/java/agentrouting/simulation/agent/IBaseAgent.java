@@ -112,13 +112,15 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         if ( p_color.isEmpty() )
             throw new RuntimeException( "color need not to be empty" );
 
-        m_position = p_position;
+        m_position = new DenseDoubleMatrix1D( 2 );
         m_environment = p_environment;
         m_color = Color.valueOf( p_color );
 
         // create a random route
-        this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
+        this.route( m_environment.row() - 5, m_environment.column() - 5 );
+        //this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
         //m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
+        m_route.forEach( i -> System.out.println( agentrouting.CCommon.MATRIXFORMAT.toString( i ) ) );
     }
 
     @Override

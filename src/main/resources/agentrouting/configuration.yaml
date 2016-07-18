@@ -68,17 +68,17 @@ element :
         right : [ 60, 20 ]
         color : "ffaa00"
 
-    - static :
-        left  : [ 60, 60 ]
-        right : [ 75, 95 ]
-        color : "ffbb00"
+#    - static :
+#        left  : [ 60, 60 ]
+#        right : [ 75, 95 ]
+#        color : "ffbb00"
 
-    - static :
-        left  : [ 90, 100 ]
-        right : [ 110, 120 ]
-        color : "ffcc00"
+#    - static :
+#        left  : [ 90, 100 ]
+#        right : [ 110, 120 ]
+#        color : "ffcc00"
 
-    - static :
-        left  : [ 140, 20 ]
-        right : [ 100, 90 ]
-        color : "ffdd00"
+#    - static :
+#        left  : [ 140, 20 ]
+#        right : [ 100, 90 ]
+#        color : "ffdd00"

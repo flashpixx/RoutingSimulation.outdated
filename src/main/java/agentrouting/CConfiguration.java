@@ -174,7 +174,7 @@ public final class CConfiguration
         this.createStatic( (List<Map<String, Object>>) l_data.getOrDefault( "element", Collections.<Map<String, Object>>emptyList() ), l_static );
         m_staticelements = Collections.unmodifiableList( l_static );
 
-        // create environment
+        // create environment - static items must be exists
         m_environment = new CEnvironment(
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),

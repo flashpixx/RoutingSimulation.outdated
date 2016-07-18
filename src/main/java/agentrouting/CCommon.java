@@ -97,7 +97,7 @@ public final class CCommon
     public static Stream<Pair<Integer, Integer>> inttupelstream( final int p_firststart, final int p_firstend, final int p_secondstart, final int p_secondend )
     {
         final Supplier<IntStream> l_inner = () -> IntStream.rangeClosed( p_secondstart, p_secondend );
-        return IntStream.rangeClosed( p_firststart, p_firstend ).mapToObj( i -> new ImmutablePair<>( i, 0 ) );
+        return IntStream.rangeClosed( p_firststart, p_firstend ).boxed().flatMap( i -> l_inner.get().mapToObj( j -> new ImmutablePair<>( i, j ) ) );
     }
 
     /**

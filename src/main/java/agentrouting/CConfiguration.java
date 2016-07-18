@@ -169,12 +169,7 @@ public final class CConfiguration
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
         );
 
-        // create executable object list and check number of elements
-        final List<IAgent> l_agents = new LinkedList<>();
-        this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_agents );
-        m_agents = Collections.unmodifiableList( l_agents );
-
-        // create static objects
+        // create static objects - static object are needed by the environment
         final List<IItem> l_static = new LinkedList<>();
         this.createStatic( (List<Map<String, Object>>) l_data.getOrDefault( "element", Collections.<Map<String, Object>>emptyList() ), l_static );
         m_staticelements = Collections.unmodifiableList( l_static );
@@ -189,6 +184,11 @@ public final class CConfiguration
                 .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get(),
             m_staticelements
         );
+
+        // create executable object list and check number of elements - environment must be exists
+        final List<IAgent> l_agents = new LinkedList<>();
+        this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_agents );
+        m_agents = Collections.unmodifiableList( l_agents );
 
         if ( m_agents.size() + m_staticelements.size() > m_environment.column() * m_environment.row() / 2 )
             throw new IllegalArgumentException(

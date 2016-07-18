@@ -23,6 +23,7 @@
 
 package agentrouting.simulation.environment;
 
+import agentrouting.CCommon;
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.algorithm.routing.IRouting;
 import agentrouting.simulation.item.IItem;
@@ -104,12 +105,7 @@ public final class CEnvironment implements IEnvironment
         m_positions = new SparseObjectMatrix2D( m_row, m_column );
 
         // add all obstacles to the position matrix
-        p_obstacles.forEach( i ->
-                             {
-                                 IntStream.range( (int) i.position().get( 0 ), (int) ( i.position().get( 0 ) + i.position().getQuick( 2 ) ) )
-
-                             } );
-
+        p_obstacles.forEach( i -> CCommon.inttupelstream( i ).forEach( j -> m_positions.setQuick( j.getLeft(), j.getRight(), i ) ) );
         LOGGER.info( MessageFormat.format( "create environment with size [{0}x{1}] and cell size [{2}]", m_row, m_column, p_cellsize ) );
     }
 

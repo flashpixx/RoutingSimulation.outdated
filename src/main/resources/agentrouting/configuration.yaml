@@ -60,15 +60,25 @@ agent :
 
 
 
-# static environment elements - optional
+# static environment (optional) elements - position is defined in (y/x) structure
 element :
 
     - static :
-        left  : [ 0, 0 ]
-        right : [ 10, 20 ]
-        color : "ffff00"
+        left  : [ 30, 10 ]
+        right : [ 60, 20 ]
+        color : "ffaa00"
+
+    - static :
+        left  : [ 60, 60 ]
+        right : [ 75, 95 ]
+        color : "ffbb00"
 
     - static :
         left  : [ 90, 100 ]
         right : [ 110, 120 ]
-        color : "ffaa00"
+        color : "ffcc00"
+
+    - static :
+        left  : [ 140, 20 ]
+        right : [ 100, 90 ]
+        color : "ffdd00"

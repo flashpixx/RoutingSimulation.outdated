@@ -79,6 +79,16 @@ preferences/viewleftrightradius(1).
 .
 
 
+// is called if the agent walks beyonds the goal-position, than
+// the speed is set to 1 and we try go back
++!goal/beyond(P)
+    <-
+        generic/print( "position beyond", P );
+        speed/set(1);
+        !!movement/walk/forward
+.
+
+
 // if the agent is wake-uped a new route is taken by random or fixed
 // around the current position and than starts walking with the initial speed
 // and a random near-by definition

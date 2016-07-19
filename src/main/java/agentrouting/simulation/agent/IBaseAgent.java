@@ -129,8 +129,9 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     @Override
     public IAgent call() throws Exception
     {
-        // cache current position to generate non-moving trigger
+        // cache current position to generate non-moving and targte-beyond trigger
         final DenseDoubleMatrix1D l_position = new DenseDoubleMatrix1D( m_position.toArray() );
+        final EQuadrant l_quadrant = EQuadrant.quadrant( this.goal(), l_position );
 
         // --- visualization -----------------------------------------------------------------------
 
@@ -154,8 +155,9 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
         else
         {
-            // check if the direction between current position and goal position is changed, than we have missed the goal-position
-
+            // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
+            if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
+                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/beyond", Stream.of( CRawTerm.from( m_position ) ) ) ) );
 
             // otherwise check "near-by(D)" preference for the current position and the goal
             // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
@@ -383,23 +385,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         if ( l_goalposition.equals( m_position ) )
             return;
 
-        final DoubleMatrix1D l_next = p_direction.position( m_position, l_goalposition, m_speed );
-
-        try
-        {
-            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{1, 2} ) ) );
-            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{1, -2} ) ) );
-            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{-1, -2} ) ) );
-            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{-1, 2} ) ) );
-            System.out.println();
-        }
-        catch ( final Exception l_ex )
-        {
-            System.out.println( l_ex );
-        }
-
-
-        if ( !this.equals( m_environment.position( this, l_next ) ) )
+        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 

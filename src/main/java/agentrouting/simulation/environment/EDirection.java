@@ -75,7 +75,7 @@ public enum EDirection
         // normalize direction and rotate the normalized vector based on the direction
         // calculate the target position based by: current position + speed * rotate( normalize( goal position - current position ) )
         final DoubleMatrix1D l_view = new DenseDoubleMatrix1D( p_goalposition.toArray() );
-        return Algebra.DEFAULT.mult(
+        return CMath.ALGEBRA.mult(
                     m_rotation,
                     l_view
                         .assign( p_position, Functions.minus )

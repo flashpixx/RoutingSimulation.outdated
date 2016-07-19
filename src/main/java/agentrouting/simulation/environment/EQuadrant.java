@@ -26,9 +26,7 @@ package agentrouting.simulation.environment;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseDoubleMatrix1D;
-import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
-import cern.jet.math.Mult;
 
 
 /**
@@ -65,22 +63,13 @@ public enum EQuadrant
     public static EQuadrant quadrant( final DoubleMatrix1D p_zero, final DoubleMatrix1D p_position )
     {
         final DoubleMatrix1D l_difference = new DenseDoubleMatrix1D( p_position.toArray() ).assign( p_zero, Functions.minus );
-        l_difference.assign( Mult.div( Math.sqrt( Algebra.DEFAULT.norm2( l_difference ) ) ) );
-
-        if ( Math.abs( l_difference.getQuick( 1 ) ) > Math.abs( l_difference.getQuick( 0 ) ) )
-        {
-            if ( l_difference.getQuick( 1 ) < 0 )
-                return UPPERRIGHT;
-            else
-                return BOTTOMLEFT;
-        }
-        else
-        {
-            if ( l_difference.getQuick( 0 ) < 0 )
-                return BOTTOMRIGHT;
-            else
-                return UPPERLEFT;
-        }
+        return l_difference.getQuick( 1 ) < 0
+               ? l_difference.getQuick( 0 ) < 0
+                 ? BOTTOMLEFT
+                 : UPPERLEFT
+               : l_difference.getQuick( 0 ) < 0
+                 ? BOTTOMRIGHT
+                 : UPPERRIGHT;
     }
 
 }

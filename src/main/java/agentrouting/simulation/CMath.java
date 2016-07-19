@@ -36,6 +36,11 @@ import cern.jet.math.Functions;
  */
 public final class CMath
 {
+    /**
+     * reference to global algebra instance
+     */
+    public static final Algebra ALGEBRA = Algebra.DEFAULT;
+
 
     /**
      * pvate ctor
@@ -67,7 +72,7 @@ public final class CMath
      */
     public static double distance( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
     {
-        return Algebra.DEFAULT.norm2(
+        return ALGEBRA.norm2(
             new DenseDoubleMatrix1D( p_second.toArray() )
                 .assign( p_first, Functions.minus )
         );

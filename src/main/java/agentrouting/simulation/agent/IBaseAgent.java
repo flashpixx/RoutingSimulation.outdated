@@ -123,8 +123,15 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         this.route( m_environment.row() - 5, m_environment.column() - 5 );
         //this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
         //m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
-        m_route.forEach( i -> System.out.println( agentrouting.CCommon.MATRIXFORMAT.toString( i ) ) );
     }
+
+    /*
+    @Override
+    public final String toString()
+    {
+        return MessageFormat.format( "{0} - [{1}]", super.toString(), m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) ) );
+    }
+    */
 
     @Override
     public IAgent call() throws Exception
@@ -167,8 +174,12 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
 
+
+        System.out.println( this );
+
         return this;
     }
+
 
 
 
@@ -193,6 +204,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     {
         return this.beliefbase().stream( CPath.from( PREFERENCE ) );
     }
+
+
 
 
 

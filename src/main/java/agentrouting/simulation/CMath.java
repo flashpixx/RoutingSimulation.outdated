@@ -25,6 +25,7 @@ package agentrouting.simulation;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.doublealgo.Formatter;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
@@ -40,7 +41,17 @@ public final class CMath
      * reference to global algebra instance
      */
     public static final Algebra ALGEBRA = Algebra.DEFAULT;
+    /**
+     * matrix formatter
+     */
+    public static final Formatter MATRIXFORMAT = new Formatter();
 
+    static
+    {
+        MATRIXFORMAT.setRowSeparator( "; " );
+        MATRIXFORMAT.setColumnSeparator( "," );
+        MATRIXFORMAT.setPrintShape( false );
+    }
 
     /**
      * pvate ctor

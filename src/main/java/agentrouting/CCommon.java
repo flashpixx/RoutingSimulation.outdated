@@ -25,7 +25,6 @@ package agentrouting;
 
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.agent.IAgent;
-import cern.colt.matrix.doublealgo.Formatter;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -46,21 +45,9 @@ import java.util.stream.Stream;
 public final class CCommon
 {
     /**
-     * matrix formatter
-     */
-    public static final Formatter MATRIXFORMAT = new Formatter();
-    /**
      * logger
      */
     private static final Logger LOGGER = Logger.getLogger( IAgent.class.getName() );
-
-    static
-    {
-        MATRIXFORMAT.setRowSeparator( "; " );
-        MATRIXFORMAT.setColumnSeparator( "," );
-        MATRIXFORMAT.setPrintShape( false );
-    }
-
 
     /**
      * ctor

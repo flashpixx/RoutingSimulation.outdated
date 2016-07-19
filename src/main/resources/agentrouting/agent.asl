@@ -49,9 +49,9 @@ preferences/viewleftrightradius(1).
 // the current speed
 +!movement/standstill
     <-
-        generic/print( "standstill" );
+        generic/print( "standstill - increment speed with 1" );
         speed/increment( 1 );
-        !!movement/walk/forward
+        !movement/walk/forward
 .
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ preferences/viewleftrightradius(1).
 // belief preference/near-by(V)
 +!goal/near-by(D)
     <-
-        generic/print( "near-by", D );
+        generic/print( "near-by - set speed to 1", D );
         speed/set(1)
 .
 
@@ -73,7 +73,7 @@ preferences/viewleftrightradius(1).
 // will sleep 5 cycles
 +!goal/achieve-position(P)
      <-
-        generic/print( "position achieved", P );
+        generic/print( "position achieved - sleep for 5 cycles", P );
         route/skipcurrent();
         generic/sleep(5)
 .
@@ -83,9 +83,8 @@ preferences/viewleftrightradius(1).
 // the speed is set to 1 and we try go back
 +!goal/beyond(P)
     <-
-        generic/print( "position beyond", P );
-        speed/set(1);
-        !!movement/walk/forward
+        generic/print( "position beyond - set speed to 1", P );
+        speed/set(1)
 .
 
 
@@ -94,10 +93,10 @@ preferences/viewleftrightradius(1).
 // and a random near-by definition
 +!wakeup
     <-
-        generic/print("wakeup");
+        generic/print("wakeup - set speed to 1");
 
         // route/random( 25 );
-        route/random( 10, 10 );
+        // route/random( 10, 10 );
 
         //N = math/statistic/randomsimple();
         //N = N*10;
@@ -105,7 +104,7 @@ preferences/viewleftrightradius(1).
 
         speed/set(1);
 
-        !!movement/walk/forward
+        !movement/walk/forward
 .
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------

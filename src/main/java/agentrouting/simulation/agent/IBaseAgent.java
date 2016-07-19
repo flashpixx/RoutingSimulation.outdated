@@ -24,6 +24,7 @@
 
 package agentrouting.simulation.agent;
 
+import agentrouting.simulation.CMath;
 import agentrouting.simulation.environment.EDirection;
 import agentrouting.simulation.environment.EQuadrant;
 import agentrouting.simulation.environment.IEnvironment;
@@ -159,7 +160,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             // otherwise check "near-by(D)" preference for the current position and the goal
             // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
             // Y is a literal with distance
-            final double l_distance = EDirection.distance( m_position, l_goalposition );
+            final double l_distance = CMath.distance( m_position, l_goalposition );
             if ( l_distance <= this.preference( "near-by", 0 ).doubleValue() )
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
@@ -384,8 +385,19 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
         final DoubleMatrix1D l_next = p_direction.position( m_position, l_goalposition, m_speed );
 
-        EQuadrant.quadrant( l_goalposition, m_position );
-        EQuadrant.quadrant( l_goalposition, l_next );
+        try
+        {
+            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{1, 2} ) ) );
+            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{1, -2} ) ) );
+            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{-1, -2} ) ) );
+            System.out.println( EQuadrant.quadrant( new DenseDoubleMatrix1D( new double[]{-1, 2} ) ) );
+            System.out.println();
+        }
+        catch ( final Exception l_ex )
+        {
+            System.out.println( l_ex );
+        }
+
 
         if ( !this.equals( m_environment.position( this, l_next ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );

@@ -23,14 +23,18 @@
 
 package agentrouting.simulation.environment;
 
-import agentrouting.CCommon;
 import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseDoubleMatrix1D;
+import cern.colt.matrix.linalg.Algebra;
+import cern.jet.math.Functions;
+import cern.jet.math.Mult;
 
 
 /**
  * quadrant
  * @see https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)
+ * @see http://gamedev.stackexchange.com/questions/96099/is-there-a-quick-way-to-determine-if-a-vector-is-in-a-quadrant
  */
 public enum EQuadrant
 {
@@ -38,7 +42,6 @@ public enum EQuadrant
     UPPERLEFT,
     BOTTOMLEFT,
     BOTTOMRIGHT;
-
 
     /**
      * returns a quadrant based on the vector
@@ -57,25 +60,27 @@ public enum EQuadrant
      * @param p_zero zero position
      * @param p_position position
      * @return quadrant relative to zero position
-     * @see http://gamedev.stackexchange.com/questions/96099/is-there-a-quick-way-to-determine-if-a-vector-is-in-a-quadrant
+
      */
     public static EQuadrant quadrant( final DoubleMatrix1D p_zero, final DoubleMatrix1D p_position )
     {
-        final double l_sin = Math.toDegrees( Math.asin( ( p_position.getQuick( 0 ) - p_zero.getQuick( 0 ) ) / ( p_position.getQuick( 1 ) - p_zero.getQuick( 1 ) ) ) );
-        final double l_cos = Math.toDegrees( Math.acos( ( p_position.getQuick( 1 ) - p_zero.getQuick( 1 ) ) / ( p_position.getQuick( 0 ) - p_zero.getQuick( 0 ) ) ) );
+        final DoubleMatrix1D l_difference = new DenseDoubleMatrix1D( p_position.toArray() ).assign( p_zero, Functions.minus );
+        l_difference.assign( Mult.div( Math.sqrt( Algebra.DEFAULT.norm2( l_difference ) ) ) );
 
-        System.out.println( CCommon.MATRIXFORMAT.toString( p_zero ) + "     " + CCommon.MATRIXFORMAT.toString( p_position ) + "     " + l_sin + "     " + l_cos );
-
-        if ( ( l_sin >= 0 ) && ( l_cos >= 0 ) )
-            return UPPERRIGHT;
-
-        if ( ( l_sin >= 0 ) && ( l_cos < 0 ) )
-            return UPPERLEFT;
-
-        if ( ( l_sin < 0 ) && ( l_cos < 0 ) )
-            return BOTTOMLEFT;
-
-        return BOTTOMRIGHT;
+        if ( Math.abs( l_difference.getQuick( 1 ) ) > Math.abs( l_difference.getQuick( 0 ) ) )
+        {
+            if ( l_difference.getQuick( 1 ) < 0 )
+                return UPPERRIGHT;
+            else
+                return BOTTOMLEFT;
+        }
+        else
+        {
+            if ( l_difference.getQuick( 0 ) < 0 )
+                return BOTTOMRIGHT;
+            else
+                return UPPERLEFT;
+        }
     }
 
 }

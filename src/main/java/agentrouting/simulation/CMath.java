@@ -21,69 +21,56 @@
  * @endcond
  */
 
-package agentrouting.simulation.environment;
+package agentrouting.simulation;
 
-import agentrouting.simulation.CMath;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
 
 
 /**
- * direction enum
+ * class for global math algorithm
  */
-public enum EDirection
+public final class CMath
 {
-    FORWARD( 0 ),
-    FORWARDLEFT( 45 ),
-    LEFT( 90 ),
-    BACKWARDLEFT( 135 ),
-    BACKWARD( 180 ),
-    BACKWARDRIGHT( 225 ),
-    RIGHT( 270 ),
-    FORWARDRIGHT( 315 );
-
 
     /**
-     * rotation-matrix for the direction vector
+     * pvate ctor
      */
-    private final DoubleMatrix2D m_rotation;
+    private CMath()
+    {}
+
 
     /**
-     * ctor
+     * creates a rotation matrix
      *
-     * @param p_alpha rotation of the normal-viewpoint-vector
+     * @param p_alpha degree in radians
+     * @return matrix
+     *
+     * @see https://en.wikipedia.org/wiki/Rotation_matrix
      */
-    EDirection( final double p_alpha )
+    public static DoubleMatrix2D rotationmatrix( final double p_alpha )
     {
-        m_rotation = CMath.rotationmatrix( Math.toRadians( p_alpha ) );
+        return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
     }
 
+
     /**
-     * calculates the new position
+     * returns the distance between to points
      *
-     * @param p_position current position
-     * @param p_goalposition goal position
-     * @param p_speed number of cells / step size
-     * @return new position
+     * @param p_first vector
+     * @param p_second vector
+     * @return distance
      */
-    public DoubleMatrix1D position( final DoubleMatrix1D p_position, final DoubleMatrix1D p_goalposition, final int p_speed )
+    public static double distance( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
     {
-        // calculate the stright line by: current position + l * (goal position - current position)
-        // normalize direction and rotate the normalized vector based on the direction
-        // calculate the target position based by: current position + speed * rotate( normalize( goal position - current position ) )
-        final DoubleMatrix1D l_view = new DenseDoubleMatrix1D( p_goalposition.toArray() );
-        return Algebra.DEFAULT.mult(
-                    m_rotation,
-                    l_view
-                        .assign( p_position, Functions.minus )
-                        .assign( Functions.div( Algebra.DEFAULT.norm2( l_view ) ) )
-        )
-                              .assign( Functions.mult( p_speed ) )
-                              .assign( p_position, Functions.plus )
-                              .assign( Math::round );
+        return Algebra.DEFAULT.norm2(
+            new DenseDoubleMatrix1D( p_second.toArray() )
+                .assign( p_first, Functions.minus )
+        );
     }
 
 }

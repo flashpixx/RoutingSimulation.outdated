@@ -29,6 +29,7 @@ preferences/viewleftrightradius(1).
         !movement/walk/forward
 .
 
+
 // near-by belief change
 +preferences/near-by(X)
     <-

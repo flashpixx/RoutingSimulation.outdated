@@ -136,6 +136,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     @Override
     public IAgent call() throws Exception
     {
+        System.out.println( ">>-----------------------" );
+
         // cache current position to generate non-moving and targte-beyond trigger
         final DenseDoubleMatrix1D l_position = new DenseDoubleMatrix1D( m_position.toArray() );
         final EQuadrant l_quadrant = EQuadrant.quadrant( this.goal(), l_position );
@@ -164,7 +166,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         {
             // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
             if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
-                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/beyond", Stream.of( CRawTerm.from( m_position ) ) ) ) );
+                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
 
             // otherwise check "near-by(D)" preference for the current position and the goal
             // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
@@ -176,7 +178,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
 
         System.out.println( this );
-
+        System.out.println( "<<-----------------------" );
         return this;
     }
 

@@ -417,7 +417,7 @@ final class CJPSPlus implements IRouting
          */
         public final double fscore()
         {
-            return m_hscore + m_gscore + m_hscore;
+            return m_hscore + m_gscore;
         }
 
         /**

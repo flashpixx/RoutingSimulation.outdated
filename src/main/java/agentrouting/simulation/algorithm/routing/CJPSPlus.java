@@ -27,6 +27,7 @@ package agentrouting.simulation.algorithm.routing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -130,18 +131,31 @@ final class CJPSPlus implements IRouting
     private void addsuccessors( final DoubleMatrix1D p_nextjumpnode, final ArrayList<DoubleMatrix1D> p_closedlist,
                                      final Set<CJumpPoint> p_openlist, final CJumpPoint p_curnode, final DoubleMatrix1D p_target )
     {
-        if ( !( p_nextjumpnode != null && ( !p_closedlist.contains( p_nextjumpnode ) ) ) )
+        if ( !( p_nextjumpnode != null && !p_curnode.coordinate().equals( p_nextjumpnode ) && ( !p_closedlist.contains( p_nextjumpnode ) ) ) )
             return;
 
         final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
         this.calculateScore( l_jumpnode, p_target );
 
-        //checking that the jump point is already exists in open list or not, if yes then check their fscore to make decision
-        final boolean l_checkscore = p_openlist.parallelStream()
-                                     .filter( s -> s.coordinate().equals( p_nextjumpnode ) )
-                                     .anyMatch( s -> s.fscore() < l_jumpnode.fscore() );
+        int l_duplicatecheck = 0;
+        int l_removecheck = 0;
 
-        if ( !l_checkscore )
+        final Iterator<CJumpPoint> l_iterator = p_openlist.iterator();
+        while ( l_iterator.hasNext() )
+        {
+            final CJumpPoint l_currentelement = l_iterator.next();
+            if ( l_currentelement.coordinate().equals( p_nextjumpnode ) )
+            {
+                l_duplicatecheck = 1;
+                if ( l_currentelement.fscore() > l_jumpnode.fscore() )
+                {
+                    l_removecheck = 1;
+                    l_iterator.remove();
+                    break;
+                }
+            }
+        }
+        if ( ( l_duplicatecheck == 0 ) || ( l_duplicatecheck == 1 && l_removecheck == 1 ) )
             p_openlist.add( l_jumpnode );
     }
 

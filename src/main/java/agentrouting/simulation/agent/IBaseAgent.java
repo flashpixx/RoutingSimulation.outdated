@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -125,13 +126,13 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         //m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
     }
 
-    /*
+
     @Override
     public final String toString()
     {
         return MessageFormat.format( "{0} - [{1}]", super.toString(), m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) ) );
     }
-    */
+
 
     @Override
     public IAgent call() throws Exception

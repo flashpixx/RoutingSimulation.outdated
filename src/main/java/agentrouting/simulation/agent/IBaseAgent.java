@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -125,19 +126,21 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         //m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
     }
 
-    /*
     @Override
     public final String toString()
     {
-        return MessageFormat.format( "{0} - [{1}]", super.toString(), m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) ) );
+        return MessageFormat.format(
+            "{0} - current position (speed) [{1} ({2})] - route [{3}]",
+            super.toString(),
+            m_position == null ? "" : CMath.MATRIXFORMAT.toString( m_position ),
+            m_speed,
+            m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) )
+        );
     }
-    */
 
     @Override
     public IAgent call() throws Exception
     {
-        System.out.println( ">>-----------------------" );
-
         // cache current position to generate non-moving and targte-beyond trigger
         final DenseDoubleMatrix1D l_position = new DenseDoubleMatrix1D( m_position.toArray() );
         final EQuadrant l_quadrant = EQuadrant.quadrant( this.goal(), l_position );
@@ -172,13 +175,13 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
             // Y is a literal with distance
             final double l_distance = CMath.distance( m_position, l_goalposition );
-            if ( l_distance <= this.preference( "near-by", 0 ).doubleValue() )
+
+            // default argument must match literal-value type (and on integral types long is used)
+            if ( l_distance <= this.preference( "near-by", Long.valueOf( 0 ) ).doubleValue() )
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
 
-
         System.out.println( this );
-        System.out.println( "<<-----------------------" );
         return this;
     }
 

@@ -24,7 +24,7 @@ preferences/viewleftrightradius(1).
 // walk straight forward into the direction of the goal-position
 +!movement/walk/forward
     <-
-        generic/print( "walk forward" );
+        generic/print( "walk forward in cycle [", Cycle, "]" );
         move/forward();
         !movement/walk/forward
 .
@@ -33,14 +33,14 @@ preferences/viewleftrightradius(1).
 // near-by belief change
 +preferences/near-by(X)
     <-
-        generic/print( "near-by preference belief modified to [", X ,"]" )
+        generic/print( "near-by preference belief modified to [", X ,"] in cycle [", Cycle, "]" )
 .
 
 // walk straight forwad fails e.g. the is an obstacle, than calculate
 // a new route position within the next 10 cells around the current position
 -!movement/walk/forward
     <-
-        generic/print( "walk forward fails" );
+        generic/print( "walk forward fails in cycle [", Cycle, "]" );
         //route/random( 10 );
         !movement/walk/forward
 .
@@ -50,7 +50,7 @@ preferences/viewleftrightradius(1).
 // the current speed
 +!movement/standstill
     <-
-        generic/print( "standstill - increment speed with 1" );
+        generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
         speed/increment( 1 );
         !movement/walk/forward
 .
@@ -65,7 +65,7 @@ preferences/viewleftrightradius(1).
 // belief preference/near-by(V)
 +!goal/near-by(D)
     <-
-        generic/print( "near-by - set speed to 1", D );
+        generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
         speed/set(1)
 .
 
@@ -74,7 +74,7 @@ preferences/viewleftrightradius(1).
 // will sleep 5 cycles
 +!goal/achieve-position(P)
      <-
-        generic/print( "position achieved - sleep for 5 cycles", P );
+        generic/print( "position achieved [", P, "] in cycle [", Cycle, "] - sleep for 5 cycles" );
         route/skipcurrent();
         generic/sleep(5)
 .
@@ -84,7 +84,7 @@ preferences/viewleftrightradius(1).
 // the speed is set to 1 and we try go back
 +!goal/beyond(P)
     <-
-        generic/print( "position beyond - set speed to 1", P );
+        generic/print( "position beyond [", P, "] - set speed to 1 in cycle [", Cycle, "]" );
         speed/set(1)
 .
 
@@ -94,7 +94,7 @@ preferences/viewleftrightradius(1).
 // and a random near-by definition
 +!wakeup
     <-
-        generic/print("wakeup - set speed to 1");
+        generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
 
         // route/random( 25 );
         // route/random( 10, 10 );

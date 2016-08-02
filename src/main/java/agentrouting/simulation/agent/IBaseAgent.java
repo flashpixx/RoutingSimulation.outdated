@@ -50,6 +50,7 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -296,8 +297,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * skips the current goal-position of the routing queue
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "route/skipcurrent" )
-    protected final void routskipcurrent()
+    @IAgentActionName( name = "route/next" )
+    protected final void routenext()
     {
         m_route.poll();
     }
@@ -307,8 +308,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * @param p_value number of elements
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "route/skipelements" )
-    protected final void routskipcurrent( final Number p_value )
+    @IAgentActionName( name = "route/skip" )
+    protected final void routeskip( final Number p_value )
     {
         if ( p_value.intValue() < 1 )
             throw new RuntimeException( "value must be greater than zero" );

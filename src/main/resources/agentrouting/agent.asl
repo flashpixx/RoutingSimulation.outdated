@@ -13,8 +13,15 @@ preferences/near-by(5).
 
 
 
-// initial-goal (for calculating the initial-route)
+// initial-goal
 !main.
+
+// initial plan (triggered by the initial-goal) - calculates the route
++!main
+    <-
+    route/set( 140, 140 );
+    !!movement/walk/forward
+.
 
 
 
@@ -29,20 +36,44 @@ preferences/near-by(5).
 .
 
 
-// near-by belief change
-+preferences/near-by(X)
-    <-
-        generic/print( "near-by preference belief modified to [", X ,"] in cycle [", Cycle, "]" )
-.
-
-// walk straight forwad fails e.g. the is an obstacle, than calculate
-// a new route position within the next 10 cells around the current position
+// walk straight forward fails than go left
 -!movement/walk/forward
     <-
         generic/print( "walk forward fails in cycle [", Cycle, "]" );
-        //route/random( 10 );
+        !!movent/walk/left
+.
+
+// walk left 90 degree to the goal position
++!movent/walk/left
+    <-
+        generic/print( "walk left in cycle [", Cycle, "]" );
+        move/left();
         !movement/walk/forward
 .
+
+// walk left fails than go right
+-!movent/walk/left
+    <-
+        generic/print( "walk left fails in cycle [", Cycle, "]" );
+        !!movent/walk/right
+.
+
+// walk right 90 degree to the goal position
++!movent/walk/right
+    <-
+        generic/print( "walk right in cycle [", Cycle, "]" );
+        move/right();
+        !movement/walk/forward
+.
+
+// walk right fails than sleep and hope everything will be fine later
+-!movent/walk/right
+    <-
+        generic/print( "walk right fails in cycle [", Cycle, "]" );
+        generic/sleep(3)
+.
+
+
 
 
 // if the agent is not walking e.g. speed is low so the agent increment
@@ -52,6 +83,12 @@ preferences/near-by(5).
         generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
         speed/increment( 1 );
         !movement/walk/forward
+.
+
+// near-by belief change
++preferences/near-by(X)
+    <-
+        generic/print( "near-by preference belief modified to [", X ,"] in cycle [", Cycle, "]" )
 .
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +111,7 @@ preferences/near-by(5).
 +!goal/achieve-position(P)
      <-
         generic/print( "position achieved [", P, "] in cycle [", Cycle, "] - sleep for 5 cycles" );
-        route/skipcurrent();
+        route/next();
         generic/sleep(5)
 .
 
@@ -95,20 +132,14 @@ preferences/near-by(5).
     <-
         generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
 
-        route/random( 50 );
+        speed/set(1);
+        //route/random( 50 );
+
         N = math/statistic/randomsimple();
         N = N*10;
-
         +preferences/near-by(N);
-        speed/set(1);
 
         !movement/walk/forward
-.
-
-+!main
-    <-
-    route/set( 140, 140 );
-    !!movement/walk/forward
 .
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------

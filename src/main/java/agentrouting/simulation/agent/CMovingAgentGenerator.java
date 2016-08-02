@@ -151,7 +151,7 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
         @SuppressWarnings( "unchecked" )
         public final IView<IAgent> beliefbase()
         {
-            // generate root beliefbase without perceiveable objects
+            // generate root beliefbase - the beliefbase with the local environment-data is generated within the agent-ctor
             final IView<IAgent> l_beliefbase = new CBeliefBasePersistent<>( new CMultiStorage<ILiteral, IView<IAgent>, IAgent>() )
                                                 .create( BELIEFBASEROOTNAME )
 
@@ -159,58 +159,17 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
                                                 .generate( new IViewGenerator<IAgent>()
                                                 {
                                                     @Override
-                                                    public IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
+                                                    public final IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
                                                     {
                                                         return new CBeliefBasePersistent<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
                                                     }
                                                 },
                                                 CPath.from( IBaseAgent.PREFERENCE )
-                                                )
-
-                                                // generates on-demand beliefbase with environment data
-                                                .generate( new IViewGenerator<IAgent>()
-                                                {
-                                                    @Override
-                                                    public IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
-                                                    {
-                                                        return null;
-                                                    }
-                                                } );
+                                                );
 
             m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
             return l_beliefbase;
         }
-
-    }
-
-
-    /**
-     * on-demand beliefbase
-     */
-    private static final class CEnvironmentBeliefbase extends IBeliefBaseOnDemand<IAgent>
-    {
-        /**
-         * environment reference
-         */
-        private final IEnvironment m_environment;
-
-        /**
-         * ctor
-         * @param p_environment environment
-         */
-        public CEnvironmentBeliefbase( final IEnvironment p_environment )
-        {
-            m_environment = p_environment;
-        }
-
-        @Override
-        public final IAgent update( final IAgent p_agent )
-        {
-            super.update( p_agent );
-
-            return p_agent;
-        }
-
 
     }
 

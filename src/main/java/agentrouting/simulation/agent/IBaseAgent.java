@@ -38,6 +38,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
 import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
+import org.lightjason.agentspeak.beliefbase.IBeliefBaseOnDemand;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CCommon;
@@ -48,6 +49,7 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -67,6 +69,10 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * name of the beliefbase for individual preferences
      */
     public static final String PREFERENCE = "preferences";
+    /**
+     * name of the environment beliefbase with local view structure
+     */
+    private static final String ENVIRONMENT = "env";
     /**
      * random generator
      */
@@ -119,6 +125,10 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         m_position = new DenseDoubleMatrix1D( 2 );
         m_environment = p_environment;
         m_color = Color.valueOf( p_color );
+
+
+        // push the on-demand beliefbase to the agent
+        m_beliefbase.add( new CEnvironmentBeliefbase().create( ENVIRONMENT ) );
     }
 
     @Override
@@ -438,4 +448,71 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         return m_sprite;
     }
 
+
+    // --- on-demand beliefbase for local environment data of the agent ----------------------------------------------------------------------------------------
+
+    /**
+     * enum for create on-demand literals
+     */
+    private enum ELiteral
+    {
+        SIZE,
+        SPEED,
+        LANDMARKS;
+
+        /**
+         * creates the literal
+         *
+         * @param p_environment environment
+         * @param p_speed current agent speed
+         * @param p_landmarks number of current landmarks
+         * @return literal
+         */
+        public final ILiteral create( final IEnvironment p_environment, final int p_speed, final int p_landmarks )
+        {
+            switch ( this )
+            {
+                case SIZE: return CLiteral.from( this.name().toLowerCase(),
+                                                Stream.of(
+                                                    CLiteral.from( "column", Stream.of( CRawTerm.from( p_environment .column() ) ) ),
+                                                    CLiteral.from( "row", Stream.of(  CRawTerm.from( p_environment .row() ) ) )
+                                                )
+                );
+
+                case SPEED: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_speed )) );
+
+                case LANDMARKS: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_landmarks )) );
+
+                default:
+                    throw new RuntimeException( MessageFormat.format( "enum value [{0}] does not exist", this ) );
+            }
+        }
+
+
+    }
+
+    /**
+     * class for local-environment data of the agent
+     */
+    private final class CEnvironmentBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    {
+
+        @Override
+        public final boolean containsLiteral( final String p_key )
+        {
+            return super.containsLiteral( p_key );
+        }
+
+        @Override
+        public Collection<ILiteral> literal( final String p_key )
+        {
+            return super.literal( p_key );
+        }
+
+        @Override
+        public Stream<ILiteral> streamLiteral()
+        {
+            return super.streamLiteral();
+        }
+    }
 }

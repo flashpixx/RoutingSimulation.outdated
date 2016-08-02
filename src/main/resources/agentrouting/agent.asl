@@ -4,18 +4,17 @@
 preferences/near-by(5).
 
 // belief for definining the view radius into forward-backward direction
-preferences/viewforwardbackwardradius(3).
+//preferences/viewforwardbackwardradius(3).
 
 // belief for defining the view radius into left-right direction
-preferences/viewleftrightradius(1).
+//preferences/viewleftrightradius(1).
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
-// the agent starts walking start-position and goal-position
-// are initialize on the underlying structures (random on default)
-!movement/walk/forward.
+// initial-goal (for calculating the initial-route)
+!main.
 
 
 
@@ -96,16 +95,20 @@ preferences/viewleftrightradius(1).
     <-
         generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
 
-        // route/random( 25 );
-        // route/random( 10, 10 );
+        route/random( 50 );
+        N = math/statistic/randomsimple();
+        N = N*10;
 
-        //N = math/statistic/randomsimple();
-        //N = N*10;
-        //+preferences/near-by(N);
-
+        +preferences/near-by(N);
         speed/set(1);
 
         !movement/walk/forward
+.
+
++!main
+    <-
+    route/set( 140, 140 );
+    !!movement/walk/forward
 .
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------

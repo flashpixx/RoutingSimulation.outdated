@@ -119,11 +119,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         m_position = new DenseDoubleMatrix1D( 2 );
         m_environment = p_environment;
         m_color = Color.valueOf( p_color );
-
-        // create a random route
-        this.route( m_environment.row() - 5, m_environment.column() - 5 );
-        //this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
-        //m_route.add( new DenseDoubleMatrix1D( new double[]{m_environment.column() - 5, m_environment.row() - 5} ) );
     }
 
     @Override
@@ -181,7 +176,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
                 this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
         }
 
-        System.out.println( this );
         return this;
     }
 

@@ -79,7 +79,7 @@ public enum EDirection
                     m_rotation,
                     l_view
                         .assign( p_position, Functions.minus )
-                        .assign( Functions.div( Algebra.DEFAULT.norm2( l_view ) ) )
+                        .assign( Functions.div( Math.sqrt( Algebra.DEFAULT.norm2( l_view ) ) ) )
         )
                               .assign( Functions.mult( p_speed ) )
                               .assign( p_position, Functions.plus )

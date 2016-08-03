@@ -28,16 +28,12 @@ dependencies:
     pre:
         - sudo apt-get install doxygen graphviz
 
-test:
-    override:
-
-      # manuell clone & build of AgentSpeak(L) framework
         - git clone https://github.com/LightJason/AgentSpeak.git
         - cd AgentSpeak
         - mvn install
-        - cd ..
 
-        # build project
+test:
+    override:
         - mvn -Dbuild.number=${CIRCLE_BUILD_NUM} -Dbuild.commit=${CIRCLE_SHA1}
         - mvn site
 

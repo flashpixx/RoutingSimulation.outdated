@@ -25,15 +25,12 @@
 package agentrouting.simulation.agent;
 
 import agentrouting.simulation.CMath;
+import agentrouting.simulation.algorithm.force.IForce;
 import agentrouting.simulation.environment.EDirection;
 import agentrouting.simulation.environment.EQuadrant;
 import agentrouting.simulation.environment.IEnvironment;
-import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
 import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
@@ -47,11 +44,9 @@ import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
-import org.omg.CORBA.MARSHAL;
 
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -101,10 +96,10 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
 
 
-
     /**
      * ctor
-     *  @param p_environment environment
+     *
+     * @param p_environment environment
      * @param p_agentconfiguration agent configuration
      * @param p_force force model
      * @param p_position initialize position
@@ -187,8 +182,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
 
-
-
     // --- object getter ---------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -201,8 +194,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     public final DoubleMatrix1D goal()
     {
         return m_route.isEmpty()
-            ? m_position
-            : m_route.peek();
+               ? m_position
+               : m_route.peek();
     }
 
     @Override
@@ -210,9 +203,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     {
         return this.beliefbase().stream( CPath.from( PREFERENCE ) );
     }
-
-
-
 
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
@@ -296,6 +286,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
     /**
      * skips the current n-elements of the routing queue
+     *
      * @param p_value number of elements
      */
     @IAgentActionAllow
@@ -440,16 +431,20 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         {
             switch ( this )
             {
-                case SIZE: return CLiteral.from( this.name().toLowerCase(),
-                                                Stream.of(
-                                                    CLiteral.from( "column", Stream.of( CRawTerm.from( p_environment .column() ) ) ),
-                                                    CLiteral.from( "row", Stream.of(  CRawTerm.from( p_environment .row() ) ) )
-                                                )
-                );
+                case SIZE:
+                    return CLiteral.from(
+                        this.name().toLowerCase(),
+                        Stream.of(
+                            CLiteral.from( "column", Stream.of( CRawTerm.from( p_environment.column() ) ) ),
+                            CLiteral.from( "row", Stream.of( CRawTerm.from( p_environment.row() ) ) )
+                        )
+                    );
 
-                case SPEED: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_speed ) ) );
+                case SPEED:
+                    return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_speed ) ) );
 
-                case LANDMARKS: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_landmarks ) ) );
+                case LANDMARKS:
+                    return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_landmarks ) ) );
 
                 default:
                     throw new RuntimeException( MessageFormat.format( "enum value [{0}] does not exist", this ) );

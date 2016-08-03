@@ -25,7 +25,6 @@ package agentrouting.simulation.agent;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -66,7 +65,7 @@ public enum EPokemon
     FARFETCHD( 1 ),
     GASTLY( 3 ),
     GEODUDE( 3 ),
-    GOLDEEN( 2  ),
+    GOLDEEN( 2 ),
     GRIMER( 2 ),
     GROWLITHE( 2 ),
     HITMONCHAN( 1 ),
@@ -75,7 +74,7 @@ public enum EPokemon
     JIGGLYPUFF( 2 ),
     JYNX( 1 ),
     KABUTO( 2 ),
-    KANGASKHAN ( 1 ),
+    KANGASKHAN( 1 ),
     KOFFING( 2 ),
     KRABBY( 2 ),
     LAPRAS( 1 ),
@@ -163,6 +162,7 @@ public enum EPokemon
 
     /**
      * initialize sprites
+     *
      * @return texture object
      */
     public final synchronized Texture initialize()
@@ -173,16 +173,17 @@ public enum EPokemon
         m_sprites = Collections.unmodifiableList(
             IntStream.range( 0, m_icons )
                      .mapToObj(
-                         i -> {
+                         i ->
+                         {
                              try
                              {
-                                return new Texture(
-                                    Gdx.files.absolute(
-                                        agentrouting.CCommon.getResourcePath(
-                                            MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
-                                        ).toString()
-                                    )
-                                );
+                                 return new Texture(
+                                     Gdx.files.absolute(
+                                         agentrouting.CCommon.getResourcePath(
+                                             MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
+                                         ).toString()
+                                     )
+                                 );
                              }
                              catch ( final MalformedURLException | URISyntaxException l_exception )
                              {

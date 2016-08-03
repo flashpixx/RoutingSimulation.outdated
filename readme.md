@@ -1,6 +1,6 @@
 # LightJason - GridWorld
 
-![Circle CI](https://circleci.com/gh/flashpixx/RountingSimulation.svg?style=shield&circle-token=9805649be1f19d5cc4468e7168db970d47eefc2e)
+![Circle CI](https://circleci.com/gh/flashpixx/RountingSimulation.svg?style=shield)
 
 
 

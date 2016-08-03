@@ -27,10 +27,7 @@ machine:
 dependencies:
     pre:
         - sudo apt-get install doxygen graphviz
-
-        - git clone https://github.com/LightJason/AgentSpeak.git
-        - cd AgentSpeak
-        - mvn install
+        - git clone https://github.com/LightJason/AgentSpeak.git && cd AgentSpeak && mvn install
 
 test:
     override:

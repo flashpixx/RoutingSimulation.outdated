@@ -23,18 +23,27 @@
 
 package agentrouting;
 
-import agentrouting.simulation.agent.CMovingAgent;
-import agentrouting.simulation.agent.CMovingAgentGenerator;
+import agentrouting.simulation.agent.CPokemon;
+import agentrouting.simulation.agent.CPokemonGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
 import agentrouting.simulation.environment.CEnvironment;
 import agentrouting.simulation.environment.IEnvironment;
+import agentrouting.simulation.item.CStatic;
+import agentrouting.simulation.item.IItem;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.action.IBaseAction;
+import org.lightjason.agentspeak.common.CPath;
+import org.lightjason.agentspeak.common.IPath;
 import org.lightjason.agentspeak.generator.IAgentGenerator;
+import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.language.execution.IContext;
+import org.lightjason.agentspeak.language.execution.fuzzy.CFuzzyValue;
+import org.lightjason.agentspeak.language.execution.fuzzy.IFuzzyValue;
 import org.lightjason.agentspeak.language.score.IAggregation;
 import org.yaml.snakeyaml.Yaml;
 
@@ -86,9 +95,13 @@ public final class CConfiguration
      */
     private int m_simulationstep;
     /**
-     * agent elements
+     * simulation dynamic elements
      */
     private List<IAgent> m_agents;
+    /**
+     * simulation static elements
+     */
+    private List<IItem> m_staticelements;
     /**
      * environment
      */
@@ -163,22 +176,32 @@ public final class CConfiguration
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "screenshot", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "step", -1 )
         );
 
-        // create environment
+        // create static objects - static object are needed by the environment
+        final List<IItem> l_static = new LinkedList<>();
+        this.createStatic( (List<Map<String, Object>>) l_data.getOrDefault( "element", Collections.<Map<String, Object>>emptyList() ), l_static );
+        m_staticelements = Collections.unmodifiableList( l_static );
+
+        // create environment - static items must be exists
         m_environment = new CEnvironment(
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "rows", -1 ),
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) ).getOrDefault( "columns", -1 ),
             (Integer) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
                 .getOrDefault( "cellsize", -1 ),
             ERoutingFactory.valueOf( ( (String) ( (Map<String, Object>) l_data.getOrDefault( "environment", Collections.<String, Integer>emptyMap() ) )
-                .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get()
+                .getOrDefault( "routing", "" ) ).trim().toUpperCase() ).get(),
+            m_staticelements
         );
 
-        // create executable object list and check number of elements
-        final List<IAgent> l_elements = new LinkedList<>();
-        this.createMovingAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_elements );
-        m_agents = Collections.unmodifiableList( l_elements );
+        // create executable object list and check number of elements - environment must be exists
+        final List<IAgent> l_agents = new LinkedList<>();
+        this.createAgent(
+            (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ),
+            l_agents,
+            (boolean) l_data.getOrDefault( "agentprint", true )
+        );
+        m_agents = Collections.unmodifiableList( l_agents );
 
-        if ( m_agents.size() > m_environment.column() * m_environment.row() / 2 )
+        if ( m_agents.size() + m_staticelements.size() > m_environment.column() * m_environment.row() / 2 )
             throw new IllegalArgumentException(
                 MessageFormat.format(
                     "number of simulation elements are very large [{0}], so the environment size is too small, the environment "
@@ -201,7 +224,7 @@ public final class CConfiguration
      *
      * @return height
      */
-    public final int getWindowHeight()
+    public final int windowheight()
     {
         return m_windowheight;
     }
@@ -211,7 +234,7 @@ public final class CConfiguration
      *
      * @return weight
      */
-    public final int getWindowWeight()
+    public final int windowweight()
     {
         return m_windowweight;
     }
@@ -221,9 +244,19 @@ public final class CConfiguration
      *
      * @return steps
      */
-    public final int getSimulationSteps()
+    public final int simulationsteps()
     {
         return m_simulationstep;
+    }
+
+    /**
+     * return all static elements
+     *
+     * @return object list
+     */
+    public final List<IItem> staticelements()
+    {
+        return m_staticelements;
     }
 
     /**
@@ -231,7 +264,7 @@ public final class CConfiguration
      *
      * @return object list
      */
-    public final List<IAgent> getAgents()
+    public final List<IAgent> agents()
     {
         return m_agents;
     }
@@ -241,7 +274,7 @@ public final class CConfiguration
      *
      * @return environment
      */
-    public final IEnvironment getEnvironment()
+    public final IEnvironment environment()
     {
         return m_environment;
     }
@@ -251,7 +284,7 @@ public final class CConfiguration
      *
      * @return triple of screenshot information
      */
-    public final Triple<String, String, Integer> getScreenshot()
+    public final Triple<String, String, Integer> screenshot()
     {
         return m_screenshot;
     }
@@ -281,7 +314,7 @@ public final class CConfiguration
      *
      * @return visibility flag
      */
-    public final boolean getStatusVisible()
+    public final boolean statusvisible()
     {
         return m_statusvisible;
     }
@@ -291,7 +324,7 @@ public final class CConfiguration
      *
      * @return sleep time
      */
-    public final int getThreadSleepTime()
+    public final int threadsleeptime()
     {
         return m_threadsleeptime;
     }
@@ -302,15 +335,21 @@ public final class CConfiguration
      *
      * @param p_agentconfiguration subsection for agent configuration
      * @param p_elements element list
+     * @param p_agentprint disables / enables agent printing
+     * @throws IOException thrown on ASL reading error
      */
     @SuppressWarnings( "unchecked" )
-    private void createMovingAgent( final Map<String, Object> p_agentconfiguration, final List<IAgent> p_elements ) throws IOException
+    private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IAgent> p_elements, final boolean p_agentprint ) throws IOException
     {
         final Map<String, IAgentGenerator<IAgent>> l_agentgenerator = new HashMap<>();
-        final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
-            org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CMovingAgent.class )
-        ).collect( Collectors.toSet() ) );
+        final Set<IAction> l_action = Collections.unmodifiableSet(
+            Stream.concat(
+                p_agentprint ? Stream.of() : Stream.of( new CEmptyPrint() ),
+                Stream.concat(
+                    org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
+                    org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
+                )
+            ).collect( Collectors.toSet() ) );
 
         p_agentconfiguration
             .entrySet()
@@ -330,7 +369,7 @@ public final class CConfiguration
                     // and push it back if generator does not exists
                     final IAgentGenerator<IAgent> l_generator = l_agentgenerator.getOrDefault(
                         l_asl,
-                        new CMovingAgentGenerator(
+                        new CPokemonGenerator(
                             m_environment,
                             l_stream,
                             l_action,
@@ -345,7 +384,7 @@ public final class CConfiguration
 
                         EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 
-                        (String) l_parameter.getOrDefault( "color", "" )
+                        (String) l_parameter.getOrDefault( "pokemon", "" )
 
                     ).sequential().forEach( p_elements::add );
                 }
@@ -355,6 +394,55 @@ public final class CConfiguration
                 }
 
             } );
+    }
+
+    /**
+     * creates the static elements
+     *
+     * @param p_elementconfiguration subsection of static elements
+     * @param p_elements element list
+     */
+    @SuppressWarnings( "unchecked" )
+    private void createStatic( final List<Map<String, Object>> p_elementconfiguration, final List<IItem> p_elements )
+    {
+        p_elementconfiguration
+            .stream()
+            .map( i -> (Map<String, Object>) i.get( "static" ) )
+            .filter( i -> i != null )
+            .map( i -> new CStatic(
+                (List<Integer>) i.get( "left" ),
+                (List<Integer>) i.get( "right" ),
+                (Map<String, ?>) i.getOrDefault( "preferences", Collections.emptyMap() ),
+                (String) i.getOrDefault( "color", "" )
+            ) )
+            .forEach( p_elements::add );
+
+    }
+
+    /**
+     * creates an empty print action to supress output
+     */
+    private static final class CEmptyPrint extends IBaseAction
+    {
+        @Override
+        public final IPath name()
+        {
+            return CPath.from( "generic/print" );
+        }
+
+        @Override
+        public final int minimalArgumentNumber()
+        {
+            return 0;
+        }
+
+        @Override
+        public IFuzzyValue<Boolean> execute( final IContext p_context, final boolean p_parallel, final List<ITerm> p_argument, final List<ITerm> p_return,
+                                             final List<ITerm> p_annotation
+        )
+        {
+            return CFuzzyValue.from( true );
+        }
     }
 
 }

@@ -21,35 +21,72 @@
  * @endcond
  */
 
+package agentrouting.simulation;
 
-package agentrouting.simulation.agent;
-
-import agentrouting.simulation.environment.IEnvironment;
-import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
-import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.doublealgo.Formatter;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
+import cern.jet.math.Functions;
 
 
 /**
- * BDI agent for dynamic / moving elements
+ * class for global math algorithm
  */
-public final class CMovingAgent extends IBaseAgent
+public final class CMath
 {
+    /**
+     * reference to global algebra instance
+     */
+    public static final Algebra ALGEBRA = Algebra.DEFAULT;
+    /**
+     * matrix formatter
+     */
+    public static final Formatter MATRIXFORMAT = new Formatter();
+
+    static
+    {
+        MATRIXFORMAT.setRowSeparator( "; " );
+        MATRIXFORMAT.setColumnSeparator( "," );
+        MATRIXFORMAT.setPrintShape( false );
+    }
 
     /**
-     * ctor
-     *
-     * @param p_environment environment
-     * @param p_agentconfiguration agent configuration
-     * @param p_position initialize position
-     * @param p_force force model
-     * @param p_color color string in RRGGBBAA
+     * pvate ctor
      */
-    public CMovingAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                         final DoubleMatrix1D p_position, final IForce p_force, final String p_color
-    )
+    private CMath()
+    {}
+
+
+    /**
+     * creates a rotation matrix
+     *
+     * @param p_alpha degree in radians
+     * @return matrix
+     *
+     * @see https://en.wikipedia.org/wiki/Rotation_matrix
+     */
+    public static DoubleMatrix2D rotationmatrix( final double p_alpha )
     {
-        super( p_environment, p_agentconfiguration, p_force, p_position, p_color );
+        return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
+    }
+
+
+    /**
+     * returns the distance between to points
+     *
+     * @param p_first vector
+     * @param p_second vector
+     * @return distance
+     */
+    public static double distance( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
+    {
+        return ALGEBRA.norm2(
+            new DenseDoubleMatrix1D( p_second.toArray() )
+                .assign( p_first, Functions.minus )
+        );
     }
 
 }

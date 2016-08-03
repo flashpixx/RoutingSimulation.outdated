@@ -38,6 +38,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -143,68 +144,77 @@ public final class CMain
         final LwjglApplicationConfiguration l_config = new LwjglApplicationConfiguration();
 
         l_config.forceExit = false;
-        l_config.width = CConfiguration.INSTANCE.getWindowWeight();
-        l_config.height = CConfiguration.INSTANCE.getWindowHeight();
-
+        l_config.width = CConfiguration.INSTANCE.windowweight();
+        l_config.height = CConfiguration.INSTANCE.windowheight();
 
         // open window
         LOGGER.info( MessageFormat.format( "open window with size [{0}x{1}]", l_config.width, l_config.height ) );
         final CScreen l_screen = new CScreen(
-            CConfiguration.INSTANCE.getAgents(),
-            CConfiguration.INSTANCE.getEnvironment(),
-            CConfiguration.INSTANCE.getScreenshot(),
-            CConfiguration.INSTANCE.getStatusVisible()
+            Stream.concat(
+                CConfiguration.INSTANCE.staticelements().parallelStream(),
+                CConfiguration.INSTANCE.agents().parallelStream()
+            ).collect( Collectors.toList() ),
+            CConfiguration.INSTANCE.environment(),
+            CConfiguration.INSTANCE.screenshot(),
+            CConfiguration.INSTANCE.statusvisible()
         );
         new LwjglApplication( l_screen, l_config );
+        CMain.execute( l_screen );
+    }
 
-
-
-        // --- run simulation ----------------------------------------------------------------------------------------------------------------------------------
-
+    /**
+     * execute simulation
+     *
+     * @param p_screen screen reference
+     */
+    private static void execute( final CScreen p_screen )
+    {
         // https://www.infoq.com/articles/Functional-Style-Callbacks-Using-CompletableFuture
         // http://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples/
         // final ExecutorService l_pool = Executors.newWorkStealingPool();
 
         IntStream
-                .range( 0, CConfiguration.INSTANCE.getSimulationSteps() )
-                .mapToObj( i ->
-                {
-                    // update screen take screenshot and run object execution
-                    l_screen.iteration( i );
+            .range( 0, CConfiguration.INSTANCE.simulationsteps() )
+            .mapToObj( i ->
+            {
+                // update screen take screenshot and run object execution
+                p_screen.iteration( i );
+                Stream.concat(
+                    Stream.of( CConfiguration.INSTANCE.environment() ),
                     Stream.concat(
-                        Stream.of( CConfiguration.INSTANCE.getEnvironment() ),
-                        CConfiguration.INSTANCE.getAgents().parallelStream()
+                        CConfiguration.INSTANCE.staticelements().parallelStream(),
+                        CConfiguration.INSTANCE.agents().parallelStream()
                     )
-                        .parallel()
-                        .forEach( j ->
-                        {
-                            try
-                            {
-                                j.call();
-                            }
-                            catch ( final Exception l_exception )
-                            {
-                                LOGGER.warning( l_exception.toString() );
-                            }
-                        } );
-
-                    // thread sleep for slowing down
-                    if ( CConfiguration.INSTANCE.getThreadSleepTime() > 0 )
+                )
+                    .parallel()
+                    .forEach( j ->
+                    {
                         try
                         {
-                            Thread.sleep( CConfiguration.INSTANCE.getThreadSleepTime() );
+                            j.call();
                         }
-                        catch ( final InterruptedException l_exception )
+                        catch ( final Exception l_exception )
                         {
                             LOGGER.warning( l_exception.toString() );
                         }
+                    } );
 
-                    // checks that the simulation is closed
-                    return l_screen.isDisposed();
-                } )
-                .filter( i -> i )
-                .findFirst();
+                // thread sleep for slowing down
+                if ( CConfiguration.INSTANCE.threadsleeptime() > 0 )
+                    try
+                    {
+                        Thread.sleep( CConfiguration.INSTANCE.threadsleeptime() );
+                    }
+                    catch ( final InterruptedException l_exception )
+                    {
+                        LOGGER.warning( l_exception.toString() );
+                    }
+
+                // checks that the simulation is closed
+                return p_screen.isDisposed();
+            } )
+            .filter( i -> i )
+            .findFirst();
     }
-
 
 }

@@ -25,10 +25,21 @@ package agentrouting.simulation.item;
 
 import agentrouting.simulation.IElement;
 
+import java.util.concurrent.Callable;
+
 
 /**
  * interface for all items
  */
-public interface IItem extends IElement<IItem>
+public interface IItem extends Callable<IItem>, IElement
 {
+
+    /**
+     * returns an element that can whiped by the agent
+     *
+     * @return whipable flag
+     */
+    boolean whipeable();
+
+
 }

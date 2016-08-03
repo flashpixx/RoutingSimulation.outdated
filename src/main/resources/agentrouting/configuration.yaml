@@ -2,13 +2,16 @@
 logging : false
 
 # enable / disable status line
-statusvisible : false
+statusvisible : true
 
 # number of simulation steps - optional if not set, Integer.Max_Value is used
 #steps : 2000
 
+# agent print call will be shown
+agentprint : false
+
 # thread-sleep (in milliseconds) time to slow down the simulation speed
-threadsleeptime : 150
+threadsleeptime : 100
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
@@ -30,9 +33,9 @@ screenshot :
 
 # environment (grid) resolution - required
 environment :
-    cellsize : 25
-    rows     : 50
-    columns  : 50
+    cellsize : 20
+    rows     : 150
+    columns  : 150
     routing  : "jpsplus"
 
 
@@ -41,25 +44,44 @@ agent :
 
     # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
     test1 :
-        number : 1
-        color  : "ff0000"
-        force  : "sum"
-        asl    : "agent.asl"
+        number  : 50
+        pokemon : "gastly"
+        force   : "sum"
+        asl     : "agent.asl"
 
     test2 :
-        number : 1
-        color  : "00ff00"
-        force  : "sum"
-        asl    : "agent.asl"
+        number  : 50
+        pokemon : "caterpie"
+        force   : "sum"
+        asl     : "agent.asl"
 
     test3 :
-        number : 1
-        color  : "0000ff"
-        force  : "sum"
-        asl    : "agent.asl"
+        number  : 50
+        pokemon : "koffing"
+        force   : "sum"
+        asl     : "agent.asl"
 
 
 
-# static environment elements - optional
+# static environment (optional) elements - position is defined in (y/x) structure
 element :
-    - not implemented yet
+
+    - static :
+        left  : [ 30, 10 ]
+        right : [ 60, 20 ]
+        color : "ffaa00"
+
+    - static :
+        left  : [ 60, 60 ]
+        right : [ 75, 95 ]
+        color : "ffbb00"
+
+    - static :
+        left  : [ 90, 100 ]
+        right : [ 110, 120 ]
+        color : "ffcc00"
+
+    - static :
+        left  : [ 140, 20 ]
+        right : [ 100, 90 ]
+        color : "ffdd00"

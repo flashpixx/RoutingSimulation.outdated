@@ -35,7 +35,7 @@ import java.util.stream.Stream;
  * executable within the simulation (so position
  * and preferences are required)
  */
-public interface IElement<T> extends ISprite
+public interface IElement extends ISprite
 {
 
     /**

@@ -21,32 +21,55 @@
  * @endcond
  */
 
-package agentrouting.simulation.item;
+package agentrouting.simulation.environment;
 
-import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.SparseDoubleMatrix1D;
+import cern.jet.math.Functions;
 
 
 /**
- * energy items
+ * quadrant
+ * @see https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)
+ * @see http://gamedev.stackexchange.com/questions/96099/is-there-a-quick-way-to-determine-if-a-vector-is-in-a-quadrant
  */
-public final class CGold
+public enum EQuadrant
 {
+    UPPERRIGHT,
+    UPPERLEFT,
+    BOTTOMLEFT,
+    BOTTOMRIGHT;
+
     /**
-     * ctor
+     * returns a quadrant based on the vector
      *
-     * @param p_force force model
-     * @param p_position initial position
+     * @param p_position position
+     * @return quadrant relativ to zero position
      */
-    protected CGold( final IForce p_force, final DoubleMatrix1D p_position )
+    public static EQuadrant quadrant( final DoubleMatrix1D p_position )
     {
+        return EQuadrant.quadrant( new SparseDoubleMatrix1D( p_position.size() ), p_position );
     }
 
-    //@Override
-    protected final Sprite visualization( final int p_rows, final int p_columns, final int p_cellsize )
+    /**
+     * returns a quadrant based on the vector
+     *
+     * @param p_zero zero position
+     * @param p_position position
+     * @return quadrant relative to zero position
+
+     */
+    public static EQuadrant quadrant( final DoubleMatrix1D p_zero, final DoubleMatrix1D p_position )
     {
-        return null;
+        final DoubleMatrix1D l_difference = new DenseDoubleMatrix1D( p_position.toArray() ).assign( p_zero, Functions.minus );
+        return l_difference.getQuick( 1 ) < 0
+               ? l_difference.getQuick( 0 ) < 0
+                 ? BOTTOMLEFT
+                 : UPPERLEFT
+               : l_difference.getQuick( 0 ) < 0
+                 ? BOTTOMRIGHT
+                 : UPPERRIGHT;
     }
 
 }

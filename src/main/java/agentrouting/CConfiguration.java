@@ -36,8 +36,16 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.action.IBaseAction;
+import org.lightjason.agentspeak.common.CPath;
+import org.lightjason.agentspeak.common.IPath;
 import org.lightjason.agentspeak.generator.IAgentGenerator;
+import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.language.execution.IContext;
+import org.lightjason.agentspeak.language.execution.fuzzy.CFuzzyValue;
+import org.lightjason.agentspeak.language.execution.fuzzy.IFuzzyValue;
 import org.lightjason.agentspeak.language.score.IAggregation;
+import org.lightjason.agentspeak.language.variable.IVariable;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -187,7 +195,7 @@ public final class CConfiguration
 
         // create executable object list and check number of elements - environment must be exists
         final List<IAgent> l_agents = new LinkedList<>();
-        this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_agents );
+        this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_agents, (boolean) l_data.getOrDefault( "agentprint", true ) );
         m_agents = Collections.unmodifiableList( l_agents );
 
         if ( m_agents.size() + m_staticelements.size() > m_environment.column() * m_environment.row() / 2 )
@@ -324,16 +332,21 @@ public final class CConfiguration
      *
      * @param p_agentconfiguration subsection for agent configuration
      * @param p_elements element list
+     * @param p_agentprint disables / enables agent printing
      * @throws IOException thrown on ASL reading error
      */
     @SuppressWarnings( "unchecked" )
-    private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IAgent> p_elements ) throws IOException
+    private void createAgent( final Map<String, Object> p_agentconfiguration, final List<IAgent> p_elements, final boolean p_agentprint ) throws IOException
     {
         final Map<String, IAgentGenerator<IAgent>> l_agentgenerator = new HashMap<>();
-        final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
-            org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
-        ).collect( Collectors.toSet() ) );
+        final Set<IAction> l_action = Collections.unmodifiableSet(
+            Stream.concat(
+                p_agentprint ? Stream.of() : Stream.of( new CEmptyPrint() ),
+                Stream.concat(
+                    org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
+                    org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
+                )
+            ).collect( Collectors.toSet() ) );
 
         p_agentconfiguration
             .entrySet()
@@ -401,6 +414,32 @@ public final class CConfiguration
             ) )
             .forEach( p_elements::add );
 
+    }
+
+    /**
+     * creates an empty print action to supress output
+     */
+    private static final class CEmptyPrint extends IBaseAction
+    {
+        @Override
+        public final IPath name()
+        {
+            return CPath.from( "generic/print" );
+        }
+
+        @Override
+        public final int minimalArgumentNumber()
+        {
+            return 0;
+        }
+
+        @Override
+        public IFuzzyValue<Boolean> execute( final IContext p_context, final boolean p_parallel, final List<ITerm> p_argument, final List<ITerm> p_return,
+                                             final List<ITerm> p_annotation
+        )
+        {
+            return CFuzzyValue.from( true );
+        }
     }
 
 }

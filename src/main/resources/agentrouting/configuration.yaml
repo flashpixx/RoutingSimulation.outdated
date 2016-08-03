@@ -7,6 +7,9 @@ statusvisible : true
 # number of simulation steps - optional if not set, Integer.Max_Value is used
 #steps : 2000
 
+# agent print call will be shown
+agentprint : false
+
 # thread-sleep (in milliseconds) time to slow down the simulation speed
 threadsleeptime : 100
 

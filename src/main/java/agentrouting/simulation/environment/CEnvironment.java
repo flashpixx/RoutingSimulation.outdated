@@ -212,13 +212,7 @@ public final class CEnvironment implements IEnvironment
      */
     private static double clip( final double p_value, final double p_max )
     {
-        if ( p_value < 0 )
-            return p_max + p_value;
-
-        if ( p_value >= p_max )
-            return p_value - p_max;
-
-        return p_value;
+        return Math.max( Math.min( p_value, p_max - 1 ), 0 );
     }
 
 

@@ -138,16 +138,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         // create execution structure for painting
         m_batch = new SpriteBatch();
-        /*
-        try
-        {
-            m_font = CScreen.font( "agentrouting/OpenSans-CondLight.ttf", 12, Color.WHITE );
-        }
-        catch ( final URISyntaxException | MalformedURLException l_exception )
-        {
-            m_font = null;
-        }
-        */
+        //m_font = CScreen.font( "agentrouting/Hanken-Light.ttf", 12, Color.WHITE );
 
         // create environment view and put all objects in it
         m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_batch );
@@ -174,9 +165,9 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * @throws MalformedURLException on incorrect URL
      * @throws URISyntaxException on incorrect URI syntax
      */
-    private static BitmapFont font( final String p_path, final int p_size, final Color p_color ) throws MalformedURLException, URISyntaxException
+    private static BitmapFont font( final String p_path, final int p_size, final Color p_color )
     {
-        final FreeTypeFontGenerator l_fontgenerator = new FreeTypeFontGenerator( Gdx.files.absolute( CCommon.getResourcePath( p_path ).toString() ) );
+        final FreeTypeFontGenerator l_fontgenerator = new FreeTypeFontGenerator( Gdx.files.internal( p_path ) );
         final FreeTypeFontGenerator.FreeTypeFontParameter l_fontparameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         l_fontparameter.size = p_size;

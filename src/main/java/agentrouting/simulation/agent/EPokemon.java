@@ -26,8 +26,6 @@ package agentrouting.simulation.agent;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
@@ -172,25 +170,11 @@ public enum EPokemon
 
         m_sprites = Collections.unmodifiableList(
             IntStream.range( 0, m_icons )
-                     .mapToObj(
-                         i ->
-                         {
-                             try
-                             {
-                                 return new Texture(
-                                     Gdx.files.absolute(
-                                         agentrouting.CCommon.getResourcePath(
-                                             MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
-                                         ).toString()
-                                     )
-                                 );
-                             }
-                             catch ( final MalformedURLException | URISyntaxException l_exception )
-                             {
-                                 LOGGER.warning( l_exception.toString() );
-                                 return null;
-                             }
-                         }
+                     .mapToObj( i -> new Texture(
+                                        Gdx.files.internal(
+                                            MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
+                                        )
+                                    )
                      )
                      .filter( i -> i != null )
                      .collect( Collectors.toList() )

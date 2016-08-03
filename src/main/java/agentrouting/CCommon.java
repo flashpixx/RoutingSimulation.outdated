@@ -90,19 +90,6 @@ public final class CCommon
     }
 
     /**
-     * returns the path of a resource file
-     *
-     * @param p_file string file name
-     * @return path
-     * @throws MalformedURLException on incorrect URL
-     * @throws URISyntaxException on incorrect URI syntax
-     */
-    public static Path getResourcePath( final String p_file ) throws MalformedURLException, URISyntaxException
-    {
-        return Paths.get( CCommon.getResourceURL( new File( p_file ) ).toURI() );
-    }
-
-    /**
      * returns a file from a resource e.g. Jar file
      *
      * @param p_file file

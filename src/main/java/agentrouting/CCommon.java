@@ -65,7 +65,7 @@ public final class CCommon
      * @param p_element element but position must be return a vector with 4 elements
      * @return int-pair-stream
      */
-    public static Stream<Pair<Integer, Integer>> inttupelstream( final IElement<?> p_element )
+    public static Stream<Pair<Integer, Integer>> inttupelstream( final IElement p_element )
     {
         return CCommon.inttupelstream(
             (int) p_element.position().get( 0 ), (int) ( p_element.position().get( 0 ) + p_element.position().get( 2 ) ),

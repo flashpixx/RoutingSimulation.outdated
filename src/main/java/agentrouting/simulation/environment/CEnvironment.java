@@ -117,14 +117,14 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
-    public final Stream<? extends IElement<?>> around( final DoubleMatrix1D p_position, final int p_radius )
+    public final Stream<? extends IElement> around( final DoubleMatrix1D p_position, final int p_radius )
     {
         return IntStream.range( -p_radius, p_radius )
                 .parallel()
                 .boxed()
                 .flatMap( i -> IntStream.range( -p_radius, p_radius )
                                  .boxed()
-                                 .map( j -> (IElement<?>) m_positions.getQuick(
+                                 .map( j -> (IElement) m_positions.getQuick(
                                                         (int) CEnvironment.clip( p_position.get( 0 ) + i, m_row ),
                                                         (int) CEnvironment.clip( p_position.getQuick( 1 ) + j, m_column )
                                             )
@@ -161,19 +161,19 @@ public final class CEnvironment implements IEnvironment
     // --- grid-access (routing & position) --------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final List<DoubleMatrix1D> route( final IElement<?> p_element, final DoubleMatrix1D p_target )
+    public final List<DoubleMatrix1D> route( final IElement p_element, final DoubleMatrix1D p_target )
     {
         return m_routing.route( m_positions, p_element.position(), p_target );
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public final synchronized IElement<?> position( final IElement<?> p_element, final DoubleMatrix1D p_position )
+    public final synchronized IElement position( final IElement p_element, final DoubleMatrix1D p_position )
     {
         final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
 
         // check of the target position is free, if not return object, which blocks the cell
-        final IElement<?> l_object = (IElement<?>) m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) );
+        final IElement l_object = (IElement) m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) );
         if ( l_object != null )
             return l_object;
 

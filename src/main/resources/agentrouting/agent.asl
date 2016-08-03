@@ -88,12 +88,10 @@ preferences/near-by(5).
 .
 
 // near-by belief change
-/*
 +preferences/near-by(X)
     <-
         generic/print( "near-by preference belief modified to [", X ,"] in cycle [", Cycle, "]" )
 .
-*/
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 

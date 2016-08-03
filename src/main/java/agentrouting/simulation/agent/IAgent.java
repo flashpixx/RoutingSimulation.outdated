@@ -31,7 +31,7 @@ import cern.colt.matrix.DoubleMatrix1D;
  * interface for the agentrouting,
  * inheritance from Java callable (for multithreading execution)
  */
-public interface IAgent extends IElement<IAgent>, org.lightjason.agentspeak.agent.IAgent<IAgent>
+public interface IAgent extends IElement, org.lightjason.agentspeak.agent.IAgent<IAgent>
 {
 
     /**

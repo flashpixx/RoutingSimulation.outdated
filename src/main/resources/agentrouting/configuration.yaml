@@ -56,7 +56,7 @@ agent :
         asl     : "agent.asl"
 
     test3 :
-        number  : 50
+        number  : 150
         pokemon : "slowpoke"
         force   : "sum"
         asl     : "agent.asl"

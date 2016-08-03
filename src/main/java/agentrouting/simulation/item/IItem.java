@@ -31,7 +31,7 @@ import java.util.concurrent.Callable;
 /**
  * interface for all items
  */
-public interface IItem extends Callable<IItem>, IElement<IItem>
+public interface IItem extends Callable<IItem>, IElement
 {
 
     /**

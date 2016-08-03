@@ -46,7 +46,7 @@ public final class TestCAgent
 
         m_actions = Collections.unmodifiableSet( Stream.concat(
             org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CMovingAgent.class )
+            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
         ).collect( Collectors.toSet() ) );
     }
 
@@ -60,7 +60,7 @@ public final class TestCAgent
     {
         Assume.assumeNotNull( m_environment );
         Assume.assumeNotNull( m_actions );
-        new CMovingAgentGenerator(
+        new CPokemonGenerator(
             m_environment,
             TestCAgent.class.getResourceAsStream( "/agentrouting/agent.asl" ),
             m_actions,

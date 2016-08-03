@@ -30,7 +30,6 @@ import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
 import org.lightjason.agentspeak.beliefbase.CBeliefBasePersistent;
-import org.lightjason.agentspeak.beliefbase.IBeliefBaseOnDemand;
 import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
 import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
 import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
@@ -57,7 +56,7 @@ import java.util.Set;
 /**
  * agent generator for dynamic / moving agents
  */
-public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
+public final class CPokemonGenerator extends IBaseAgentGenerator<IAgent>
 {
     /**
      * environment reference
@@ -77,8 +76,8 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
      * @param p_aggregation aggregation set
      * @throws Exception on any error
      */
-    public CMovingAgentGenerator( final IEnvironment p_environment, final InputStream p_stream,
-                                  final Set<IAction> p_actions, final IAggregation p_aggregation
+    public CPokemonGenerator( final IEnvironment p_environment, final InputStream p_stream,
+                              final Set<IAction> p_actions, final IAggregation p_aggregation
     ) throws Exception
     {
         super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), Collections.<IBeliefPerceive<IAgent>>emptySet(), IVariableBuilder.EMPTY );
@@ -106,7 +105,7 @@ public final class CMovingAgentGenerator extends IBaseAgentGenerator<IAgent>
             l_position.setQuick( 1, m_random.nextInt( m_environment.column() ) );
         }
 
-        return new CMovingAgent(
+        return new CPokemon(
             m_environment,
             m_configuration,
 

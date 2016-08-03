@@ -45,8 +45,8 @@ public interface ISprite extends IVisible
      * @param p_rows number of rows
      * @param p_columns number of columns
      * @param p_cellsize cellsize
-     * @return sprite object
+     * @param p_unit unit scale
      */
-    Sprite spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize );
+    void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit );
 
 }

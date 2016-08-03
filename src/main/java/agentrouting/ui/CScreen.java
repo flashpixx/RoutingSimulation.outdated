@@ -143,7 +143,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_camera.position.set( m_environment.column() / 2f, m_environment.row() / 2f, 0 );
         m_camera.zoom = m_environment.cellsize();
 
-        m_sprites.stream().forEach( i -> i.spriteinitialize( m_environment.row(), m_environment.column(), m_environment.cellsize() ).setScale( l_unit ) );
+        m_sprites.forEach( i -> i.spriteinitialize( m_environment.row(), m_environment.column(), m_environment.cellsize(), l_unit ) );
         m_render.setView( m_camera );
 
         // set input processor
@@ -167,7 +167,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         // object sprite painting
         m_batch.setProjectionMatrix( m_camera.combined );
         m_batch.begin();
-        m_sprites.stream().forEach( i -> i.sprite().draw( m_batch ) );
+        m_sprites.forEach( i -> i.sprite().draw( m_batch ) );
 
         if ( m_statusvisibility )
             m_font.draw(

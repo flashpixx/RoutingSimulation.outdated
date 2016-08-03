@@ -50,7 +50,6 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -87,11 +86,11 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      */
     private final IEnvironment m_environment;
     /**
-     * color
+     * pokemon
      */
-    private final Color m_color;
+    private final EPokemon m_pokemon;
     /**
-     * sprite object for painting
+     * pokemon sprite
      */
     private Sprite m_sprite;
     /**
@@ -108,24 +107,23 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
     /**
      * ctor
-     *
-     * @param p_environment environment
+     *  @param p_environment environment
      * @param p_agentconfiguration agent configuration
      * @param p_force force model
      * @param p_position initialize position
-     * @param p_color color string in RRGGBBAA
+     * @param p_pokemon pokemon name
      */
     IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                final IForce p_force, final DoubleMatrix1D p_position, final String p_color
+                final IForce p_force, final DoubleMatrix1D p_position, final String p_pokemon
     )
     {
         super( p_agentconfiguration );
-        if ( p_color.isEmpty() )
+        if ( p_pokemon.isEmpty() )
             throw new RuntimeException( "color need not to be empty" );
 
         m_position = new DenseDoubleMatrix1D( 2 );
         m_environment = p_environment;
-        m_color = Color.valueOf( p_color );
+        m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
 
 
         // push the on-demand beliefbase to the agent
@@ -223,7 +221,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
 
     @IAgentActionName( name = "speed/set" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void setspeed( final Number p_speed )
     {
         if ( p_speed.intValue() < 1 )
@@ -232,7 +230,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
     @IAgentActionName( name = "speed/increment" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void incrementspeed( final Number p_speed )
     {
         if ( p_speed.intValue() < 1 )
@@ -241,7 +239,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
     @IAgentActionName( name = "speed/decrement" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void decrementspeed( final Number p_speed )
     {
         if ( ( p_speed.intValue() < 1 ) || ( m_speed - p_speed.intValue() < 1 ) )
@@ -321,7 +319,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move forward into goal direction
      */
     @IAgentActionName( name = "move/forward" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforward()
     {
         this.move( EDirection.FORWARD );
@@ -331,7 +329,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move left forward into goal direction
      */
     @IAgentActionName( name = "move/forwardright" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforwardright()
     {
         this.move( EDirection.FORWARDRIGHT );
@@ -341,7 +339,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move right to the goal direction
      */
     @IAgentActionName( name = "move/right" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveright()
     {
         this.move( EDirection.RIGHT );
@@ -351,7 +349,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move backward right from goal direction
      */
     @IAgentActionName( name = "move/backwardright" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackwardright()
     {
         this.move( EDirection.BACKWARDRIGHT );
@@ -361,7 +359,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move backward from goal direction
      */
     @IAgentActionName( name = "move/backward" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackward()
     {
         this.move( EDirection.BACKWARD );
@@ -371,7 +369,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move backward right from goal direction
      */
     @IAgentActionName( name = "move/backwardleft" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackwardleft()
     {
         this.move( EDirection.BACKWARDLEFT );
@@ -381,7 +379,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move left to the goal
      */
     @IAgentActionName( name = "move/left" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveleft()
     {
         this.move( EDirection.LEFT );
@@ -391,7 +389,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move forward left into goal direction
      */
     @IAgentActionName( name = "move/forwardleft" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforwardleft()
     {
         this.move( EDirection.FORWARDLEFT );
@@ -434,19 +432,21 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
     @Override
-    public final Sprite spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize )
+    public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
+        /*
         // create a colored sequare for the agent
         final Pixmap l_pixmap = new Pixmap( p_cellsize, p_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( m_color );
+        l_pixmap.setColor( Color.RED );
         l_pixmap.fillRectangle( 0, 0, p_cellsize, p_cellsize );
 
         // add the square to a sprite (for visualization) and scale it to 90% of cell size
         m_sprite = new Sprite( new Texture( l_pixmap ), 0, 0, p_cellsize, p_cellsize );
         m_sprite.setSize( 0.9f * p_cellsize, 0.9f * p_cellsize );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
-
-        return m_sprite;
+        m_sprite.setScale( p_unit );
+        */
+        m_sprite = m_pokemon.initialize( p_cellsize, p_unit );
     }
 
 

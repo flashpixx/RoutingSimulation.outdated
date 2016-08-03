@@ -23,8 +23,8 @@
 
 package agentrouting;
 
-import agentrouting.simulation.agent.CMovingAgent;
-import agentrouting.simulation.agent.CMovingAgentGenerator;
+import agentrouting.simulation.agent.CPokemon;
+import agentrouting.simulation.agent.CPokemonGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
@@ -332,7 +332,7 @@ public final class CConfiguration
         final Map<String, IAgentGenerator<IAgent>> l_agentgenerator = new HashMap<>();
         final Set<IAction> l_action = Collections.unmodifiableSet( Stream.concat(
             org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CMovingAgent.class )
+            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
         ).collect( Collectors.toSet() ) );
 
         p_agentconfiguration
@@ -353,7 +353,7 @@ public final class CConfiguration
                     // and push it back if generator does not exists
                     final IAgentGenerator<IAgent> l_generator = l_agentgenerator.getOrDefault(
                         l_asl,
-                        new CMovingAgentGenerator(
+                        new CPokemonGenerator(
                             m_environment,
                             l_stream,
                             l_action,
@@ -368,7 +368,7 @@ public final class CConfiguration
 
                         EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 
-                        (String) l_parameter.getOrDefault( "color", "" )
+                        (String) l_parameter.getOrDefault( "pokemon", "" )
 
                     ).sequential().forEach( p_elements::add );
                 }

@@ -110,7 +110,7 @@ public abstract class IBaseItem implements IItem
     }
 
     @Override
-    public final Sprite spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize )
+    public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
         // variables are defined as size1 = x-size & size2 = y-size
         final float l_size1 = p_cellsize * (int) m_position.getQuick( 3 );
@@ -126,8 +126,7 @@ public abstract class IBaseItem implements IItem
         m_sprite.setSize( l_size1, l_size2 );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
-
-        return m_sprite;
+        m_sprite.setScale( p_unit );
     }
 
     @Override

@@ -41,22 +41,22 @@ agent :
 
     # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
     test1 :
-        number : 2
-        color  : "ff0000"
-        force  : "sum"
-        asl    : "agent.asl"
+        number  : 0
+        pokemon : "nebulak"
+        force   : "sum"
+        asl     : "agent.asl"
 
     test2 :
-        number : 2
-        color  : "00ff00"
-        force  : "sum"
-        asl    : "agent.asl"
+        number  : 2
+        pokemon : "rettan"
+        force   : "sum"
+        asl     : "agent.asl"
 
     test3 :
-        number : 2
-        color  : "0000ff"
-        force  : "sum"
-        asl    : "agent.asl"
+        number  : 2
+        pokemon : "smogon"
+        force   : "sum"
+        asl     : "agent.asl"
 
 
 

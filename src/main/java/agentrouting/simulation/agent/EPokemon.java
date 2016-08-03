@@ -165,6 +165,7 @@ public enum EPokemon
      * initialize sprites
      * @param p_cellsize cell size
      * @param p_unit unit scale
+     * @return sprite object
      */
     public final Sprite initialize( final int p_cellsize, final float p_unit )
     {

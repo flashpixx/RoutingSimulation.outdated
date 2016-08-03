@@ -479,9 +479,9 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
                                                 )
                 );
 
-                case SPEED: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_speed )) );
+                case SPEED: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_speed ) ) );
 
-                case LANDMARKS: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_landmarks )) );
+                case LANDMARKS: return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_landmarks ) ) );
 
                 default:
                     throw new RuntimeException( MessageFormat.format( "enum value [{0}] does not exist", this ) );

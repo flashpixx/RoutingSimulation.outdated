@@ -45,7 +45,6 @@ import org.lightjason.agentspeak.language.execution.IContext;
 import org.lightjason.agentspeak.language.execution.fuzzy.CFuzzyValue;
 import org.lightjason.agentspeak.language.execution.fuzzy.IFuzzyValue;
 import org.lightjason.agentspeak.language.score.IAggregation;
-import org.lightjason.agentspeak.language.variable.IVariable;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -195,7 +194,11 @@ public final class CConfiguration
 
         // create executable object list and check number of elements - environment must be exists
         final List<IAgent> l_agents = new LinkedList<>();
-        this.createAgent( (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ), l_agents, (boolean) l_data.getOrDefault( "agentprint", true ) );
+        this.createAgent(
+            (Map<String, Object>) l_data.getOrDefault( "agent", Collections.<String, Object>emptyMap() ),
+            l_agents,
+            (boolean) l_data.getOrDefault( "agentprint", true )
+        );
         m_agents = Collections.unmodifiableList( l_agents );
 
         if ( m_agents.size() + m_staticelements.size() > m_environment.column() * m_environment.row() / 2 )

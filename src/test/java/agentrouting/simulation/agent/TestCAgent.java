@@ -65,7 +65,7 @@ public final class TestCAgent
             TestCAgent.class.getResourceAsStream( "/agentrouting/agent.asl" ),
             m_actions,
             IAggregation.EMPTY
-        ).generatesingle( EForceFactory.SUM.get(), "000000" );
+        ).generatesingle( EForceFactory.SUM.get(), "eevee" );
     }
 
 

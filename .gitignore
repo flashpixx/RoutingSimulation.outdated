@@ -18,6 +18,7 @@
 !src/site/*.doxyfile
 !src/site/*.htm
 !src/site/*.css
+!src/site/*.xml
 
 target/**
 

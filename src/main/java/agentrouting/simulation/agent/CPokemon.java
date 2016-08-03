@@ -27,6 +27,7 @@ package agentrouting.simulation.agent;
 import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
 
@@ -35,6 +36,10 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
  */
 public final class CPokemon extends IBaseAgent
 {
+    /**
+     * pokemon
+     */
+    private final EPokemon m_pokemon;
 
     /**
      * ctor
@@ -48,7 +53,21 @@ public final class CPokemon extends IBaseAgent
                      final DoubleMatrix1D p_position, final IForce p_force, final String p_pokemon
     )
     {
-        super( p_environment, p_agentconfiguration, p_force, p_position, p_pokemon );
+        super( p_environment, p_agentconfiguration, p_force, p_position );
+
+        if ( p_pokemon.isEmpty() )
+            throw new RuntimeException( "pokemon name need not to be empty" );
+
+        m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
+    }
+
+    @Override
+    public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+    {
+        m_sprite = new Sprite( m_pokemon.initialize() );
+        m_sprite.setSize( p_cellsize, p_cellsize );
+        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
+        m_sprite.setScale( p_unit );
     }
 
 }

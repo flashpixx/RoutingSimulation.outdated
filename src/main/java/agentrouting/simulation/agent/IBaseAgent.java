@@ -74,6 +74,10 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      */
     private static final String ENVIRONMENT = "env";
     /**
+     * sprite
+     */
+    protected Sprite m_sprite;
+    /**
      * random generator
      */
     private final Random m_random = new Random();
@@ -85,14 +89,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * reference to the environment
      */
     private final IEnvironment m_environment;
-    /**
-     * pokemon
-     */
-    private final EPokemon m_pokemon;
-    /**
-     * pokemon sprite
-     */
-    private Sprite m_sprite;
     /**
      * current moving speed
      */
@@ -111,20 +107,15 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * @param p_agentconfiguration agent configuration
      * @param p_force force model
      * @param p_position initialize position
-     * @param p_pokemon pokemon name
      */
     IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                final IForce p_force, final DoubleMatrix1D p_position, final String p_pokemon
+                final IForce p_force, final DoubleMatrix1D p_position
     )
     {
         super( p_agentconfiguration );
-        if ( p_pokemon.isEmpty() )
-            throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_position = p_position;
         m_environment = p_environment;
-        m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
-
 
         // push the on-demand beliefbase to the agent
         m_beliefbase.add( new CEnvironmentBeliefbase().create( ENVIRONMENT ) );
@@ -140,6 +131,12 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
             m_speed,
             m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) )
         );
+    }
+
+    @Override
+    public final Sprite sprite()
+    {
+        return m_sprite;
     }
 
     @Override
@@ -421,23 +418,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
                 .findFirst()
                 .orElse( CRawTerm.from( p_default ) )
         );
-    }
-
-    // --- visualization ---------------------------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public final Sprite sprite()
-    {
-        return m_sprite;
-    }
-
-    @Override
-    public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
-    {
-        m_sprite = new Sprite( m_pokemon.initialize() );
-        m_sprite.setSize( p_cellsize, p_cellsize );
-        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
-        m_sprite.setScale( p_unit );
     }
 
 

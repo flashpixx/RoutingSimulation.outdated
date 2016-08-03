@@ -2,7 +2,7 @@
 logging : false
 
 # enable / disable status line
-statusvisible : false
+statusvisible : true
 
 # number of simulation steps - optional if not set, Integer.Max_Value is used
 #steps : 2000
@@ -42,19 +42,19 @@ agent :
     # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
     test1 :
         number  : 0
-        pokemon : "nebulak"
+        pokemon : "gastly"
         force   : "sum"
         asl     : "agent.asl"
 
     test2 :
         number  : 0
-        pokemon : "rettan"
+        pokemon : "ekans"
         force   : "sum"
         asl     : "agent.asl"
 
     test3 :
-        number  : 10
-        pokemon : "smogon"
+        number  : 50
+        pokemon : "slowpoke"
         force   : "sum"
         asl     : "agent.asl"
 

@@ -147,7 +147,6 @@ public final class CMain
         l_config.width = CConfiguration.INSTANCE.windowweight();
         l_config.height = CConfiguration.INSTANCE.windowheight();
 
-
         // open window
         LOGGER.info( MessageFormat.format( "open window with size [{0}x{1}]", l_config.width, l_config.height ) );
         final CScreen l_screen = new CScreen(

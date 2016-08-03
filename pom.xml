@@ -59,7 +59,28 @@
             <!-- defines the binary version of the component -->
             <classifier>natives-desktop</classifier>
         </dependency>
-        
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype</artifactId>
+            <version>1.9.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-freetype-platform</artifactId>
+            <version>1.9.3</version>
+            <scope>compile</scope>
+
+            <!-- defines the binary version of the component -->
+            <classifier>natives-desktop</classifier>
+        </dependency>
+
+
+
+
+
         <!-- base packages -->
         <dependency>
             <groupId>org.yaml</groupId>

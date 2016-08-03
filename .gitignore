@@ -13,14 +13,11 @@
 !src/main/resources/**/*.yaml
 !src/main/resources/**/*.asl
 !src/main/resources/**/*.png
+!src/main/resources/**/*.ttf
 
 !src/site/*.doxyfile
 !src/site/*.htm
 !src/site/*.css
-
-!src/analysis/**/*.xml
-!src/analysis/**/*.txt
-!src/analysis/**/*.md
 
 target/**
 

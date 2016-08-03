@@ -23,16 +23,12 @@
 
 package agentrouting.simulation.agent;
 
-import agentrouting.CConfiguration;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.lightjason.agentspeak.language.CCommon;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
@@ -47,64 +43,83 @@ import java.util.stream.IntStream;
 public enum EPokemon
 {
     ABRA( 3 ),
-    AMONITAS( 2 ),
-    BISASAM( 3 ),
-    BLUZUK( 2 ),
-    DIGDA( 2 ),
+    AERODACTYL( 1 ),
+    ARTICUNO( 1 ),
+    BELLSPROUT( 3 ),
+    BULBASAUR( 3 ),
+    CATERPIE( 3 ),
+    CHANSEY( 1 ),
+    CHARMANDER( 3 ),
+    CLEFAIRY( 2 ),
+    CUBONE( 2 ),
+    DIGLETT( 2 ),
     DITTO( 1 ),
-    DODU( 2 ),
-    DRATINI( 2 ),
-    ENTON( 2 ),
-    EVOLI( 4 ),
-    FLEGMON( 2 ),
-    FLUFFELUFF( 2 ),
-    FUKANO( 2 ),
-    GLUMANDA( 3 ),
-    GOLDINI( 2  ),
-    HABITAK( 2 ),
-    HORNLIU( 2 ),
-    JURON( 2 ),
-    KARPADOR( 2 ),
-    KLEINSTEIN( 3 ),
-    KONFENSA( 3 ),
+    DODUO( 2 ),
+    DRATINI( 3 ),
+    DROWZEE( 2 ),
+    EEVEE( 4 ),
+    EKANS( 2 ),
+    ELECTABUZZ( 1 ),
+    EXEGGCUTE( 2 ),
+    FARFETCHD( 1 ),
+    GASTLY( 3 ),
+    GEODUDE( 3 ),
+    GOLDEEN( 2  ),
+    GRIMER( 2 ),
+    GROWLITHE( 2 ),
+    HITMONCHAN( 1 ),
+    HITMONLEE( 1 ),
+    HORSEA( 2 ),
+    JIGGLYPUFF( 2 ),
+    JYNX( 1 ),
+    KABUTO( 2 ),
+    KANGASKHAN ( 1 ),
+    KOFFING( 2 ),
     KRABBY( 2 ),
     LAPRAS( 1 ),
-    MACHOLLO( 3 ),
-    MAGNETILO( 2 ),
-    MAMPFAXO( 1 ),
-    MAUZI( 2 ),
-    MENKI( 2 ),
-    MUSCHAS( 2 ),
-    MYPRAPLA( 3 ),
-    NEBULAK( 3 ),
+    LICKITUNG( 1 ),
+    MACHOP( 3 ),
+    MAGIKARP( 2 ),
+    MAGNEMITE( 2 ),
+    MAGMAR( 1 ),
+    MANKEY( 2 ),
+    MEOWTH( 2 ),
+    MEW( 1 ),
+    MEWTWO( 1 ),
+    MOLTRES( 1 ),
+    MR_MIME( 1 ),
     NIDORAN_FEMALE( 3 ),
     NIDORAN_MALE( 3 ),
+    ODDISH( 3 ),
+    OMANYTE( 2 ),
     ONIX( 1 ),
-    OWEI( 2 ),
     PARAS( 2 ),
-    PICHU( 2 ),
-    PII( 2 ),
-    PONITA( 2 ),
-    PORENTA( 1 ),
-    QUAPSEL( 3 ),
-    RATTFRATZ( 2 ),
-    RAUPY( 3 ),
-    RETTAN( 2 ),
-    RIHORN( 2 ),
-    SANDAN( 2 ),
-    SCHIGGY( 3 ),
-    SEEPER( 2 ),
-    SLEIMA( 2 ),
-    SMOGON( 2 ),
-    STERNDU( 2 ),
+    PIDGEY( 3 ),
+    PIKACHU( 2 ),
+    PINSIR( 1 ),
+    POLIWAG( 3 ),
+    PONYTA( 2 ),
+    PORYGON( 1 ),
+    PSYDUCK( 2 ),
+    RATTATA( 2 ),
+    RHYHORN( 2 ),
+    SANDSHREW( 2 ),
+    SCYTHER( 1 ),
+    SEEL( 2 ),
+    SHELLDER( 2 ),
+    SLOWPOKE( 2 ),
+    SNORLAX( 1 ),
+    SPEAROW( 2 ),
+    SQUIRTLE( 3 ),
+    STARYU( 2 ),
     TANGELA( 2 ),
-    TAUBSI( 3 ),
-    TENTACHA( 2 ),
-    TRAGOSSO( 2 ),
-    TRAUMATO( 2 ),
-    VOLTOBAL( 2 ),
+    TAUROS( 1 ),
+    TENTACOOL( 2 ),
+    VENONAT( 2 ),
+    VOLTORB( 2 ),
     VULPIX( 2 ),
-    WONNEIRA( 2 ),
+    WEEDLE( 2 ),
+    ZAPDOS( 1 ),
     ZUBAT( 2 );
 
 
@@ -149,7 +164,7 @@ public enum EPokemon
      * @param p_cellsize cell size
      * @param p_unit unit scale
      */
-    public final synchronized Sprite initialize( final int p_cellsize, final float p_unit )
+    public final Sprite initialize( final int p_cellsize, final float p_unit )
     {
         if ( m_sprites != null )
             return m_sprites.get( 0 );
@@ -163,11 +178,9 @@ public enum EPokemon
                                  return new Sprite(
                                      new Texture(
                                          Gdx.files.absolute(
-                                             Paths.get(
-                                                agentrouting.CCommon.getResourceURL(
-                                                    MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase(), i )
-                                                ).toURI()
-                                             ).toFile().toString()
+                                            agentrouting.CCommon.getResourcePath(
+                                                MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
+                                            ).toString()
                                          )
                                      ),
                                      0, 0, p_cellsize, p_cellsize
@@ -182,9 +195,9 @@ public enum EPokemon
                      )
                      .filter( i -> i != null )
                      .map( i -> {
+                         i.setScale( p_unit );
                          i.setSize( 0.9f * p_cellsize, 0.9f * p_cellsize );
                          i.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
-                         i.setScale( p_unit );
                          return i;
                      } )
                      .collect( Collectors.toList() )

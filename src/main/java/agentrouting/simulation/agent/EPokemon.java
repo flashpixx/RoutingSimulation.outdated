@@ -39,6 +39,8 @@ import java.util.stream.IntStream;
 
 /**
  * enum to define all sprites by name
+ *
+ * @see http://www.pokewiki.de/Pok%C3%A9mon-Liste
  */
 public enum EPokemon
 {

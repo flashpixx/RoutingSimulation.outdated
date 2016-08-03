@@ -23,7 +23,6 @@
 
 package agentrouting.ui;
 
-import agentrouting.CCommon;
 import agentrouting.CConfiguration;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -43,8 +42,6 @@ import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.List;
 

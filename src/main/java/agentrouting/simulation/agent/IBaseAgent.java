@@ -104,6 +104,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * @param p_force force model
      * @param p_position initialize position
      */
+    @SuppressWarnings( "unchecked" )
     IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
                 final IForce p_force, final DoubleMatrix1D p_position
     )

@@ -223,9 +223,9 @@ public final class CEnvironment implements IEnvironment
     {
         // create background checkerboard with a tile map
         final Pixmap l_pixmap = new Pixmap( 2 * m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( new Color( 0.1f, 0.1f, 0.1f, 1 ) );
+        l_pixmap.setColor( new Color( 0.8f, 0.1f, 0.1f, 0.5f ) );
         l_pixmap.fillRectangle( 0, 0, m_cellsize, m_cellsize );
-        l_pixmap.setColor( new Color( 0.3f, 0.3f, 0.3f, 1 ) );
+        l_pixmap.setColor( new Color( 0.5f, 0.5f, 0.5f, 0.5f ) );
         l_pixmap.fillRectangle( m_cellsize, 0, m_cellsize, m_cellsize );
 
         final Texture l_texture = new Texture( l_pixmap );

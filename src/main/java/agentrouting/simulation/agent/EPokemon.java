@@ -137,7 +137,7 @@ public enum EPokemon
     /**
      * sprite list
      */
-    private List<Sprite> m_sprites;
+    private List<Texture> m_sprites;
 
 
 
@@ -163,11 +163,9 @@ public enum EPokemon
 
     /**
      * initialize sprites
-     * @param p_cellsize cell size
-     * @param p_unit unit scale
-     * @return sprite object
+     * @return texture object
      */
-    public final Sprite initialize( final int p_cellsize, final float p_unit )
+    public final synchronized Texture initialize()
     {
         if ( m_sprites != null )
             return m_sprites.get( 0 );
@@ -178,16 +176,13 @@ public enum EPokemon
                          i -> {
                              try
                              {
-                                 return new Sprite(
-                                     new Texture(
-                                         Gdx.files.absolute(
-                                            agentrouting.CCommon.getResourcePath(
-                                                MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
-                                            ).toString()
-                                         )
-                                     ),
-                                     0, 0, p_cellsize, p_cellsize
-                                 );
+                                return new Texture(
+                                    Gdx.files.absolute(
+                                        agentrouting.CCommon.getResourcePath(
+                                            MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
+                                        ).toString()
+                                    )
+                                );
                              }
                              catch ( final MalformedURLException | URISyntaxException l_exception )
                              {
@@ -197,17 +192,11 @@ public enum EPokemon
                          }
                      )
                      .filter( i -> i != null )
-                     .map( i -> {
-                         i.setScale( p_unit );
-                         i.setSize( 0.9f * p_cellsize, 0.9f * p_cellsize );
-                         i.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
-                         return i;
-                     } )
                      .collect( Collectors.toList() )
         );
 
         if ( ( m_sprites.isEmpty() ) || ( m_icons != m_sprites.size() ) )
-            throw new RuntimeException( MessageFormat.format( "sprite [{0}] cannot initialize", this ) );
+            throw new RuntimeException( MessageFormat.format( "texture [{0}] cannot initialize", this ) );
 
         return m_sprites.get( 0 );
     }
@@ -218,7 +207,7 @@ public enum EPokemon
      * @param p_index index number
      * @return sprite
      */
-    public final synchronized Sprite sprite( final int p_index )
+    public final synchronized Texture sprite( final int p_index )
     {
         return m_sprites.get( p_index );
     }

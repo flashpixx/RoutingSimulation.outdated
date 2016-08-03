@@ -44,20 +44,20 @@ agent :
 
     # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
     test1 :
-        number  : 0
+        number  : 50
         pokemon : "gastly"
         force   : "sum"
         asl     : "agent.asl"
 
     test2 :
-        number  : 0
-        pokemon : "ekans"
+        number  : 50
+        pokemon : "caterpie"
         force   : "sum"
         asl     : "agent.asl"
 
     test3 :
-        number  : 150
-        pokemon : "slowpoke"
+        number  : 50
+        pokemon : "koffing"
         force   : "sum"
         asl     : "agent.asl"
 

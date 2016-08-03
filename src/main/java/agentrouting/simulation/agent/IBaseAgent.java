@@ -434,18 +434,10 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
-        // create a colored sequare for the agent
-        final Pixmap l_pixmap = new Pixmap( p_cellsize, p_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( Color.RED );
-        l_pixmap.fillRectangle( 0, 0, p_cellsize, p_cellsize );
-
-        // add the square to a sprite (for visualization) and scale it to 90% of cell size
-        m_sprite = new Sprite( new Texture( l_pixmap ), 0, 0, p_cellsize, p_cellsize );
-        m_sprite.setSize( 0.9f * p_cellsize, 0.9f * p_cellsize );
+        m_sprite = new Sprite( m_pokemon.initialize() );
+        m_sprite.setSize( p_cellsize, p_cellsize );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setScale( p_unit );
-
-        //m_sprite = m_pokemon.initialize( p_cellsize, p_unit );
     }
 
 

@@ -30,7 +30,7 @@ preferences/near-by(5).
 // walk straight forward into the direction of the goal-position
 +!movement/walk/forward
     <-
-        generic/print( "walk forward in cycle [", Cycle, "]" );
+        //generic/print( "walk forward in cycle [", Cycle, "]" );
         move/forward();
         !movement/walk/forward
 .
@@ -39,14 +39,14 @@ preferences/near-by(5).
 // walk straight forward fails than go left
 -!movement/walk/forward
     <-
-        generic/print( "walk forward fails in cycle [", Cycle, "]" );
+        //generic/print( "walk forward fails in cycle [", Cycle, "]" );
         !!movent/walk/left
 .
 
 // walk left 90 degree to the goal position
 +!movent/walk/left
     <-
-        generic/print( "walk left in cycle [", Cycle, "]" );
+        //generic/print( "walk left in cycle [", Cycle, "]" );
         move/left();
         !movement/walk/forward
 .
@@ -54,14 +54,14 @@ preferences/near-by(5).
 // walk left fails than go right
 -!movent/walk/left
     <-
-        generic/print( "walk left fails in cycle [", Cycle, "]" );
+        //generic/print( "walk left fails in cycle [", Cycle, "]" );
         !!movent/walk/right
 .
 
 // walk right 90 degree to the goal position
 +!movent/walk/right
     <-
-        generic/print( "walk right in cycle [", Cycle, "]" );
+        //generic/print( "walk right in cycle [", Cycle, "]" );
         move/right();
         !movement/walk/forward
 .
@@ -69,7 +69,7 @@ preferences/near-by(5).
 // walk right fails than sleep and hope everything will be fine later
 -!movent/walk/right
     <-
-        generic/print( "walk right fails in cycle [", Cycle, "]" );
+        //generic/print( "walk right fails in cycle [", Cycle, "]" );
         generic/sleep(3)
 .
 
@@ -80,16 +80,18 @@ preferences/near-by(5).
 // the current speed
 +!movement/standstill
     <-
-        generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
+        //generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
         speed/increment( 1 );
         !movement/walk/forward
 .
 
 // near-by belief change
+/*
 +preferences/near-by(X)
     <-
         generic/print( "near-by preference belief modified to [", X ,"] in cycle [", Cycle, "]" )
 .
+*/
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -101,7 +103,7 @@ preferences/near-by(5).
 // belief preference/near-by(V)
 +!goal/near-by(D)
     <-
-        generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
+        //generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
         speed/set(1)
 .
 
@@ -110,7 +112,7 @@ preferences/near-by(5).
 // will sleep 5 cycles
 +!goal/achieve-position(P)
      <-
-        generic/print( "position achieved [", P, "] in cycle [", Cycle, "] - sleep for 5 cycles" );
+        //generic/print( "position achieved [", P, "] in cycle [", Cycle, "] - sleep for 5 cycles" );
         route/next();
         generic/sleep(5)
 .
@@ -120,7 +122,7 @@ preferences/near-by(5).
 // the speed is set to 1 and we try go back
 +!goal/beyond(P)
     <-
-        generic/print( "position beyond [", P, "] - set speed to 1 in cycle [", Cycle, "]" );
+        //generic/print( "position beyond [", P, "] - set speed to 1 in cycle [", Cycle, "]" );
         speed/set(1)
 .
 
@@ -130,14 +132,16 @@ preferences/near-by(5).
 // and a random near-by definition
 +!wakeup
     <-
-        generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
+        //generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
 
         speed/set(1);
         //route/random( 50 );
 
+        /*
         N = math/statistic/randomsimple();
         N = N*10;
         +preferences/near-by(N);
+        */
 
         !movement/walk/forward
 .

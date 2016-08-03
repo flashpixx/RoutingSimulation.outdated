@@ -119,9 +119,9 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     {
         super( p_agentconfiguration );
         if ( p_pokemon.isEmpty() )
-            throw new RuntimeException( "color need not to be empty" );
+            throw new RuntimeException( "pokemon name need not to be empty" );
 
-        m_position = new DenseDoubleMatrix1D( 2 );
+        m_position = p_position;
         m_environment = p_environment;
         m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
 
@@ -434,7 +434,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
-        /*
         // create a colored sequare for the agent
         final Pixmap l_pixmap = new Pixmap( p_cellsize, p_cellsize, Pixmap.Format.RGBA8888 );
         l_pixmap.setColor( Color.RED );
@@ -445,8 +444,8 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         m_sprite.setSize( 0.9f * p_cellsize, 0.9f * p_cellsize );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setScale( p_unit );
-        */
-        m_sprite = m_pokemon.initialize( p_cellsize, p_unit );
+
+        //m_sprite = m_pokemon.initialize( p_cellsize, p_unit );
     }
 
 

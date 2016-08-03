@@ -8,7 +8,7 @@ statusvisible : false
 #steps : 2000
 
 # thread-sleep (in milliseconds) time to slow down the simulation speed
-threadsleeptime : 150
+threadsleeptime : 100
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
@@ -47,13 +47,13 @@ agent :
         asl     : "agent.asl"
 
     test2 :
-        number  : 2
+        number  : 0
         pokemon : "rettan"
         force   : "sum"
         asl     : "agent.asl"
 
     test3 :
-        number  : 2
+        number  : 10
         pokemon : "smogon"
         force   : "sum"
         asl     : "agent.asl"

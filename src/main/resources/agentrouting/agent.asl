@@ -70,7 +70,9 @@ preferences/near-by(5).
 -!movent/walk/right
     <-
         generic/print( "walk right fails in cycle [", Cycle, "]" );
-        generic/sleep(3)
+        N = math/statistic/randomsimple();
+        N = N*10 + 1;
+        generic/sleep(N)
 .
 
 

@@ -42,85 +42,114 @@ import java.util.stream.IntStream;
  */
 public enum EPokemon
 {
-    ABRA( 3 ),
-    AERODACTYL( 1 ),
-    ARTICUNO( 1 ),
-    BELLSPROUT( 3 ),
-    BULBASAUR( 3 ),
-    CATERPIE( 3 ),
+    // normal
     CHANSEY( 1 ),
-    CHARMANDER( 3 ),
-    CLEFAIRY( 2 ),
-    CUBONE( 2 ),
-    DIGLETT( 2 ),
     DITTO( 1 ),
     DODUO( 2 ),
-    DRATINI( 3 ),
-    DROWZEE( 2 ),
     EEVEE( 4 ),
-    EKANS( 2 ),
-    ELECTABUZZ( 1 ),
-    EXEGGCUTE( 2 ),
     FARFETCHD( 1 ),
-    GASTLY( 3 ),
-    GEODUDE( 3 ),
-    GOLDEEN( 2 ),
-    GRIMER( 2 ),
-    GROWLITHE( 2 ),
-    HITMONCHAN( 1 ),
-    HITMONLEE( 1 ),
-    HORSEA( 2 ),
     JIGGLYPUFF( 2 ),
-    JYNX( 1 ),
-    KABUTO( 2 ),
     KANGASKHAN( 1 ),
-    KOFFING( 2 ),
+    LICKITUNG( 1 ),
+    MEOWTH( 2 ),
+    PIDGEY( 3 ),
+    PORYGON( 1 ),
+    RATTATA( 2 ),
+    SNORLAX( 1 ),
+    SPEAROW( 2 ),
+    TAUROS( 1 ),
+
+    // fire
+    CHARMANDER( 3 ),
+    GROWLITHE( 2 ),
+    MAGMAR( 1 ),
+    MOLTRES( 1 ),
+    PONYTA( 2 ),
+    VULPIX( 2 ),
+
+    // water
+    GOLDEEN( 2 ),
+    HORSEA( 2 ),
     KRABBY( 2 ),
     LAPRAS( 1 ),
-    LICKITUNG( 1 ),
-    MACHOP( 3 ),
     MAGIKARP( 2 ),
-    MAGNEMITE( 2 ),
-    MAGMAR( 1 ),
-    MANKEY( 2 ),
-    MEOWTH( 2 ),
-    MEW( 1 ),
-    MEWTWO( 1 ),
-    MOLTRES( 1 ),
-    MR_MIME( 1 ),
-    NIDORAN_FEMALE( 3 ),
-    NIDORAN_MALE( 3 ),
-    ODDISH( 3 ),
-    OMANYTE( 2 ),
-    ONIX( 1 ),
-    PARAS( 2 ),
-    PIDGEY( 3 ),
-    PIKACHU( 2 ),
-    PINSIR( 1 ),
     POLIWAG( 3 ),
-    PONYTA( 2 ),
-    PORYGON( 1 ),
     PSYDUCK( 2 ),
-    RATTATA( 2 ),
-    RHYHORN( 2 ),
-    SANDSHREW( 2 ),
-    SCYTHER( 1 ),
     SEEL( 2 ),
     SHELLDER( 2 ),
     SLOWPOKE( 2 ),
-    SNORLAX( 1 ),
-    SPEAROW( 2 ),
     SQUIRTLE( 3 ),
     STARYU( 2 ),
-    TANGELA( 2 ),
-    TAUROS( 1 ),
     TENTACOOL( 2 ),
-    VENONAT( 2 ),
+
+    // electric
+    ELECTABUZZ( 1 ),
+    MAGNEMITE( 2 ),
+    PIKACHU( 2 ),
     VOLTORB( 2 ),
-    VULPIX( 2 ),
-    WEEDLE( 2 ),
     ZAPDOS( 1 ),
-    ZUBAT( 2 );
+
+    // grass
+    BELLSPROUT( 3 ),
+    BULBASAUR( 3 ),
+    EXEGGCUTE( 2 ),
+    ODDISH( 3 ),
+    TANGELA( 2 ),
+
+    // ice
+    ARTICUNO( 1 ),
+    JYNX( 1 ),
+
+    // fighting
+    HITMONCHAN( 1 ),
+    HITMONLEE( 1 ),
+    MACHOP( 3 ),
+    MANKEY( 2 ),
+
+    // poison
+    EKANS( 2 ),
+    GRIMER( 2 ),
+    KOFFING( 2 ),
+    NIDORAN_FEMALE( 3 ),
+    NIDORAN_MALE( 3 ),
+    ZUBAT( 2 ),
+
+    // ground
+    CUBONE( 2 ),
+    DIGLETT( 2 ),
+    RHYHORN( 2 ),
+    SANDSHREW( 2 ),
+
+    // psychic
+    ABRA( 3 ),
+    DROWZEE( 2 ),
+    MEW( 1 ),
+    MEWTWO( 1 ),
+    MR_MIME( 1 ),
+
+    // bug
+    CATERPIE( 3 ),
+    PARAS( 2 ),
+    PINSIR( 1 ),
+    SCYTHER( 1 ),
+    VENONAT( 2 ),
+    WEEDLE( 2 ),
+
+    // rock
+    AERODACTYL( 1 ),
+    GEODUDE( 3 ),
+    KABUTO( 2 ),
+    OMANYTE( 2 ),
+    ONIX( 1 ),
+
+    // ghost
+    GASTLY( 3 ),
+
+    // dragon
+    DRATINI( 3 ),
+
+    // fairy
+    CLEFAIRY( 2 );
 
 
     /**

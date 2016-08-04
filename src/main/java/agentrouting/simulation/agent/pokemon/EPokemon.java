@@ -23,18 +23,20 @@
 
 package agentrouting.simulation.agent.pokemon;
 
+import agentrouting.simulation.CMath;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.codepoetics.protonpack.StreamUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
+import org.apache.commons.math3.distribution.AbstractRealDistribution;
+import org.apache.commons.math3.distribution.NormalDistribution;
 
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -158,14 +160,9 @@ public enum EPokemon
 
 
     /**
-     * logger
-     */
-    private static final Logger LOGGER = Logger.getLogger( EPokemon.class.getName() );
-    /**
      * number of icons
      */
     private final int m_icons;
-
     /**
      * sprite list
      */
@@ -173,7 +170,7 @@ public enum EPokemon
     /**
      * preference map with initialize values (initial value, min, max bounding)
      */
-    private final Map<EPreferences, Triple<Number, Number, Number>> m_preference;
+    private final Map<EPreferences, Triple<AbstractRealDistribution, Number, Number>> m_preference;
 
 
 
@@ -189,7 +186,14 @@ public enum EPokemon
                            StreamUtils.zip(
                                p_preferencename,
                                p_preferencevalue,
-                               ImmutablePair::new
+                               ( n, v ) -> new ImmutablePair<>(
+                                               n,
+                                               new ImmutableTriple<AbstractRealDistribution, Number, Number>(
+                                                   new NormalDistribution( CMath.RANDOMGENERATOR, v.getLeft().doubleValue(), 0.1 ),
+                                                   v.getMiddle(),
+                                                   v.getRight()
+                                               )
+                               )
                            ).collect( Collectors.toMap( ImmutablePair::getLeft, ImmutablePair::getRight ) )
         );
     }
@@ -249,7 +253,18 @@ public enum EPokemon
      */
     public Map<EPreferences, Number> generateCharacteristic()
     {
-        return m_preference.entrySet().stream().collect( Collectors.toMap( Map.Entry::getKey, i -> i.getValue().getLeft() ) );
+        return m_preference.entrySet().stream().collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                i -> Math.min(
+                         Math.max(
+                             i.getValue().getLeft().sample(),
+                             i.getValue().getMiddle().doubleValue()
+                         ),
+                         i.getValue().getRight().doubleValue()
+                )
+            )
+        );
     }
 
 }

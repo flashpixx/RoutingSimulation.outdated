@@ -30,6 +30,9 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomGenerator;
+import org.apache.commons.math3.random.SynchronizedRandomGenerator;
 
 
 /**
@@ -41,6 +44,10 @@ public final class CMath
      * reference to global algebra instance
      */
     public static final Algebra ALGEBRA = Algebra.DEFAULT;
+    /**
+     * synchronized random generator
+     */
+    public static final RandomGenerator RANDOMGENERATOR = new SynchronizedRandomGenerator( new MersenneTwister() );
     /**
      * matrix formatter
      */

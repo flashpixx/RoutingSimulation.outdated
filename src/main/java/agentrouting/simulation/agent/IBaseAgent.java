@@ -71,7 +71,9 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     protected Sprite m_sprite;
     /**
      * random generator
+     * @deprecated change to cmath generator
      */
+    @Deprecated
     protected final Random m_random = new Random();
     /**
      * current position of the agent

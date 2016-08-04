@@ -28,12 +28,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -132,8 +134,8 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         final float l_unit = 1.0f / m_environment.cellsize();
 
         // create execution structure for painting
-        m_font = new BitmapFont();
         m_batch = new SpriteBatch();
+        //m_font = CScreen.font( "agentrouting/Hanken-Light.ttf", 12, Color.WHITE );
 
         // create environment view and put all objects in it
         m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_batch );
@@ -143,11 +145,35 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_camera.position.set( m_environment.column() / 2f, m_environment.row() / 2f, 0 );
         m_camera.zoom = m_environment.cellsize();
 
-        m_sprites.stream().forEach( i -> i.spriteinitialize( m_environment.row(), m_environment.column(), m_environment.cellsize() ).setScale( l_unit ) );
+        m_sprites.forEach( i -> i.spriteinitialize( m_environment.row(), m_environment.column(), m_environment.cellsize(), l_unit ) );
         m_render.setView( m_camera );
 
         // set input processor
         Gdx.input.setInputProcessor( this );
+    }
+
+    /**
+     * creates a font object based on a TTF file
+     *
+     * @param p_path string path of TTF file
+     * @param p_size font size
+     * @param p_color font color
+     * @return font object
+     * @throws MalformedURLException on incorrect URL
+     * @throws URISyntaxException on incorrect URI syntax
+     */
+    private static BitmapFont font( final String p_path, final int p_size, final Color p_color )
+    {
+        final FreeTypeFontGenerator l_fontgenerator = new FreeTypeFontGenerator( Gdx.files.internal( p_path ) );
+        final FreeTypeFontGenerator.FreeTypeFontParameter l_fontparameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        l_fontparameter.size = p_size;
+        l_fontparameter.color = p_color;
+
+        final BitmapFont l_font = l_fontgenerator.generateFont( l_fontparameter );
+        l_fontgenerator.dispose();
+
+        return l_font;
     }
 
     @Override
@@ -167,20 +193,20 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         // object sprite painting
         m_batch.setProjectionMatrix( m_camera.combined );
         m_batch.begin();
-        m_sprites.stream().forEach( i -> i.sprite().draw( m_batch ) );
+        m_sprites.forEach( i -> i.sprite().draw( m_batch ) );
 
-        if ( m_statusvisibility )
+        if ( ( m_font != null ) && m_statusvisibility )
             m_font.draw(
                 m_batch,
                 MessageFormat.format(
-                    "FPS: {0} - Iteration {1} - Agents {2} - Environment [{3}x{4}]",
-                    Gdx.graphics.getFramesPerSecond(),
-                    m_iteration,
+                    "Agents {0} - Environment [{1}x{2}] - FPS: {3} - Iteration {4}",
                     m_sprites.size(),
                     m_environment.row(),
-                    m_environment.column()
+                    m_environment.column(),
+                    m_iteration,
+                    Gdx.graphics.getFramesPerSecond()
                 ),
-                10, 20
+                1, 5
             );
 
         m_batch.end();
@@ -193,8 +219,10 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     public final void dispose()
     {
         // dispose flag is set to stop parallel simulation execution outside the screen
+
         m_isdisposed = true;
-        m_font.dispose();
+        if ( m_font != null )
+            m_font.dispose();
         m_batch.dispose();
         m_render.dispose();
         super.dispose();

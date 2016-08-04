@@ -20,6 +20,7 @@ machine:
         GIT_AUTHOR_EMAIL: info@flashpixx.de
         GIT_COMMITTER_NAME: CircleCI
         GIT_COMMITTER_EMAIL: info@flashpixx.de
+        JAR: routing-0.1-SNAPSHOT.jar
 
     java:
         version: oraclejdk8
@@ -27,6 +28,7 @@ machine:
 dependencies:
     pre:
         - sudo apt-get install doxygen graphviz
+        - git clone https://github.com/LightJason/AgentSpeak.git && cd AgentSpeak && mvn install
 
 test:
     override:
@@ -39,20 +41,38 @@ test:
         - mkdir -p $CIRCLE_TEST_REPORTS/junit/
         - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
 
-        # Documentation Build with Update to GH-Pages Branch
         - git checkout master
-        - mv target/site /tmp
+        - mv -f target/$JAR /tmp
+        - mv -f target/site /tmp
+
+        # Documentation Build with Update to GH-Pages Branch
         - git checkout gh-pages
-        - mv circle.yml /tmp
-        - mv .gitignore /tmp
+        - mv -f circle.yml /tmp
+        - mv -f .gitignore /tmp
         - git checkout master
         - git push origin :gh-pages
         - git branch -D gh-pages
         - git checkout --orphan gh-pages
         - rm -Rf *
-        - mv /tmp/.gitignore .
-        - mv /tmp/circle.yml .
-        - mv /tmp/site/* .
+        - mv -f /tmp/.gitignore .
+        - mv -f /tmp/circle.yml .
+        - mv -f /tmp/site/* .
         - git add --all .
         - git commit -m "current documentation"
         - git push origin gh-pages
+
+        # Build Developer Executable
+        - git checkout binary-master
+        - mv -f circle.yml /tmp
+        - mv -f .gitignore /tmp
+        - git checkout master
+        - git push origin :binary-master
+        - git branch -D binary-master
+        - git checkout --orphan binary-master
+        - rm -Rf *
+        - mv -f /tmp/.gitignore .
+        - mv -f /tmp/circle.yml .
+        - mv -f /tmp/$JAR .
+        - git add --all .
+        - git commit -m "binaries master branch"
+        - git push origin binary-master

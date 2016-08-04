@@ -46,7 +46,7 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      * @param p_target target point
      * @return list of tuples of the cellindex
      */
-    List<DoubleMatrix1D> route( final IElement<?> p_object, final DoubleMatrix1D p_target );
+    List<DoubleMatrix1D> route( final IElement p_object, final DoubleMatrix1D p_target );
 
     /**
      * sets an object to the position and changes the object position
@@ -55,7 +55,15 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      * @param p_position new position
      * @return updated object or object which uses the cell
      */
-    IElement<?> position( final IElement<?> p_object, final DoubleMatrix1D p_position );
+    IElement position( final IElement p_object, final DoubleMatrix1D p_position );
+
+    /**
+     * checks if a position is empty
+     *
+     * @param p_position position
+     * @return boolean result
+     */
+    boolean empty( final DoubleMatrix1D p_position );
 
     /**
      * clip position data
@@ -100,6 +108,6 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      * @param p_radius radius around the center in cells
      * @return stream over elements
      */
-    Stream<? extends IElement<?>> around( final DoubleMatrix1D p_position, final int p_radius );
+    Stream<? extends IElement> around( final DoubleMatrix1D p_position, final int p_radius );
 
 }

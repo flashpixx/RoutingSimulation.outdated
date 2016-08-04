@@ -41,6 +41,6 @@ public interface IForce
      * @param p_other other elements
      * @return value in [-1, 1]
      */
-    double calculate( final IElement<?> p_self, final Stream<IElement<?>> p_other );
+    double calculate( final IElement p_self, final Stream<IElement> p_other );
 
 }

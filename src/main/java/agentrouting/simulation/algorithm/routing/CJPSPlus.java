@@ -317,23 +317,23 @@ final class CJPSPlus implements IRouting
         final double l_hscore = Math.abs( p_target.getQuick( 0 ) - p_jumpnode.coordinate().getQuick( 0 ) ) * 10
                              + Math.abs( p_target.getQuick( 1 ) - p_jumpnode.coordinate().getQuick( 1 ) ) * 10;
 
-        p_jumpnode.sethscore( l_hscore );
+        p_jumpnode.hscore( l_hscore );
 
         final double l_row = Math.abs( p_jumpnode.parent().coordinate().getQuick( 0 ) - p_jumpnode.coordinate().getQuick( 0 ) );
         final double l_column = Math.abs( p_jumpnode.parent().coordinate().getQuick( 1 ) - p_jumpnode.coordinate().getQuick( 1 ) );
 
         final double l_gscore = ( l_row != 0 && l_column != 0 ) ? Math.abs( 14 * l_row ) : Math.abs( 10 * Math.max( l_row, l_column ) );
 
-        p_jumpnode.setgscore( p_jumpnode.parent().gscore() + l_gscore );
+        p_jumpnode.gscore( p_jumpnode.parent().gscore() + l_gscore );
     }
 
     /**
      * class to compare two jump-points
      */
-    private static class CCompareJumpPoint implements Comparator<CJumpPoint>
+    private static final class CCompareJumpPoint implements Comparator<CJumpPoint>
     {
         @Override
-        public int compare( final CJumpPoint p_jumppoint1, final CJumpPoint p_jumppoint2 )
+        public final int compare( final CJumpPoint p_jumppoint1, final CJumpPoint p_jumppoint2 )
         {
             return ( p_jumppoint1.fscore() > p_jumppoint2.fscore() ) ? 1 : -1;
         }
@@ -353,13 +353,11 @@ final class CJPSPlus implements IRouting
 
         /**
          * jump-point g-score value
-         * @todo some description, what a g-score value is
          */
         private double m_gscore;
 
         /**
          * jump-point h-score value
-         * @todo some description, what a h-score value is
          */
         private double m_hscore;
 
@@ -367,7 +365,9 @@ final class CJPSPlus implements IRouting
          * parent node of current JumpPoint
          */
         private CJumpPoint m_parent;
-
+        /**
+         * position
+         */
         private final DoubleMatrix1D m_coordinate;
 
         /**
@@ -435,7 +435,7 @@ final class CJPSPlus implements IRouting
          *
          * @return CJumpPoint
          */
-        public final CJumpPoint setgscore( final double p_gscore )
+        public final CJumpPoint gscore( final double p_gscore )
         {
             m_gscore = p_gscore;
             return this;
@@ -446,7 +446,7 @@ final class CJPSPlus implements IRouting
          *
          * @return CJumpPoint
          */
-        public final CJumpPoint sethscore( final double p_hscore )
+        public final CJumpPoint hscore( final double p_hscore )
         {
             m_hscore = p_hscore;
             return this;

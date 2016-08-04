@@ -23,10 +23,10 @@
 
 package agentrouting.simulation.environment;
 
+import agentrouting.simulation.CMath;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
-import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
 
@@ -47,10 +47,6 @@ public enum EDirection
 
 
     /**
-     * algebra object
-     */
-    private static final Algebra ALGEBRA = new Algebra();
-    /**
      * rotation-matrix for the direction vector
      */
     private final DoubleMatrix2D m_rotation;
@@ -62,7 +58,7 @@ public enum EDirection
      */
     EDirection( final double p_alpha )
     {
-        m_rotation = EDirection.rotationmatrix( Math.toRadians( p_alpha ) );
+        m_rotation = CMath.rotationmatrix( Math.toRadians( p_alpha ) );
     }
 
     /**
@@ -79,43 +75,15 @@ public enum EDirection
         // normalize direction and rotate the normalized vector based on the direction
         // calculate the target position based by: current position + speed * rotate( normalize( goal position - current position ) )
         final DoubleMatrix1D l_view = new DenseDoubleMatrix1D( p_goalposition.toArray() );
-        return ALGEBRA.mult(
+        return CMath.ALGEBRA.mult(
                     m_rotation,
                     l_view
                         .assign( p_position, Functions.minus )
-                        .assign( Functions.div( ALGEBRA.norm2( l_view ) ) )
+                        .assign( Functions.div( Math.sqrt( Algebra.DEFAULT.norm2( l_view ) ) ) )
         )
-        .assign( Functions.mult( p_speed ) )
-        .assign( p_position, Functions.plus )
-        .assign( Math::round );
-    }
-
-    /**
-     * creates a rotation matrix
-     *
-     * @param p_alpha degree in radians
-     * @return matrix
-     *
-     * @see https://en.wikipedia.org/wiki/Rotation_matrix
-     */
-    private static DoubleMatrix2D rotationmatrix( final double p_alpha )
-    {
-        return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
-    }
-
-    /**
-     * returns the distance between to points
-     *
-     * @param p_first vector
-     * @param p_second vector
-     * @return distance
-     */
-    public static double distance( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
-    {
-        return ALGEBRA.norm2(
-            new DenseDoubleMatrix1D( p_second.toArray() )
-            .assign( p_first, Functions.minus )
-        );
+                              .assign( Functions.mult( p_speed ) )
+                              .assign( p_position, Functions.plus )
+                              .assign( Math::round );
     }
 
 }

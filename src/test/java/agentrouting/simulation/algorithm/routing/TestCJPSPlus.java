@@ -8,13 +8,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseObjectMatrix2D;
+import org.junit.Before;
+import org.junit.Test;
 
 
 /**
@@ -25,7 +24,6 @@ public final class TestCJPSPlus
     private ObjectMatrix2D m_grid;
     private ObjectMatrix2D m_occupiedgrid;
     private ObjectMatrix2D m_emptygrid;
-
     /**
      * initialize class with static data for routing algorithm test
      */
@@ -112,7 +110,6 @@ public final class TestCJPSPlus
         assertEquals( l_emptyroute.size(), l_waypoint.size() );
         IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_emptyroute.get( i ) ) );
     }
-
 
     /**
      * it is recommand, that each test-class uses also

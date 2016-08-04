@@ -21,32 +21,72 @@
  * @endcond
  */
 
-package agentrouting.simulation.item;
+package agentrouting.simulation;
 
-import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.doublealgo.Formatter;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
+import cern.jet.math.Functions;
 
 
 /**
- * energy items
+ * class for global math algorithm
  */
-public final class CGold
+public final class CMath
 {
     /**
-     * ctor
-     *
-     * @param p_force force model
-     * @param p_position initial position
+     * reference to global algebra instance
      */
-    protected CGold( final IForce p_force, final DoubleMatrix1D p_position )
+    public static final Algebra ALGEBRA = Algebra.DEFAULT;
+    /**
+     * matrix formatter
+     */
+    public static final Formatter MATRIXFORMAT = new Formatter();
+
+    static
     {
+        MATRIXFORMAT.setRowSeparator( "; " );
+        MATRIXFORMAT.setColumnSeparator( "," );
+        MATRIXFORMAT.setPrintShape( false );
     }
 
-    //@Override
-    protected final Sprite visualization( final int p_rows, final int p_columns, final int p_cellsize )
+    /**
+     * pvate ctor
+     */
+    private CMath()
+    {}
+
+
+    /**
+     * creates a rotation matrix
+     *
+     * @param p_alpha degree in radians
+     * @return matrix
+     *
+     * @see https://en.wikipedia.org/wiki/Rotation_matrix
+     */
+    public static DoubleMatrix2D rotationmatrix( final double p_alpha )
     {
-        return null;
+        return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
+    }
+
+
+    /**
+     * returns the distance between to points
+     *
+     * @param p_first vector
+     * @param p_second vector
+     * @return distance
+     */
+    public static double distance( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
+    {
+        return ALGEBRA.norm2(
+            new DenseDoubleMatrix1D( p_second.toArray() )
+                .assign( p_first, Functions.minus )
+        );
     }
 
 }

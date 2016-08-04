@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 final class CSum implements IForce
 {
     @Override
-    public final double calculate( final IElement<?> p_self, final Stream<IElement<?>> p_other )
+    public final double calculate( final IElement p_self, final Stream<IElement> p_other )
     {
         return p_other.parallel()
                       .mapToDouble( i -> elementwise( p_self, i ) )
@@ -48,7 +48,7 @@ final class CSum implements IForce
      * @param p_other other element
      * @return force
      */
-    private static double elementwise( final IElement<?> p_self, final IElement<?> p_other )
+    private static double elementwise( final IElement p_self, final IElement p_other )
     {
         /*
         return Stream.concat(

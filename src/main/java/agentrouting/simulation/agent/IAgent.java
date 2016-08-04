@@ -24,21 +24,13 @@
 package agentrouting.simulation.agent;
 
 import agentrouting.simulation.IElement;
-import cern.colt.matrix.DoubleMatrix1D;
 
 
 /**
  * interface for the agentrouting,
  * inheritance from Java callable (for multithreading execution)
  */
-public interface IAgent extends IElement<IAgent>, org.lightjason.agentspeak.agent.IAgent<IAgent>
+public interface IAgent extends IElement, org.lightjason.agentspeak.agent.IAgent<IAgent>
 {
-
-    /**
-     * returns the current viewpoint
-     *
-     * @return position tupel
-     */
-    DoubleMatrix1D goal();
 
 }

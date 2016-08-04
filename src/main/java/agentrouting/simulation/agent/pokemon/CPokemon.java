@@ -22,34 +22,62 @@
  */
 
 
-package agentrouting.simulation.agent;
+package agentrouting.simulation.agent.pokemon;
 
+import agentrouting.simulation.agent.IAgent;
+import agentrouting.simulation.agent.IBaseAgent;
 import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * BDI agent for dynamic / moving elements
  */
-public final class CMovingAgent extends IBaseAgent
+public final class CPokemon extends IBaseAgent
 {
+    /**
+     * pokemon type
+     */
+    private final EPokemon m_pokemon;
+    /**
+     * preference map
+     */
+    private final Map<EPreferences, Double> m_preferences = new HashMap<>();
+
 
     /**
      * ctor
-     *
-     * @param p_environment environment
+     *  @param p_environment environment
      * @param p_agentconfiguration agent configuration
      * @param p_position initialize position
      * @param p_force force model
-     * @param p_color color string in RRGGBBAA
+     * @param p_pokemon pokemon name
      */
-    public CMovingAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                         final DoubleMatrix1D p_position, final IForce p_force, final String p_color
+    public CPokemon( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
+                     final DoubleMatrix1D p_position, final IForce p_force, final String p_pokemon
     )
     {
-        super( p_environment, p_agentconfiguration, p_force, p_position, p_color );
+        super( p_environment, p_agentconfiguration, p_force, p_position );
+
+        if ( p_pokemon.isEmpty() )
+            throw new RuntimeException( "pokemon name need not to be empty" );
+
+        m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
+    }
+
+    @Override
+    public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
+    {
+        m_sprite = new Sprite( m_pokemon.initialize() );
+        m_sprite.setSize( p_cellsize, p_cellsize );
+        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
+        m_sprite.setScale( p_unit );
     }
 
 }

@@ -23,8 +23,10 @@
 
 package agentrouting.simulation.environment;
 
+import agentrouting.CCommon;
 import agentrouting.simulation.IElement;
 import agentrouting.simulation.algorithm.routing.IRouting;
+import agentrouting.simulation.item.IItem;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
@@ -89,8 +91,9 @@ public final class CEnvironment implements IEnvironment
      * @param p_cellcolumns number of column cells
      * @param p_cellsize cell size
      * @param p_routing routing algorithm
+     * @param p_obstacles static obstacles
      */
-    public CEnvironment( final int p_cellrows, final int p_cellcolumns, final int p_cellsize, final IRouting p_routing )
+    public CEnvironment( final int p_cellrows, final int p_cellcolumns, final int p_cellsize, final IRouting p_routing, final List<? extends IItem> p_obstacles )
     {
         if ( ( p_cellcolumns < 1 ) || ( p_cellrows < 1 ) || ( p_cellsize < 1 ) )
             throw new IllegalArgumentException( "environment size must be greater or equal than one" );
@@ -100,6 +103,9 @@ public final class CEnvironment implements IEnvironment
         m_routing = p_routing;
         m_cellsize = p_cellsize;
         m_positions = new SparseObjectMatrix2D( m_row, m_column );
+
+        // add all obstacles to the position matrix
+        p_obstacles.forEach( i -> CCommon.inttupelstream( i ).forEach( j -> m_positions.setQuick( j.getLeft(), j.getRight(), i ) ) );
         LOGGER.info( MessageFormat.format( "create environment with size [{0}x{1}] and cell size [{2}]", m_row, m_column, p_cellsize ) );
     }
 
@@ -111,14 +117,14 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
-    public final Stream<? extends IElement<?>> around( final DoubleMatrix1D p_position, final int p_radius )
+    public final Stream<? extends IElement> around( final DoubleMatrix1D p_position, final int p_radius )
     {
         return IntStream.range( -p_radius, p_radius )
                 .parallel()
                 .boxed()
                 .flatMap( i -> IntStream.range( -p_radius, p_radius )
                                  .boxed()
-                                 .map( j -> (IElement<?>) m_positions.getQuick(
+                                 .map( j -> (IElement) m_positions.getQuick(
                                                         (int) CEnvironment.clip( p_position.get( 0 ) + i, m_row ),
                                                         (int) CEnvironment.clip( p_position.getQuick( 1 ) + j, m_column )
                                             )
@@ -155,30 +161,36 @@ public final class CEnvironment implements IEnvironment
     // --- grid-access (routing & position) --------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final List<DoubleMatrix1D> route( final IElement<?> p_element, final DoubleMatrix1D p_target )
+    public final List<DoubleMatrix1D> route( final IElement p_element, final DoubleMatrix1D p_target )
     {
         return m_routing.route( m_positions, p_element.position(), p_target );
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public final synchronized IElement<?> position( final IElement<?> p_element, final DoubleMatrix1D p_position )
+    public final synchronized IElement position( final IElement p_element, final DoubleMatrix1D p_position )
     {
         final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
 
         // check of the target position is free, if not return object, which blocks the cell
-        final IElement<?> l_object = (IElement<?>) m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) );
+        final IElement l_object = (IElement) m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) );
         if ( l_object != null )
             return l_object;
 
         // cell is free, move the position and return updated object
-        m_positions.set( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ), null );
+        m_positions.set( (int) p_element.position().get( 0 ), (int) p_element.position().get( 1 ), null );
+        m_positions.set( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ), p_element );
         p_element.position().setQuick( 0, l_position.getQuick( 0 ) );
         p_element.position().setQuick( 1, l_position.getQuick( 1 ) );
 
-        m_positions.set( (int) p_element.position().get( 0 ), (int) p_element.position().get( 1 ), p_element );
-
         return p_element;
+    }
+
+    @Override
+    public final synchronized boolean empty( final DoubleMatrix1D p_position )
+    {
+        final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
+        return m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) ) == null;
     }
 
     @Override
@@ -200,13 +212,7 @@ public final class CEnvironment implements IEnvironment
      */
     private static double clip( final double p_value, final double p_max )
     {
-        if ( p_value < 0 )
-            return p_max + p_value;
-
-        if ( p_value >= p_max )
-            return p_value - p_max;
-
-        return p_value;
+        return Math.max( Math.min( p_value, p_max - 1 ), 0 );
     }
 
 
@@ -217,9 +223,9 @@ public final class CEnvironment implements IEnvironment
     {
         // create background checkerboard with a tile map
         final Pixmap l_pixmap = new Pixmap( 2 * m_cellsize, m_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( new Color( 0.1f, 0.1f, 0.1f, 1 ) );
+        l_pixmap.setColor( new Color( 0.8f, 0.1f, 0.1f, 0.5f ) );
         l_pixmap.fillRectangle( 0, 0, m_cellsize, m_cellsize );
-        l_pixmap.setColor( new Color( 0.3f, 0.3f, 0.3f, 1 ) );
+        l_pixmap.setColor( new Color( 0.5f, 0.5f, 0.5f, 0.5f ) );
         l_pixmap.fillRectangle( m_cellsize, 0, m_cellsize, m_cellsize );
 
         final Texture l_texture = new Texture( l_pixmap );

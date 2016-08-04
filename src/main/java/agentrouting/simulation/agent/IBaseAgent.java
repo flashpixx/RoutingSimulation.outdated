@@ -24,14 +24,14 @@
 
 package agentrouting.simulation.agent;
 
-import agentrouting.simulation.environment.EDirection;
-import agentrouting.simulation.environment.IEnvironment;
+import agentrouting.simulation.CMath;
+import agentrouting.simulation.agent.pokemon.CPokemon;
 import agentrouting.simulation.algorithm.force.IForce;
+import agentrouting.simulation.environment.EDirection;
+import agentrouting.simulation.environment.EQuadrant;
+import agentrouting.simulation.environment.IEnvironment;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
 import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
@@ -49,6 +49,7 @@ import java.text.MessageFormat;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -57,41 +58,39 @@ import java.util.stream.Stream;
  * agent class for modelling individual behaviours
  */
 @IAgentActionBlacklist
-abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
+public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
 {
     /**
      * name of the beliefbase for individual preferences
      */
     public static final String PREFERENCE = "preferences";
     /**
+     * sprite
+     */
+    protected Sprite m_sprite;
+    /**
      * random generator
      */
-    private final Random m_random = new Random();
+    protected final Random m_random = new Random();
     /**
      * current position of the agent
      */
-    private final DoubleMatrix1D m_position;
+    protected final DoubleMatrix1D m_position;
     /**
      * reference to the environment
      */
-    private final IEnvironment m_environment;
-    /**
-     * color
-     */
-    private final Color m_color;
-    /**
-     * sprite object for painting
-     */
-    private Sprite m_sprite;
+    protected final IEnvironment m_environment;
     /**
      * current moving speed
+     *
+     * @deprecated move to preference
      */
+    @Deprecated
     private int m_speed = 1;
     /**
      * route
      */
     private final Queue<DoubleMatrix1D> m_route = new ConcurrentLinkedQueue<>();
-
 
 
 
@@ -102,63 +101,80 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * @param p_agentconfiguration agent configuration
      * @param p_force force model
      * @param p_position initialize position
-     * @param p_color color string in RRGGBBAA
      */
-    IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                final IForce p_force, final DoubleMatrix1D p_position, final String p_color
+    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
+                final IForce p_force, final DoubleMatrix1D p_position
     )
     {
         super( p_agentconfiguration );
-        if ( p_color.isEmpty() )
-            throw new RuntimeException( "color need not to be empty" );
 
         m_position = p_position;
         m_environment = p_environment;
-        m_color = Color.valueOf( p_color );
+    }
 
-        // create a random route
-        this.routerandom( Math.min( m_environment.column(), m_environment.row() ) / 2 );
+    @Override
+    public final String toString()
+    {
+        return MessageFormat.format(
+            "{0} - current position (speed) [{1} ({2})] - route [{3}]",
+            super.toString(),
+            m_position == null ? "" : CMath.MATRIXFORMAT.toString( m_position ),
+            m_speed,
+            m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) )
+        );
+    }
+
+    @Override
+    public final Sprite sprite()
+    {
+        return m_sprite;
     }
 
     @Override
     public IAgent call() throws Exception
     {
-        // --- agent-cycle to create goal-trigger --------------------------------------------------
-
-        // cache current position to generate non-moving trigger
-        final DenseDoubleMatrix1D l_postion = new DenseDoubleMatrix1D( m_position.toArray() );
-
-        // call cycle
-        super.call();
-
-        // if position is not changed run not-moved plan
-        if ( m_position.equals( l_postion ) )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
-
-        // check if the agent reaches the goal-position
-        final DoubleMatrix1D l_goalposition = this.goal();
-        if ( m_position.equals( l_goalposition ) )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
-        else
-        {
-            // otherwise check "near-by(D)" preference for the current position and the goal
-            // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
-            // Y is a literal with distance
-            final double l_distance = EDirection.distance( m_position, l_goalposition );
-            if ( l_distance <= this.preference( "near-by", 0 ).doubleValue() )
-                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
-        }
-
+        // cache current position to generate non-moving and targte-beyond trigger
+        final DenseDoubleMatrix1D l_position = new DenseDoubleMatrix1D( m_position.toArray() );
+        final EQuadrant l_quadrant = EQuadrant.quadrant( this.goal(), l_position );
 
         // --- visualization -----------------------------------------------------------------------
 
         // update sprite for painting (sprit position is x/y position, but position storing is row / column)
         if ( m_sprite != null )
-            m_sprite.setPosition( (float) m_position.get( 1 ), (float) m_position.get( 0 ) );
+            m_sprite.setPosition( (float) l_position.get( 1 ), (float) l_position.get( 0 ) );
+
+
+        // --- agent-cycle to create goal-trigger --------------------------------------------------
+
+        // call cycle
+        super.call();
+
+        // if position is not changed run not-moved plan
+        if ( m_position.equals( l_position ) )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
+
+        // check if the agent reaches the goal-position, if it reachs, remove it from the route queue
+        final DoubleMatrix1D l_goalposition = this.goal();
+        if ( m_position.equals( l_goalposition ) )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
+        else
+        {
+            // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
+            if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
+                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
+
+            // otherwise check "near-by(D)" preference for the current position and the goal
+            // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
+            // Y is a literal with distance
+            final double l_distance = CMath.distance( m_position, l_goalposition );
+
+            // default argument must match literal-value type (and on integral types long is used)
+            if ( l_distance <= this.preference( "near-by", Long.valueOf( 0 ) ).doubleValue() )
+                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
+        }
 
         return this;
     }
-
 
 
     // --- object getter ---------------------------------------------------------------------------------------------------------------------------------------
@@ -170,26 +186,40 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
     @Override
-    public final DoubleMatrix1D goal()
-    {
-        return m_route.isEmpty()
-            ? m_position
-            : m_route.peek();
-    }
-
-    @Override
     public final Stream<ILiteral> preferences()
     {
         return this.beliefbase().stream( CPath.from( PREFERENCE ) );
     }
 
+    @Override
+    public final <N> N preference( final String p_name, final N p_default )
+    {
+        return CCommon.raw(
+            this.beliefbase().stream( CPath.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ) ) )
+                .findFirst()
+                .orElseGet( () -> CLiteral.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ), Stream.of( CRawTerm.from( p_default ) ) ) )
+                .values()
+                .findFirst()
+                .orElse( CRawTerm.from( p_default ) )
+        );
+    }
 
+    /**
+     * returns the goal-position
+     * @return position
+     */
+    protected final DoubleMatrix1D goal()
+    {
+        return m_route.isEmpty()
+               ? m_position
+               : m_route.peek();
+    }
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
     // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
 
     @IAgentActionName( name = "speed/set" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void setspeed( final Number p_speed )
     {
         if ( p_speed.intValue() < 1 )
@@ -198,7 +228,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
     @IAgentActionName( name = "speed/increment" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void incrementspeed( final Number p_speed )
     {
         if ( p_speed.intValue() < 1 )
@@ -207,7 +237,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     }
 
     @IAgentActionName( name = "speed/decrement" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void decrementspeed( final Number p_speed )
     {
         if ( ( p_speed.intValue() < 1 ) || ( m_speed - p_speed.intValue() < 1 ) )
@@ -258,19 +288,20 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * skips the current goal-position of the routing queue
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "route/skipcurrent" )
-    protected final void routskipcurrent()
+    @IAgentActionName( name = "route/next" )
+    protected final void routenext()
     {
         m_route.poll();
     }
 
     /**
      * skips the current n-elements of the routing queue
+     *
      * @param p_value number of elements
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "route/skipelements" )
-    protected final void routskipcurrent( final Number p_value )
+    @IAgentActionName( name = "route/skip" )
+    protected final void routeskip( final Number p_value )
     {
         if ( p_value.intValue() < 1 )
             throw new RuntimeException( "value must be greater than zero" );
@@ -282,7 +313,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move forward into goal direction
      */
     @IAgentActionName( name = "move/forward" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforward()
     {
         this.move( EDirection.FORWARD );
@@ -292,7 +323,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move left forward into goal direction
      */
     @IAgentActionName( name = "move/forwardright" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforwardright()
     {
         this.move( EDirection.FORWARDRIGHT );
@@ -302,7 +333,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move right to the goal direction
      */
     @IAgentActionName( name = "move/right" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveright()
     {
         this.move( EDirection.RIGHT );
@@ -312,7 +343,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move backward right from goal direction
      */
     @IAgentActionName( name = "move/backwardright" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackwardright()
     {
         this.move( EDirection.BACKWARDRIGHT );
@@ -322,7 +353,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move backward from goal direction
      */
     @IAgentActionName( name = "move/backward" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackward()
     {
         this.move( EDirection.BACKWARD );
@@ -332,7 +363,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move backward right from goal direction
      */
     @IAgentActionName( name = "move/backwardleft" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackwardleft()
     {
         this.move( EDirection.BACKWARDLEFT );
@@ -342,7 +373,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move left to the goal
      */
     @IAgentActionName( name = "move/left" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveleft()
     {
         this.move( EDirection.LEFT );
@@ -352,7 +383,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * move forward left into goal direction
      */
     @IAgentActionName( name = "move/forwardleft" )
-    @IAgentActionAllow( classes = CMovingAgent.class )
+    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforwardleft()
     {
         this.move( EDirection.FORWARDLEFT );
@@ -371,43 +402,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
         if ( !this.equals( m_environment.position( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
-    }
-
-    @Override
-    public final <N> N preference( final String p_name, final N p_default )
-    {
-        return CCommon.raw(
-            this.beliefbase().stream( CPath.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ) ) )
-                .findFirst()
-                .orElseGet( () -> CLiteral.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ), Stream.of( CRawTerm.from( p_default ) ) ) )
-                .values()
-                .findFirst()
-                .orElse( CRawTerm.from( p_default ) )
-        );
-    }
-
-    // --- visualization ---------------------------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public final Sprite sprite()
-    {
-        return m_sprite;
-    }
-
-    @Override
-    public final Sprite spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize )
-    {
-        // create a colored sequare for the agent
-        final Pixmap l_pixmap = new Pixmap( p_cellsize, p_cellsize, Pixmap.Format.RGBA8888 );
-        l_pixmap.setColor( m_color );
-        l_pixmap.fillRectangle( 0, 0, p_cellsize, p_cellsize );
-
-        // add the square to a sprite (for visualization) and scale it to 80% of cell size
-        m_sprite = new Sprite( new Texture( l_pixmap ), 0, 0, p_cellsize, p_cellsize );
-        m_sprite.setSize( 0.9f * p_cellsize, 0.9f * p_cellsize );
-        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
-
-        return m_sprite;
     }
 
 }

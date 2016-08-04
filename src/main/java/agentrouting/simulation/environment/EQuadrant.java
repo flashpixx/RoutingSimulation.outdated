@@ -21,36 +21,55 @@
  * @endcond
  */
 
-package agentrouting.simulation.agent;
+package agentrouting.simulation.environment;
 
-import org.lightjason.agentspeak.consistency.CConsistency;
-import org.lightjason.agentspeak.consistency.filter.CBelief;
-import org.lightjason.agentspeak.consistency.filter.CPlan;
-import org.lightjason.agentspeak.consistency.metric.CWeightedDifference;
-
-import java.util.concurrent.Callable;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.SparseDoubleMatrix1D;
+import cern.jet.math.Functions;
 
 
 /**
- * calculates the consistency values
+ * quadrant
+ * @see https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)
+ * @see http://gamedev.stackexchange.com/questions/96099/is-there-a-quick-way-to-determine-if-a-vector-is-in-a-quadrant
  */
-public class CEvaluate implements Callable<CEvaluate>
+public enum EQuadrant
 {
-    /**
-     * consistency of the beliefs
-     */
-    private final CConsistency m_consistencybelief = new CConsistency( new CBelief(), new CWeightedDifference(), 5, 0.001 );
-    /**
-     * consistency of the plans
-     */
-    private final CConsistency m_consistencyplan = new CConsistency( new CPlan(), new CWeightedDifference(), 5, 0.001 );
+    UPPERRIGHT,
+    UPPERLEFT,
+    BOTTOMLEFT,
+    BOTTOMRIGHT;
 
-    @Override
-    public final CEvaluate call() throws Exception
+    /**
+     * returns a quadrant based on the vector
+     *
+     * @param p_position position
+     * @return quadrant relativ to zero position
+     */
+    public static EQuadrant quadrant( final DoubleMatrix1D p_position )
     {
-        m_consistencyplan.call();
-        m_consistencybelief.call();
-
-        return this;
+        return EQuadrant.quadrant( new SparseDoubleMatrix1D( p_position.size() ), p_position );
     }
+
+    /**
+     * returns a quadrant based on the vector
+     *
+     * @param p_zero zero position
+     * @param p_position position
+     * @return quadrant relative to zero position
+
+     */
+    public static EQuadrant quadrant( final DoubleMatrix1D p_zero, final DoubleMatrix1D p_position )
+    {
+        final DoubleMatrix1D l_difference = new DenseDoubleMatrix1D( p_position.toArray() ).assign( p_zero, Functions.minus );
+        return l_difference.getQuick( 1 ) < 0
+               ? l_difference.getQuick( 0 ) < 0
+                 ? BOTTOMLEFT
+                 : UPPERLEFT
+               : l_difference.getQuick( 0 ) < 0
+                 ? BOTTOMRIGHT
+                 : UPPERRIGHT;
+    }
+
 }

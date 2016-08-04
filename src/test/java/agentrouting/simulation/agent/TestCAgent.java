@@ -1,9 +1,12 @@
 package agentrouting.simulation.agent;
 
+import agentrouting.simulation.agent.pokemon.CPokemon;
+import agentrouting.simulation.agent.pokemon.CPokemonGenerator;
 import agentrouting.simulation.environment.CEnvironment;
 import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;
+import agentrouting.simulation.item.IItem;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,11 +44,11 @@ public final class TestCAgent
         // disable logging
         LogManager.getLogManager().reset();
 
-        m_environment = new CEnvironment( 100, 100, 25, ERoutingFactory.JPSPLUS.get() );
+        m_environment = new CEnvironment( 100, 100, 25, ERoutingFactory.JPSPLUS.get(), Collections.<IItem>emptyList() );
 
         m_actions = Collections.unmodifiableSet( Stream.concat(
             org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
-            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CMovingAgent.class )
+            org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
         ).collect( Collectors.toSet() ) );
     }
 
@@ -59,13 +62,12 @@ public final class TestCAgent
     {
         Assume.assumeNotNull( m_environment );
         Assume.assumeNotNull( m_actions );
-        System.out.println( m_actions );
-        new CMovingAgentGenerator(
+        new CPokemonGenerator(
             m_environment,
             TestCAgent.class.getResourceAsStream( "/agentrouting/agent.asl" ),
             m_actions,
             IAggregation.EMPTY
-        ).generatesingle( EForceFactory.SUM.get(), "000000" );
+        ).generatesingle( EForceFactory.SUM.get(), "eevee" );
     }
 
 

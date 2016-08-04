@@ -121,6 +121,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
             super.toString(),
             m_position == null ? "" : CMath.MATRIXFORMAT.toString( m_position ),
             m_speed,
+            // not null check is needed because of the super ctor
             m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) )
         );
     }

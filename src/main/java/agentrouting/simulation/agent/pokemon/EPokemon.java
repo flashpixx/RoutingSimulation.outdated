@@ -29,6 +29,7 @@ import com.badlogic.gdx.graphics.Texture;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -195,6 +196,15 @@ public enum EPokemon
     public final synchronized Texture sprite( final int p_index )
     {
         return m_sprites.get( p_index );
+    }
+
+    /**
+     * generates the preference map of a pokemon
+     * @return map
+     */
+    public Map<EPreferences, Double> generateCharacteristic()
+    {
+        return Collections.emptyMap();
     }
 
 }

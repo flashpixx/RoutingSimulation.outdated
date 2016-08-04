@@ -12,10 +12,11 @@ import java.util.stream.Collectors;
 /**
  * preferences
  * @see http://bulbapedia.bulbagarden.net/wiki/Type
+ * @see http://jkunst.com/r/pokemon-visualize-em-all/
  */
 public enum EPreferences
 {
-    // current changable preference
+    // current changable preference (motivation)
     NEARBY( EPreferenceAccess.WRITE ),
     HUNT( EPreferenceAccess.WRITE ),
     FIGHT( EPreferenceAccess.WRITE ),
@@ -24,7 +25,7 @@ public enum EPreferences
     CAUTIOUSNESS( EPreferenceAccess.WRITE ),
     ELOPEMENT( EPreferenceAccess.WRITE ),
 
-    // individual not-changable
+    // individual not-changable preferences (attributes)
     ENERGY( EPreferenceAccess.READ ),
     HEALTH( EPreferenceAccess.READ ),
     EXPERIENCE( EPreferenceAccess.READ ),
@@ -33,7 +34,7 @@ public enum EPreferences
     WEIGHT( EPreferenceAccess.READ ),
     HEIGHT( EPreferenceAccess.READ ),
 
-    // pokemon tyoes
+    // pokemon tyoes (ethncity)
     NORMAL( EPreferenceAccess.READ ),
     FIGHTING( EPreferenceAccess.READ ),
     FLYING( EPreferenceAccess.READ ),

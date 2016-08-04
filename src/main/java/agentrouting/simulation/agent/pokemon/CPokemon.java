@@ -32,7 +32,6 @@ import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -49,7 +48,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * preference map
      */
-    private final Map<EPreferences, Number> m_preferences = new HashMap<>();
+    private final Map<EPreferences, Number> m_preferences;
 
 
     /**
@@ -70,6 +69,7 @@ public final class CPokemon extends IBaseAgent
             throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
+        m_preferences = m_pokemon.generateCharacteristic();
     }
 
     @Override

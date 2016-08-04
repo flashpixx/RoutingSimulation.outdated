@@ -3,12 +3,6 @@
 // nearby belief to define the radius around the goal position to trigger the nearby plan
 preferences/near-by(5).
 
-// belief for definining the view radius into forward-backward direction
-//preferences/viewforwardbackwardradius(3).
-
-// belief for defining the view radius into left-right direction
-//preferences/viewleftrightradius(1).
-
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

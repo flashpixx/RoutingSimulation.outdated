@@ -23,8 +23,8 @@
 
 package agentrouting;
 
-import agentrouting.simulation.agent.CPokemon;
-import agentrouting.simulation.agent.CPokemonGenerator;
+import agentrouting.simulation.agent.pokemon.CPokemon;
+import agentrouting.simulation.agent.pokemon.CPokemonGenerator;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.algorithm.force.EForceFactory;
 import agentrouting.simulation.algorithm.routing.ERoutingFactory;

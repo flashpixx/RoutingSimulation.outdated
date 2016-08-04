@@ -1,5 +1,7 @@
 package agentrouting.simulation.agent;
 
+import agentrouting.simulation.agent.pokemon.CPokemon;
+import agentrouting.simulation.agent.pokemon.CPokemonGenerator;
 import agentrouting.simulation.environment.CEnvironment;
 import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.EForceFactory;

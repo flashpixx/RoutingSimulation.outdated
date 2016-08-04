@@ -22,13 +22,18 @@
  */
 
 
-package agentrouting.simulation.agent;
+package agentrouting.simulation.agent.pokemon;
 
+import agentrouting.simulation.agent.IAgent;
+import agentrouting.simulation.agent.IBaseAgent;
 import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -37,9 +42,14 @@ import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 public final class CPokemon extends IBaseAgent
 {
     /**
-     * pokemon
+     * pokemon type
      */
     private final EPokemon m_pokemon;
+    /**
+     * preference map
+     */
+    private final Map<EPreferences, Double> m_preferences = new HashMap<>();
+
 
     /**
      * ctor

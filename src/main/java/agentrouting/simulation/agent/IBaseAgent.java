@@ -25,6 +25,7 @@
 package agentrouting.simulation.agent;
 
 import agentrouting.simulation.CMath;
+import agentrouting.simulation.agent.pokemon.CPokemon;
 import agentrouting.simulation.algorithm.force.IForce;
 import agentrouting.simulation.environment.EDirection;
 import agentrouting.simulation.environment.EQuadrant;
@@ -59,16 +60,12 @@ import java.util.stream.Stream;
  * agent class for modelling individual behaviours
  */
 @IAgentActionBlacklist
-abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
+public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
 {
     /**
      * name of the beliefbase for individual preferences
      */
     public static final String PREFERENCE = "preferences";
-    /**
-     * name of the environment beliefbase with local view structure
-     */
-    private static final String ENVIRONMENT = "env";
     /**
      * sprite
      */
@@ -76,18 +73,21 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
     /**
      * random generator
      */
-    private final Random m_random = new Random();
+    protected final Random m_random = new Random();
     /**
      * current position of the agent
      */
-    private final DoubleMatrix1D m_position;
+    protected final DoubleMatrix1D m_position;
     /**
      * reference to the environment
      */
-    private final IEnvironment m_environment;
+    protected final IEnvironment m_environment;
     /**
      * current moving speed
+     *
+     * @deprecated move to preference
      */
+    @Deprecated
     private int m_speed = 1;
     /**
      * route
@@ -104,8 +104,7 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
      * @param p_force force model
      * @param p_position initialize position
      */
-    @SuppressWarnings( "unchecked" )
-    IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
+    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
                 final IForce p_force, final DoubleMatrix1D p_position
     )
     {
@@ -113,9 +112,6 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
 
         m_position = p_position;
         m_environment = p_environment;
-
-        // push the on-demand beliefbase to the agent
-        m_beliefbase.add( new CEnvironmentBeliefbase().create( ENVIRONMENT ) );
     }
 
     @Override
@@ -408,75 +404,4 @@ abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAg
         );
     }
 
-
-    // --- on-demand beliefbase for local environment data of the agent ----------------------------------------------------------------------------------------
-
-    /**
-     * enum for create on-demand literals
-     */
-    private enum ELiteral
-    {
-        SIZE,
-        SPEED,
-        LANDMARKS;
-
-        /**
-         * creates the literal
-         *
-         * @param p_environment environment
-         * @param p_speed current agent speed
-         * @param p_landmarks number of current landmarks
-         * @return literal
-         */
-        public final ILiteral create( final IEnvironment p_environment, final int p_speed, final int p_landmarks )
-        {
-            switch ( this )
-            {
-                case SIZE:
-                    return CLiteral.from(
-                        this.name().toLowerCase(),
-                        Stream.of(
-                            CLiteral.from( "column", Stream.of( CRawTerm.from( p_environment.column() ) ) ),
-                            CLiteral.from( "row", Stream.of( CRawTerm.from( p_environment.row() ) ) )
-                        )
-                    );
-
-                case SPEED:
-                    return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_speed ) ) );
-
-                case LANDMARKS:
-                    return CLiteral.from( this.name().toLowerCase(), Stream.of( CRawTerm.from( p_landmarks ) ) );
-
-                default:
-                    throw new RuntimeException( MessageFormat.format( "enum value [{0}] does not exist", this ) );
-            }
-        }
-
-
-    }
-
-    /**
-     * class for local-environment data of the agent
-     */
-    private final class CEnvironmentBeliefbase extends IBeliefBaseOnDemand<IAgent>
-    {
-
-        @Override
-        public final boolean containsLiteral( final String p_key )
-        {
-            return super.containsLiteral( p_key );
-        }
-
-        @Override
-        public Collection<ILiteral> literal( final String p_key )
-        {
-            return super.literal( p_key );
-        }
-
-        @Override
-        public Stream<ILiteral> streamLiteral()
-        {
-            return super.streamLiteral();
-        }
-    }
 }

@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package agentrouting.simulation.agent;
+package agentrouting.simulation.agent.pokemon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

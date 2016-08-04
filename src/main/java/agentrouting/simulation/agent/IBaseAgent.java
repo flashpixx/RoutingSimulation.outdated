@@ -36,7 +36,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
 import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
-import org.lightjason.agentspeak.beliefbase.IBeliefBaseOnDemand;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CCommon;
@@ -47,7 +46,6 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -188,19 +186,34 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     }
 
     @Override
-    public final DoubleMatrix1D goal()
-    {
-        return m_route.isEmpty()
-               ? m_position
-               : m_route.peek();
-    }
-
-    @Override
     public final Stream<ILiteral> preferences()
     {
         return this.beliefbase().stream( CPath.from( PREFERENCE ) );
     }
 
+    @Override
+    public final <N> N preference( final String p_name, final N p_default )
+    {
+        return CCommon.raw(
+            this.beliefbase().stream( CPath.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ) ) )
+                .findFirst()
+                .orElseGet( () -> CLiteral.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ), Stream.of( CRawTerm.from( p_default ) ) ) )
+                .values()
+                .findFirst()
+                .orElse( CRawTerm.from( p_default ) )
+        );
+    }
+
+    /**
+     * returns the goal-position
+     * @return position
+     */
+    protected final DoubleMatrix1D goal()
+    {
+        return m_route.isEmpty()
+               ? m_position
+               : m_route.peek();
+    }
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
     // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
@@ -389,19 +402,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
 
         if ( !this.equals( m_environment.position( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
-    }
-
-    @Override
-    public final <N> N preference( final String p_name, final N p_default )
-    {
-        return CCommon.raw(
-            this.beliefbase().stream( CPath.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ) ) )
-                .findFirst()
-                .orElseGet( () -> CLiteral.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ), Stream.of( CRawTerm.from( p_default ) ) ) )
-                .values()
-                .findFirst()
-                .orElse( CRawTerm.from( p_default ) )
-        );
     }
 
 }

@@ -25,7 +25,6 @@ package agentrouting.simulation.agent.pokemon;
 
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.agent.IBaseAgent;
-import agentrouting.simulation.agent.pokemon.CPokemon;
 import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;

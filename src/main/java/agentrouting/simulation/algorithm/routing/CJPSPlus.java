@@ -137,8 +137,8 @@ final class CJPSPlus implements IRouting
         final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
         this.calculateScore( l_jumpnode, p_target );
 
-        int l_duplicatecheck = 0;
-        int l_removecheck = 0;
+        boolean l_duplicatecheck = false;
+        boolean l_removecheck = false;
 
         final Iterator<CJumpPoint> l_iterator = p_openlist.iterator();
         while ( l_iterator.hasNext() )
@@ -146,16 +146,16 @@ final class CJPSPlus implements IRouting
             final CJumpPoint l_currentelement = l_iterator.next();
             if ( l_currentelement.coordinate().equals( p_nextjumpnode ) )
             {
-                l_duplicatecheck = 1;
+                l_duplicatecheck = true;
                 if ( l_currentelement.fscore() > l_jumpnode.fscore() )
                 {
-                    l_removecheck = 1;
+                    l_removecheck = true;
                     l_iterator.remove();
                     break;
                 }
             }
         }
-        if ( ( l_duplicatecheck == 0 ) || ( l_duplicatecheck == 1 && l_removecheck == 1 ) )
+        if ( ( l_duplicatecheck == false ) || ( l_removecheck == true ) )
             p_openlist.add( l_jumpnode );
     }
 

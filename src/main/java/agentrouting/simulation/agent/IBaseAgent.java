@@ -331,12 +331,14 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * calculates the estimated time by the
      * current speed of the current route
+     *
+     * @return time
      */
     @IAgentActionAllow
     @IAgentActionName( name = "route/estimatedtime" )
     protected final double routeestimatedtime()
     {
-        return m_environment.routestimatedtime( m_route, m_speed );
+        return m_environment.routestimatedtime( Stream.concat( Stream.of( m_position ), m_route.stream() ).collect( Collectors.toList() ), m_speed );
     }
 
     /**

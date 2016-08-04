@@ -32,7 +32,7 @@ public final class TestCJPSPlus
     @Before
     public void initialize()
     {
-        m_grid = new SparseObjectMatrix2D( 10, 10 );
+        m_grid = new SparseObjectMatrix2D( 15, 15 );
 
         m_grid.setQuick( 4, 2, new Object() );
         m_grid.setQuick( 4, 3, new Object() );

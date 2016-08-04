@@ -60,12 +60,11 @@ public interface IRouting
     /**
      * calculated the estimated time to move the path
      *
-     * @param p_objects object matrix
      * @param p_route route list
      * @param p_speed estimated speed
      * @return speed of the full path
      */
-    double estimatedtime( final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_route, final double p_speed );
+    double estimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed );
 
 
 }

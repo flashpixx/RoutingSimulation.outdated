@@ -36,6 +36,9 @@ import java.util.stream.IntStream;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.linalg.Algebra;
+import cern.jet.math.Functions;
+import com.codepoetics.protonpack.StreamUtils;
 
 
 
@@ -89,9 +92,17 @@ final class CJPSPlus implements IRouting
     }
 
     @Override
-    public double estimatedtime( final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_route, final double p_speed )
+    public double estimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed )
     {
-        return 0;
+        return StreamUtils.windowed( p_route.stream(), 2, 1 )
+                          .mapToDouble( i -> Math.sqrt(
+                                                Algebra.DEFAULT.norm2(
+                                                    new DenseDoubleMatrix1D( i.get( 1 ).toArray() )
+                                                        .assign( i.get( 0 ), Functions.minus )
+                                                )
+                                             ) / p_speed
+                          )
+                          .sum();
     }
 
     /**
@@ -127,6 +138,7 @@ final class CJPSPlus implements IRouting
      * @param p_openlist the set of CJumpPoint that will be explored
      * @param p_curnode the current node to search for successors
      * @param p_target the goal node
+     * @todo refactor all todos within this method
      */
     private void addsuccessors( final DoubleMatrix1D p_nextjumpnode, final ArrayList<DoubleMatrix1D> p_closedlist,
                                      final Set<CJumpPoint> p_openlist, final CJumpPoint p_curnode, final DoubleMatrix1D p_target )
@@ -137,9 +149,11 @@ final class CJPSPlus implements IRouting
         final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
         this.calculateScore( l_jumpnode, p_target );
 
+        // @todo remove variables
         boolean l_duplicatecheck = false;
         boolean l_removecheck = false;
 
+        // @todo replace it with a stream (see calculating estimatedtime method)
         final Iterator<CJumpPoint> l_iterator = p_openlist.iterator();
         while ( l_iterator.hasNext() )
         {
@@ -147,6 +161,8 @@ final class CJPSPlus implements IRouting
             if ( l_currentelement.coordinate().equals( p_nextjumpnode ) )
             {
                 l_duplicatecheck = true;
+
+                // @todo check can be done with findfirst on a stream
                 if ( l_currentelement.fscore() > l_jumpnode.fscore() )
                 {
                     l_removecheck = true;
@@ -155,7 +171,9 @@ final class CJPSPlus implements IRouting
                 }
             }
         }
-        if ( ( l_duplicatecheck == false ) || ( l_removecheck == true ) )
+
+        // @todo can be done after the find within the stream
+        if ( !l_duplicatecheck || l_removecheck )
             p_openlist.add( l_jumpnode );
     }
 

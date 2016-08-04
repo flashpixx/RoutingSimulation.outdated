@@ -42,11 +42,20 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
     /**
      * calculate route
      *
-     * @param p_object element
-     * @param p_target target point
+     * @param p_start start position
+     * @param p_end target position
      * @return list of tuples of the cellindex
      */
-    List<DoubleMatrix1D> route( final IElement p_object, final DoubleMatrix1D p_target );
+    List<DoubleMatrix1D> route( final DoubleMatrix1D p_start, final DoubleMatrix1D p_end );
+
+    /**
+     * calculate estimated time of a route
+     *
+     * @param p_route current route
+     * @param p_speed current speed
+     * @return estimated time
+     */
+    double routestimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed );
 
     /**
      * sets an object to the position and changes the object position

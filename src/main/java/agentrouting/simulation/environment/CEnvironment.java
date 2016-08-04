@@ -161,9 +161,15 @@ public final class CEnvironment implements IEnvironment
     // --- grid-access (routing & position) --------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final List<DoubleMatrix1D> route( final IElement p_element, final DoubleMatrix1D p_target )
+    public final List<DoubleMatrix1D> route( final DoubleMatrix1D p_start, final DoubleMatrix1D p_end )
     {
-        return m_routing.route( m_positions, p_element.position(), p_target );
+        return m_routing.route( m_positions, p_start, p_end );
+    }
+
+    @Override
+    public final double routestimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed )
+    {
+        return m_routing.estimatedtime( p_route, p_speed );
     }
 
     @Override

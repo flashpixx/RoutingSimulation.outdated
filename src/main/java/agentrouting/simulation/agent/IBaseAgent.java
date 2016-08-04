@@ -46,6 +46,9 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -90,7 +93,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * route
      */
-    private final Queue<DoubleMatrix1D> m_route = new ConcurrentLinkedQueue<>();
+    private final List<DoubleMatrix1D> m_route = Collections.synchronizedList( new LinkedList<>() );
 
 
 
@@ -212,12 +215,17 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     {
         return m_route.isEmpty()
                ? m_position
-               : m_route.peek();
+               : m_route.get( 0 );
     }
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
     // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
 
+    /**
+     * agent action to set speed to a fixed value
+     *
+     * @param p_speed spped value
+     */
     @IAgentActionName( name = "speed/set" )
     @IAgentActionAllow( classes = CPokemon.class )
     protected final void setspeed( final Number p_speed )
@@ -227,6 +235,11 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         m_speed = p_speed.intValue();
     }
 
+    /**
+     * agent action to increment speed
+     *
+     * @param p_speed increment value
+     */
     @IAgentActionName( name = "speed/increment" )
     @IAgentActionAllow( classes = CPokemon.class )
     protected final void incrementspeed( final Number p_speed )
@@ -236,6 +249,11 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         m_speed += p_speed.intValue();
     }
 
+    /**
+     * agent action to decrement speed
+     *
+     * @param p_speed decrement value
+     */
     @IAgentActionName( name = "speed/decrement" )
     @IAgentActionAllow( classes = CPokemon.class )
     protected final void decrementspeed( final Number p_speed )
@@ -255,7 +273,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     @IAgentActionName( name = "route/set" )
     protected final void route( final Number p_row, final Number p_column )
     {
-        m_route.addAll( m_environment.route( this, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
+        m_route.addAll( m_environment.route( m_position, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
     }
 
     /**
@@ -273,7 +291,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
 
         m_route.addAll(
             m_environment.route(
-                this,
+                m_position,
                 new DenseDoubleMatrix1D(
                     new double[]{
                         m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
@@ -291,7 +309,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     @IAgentActionName( name = "route/next" )
     protected final void routenext()
     {
-        m_route.poll();
+        if ( !m_route.isEmpty() )
+            m_route.remove( 0 );
     }
 
     /**
@@ -306,7 +325,18 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( p_value.intValue() < 1 )
             throw new RuntimeException( "value must be greater than zero" );
 
-        IntStream.range( 0, p_value.intValue() ).forEach( i -> m_route.poll() );
+        IntStream.range( 0, p_value.intValue() ).filter( i -> !m_route.isEmpty() ).forEach( i -> m_route.remove( 0 ) );
+    }
+
+    /**
+     * calculates the estimated time by the
+     * current speed of the current route
+     */
+    @IAgentActionAllow
+    @IAgentActionName( name = "route/estimatedtime" )
+    protected final double routeestimatedtime()
+    {
+        return m_environment.routestimatedtime( m_route, m_speed );
     }
 
     /**

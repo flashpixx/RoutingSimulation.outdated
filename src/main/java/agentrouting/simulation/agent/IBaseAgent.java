@@ -271,7 +271,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     @IAgentActionName( name = "route/set" )
     protected final void route( final Number p_row, final Number p_column )
     {
-        m_route.addAll( m_environment.route( m_position, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
+        m_route.addAll( 0, m_environment.route( m_position, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
     }
 
     /**
@@ -287,7 +287,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( p_radius.intValue() < 1 )
             throw new RuntimeException( "radius must be greater than zero" );
 
-        m_route.addAll(
+        m_route.addAll( 0,
             m_environment.route(
                 m_position,
                 new DenseDoubleMatrix1D(

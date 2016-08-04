@@ -92,9 +92,11 @@ final class CJPSPlus implements IRouting
     }
 
     @Override
-    public double estimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed )
+    public final double estimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed )
     {
-        return StreamUtils.windowed( p_route.stream(), 2, 1 )
+        return p_route.size() < 2
+               ? 0
+               : StreamUtils.windowed( p_route.stream(), 2, 1 )
                           .mapToDouble( i -> Math.sqrt(
                                                 Algebra.DEFAULT.norm2(
                                                     new DenseDoubleMatrix1D( i.get( 1 ).toArray() )

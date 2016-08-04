@@ -38,6 +38,7 @@ import java.util.Map;
 
 /**
  * BDI agent for dynamic / moving elements
+ * @todo add pokemon name
  */
 public final class CPokemon extends IBaseAgent
 {
@@ -48,12 +49,12 @@ public final class CPokemon extends IBaseAgent
     /**
      * preference map
      */
-    private final Map<EPreferences, Double> m_preferences = new HashMap<>();
+    private final Map<EPreferences, Number> m_preferences = new HashMap<>();
 
 
     /**
      * ctor
-     *  @param p_environment environment
+     * @param p_environment environment
      * @param p_agentconfiguration agent configuration
      * @param p_position initialize position
      * @param p_force force model

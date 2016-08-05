@@ -159,12 +159,10 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * @param p_size font size
      * @param p_color font color
      * @return font object
-     * @throws MalformedURLException on incorrect URL
-     * @throws URISyntaxException on incorrect URI syntax
      */
     private static BitmapFont font( final String p_path, final int p_size, final Color p_color )
     {
-        final FreeTypeFontGenerator l_fontgenerator = new FreeTypeFontGenerator( Gdx.files.internal( p_path ) );
+        final FreeTypeFontGenerator l_fontgenerator = new FreeTypeFontGenerator( Gdx.files.internal(  p_path ) );
         final FreeTypeFontGenerator.FreeTypeFontParameter l_fontparameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         l_fontparameter.size = p_size;

@@ -30,9 +30,17 @@ import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.lightjason.agentspeak.beliefbase.IBeliefBaseOnDemand;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.language.CLiteral;
+import org.lightjason.agentspeak.language.CRawTerm;
+import org.lightjason.agentspeak.language.ILiteral;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -67,6 +75,7 @@ public final class CPokemon extends IBaseAgent
      * @param p_force force model
      * @param p_pokemon pokemon name
      */
+    @SuppressWarnings( "unchecked" )
     public CPokemon( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
                      final DoubleMatrix1D p_position, final IForce p_force, final String p_pokemon
     )
@@ -80,6 +89,8 @@ public final class CPokemon extends IBaseAgent
         m_ethnic = m_pokemon.ethnic();
         m_attribute = m_pokemon.attributes();
         m_motivation = m_pokemon.motivation();
+
+        m_beliefbase.add( new CMotivationBeliefbase().create( "motivation" ) ).add( new CEthnicBeliefbase().create( "ethnic" ) );
     }
 
     @Override
@@ -91,4 +102,134 @@ public final class CPokemon extends IBaseAgent
         m_sprite.setScale( p_unit );
     }
 
+    /**
+     * beliefbase of the motivation elements
+     */
+    private final class CMotivationBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    {
+        @Override
+        public final int size()
+        {
+            return m_motivation.size();
+        }
+
+        @Override
+        public final boolean empty()
+        {
+            return m_motivation.isEmpty();
+        }
+
+        @Override
+        public final Stream<ILiteral> streamLiteral()
+        {
+            return m_motivation.entrySet().parallelStream()
+                               .map( i -> this.literal( i.getKey(), i.getValue() ) );
+        }
+
+        @Override
+        public final ILiteral add( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        @Override
+        public final ILiteral remove( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        @Override
+        public final boolean containsLiteral( final String p_key )
+        {
+            return EMotivation.exist( p_key ) && m_motivation.containsKey( EMotivation.valueOf( p_key.toUpperCase() ) );
+        }
+
+        @Override
+        public final Collection<ILiteral> literal( final String p_key )
+        {
+            if ( !this.containsLiteral( p_key ) )
+                return Collections.<ILiteral>emptySet();
+
+            final EMotivation l_key =  EMotivation.valueOf( p_key.toUpperCase() );
+            return Stream.of( this.literal( l_key, m_motivation.get( l_key ) ) ).collect( Collectors.toSet() );
+        }
+
+        /**
+         * creates a literal
+         *
+         * @param p_key enum term
+         * @param p_value value
+         * @return literal
+         */
+        private ILiteral literal( final EMotivation p_key, final Number p_value )
+        {
+            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
+        }
+    }
+
+
+    /**
+     * beliefbase of the motivation elements
+     */
+    private final class CEthnicBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    {
+        @Override
+        public final int size()
+        {
+            return m_ethnic.size();
+        }
+
+        @Override
+        public final boolean empty()
+        {
+            return m_ethnic.isEmpty();
+        }
+
+        @Override
+        public final Stream<ILiteral> streamLiteral()
+        {
+            return m_ethnic.entrySet().parallelStream()
+                           .map( i -> this.literal( i.getKey(), i.getValue() ) );
+        }
+
+        @Override
+        public final ILiteral add( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        @Override
+        public final ILiteral remove( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        @Override
+        public final boolean containsLiteral( final String p_key )
+        {
+            return EEthncity.exist( p_key ) && m_ethnic.containsKey( EEthncity.valueOf( p_key.toUpperCase() ) );
+        }
+
+        @Override
+        public final Collection<ILiteral> literal( final String p_key )
+        {
+            if ( !this.containsLiteral( p_key ) )
+                return Collections.<ILiteral>emptySet();
+
+            final EEthncity l_key =  EEthncity.valueOf( p_key.toUpperCase() );
+            return Stream.of( this.literal( l_key, m_ethnic.get( l_key ) ) ).collect( Collectors.toSet() );
+        }
+
+        /**
+         * creates a literal
+         *
+         * @param p_key enum term
+         * @param p_value value
+         * @return literal
+         */
+        private ILiteral literal( final EEthncity p_key, final Number p_value )
+        {
+            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
+        }
+    }
 }

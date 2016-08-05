@@ -65,10 +65,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 1.1, 0.8, 1.3 ),
                  new ImmutableTriple<>( 34.6, 30, 40 )
-             ),
-
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     DITTO( 1,
@@ -86,10 +83,7 @@ public enum EPokemon
            Stream.of(
                new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
                new ImmutableTriple<>( 4, 3.5, 4.5 )
-           ),
-
-           Stream.of(),
-           Stream.of()
+           )
     ),
 
     DODUO( 2,
@@ -109,10 +103,7 @@ public enum EPokemon
            Stream.of(
                new ImmutableTriple<>( 1.4, 1, 0.7 ),
                new ImmutableTriple<>( 39.2, 36, 42 )
-           ),
-
-           Stream.of(),
-           Stream.of()
+           )
     ),
 
     EEVEE( 4,
@@ -130,10 +121,7 @@ public enum EPokemon
            Stream.of(
                new ImmutableTriple<>( 0.3, 0.1, 5 ),
                new ImmutableTriple<>( 6.5, 5.5, 7.5 )
-           ),
-
-           Stream.of(),
-           Stream.of()
+           )
     ),
 
     FARFETCHD( 1,
@@ -153,10 +141,7 @@ public enum EPokemon
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 15, 12.5, 17.5 )
-               ),
-
-               Stream.of(),
-               Stream.of()
+               )
     ),
 
     JIGGLYPUFF( 2,
@@ -176,10 +161,7 @@ public enum EPokemon
                 Stream.of(
                     new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
                     new ImmutableTriple<>( 5.5, 4.2, 6.5 )
-                ),
-
-                Stream.of(),
-                Stream.of()
+                )
     ),
 
     KANGASKHAN( 1,
@@ -197,10 +179,7 @@ public enum EPokemon
                 Stream.of(
                     new ImmutableTriple<>( 2.2, 1.9, 2.7 ),
                     new ImmutableTriple<>( 80, 60, 100 )
-                ),
-
-                Stream.of(),
-                Stream.of()
+                )
     ),
 
     LICKITUNG( 1,
@@ -218,10 +197,7 @@ public enum EPokemon
                Stream.of(
                    new ImmutableTriple<>( 1.2, 1, 1.4 ),
                    new ImmutableTriple<>( 65.5, 60, 72 )
-               ),
-
-               Stream.of(),
-               Stream.of()
+               )
     ),
 
     MEOWTH( 2,
@@ -239,10 +215,7 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
                 new ImmutableTriple<>( 4.2, 3.8, 4.7 )
-            ),
-
-            Stream.of(),
-            Stream.of()
+            )
     ),
 
     PIDGEY( 3,
@@ -262,10 +235,7 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 0.3, 0.2, 0.5 ),
                 new ImmutableTriple<>( 1.8, 1.5, 2.1 )
-            ),
-
-            Stream.of(),
-            Stream.of()
+            )
     ),
 
     PORYGON( 1,
@@ -283,10 +253,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.5, 1.1 ),
                  new ImmutableTriple<>( 36.5, 32, 39 )
-             ),
-
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     RATTATA( 2,
@@ -304,10 +271,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
                  new ImmutableTriple<>( 3.5, 2.8, 3.8 )
-             ),
-
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     SNORLAX( 1,
@@ -325,10 +289,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 2.1, 1.8, 2.4 ),
                  new ImmutableTriple<>( 460, 400, 490 )
-             ),
-
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     SPEAROW( 2,
@@ -348,10 +309,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.3, 0.1, 0.6 ),
                  new ImmutableTriple<>( 2, 1.2, 2.9 )
-             ),
-
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     TAUROS( 1,
@@ -369,10 +327,7 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 1.4, 1, 1.9 ),
                 new ImmutableTriple<>( 88.4, 85, 91 )
-            ),
-
-            Stream.of(),
-            Stream.of()
+            )
     ),
 
 
@@ -381,28 +336,43 @@ public enum EPokemon
     CHARMANDER( 3,
                 Stream.of( EEthncity.FIRE ),
                 Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-                Stream.of(),
-                Stream.of(),
-                Stream.of(),
-                Stream.of()
+
+                Stream.of(
+                    EAttributes.HEIGHT,
+                    EAttributes.WEIGHT
+                ),
+                Stream.of(
+                    new ImmutableTriple<>( 0.6, 0.3, 0.9 ),
+                    new ImmutableTriple<>( 8.5, 7.5, 9.5 )
+                )
     ),
 
     GROWLITHE( 2,
                Stream.of( EEthncity.FIRE ),
                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-               Stream.of(),
-               Stream.of(),
-               Stream.of(),
-               Stream.of()
+
+               Stream.of(
+                   EAttributes.HEIGHT,
+                   EAttributes.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 0.7, 0.4, 1 ),
+                   new ImmutableTriple<>( 19, 18, 20 )
+               )
     ),
 
     MAGMAR( 1,
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.3, 1, 1.6 ),
+                new ImmutableTriple<>( 44.5, 42.5, 46.5 )
+            )
     ),
 
     MOLTRES( 1,
@@ -414,28 +384,43 @@ public enum EPokemon
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
              ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 2, 1.8, 2.2 ),
+                 new ImmutableTriple<>( 60, 56, 64 )
+             )
     ),
 
     PONYTA( 2,
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1, 0.7, 1.7 ),
+                new ImmutableTriple<>( 30, 25, 35 )
+            )
     ),
 
     VULPIX( 2,
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.6, 0.4, 1.8 ),
+                new ImmutableTriple<>( 9.9, 0.5, 10.3 )
+            )
     ),
 
 
@@ -444,28 +429,43 @@ public enum EPokemon
     GOLDEEN( 2,
              Stream.of( EEthncity.WATER ),
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.6, 0.4, 1.8 ),
+                 new ImmutableTriple<>( 15, 13, 17 )
+             )
     ),
 
     HORSEA( 2,
             Stream.of( EEthncity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+                new ImmutableTriple<>( 8, 6, 10 )
+            )
     ),
 
     KRABBY( 2,
             Stream.of( EEthncity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+                new ImmutableTriple<>( 6.5, 6, 7 )
+            )
     ),
 
     LAPRAS( 1,
@@ -477,55 +477,85 @@ public enum EPokemon
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
             ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 2.5, 2, 3 ),
+                new ImmutableTriple<>( 220, 200, 240 )
+            )
     ),
 
     MAGIKARP( 2,
               Stream.of( EEthncity.WATER ),
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-              Stream.of(),
-              Stream.of(),
-              Stream.of(),
-              Stream.of()
+
+              Stream.of(
+                  EAttributes.HEIGHT,
+                  EAttributes.WEIGHT
+              ),
+              Stream.of(
+                  new ImmutableTriple<>( 0.9, 0.7, 1.1 ),
+                  new ImmutableTriple<>( 10, 8, 12 )
+              )
     ),
 
     POLIWAG( 3,
              Stream.of( EEthncity.WATER ),
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.6, 0.4, 0.8 ),
+                 new ImmutableTriple<>( 12.4, 10, 14 )
+             )
     ),
 
     PSYDUCK( 2,
              Stream.of( EEthncity.WATER ),
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 19.6, 17, 21 )
+             )
     ),
 
     SEEL( 2,
           Stream.of( EEthncity.WATER ),
           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-          Stream.of(),
-          Stream.of(),
-          Stream.of(),
-          Stream.of()
+
+          Stream.of(
+              EAttributes.HEIGHT,
+              EAttributes.WEIGHT
+          ),
+          Stream.of(
+              new ImmutableTriple<>( 1.1, 0.9, 1.3 ),
+              new ImmutableTriple<>( 90, 80, 100 )
+          )
     ),
 
     SHELLDER( 2,
               Stream.of( EEthncity.WATER ),
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-              Stream.of(),
-              Stream.of(),
-              Stream.of(),
-              Stream.of()
+
+              Stream.of(
+                  EAttributes.HEIGHT,
+                  EAttributes.WEIGHT
+              ),
+              Stream.of(
+                  new ImmutableTriple<>( 0.3, 0.2, 0.4 ),
+                  new ImmutableTriple<>( 4, 3, 5 )
+              )
     ),
 
     SLOWPOKE( 2,
@@ -537,28 +567,43 @@ public enum EPokemon
                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
                   new ImmutableTriple<>( 0.4, 0.3, 0.5 )
               ),
-              Stream.of(),
-              Stream.of(),
-              Stream.of(),
-              Stream.of()
+
+              Stream.of(
+                  EAttributes.HEIGHT,
+                  EAttributes.WEIGHT
+              ),
+              Stream.of(
+                  new ImmutableTriple<>( 1.2, 1, 1.4 ),
+                  new ImmutableTriple<>( 36, 32, 40 )
+              )
     ),
 
     SQUIRTLE( 3,
               Stream.of( EEthncity.WATER ),
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-              Stream.of(),
-              Stream.of(),
-              Stream.of(),
-              Stream.of()
+
+              Stream.of(
+                  EAttributes.HEIGHT,
+                  EAttributes.WEIGHT
+              ),
+              Stream.of(
+                  new ImmutableTriple<>( 0.5, 0.4, 0.6 ),
+                  new ImmutableTriple<>( 9, 8, 7 )
+              )
     ),
 
     STARYU( 2,
             Stream.of( EEthncity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                new ImmutableTriple<>( 34.5, 30, 39 )
+            )
     ),
 
     TENTACOOL( 2,
@@ -570,10 +615,15 @@ public enum EPokemon
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
                ),
-               Stream.of(),
-               Stream.of(),
-               Stream.of(),
-               Stream.of()
+
+               Stream.of(
+                   EAttributes.HEIGHT,
+                   EAttributes.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 0.9, 0.6, 1.2 ),
+                   new ImmutableTriple<>( 45.5, 40, 50 )
+               )
     ),
 
 
@@ -582,10 +632,15 @@ public enum EPokemon
     ELECTABUZZ( 1,
                 Stream.of( EEthncity.ELECTRIC ),
                 Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-                Stream.of(),
-                Stream.of(),
-                Stream.of(),
-                Stream.of()
+
+                Stream.of(
+                    EAttributes.HEIGHT,
+                    EAttributes.WEIGHT
+                ),
+                Stream.of(
+                    new ImmutableTriple<>( 1.1, 0.9, 1.3 ),
+                    new ImmutableTriple<>( 30, 25, 35 )
+                )
     ),
 
     MAGNEMITE( 2,
@@ -597,28 +652,43 @@ public enum EPokemon
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
                ),
-               Stream.of(),
-               Stream.of(),
-               Stream.of(),
-               Stream.of()
+
+               Stream.of(
+                   EAttributes.HEIGHT,
+                   EAttributes.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
+                   new ImmutableTriple<>( 6, 4, 8 )
+               )
     ),
 
     PIKACHU( 2,
              Stream.of( EEthncity.ELECTRIC ),
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                 new ImmutableTriple<>( 6, 5, 7 )
+             )
     ),
 
     VOLTORB( 2,
              Stream.of( EEthncity.ELECTRIC ),
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.5, 0.4, 0.6 ),
+                 new ImmutableTriple<>( 10.4, 9, 12 )
+             )
     ),
 
     ZAPDOS( 1,
@@ -630,10 +700,15 @@ public enum EPokemon
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
             ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.6, 1.3, 1.9 ),
+                new ImmutableTriple<>( 52.6, 49, 55 )
+            )
     ),
 
 
@@ -647,11 +722,7 @@ public enum EPokemon
                 Stream.of(
                     new ImmutableTriple<>( 0.8, 0.6, 1 ),
                     new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-                ),
-                Stream.of(),
-                Stream.of(),
-                Stream.of(),
-                Stream.of()
+                )
     ),
 
     BULBASAUR( 3,
@@ -662,11 +733,7 @@ public enum EPokemon
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-               ),
-               Stream.of(),
-               Stream.of(),
-               Stream.of(),
-               Stream.of()
+               )
     ),
 
     EXEGGCUTE( 2,
@@ -677,11 +744,7 @@ public enum EPokemon
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-               ),
-               Stream.of(),
-               Stream.of(),
-               Stream.of(),
-               Stream.of()
+               )
     ),
 
     ODDISH( 3,
@@ -692,20 +755,12 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            )
     ),
 
     TANGELA( 2,
              Stream.of( EEthncity.GRASS ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
 
@@ -719,11 +774,7 @@ public enum EPokemon
               Stream.of(
                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
                   new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-              ),
-              Stream.of(),
-              Stream.of(),
-              Stream.of(),
-              Stream.of()
+              )
     ),
 
     JYNX( 1,
@@ -734,11 +785,7 @@ public enum EPokemon
           Stream.of(
               new ImmutableTriple<>( 0.8, 0.6, 1 ),
               new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-          ),
-          Stream.of(),
-          Stream.of(),
-          Stream.of(),
-          Stream.of()
+          )
     ),
 
 
@@ -746,38 +793,22 @@ public enum EPokemon
     // --- fighting --------------------------------------------------------------------------------------------------------------------------------------------
     HITMONCHAN( 1,
                 Stream.of( EEthncity.FIGHTING ),
-                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-                Stream.of(),
-                Stream.of(),
-                Stream.of(),
-                Stream.of()
+                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     HITMONLEE( 1,
                Stream.of( EEthncity.FIGHTING ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-               Stream.of(),
-               Stream.of(),
-               Stream.of(),
-               Stream.of()
+               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     MACHOP( 3,
             Stream.of( EEthncity.FIGHTING ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     MANKEY( 2,
             Stream.of( EEthncity.FIGHTING ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
 
@@ -785,47 +816,27 @@ public enum EPokemon
     // --- poison ----------------------------------------------------------------------------------------------------------------------------------------------
     EKANS( 2,
            Stream.of( EEthncity.POISON ),
-           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-           Stream.of(),
-           Stream.of(),
-           Stream.of(),
-           Stream.of()
+           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     GRIMER( 2,
             Stream.of( EEthncity.POISON ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     KOFFING( 2,
              Stream.of( EEthncity.POISON ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     NIDORAN_FEMALE( 3,
                     Stream.of( EEthncity.POISON ),
-                    Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-                    Stream.of(),
-                    Stream.of(),
-                    Stream.of(),
-                    Stream.of()
+                    Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     NIDORAN_MALE( 3,
                   Stream.of( EEthncity.POISON ),
-                  Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-                  Stream.of(),
-                  Stream.of(),
-                  Stream.of(),
-                  Stream.of()
+                  Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     ZUBAT( 2,
@@ -836,11 +847,7 @@ public enum EPokemon
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-           ),
-           Stream.of(),
-           Stream.of(),
-           Stream.of(),
-           Stream.of()
+           )
     ),
 
 
@@ -848,20 +855,12 @@ public enum EPokemon
     // --- ground ----------------------------------------------------------------------------------------------------------------------------------------------
     CUBONE( 2,
             Stream.of( EEthncity.GROUND ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     DIGLETT( 2,
              Stream.of( EEthncity.GROUND ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     RHYHORN( 2,
@@ -872,20 +871,12 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     SANDSHREW( 2,
                Stream.of( EEthncity.GROUND ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-               Stream.of(),
-               Stream.of(),
-               Stream.of(),
-               Stream.of()
+               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
 
@@ -893,38 +884,22 @@ public enum EPokemon
     // --- psychic ---------------------------------------------------------------------------------------------------------------------------------------------
     ABRA( 3,
           Stream.of( EEthncity.PSYCHIC ),
-          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-          Stream.of(),
-          Stream.of(),
-          Stream.of(),
-          Stream.of()
+          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     DROWZEE( 2,
              Stream.of( EEthncity.PSYCHIC ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     MEW( 1,
          Stream.of( EEthncity.PSYCHIC ),
-         Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-         Stream.of(),
-         Stream.of(),
-         Stream.of(),
-         Stream.of()
+         Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     MEWTWO( 1,
             Stream.of( EEthncity.PSYCHIC ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     MR_MIME( 1,
@@ -935,11 +910,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
 
@@ -947,11 +918,7 @@ public enum EPokemon
     // --- bug -------------------------------------------------------------------------------------------------------------------------------------------------
     CATERPIE( 3,
               Stream.of( EEthncity.BUG ),
-              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-              Stream.of(),
-              Stream.of(),
-              Stream.of(),
-              Stream.of()
+              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     PARAS( 2,
@@ -962,20 +929,12 @@ public enum EPokemon
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-           ),
-           Stream.of(),
-           Stream.of(),
-           Stream.of(),
-           Stream.of()
+           )
     ),
 
     PINSIR( 1,
             Stream.of( EEthncity.BUG ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
     ),
 
     SCYTHER( 1,
@@ -986,11 +945,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     VENONAT( 2,
@@ -1001,11 +956,7 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+             )
     ),
 
     WEEDLE( 2,
@@ -1016,11 +967,7 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+            )
     ),
 
 
@@ -1035,10 +982,15 @@ public enum EPokemon
                     new ImmutableTriple<>( 0.8, 0.6, 1 ),
                     new ImmutableTriple<>( 0.4, 0.3, 0.5 )
                 ),
-                Stream.of(),
-                Stream.of(),
-                Stream.of(),
-                Stream.of()
+
+                Stream.of(
+                    EAttributes.HEIGHT,
+                    EAttributes.WEIGHT
+                ),
+                Stream.of(
+                    new ImmutableTriple<>( 1.8, 1.5, 2.1 ),
+                    new ImmutableTriple<>( 59, 50, 68 )
+                )
     ),
 
     GEODUDE( 3,
@@ -1050,10 +1002,15 @@ public enum EPokemon
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
              ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+                 new ImmutableTriple<>( 20, 16, 24 )
+             )
     ),
 
     KABUTO( 2,
@@ -1065,10 +1022,15 @@ public enum EPokemon
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
             ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
+                new ImmutableTriple<>( 11.5, 9, 13 )
+            )
     ),
 
     OMANYTE( 2,
@@ -1080,10 +1042,15 @@ public enum EPokemon
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
              ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                 new ImmutableTriple<>( 7.5, 6.5, 8.5 )
+             )
     ),
 
     ONIX( 1,
@@ -1095,10 +1062,15 @@ public enum EPokemon
               new ImmutableTriple<>( 0.8, 0.6, 1 ),
               new ImmutableTriple<>( 0.4, 0.3, 0.5 )
           ),
-          Stream.of(),
-          Stream.of(),
-          Stream.of(),
-          Stream.of()
+
+          Stream.of(
+              EAttributes.HEIGHT,
+              EAttributes.WEIGHT
+          ),
+          Stream.of(
+              new ImmutableTriple<>( 8.8, 7, 10.6 ),
+              new ImmutableTriple<>( 210, 180, 240 )
+          )
     ),
 
 
@@ -1113,10 +1085,15 @@ public enum EPokemon
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
             ),
-            Stream.of(),
-            Stream.of(),
-            Stream.of(),
-            Stream.of()
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.3, 1, 1.6 ),
+                new ImmutableTriple<>( 0.1, 0.05, 0.2 )
+            )
     ),
 
 
@@ -1125,10 +1102,15 @@ public enum EPokemon
     DRATINI( 3,
              Stream.of( EEthncity.DRAGON ),
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-             Stream.of(),
-             Stream.of(),
-             Stream.of(),
-             Stream.of()
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 1.8, 1.6, 2 ),
+                 new ImmutableTriple<>( 3.3, 3, 3.6 )
+             )
     ),
 
 
@@ -1137,10 +1119,15 @@ public enum EPokemon
     CLEFAIRY( 2,
               Stream.of( EEthncity.FAIRY ),
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
-              Stream.of(),
-              Stream.of(),
-              Stream.of(),
-              Stream.of()
+
+              Stream.of(
+                  EAttributes.HEIGHT,
+                  EAttributes.WEIGHT
+              ),
+              Stream.of(
+                  new ImmutableTriple<>( 0.6, 0.4, 0.8 ),
+                  new ImmutableTriple<>( 7.5, 6, 9 )
+              )
     );
 
 
@@ -1171,8 +1158,61 @@ public enum EPokemon
      * ctor
      *
      * @param p_icons number of icons
+     */
+    EPokemon( final int p_icons )
+    {
+        this( p_icons,
+              Stream.of(), Stream.of(),
+              Stream.of(), Stream.of(),
+              Stream.of(), Stream.of()
+        );
+    }
+
+    /**
+     * ctor
+     *
+     * @param p_icons number of icons
      * @param p_ethnic stream with ethnik types
-     * @param p_ethnic stream with ethnic values
+     * @param p_ethnicvalue stream with ethnic values
+     */
+    EPokemon( final int p_icons,
+              final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue
+    )
+    {
+        this( p_icons,
+              p_ethnic, p_ethnicvalue,
+              Stream.of(), Stream.of(),
+              Stream.of(), Stream.of()
+        );
+    }
+
+    /**
+     * ctor
+     *
+     * @param p_icons number of icons
+     * @param p_ethnic stream with ethnik types
+     * @param p_ethnicvalue stream with ethnic values
+     * @param p_attributes stream with attributes types
+     * @param p_attributesvalue stream with attributes values
+     */
+    EPokemon( final int p_icons,
+              final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+              final Stream<EAttributes> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
+    )
+    {
+        this( p_icons,
+              p_ethnic, p_ethnicvalue,
+              p_attributes, p_attributesvalue,
+              Stream.of(), Stream.of()
+        );
+    }
+
+    /**
+     * ctor
+     *
+     * @param p_icons number of icons
+     * @param p_ethnic stream with ethnik types
+     * @param p_ethnicvalue stream with ethnic values
      * @param p_attributes stream with attributes types
      * @param p_attributesvalue stream with attributes values
      * @param p_motivation stream with motivation types

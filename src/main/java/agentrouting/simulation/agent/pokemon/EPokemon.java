@@ -1262,7 +1262,7 @@ public enum EPokemon
             IntStream.range( 0, m_icons )
                      .mapToObj( i -> new Texture(
                                         Gdx.files.internal(
-                                            MessageFormat.format( "agentrouting/sprites/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
+                                            MessageFormat.format( "agentrouting/pokemon/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
                                         )
                                     )
                      )

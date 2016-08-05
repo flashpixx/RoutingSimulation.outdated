@@ -51,108 +51,208 @@ public enum EPokemon
 {
     // --- normal ----------------------------------------------------------------------------------------------------------------------------------------------
     CHANSEY( 1,
-             Stream.of( EPreferences.NORMAL ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of(
+                 EPreferences.NORMAL,
+                 EPreferences.HEIGHT,
+                 EPreferences.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 1.1, 0.8, 1.3 ),
+                 new ImmutableTriple<>( 34.6, 30, 40 )
+             )
     ),
 
     DITTO( 1,
-           Stream.of( EPreferences.NORMAL ),
-           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+           Stream.of(
+               EPreferences.NORMAL,
+               EPreferences.HEIGHT,
+               EPreferences.WEIGHT
+           ),
+           Stream.of(
+               new ImmutableTriple<>( 0.8, 0.6, 1 ),
+               new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
+               new ImmutableTriple<>( 4, 3.5, 4.5 )
+           )
     ),
 
     DODUO( 2,
            Stream.of(
                EPreferences.NORMAL,
-               EPreferences.FLYING
+               EPreferences.FLYING,
+               EPreferences.HEIGHT,
+               EPreferences.WEIGHT
            ),
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
-               new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+               new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+               new ImmutableTriple<>( 1.4, 1, 0.7 ),
+               new ImmutableTriple<>( 39.2, 36, 42 )
            )
     ),
 
     EEVEE( 4,
-           Stream.of( EPreferences.NORMAL ),
-           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+           Stream.of(
+               EPreferences.NORMAL,
+               EPreferences.HEIGHT,
+               EPreferences.WEIGHT
+           ),
+           Stream.of(
+               new ImmutableTriple<>( 0.8, 0.6, 1 ),
+               new ImmutableTriple<>( 0.3, 0.1, 5 ),
+               new ImmutableTriple<>( 6.5, 5.5, 7.5 )
+                   )
     ),
 
     FARFETCHD( 1,
                Stream.of(
                    EPreferences.NORMAL,
-                   EPreferences.FLYING
+                   EPreferences.FLYING,
+                   EPreferences.HEIGHT,
+                   EPreferences.WEIGHT
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                   new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+                   new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                   new ImmutableTriple<>( 15, 12.5, 17.5 )
                )
     ),
 
     JIGGLYPUFF( 2,
                 Stream.of(
                     EPreferences.NORMAL,
-                    EPreferences.FAIRY
+                    EPreferences.FAIRY,
+                    EPreferences.HEIGHT,
+                    EPreferences.WEIGHT
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+                    new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                    new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
+                    new ImmutableTriple<>( 5.5, 4.2, 6.5 )
                 )
     ),
 
     KANGASKHAN( 1,
-                Stream.of( EPreferences.NORMAL ),
-                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                Stream.of(
+                    EPreferences.NORMAL,
+                    EPreferences.HEIGHT,
+                    EPreferences.WEIGHT
+                ),
+                Stream.of(
+                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                    new ImmutableTriple<>( 2.2, 1.9, 2.7 ),
+                    new ImmutableTriple<>( 80, 60, 100 )
+                )
     ),
 
     LICKITUNG( 1,
-               Stream.of( EPreferences.NORMAL ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+               Stream.of(
+                   EPreferences.NORMAL,
+                   EPreferences.HEIGHT,
+                   EPreferences.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                   new ImmutableTriple<>( 1.2, 1, 1.4 ),
+                   new ImmutableTriple<>( 65.5, 60, 72 )
+               )
     ),
 
     MEOWTH( 2,
-            Stream.of( EPreferences.NORMAL ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of(
+                EPreferences.NORMAL,
+                EPreferences.HEIGHT,
+                EPreferences.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+                new ImmutableTriple<>( 4.2, 3.8, 4.7 )
+            )
     ),
 
     PIDGEY( 3,
             Stream.of(
                 EPreferences.NORMAL,
-                EPreferences.FLYING
+                EPreferences.FLYING,
+                EPreferences.HEIGHT,
+                EPreferences.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+                new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                new ImmutableTriple<>( 0.3, 0.2, 0.5 ),
+                new ImmutableTriple<>( 1.8, 1.5, 2.1 )
             )
     ),
 
     PORYGON( 1,
-             Stream.of( EPreferences.NORMAL ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of(
+                 EPreferences.NORMAL,
+                 EPreferences.HEIGHT,
+                 EPreferences.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 0.8, 0.5, 1.1 ),
+                 new ImmutableTriple<>( 36.5, 32, 39 )
+             )
     ),
 
     RATTATA( 2,
-             Stream.of( EPreferences.NORMAL ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of(
+                 EPreferences.NORMAL,
+                 EPreferences.HEIGHT,
+                 EPreferences.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
+                 new ImmutableTriple<>( 3.5, 2.8, 3.8 )
+             )
     ),
 
     SNORLAX( 1,
-             Stream.of( EPreferences.NORMAL ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of(
+                 EPreferences.NORMAL,
+                 EPreferences.HEIGHT,
+                 EPreferences.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 2.1, 1.8, 2.4 ),
+                 new ImmutableTriple<>( 460, 400, 490 )
+             )
     ),
 
     SPEAROW( 2,
              Stream.of(
                  EPreferences.NORMAL,
-                 EPreferences.FLYING
+                 EPreferences.FLYING,
+                 EPreferences.HEIGHT,
+                 EPreferences.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+                 new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                 new ImmutableTriple<>( 0.3, 0.1, 0.6 ),
+                 new ImmutableTriple<>( 2, 1.2, 2.9 )
              )
     ),
 
     TAUROS( 1,
-            Stream.of( EPreferences.NORMAL ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of(
+                EPreferences.NORMAL,
+                EPreferences.HEIGHT,
+                EPreferences.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                new ImmutableTriple<>( 1.4, 1, 1.9 ),
+                new ImmutableTriple<>( 88.4, 85, 91 )
+            )
     ),
 
 

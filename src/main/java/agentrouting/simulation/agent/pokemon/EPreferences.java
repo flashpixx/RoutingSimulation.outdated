@@ -24,6 +24,7 @@ public enum EPreferences
     IGNORANCE( EPreferenceAccess.WRITE ),
     CAUTIOUSNESS( EPreferenceAccess.WRITE ),
     ELOPEMENT( EPreferenceAccess.WRITE ),
+    CURE( EPreferenceAccess.WRITE ),
 
     // individual not-changable preferences (attributes)
     ENERGY( EPreferenceAccess.READ ),

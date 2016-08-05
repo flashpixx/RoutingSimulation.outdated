@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
@@ -92,19 +93,17 @@ final class CJPSPlus implements IRouting
     }
 
     @Override
-    public final double estimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed )
+    public final double estimatedtime( final Stream<DoubleMatrix1D> p_route, final double p_speed )
     {
-        return p_route.size() < 2
-               ? 0
-               : StreamUtils.windowed( p_route.stream(), 2, 1 )
-                          .mapToDouble( i -> Math.sqrt(
-                                                Algebra.DEFAULT.norm2(
-                                                    new DenseDoubleMatrix1D( i.get( 1 ).toArray() )
-                                                        .assign( i.get( 0 ), Functions.minus )
-                                                )
-                                             ) / p_speed
-                          )
-                          .sum();
+        return StreamUtils.windowed( p_route, 2, 1 )
+                   .mapToDouble( i -> Math.sqrt(
+                                          Algebra.DEFAULT.norm2(
+                                              new DenseDoubleMatrix1D( i.get( 1 ).toArray() )
+                                                  .assign( i.get( 0 ), Functions.minus )
+                                              )
+                                          ) / p_speed
+                   )
+                   .sum();
     }
 
     /**

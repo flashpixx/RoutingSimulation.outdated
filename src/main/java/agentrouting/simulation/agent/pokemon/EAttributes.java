@@ -19,7 +19,9 @@ public enum EAttributes
     ATTACK( EAccess.READ ),
     DEFENSE( EAccess.READ ),
     WEIGHT( EAccess.READ ),
-    HEIGHT( EAccess.READ );
+    HEIGHT( EAccess.READ ),
+    MAXIMUMSPEED( EAccess.READ ),
+    SPEED( EAccess.WRITE );
 
     /**
      * string name of enums for existance checking

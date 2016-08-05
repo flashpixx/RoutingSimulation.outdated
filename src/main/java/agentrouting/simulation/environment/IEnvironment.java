@@ -55,7 +55,7 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      * @param p_speed current speed
      * @return estimated time
      */
-    double routestimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed );
+    double routestimatedtime( final Stream<DoubleMatrix1D> p_route, final double p_speed );
 
     /**
      * sets an object to the position and changes the object position

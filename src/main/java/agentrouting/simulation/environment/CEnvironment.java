@@ -167,7 +167,7 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
-    public final double routestimatedtime( final List<DoubleMatrix1D> p_route, final double p_speed )
+    public final double routestimatedtime( final Stream<DoubleMatrix1D> p_route, final double p_speed )
     {
         return m_routing.estimatedtime( p_route, p_speed );
     }

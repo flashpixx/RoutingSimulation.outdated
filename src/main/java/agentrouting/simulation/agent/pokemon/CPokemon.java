@@ -46,9 +46,17 @@ public final class CPokemon extends IBaseAgent
      */
     private final EPokemon m_pokemon;
     /**
-     * preference map
+     * ethnic map
      */
-    private final Map<EPreferences, Number> m_preferences;
+    private final Map<EEthncity, Number> m_ethnic;
+    /**
+     * attribute map
+     */
+    private final Map<EAttributes, Number> m_attribute;
+    /**
+     * motivation map
+     */
+    private final Map<EMotivation, Number> m_motivation;
 
 
     /**
@@ -69,7 +77,9 @@ public final class CPokemon extends IBaseAgent
             throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
-        m_preferences = m_pokemon.generateCharacteristic();
+        m_ethnic = m_pokemon.ethnic();
+        m_attribute = m_pokemon.attributes();
+        m_motivation = m_pokemon.motivation();
     }
 
     @Override

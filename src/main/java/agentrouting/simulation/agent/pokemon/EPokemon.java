@@ -52,372 +52,588 @@ public enum EPokemon
     // --- normal ----------------------------------------------------------------------------------------------------------------------------------------------
     CHANSEY( 1,
              Stream.of(
-                 EPreferences.NORMAL,
-                 EPreferences.HEIGHT,
-                 EPreferences.WEIGHT
+                 EEthncity.NORMAL
              ),
              Stream.of(
-                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 0.8, 0.6, 1 )
+             ),
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
                  new ImmutableTriple<>( 1.1, 0.8, 1.3 ),
                  new ImmutableTriple<>( 34.6, 30, 40 )
-             )
+             ),
+
+             Stream.of(),
+             Stream.of()
     ),
 
     DITTO( 1,
            Stream.of(
-               EPreferences.NORMAL,
-               EPreferences.HEIGHT,
-               EPreferences.WEIGHT
+               EEthncity.NORMAL
            ),
            Stream.of(
-               new ImmutableTriple<>( 0.8, 0.6, 1 ),
+               new ImmutableTriple<>( 0.8, 0.6, 1 )
+           ),
+
+           Stream.of(
+               EAttributes.HEIGHT,
+               EAttributes.WEIGHT
+           ),
+           Stream.of(
                new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
                new ImmutableTriple<>( 4, 3.5, 4.5 )
-           )
+           ),
+
+           Stream.of(),
+           Stream.of()
     ),
 
     DODUO( 2,
            Stream.of(
-               EPreferences.NORMAL,
-               EPreferences.FLYING,
-               EPreferences.HEIGHT,
-               EPreferences.WEIGHT
+               EEthncity.NORMAL,
+               EEthncity.FLYING
            ),
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
-               new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+               new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+           ),
+
+           Stream.of(
+               EAttributes.HEIGHT,
+               EAttributes.WEIGHT
+           ),
+           Stream.of(
                new ImmutableTriple<>( 1.4, 1, 0.7 ),
                new ImmutableTriple<>( 39.2, 36, 42 )
-           )
+           ),
+
+           Stream.of(),
+           Stream.of()
     ),
 
     EEVEE( 4,
            Stream.of(
-               EPreferences.NORMAL,
-               EPreferences.HEIGHT,
-               EPreferences.WEIGHT
+               EEthncity.NORMAL
            ),
            Stream.of(
-               new ImmutableTriple<>( 0.8, 0.6, 1 ),
+               new ImmutableTriple<>( 0.8, 0.6, 1 )
+           ),
+
+           Stream.of(
+               EAttributes.HEIGHT,
+               EAttributes.WEIGHT
+           ),
+           Stream.of(
                new ImmutableTriple<>( 0.3, 0.1, 5 ),
                new ImmutableTriple<>( 6.5, 5.5, 7.5 )
-                   )
+           ),
+
+           Stream.of(),
+           Stream.of()
     ),
 
     FARFETCHD( 1,
                Stream.of(
-                   EPreferences.NORMAL,
-                   EPreferences.FLYING,
-                   EPreferences.HEIGHT,
-                   EPreferences.WEIGHT
+                   EEthncity.NORMAL,
+                   EEthncity.FLYING
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                   new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                   new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+               ),
+
+               Stream.of(
+                   EAttributes.HEIGHT,
+                   EAttributes.WEIGHT
+               ),
+               Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 15, 12.5, 17.5 )
-               )
+               ),
+
+               Stream.of(),
+               Stream.of()
     ),
 
     JIGGLYPUFF( 2,
                 Stream.of(
-                    EPreferences.NORMAL,
-                    EPreferences.FAIRY,
-                    EPreferences.HEIGHT,
-                    EPreferences.WEIGHT
+                    EEthncity.NORMAL,
+                    EEthncity.FAIRY
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                    new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+                ),
+
+                Stream.of(
+                    EAttributes.HEIGHT,
+                    EAttributes.WEIGHT
+                ),
+                Stream.of(
                     new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
                     new ImmutableTriple<>( 5.5, 4.2, 6.5 )
-                )
+                ),
+
+                Stream.of(),
+                Stream.of()
     ),
 
     KANGASKHAN( 1,
                 Stream.of(
-                    EPreferences.NORMAL,
-                    EPreferences.HEIGHT,
-                    EPreferences.WEIGHT
+                    EEthncity.NORMAL
                 ),
                 Stream.of(
-                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                    new ImmutableTriple<>( 0.8, 0.6, 1 )
+                ),
+
+                Stream.of(
+                    EAttributes.HEIGHT,
+                    EAttributes.WEIGHT
+                ),
+                Stream.of(
                     new ImmutableTriple<>( 2.2, 1.9, 2.7 ),
                     new ImmutableTriple<>( 80, 60, 100 )
-                )
+                ),
+
+                Stream.of(),
+                Stream.of()
     ),
 
     LICKITUNG( 1,
                Stream.of(
-                   EPreferences.NORMAL,
-                   EPreferences.HEIGHT,
-                   EPreferences.WEIGHT
+                   EEthncity.NORMAL
                ),
                Stream.of(
-                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                   new ImmutableTriple<>( 0.8, 0.6, 1 )
+               ),
+
+               Stream.of(
+                   EAttributes.HEIGHT,
+                   EAttributes.WEIGHT
+               ),
+               Stream.of(
                    new ImmutableTriple<>( 1.2, 1, 1.4 ),
                    new ImmutableTriple<>( 65.5, 60, 72 )
-               )
+               ),
+
+               Stream.of(),
+               Stream.of()
     ),
 
     MEOWTH( 2,
             Stream.of(
-                EPreferences.NORMAL,
-                EPreferences.HEIGHT,
-                EPreferences.WEIGHT
+                EEthncity.NORMAL
             ),
             Stream.of(
-                new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                new ImmutableTriple<>( 0.8, 0.6, 1 )
+            ),
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
                 new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
                 new ImmutableTriple<>( 4.2, 3.8, 4.7 )
-            )
+            ),
+
+            Stream.of(),
+            Stream.of()
     ),
 
     PIDGEY( 3,
             Stream.of(
-                EPreferences.NORMAL,
-                EPreferences.FLYING,
-                EPreferences.HEIGHT,
-                EPreferences.WEIGHT
+                EEthncity.NORMAL,
+                EEthncity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+            ),
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
                 new ImmutableTriple<>( 0.3, 0.2, 0.5 ),
                 new ImmutableTriple<>( 1.8, 1.5, 2.1 )
-            )
+            ),
+
+            Stream.of(),
+            Stream.of()
     ),
 
     PORYGON( 1,
              Stream.of(
-                 EPreferences.NORMAL,
-                 EPreferences.HEIGHT,
-                 EPreferences.WEIGHT
+                 EEthncity.NORMAL
              ),
              Stream.of(
-                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 0.8, 0.6, 1 )
+             ),
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
                  new ImmutableTriple<>( 0.8, 0.5, 1.1 ),
                  new ImmutableTriple<>( 36.5, 32, 39 )
-             )
+             ),
+
+             Stream.of(),
+             Stream.of()
     ),
 
     RATTATA( 2,
              Stream.of(
-                 EPreferences.NORMAL,
-                 EPreferences.HEIGHT,
-                 EPreferences.WEIGHT
+                 EEthncity.NORMAL
              ),
              Stream.of(
-                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 0.8, 0.6, 1 )
+             ),
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
                  new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
                  new ImmutableTriple<>( 3.5, 2.8, 3.8 )
-             )
+             ),
+
+             Stream.of(),
+             Stream.of()
     ),
 
     SNORLAX( 1,
              Stream.of(
-                 EPreferences.NORMAL,
-                 EPreferences.HEIGHT,
-                 EPreferences.WEIGHT
+                 EEthncity.NORMAL
              ),
              Stream.of(
-                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                 new ImmutableTriple<>( 0.8, 0.6, 1 )
+             ),
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
                  new ImmutableTriple<>( 2.1, 1.8, 2.4 ),
                  new ImmutableTriple<>( 460, 400, 490 )
-             )
+             ),
+
+             Stream.of(),
+             Stream.of()
     ),
 
     SPEAROW( 2,
              Stream.of(
-                 EPreferences.NORMAL,
-                 EPreferences.FLYING,
-                 EPreferences.HEIGHT,
-                 EPreferences.WEIGHT
+                 EEthncity.NORMAL,
+                 EEthncity.FLYING
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
-                 new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+             ),
+
+             Stream.of(
+                 EAttributes.HEIGHT,
+                 EAttributes.WEIGHT
+             ),
+             Stream.of(
                  new ImmutableTriple<>( 0.3, 0.1, 0.6 ),
                  new ImmutableTriple<>( 2, 1.2, 2.9 )
-             )
+             ),
+
+             Stream.of(),
+             Stream.of()
     ),
 
     TAUROS( 1,
             Stream.of(
-                EPreferences.NORMAL,
-                EPreferences.HEIGHT,
-                EPreferences.WEIGHT
+                EEthncity.NORMAL
             ),
             Stream.of(
-                new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                new ImmutableTriple<>( 0.8, 0.6, 1 )
+            ),
+
+            Stream.of(
+                EAttributes.HEIGHT,
+                EAttributes.WEIGHT
+            ),
+            Stream.of(
                 new ImmutableTriple<>( 1.4, 1, 1.9 ),
                 new ImmutableTriple<>( 88.4, 85, 91 )
-            )
+            ),
+
+            Stream.of(),
+            Stream.of()
     ),
 
 
 
     // --- fire ------------------------------------------------------------------------------------------------------------------------------------------------
     CHARMANDER( 3,
-                Stream.of( EPreferences.FIRE ),
-                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                Stream.of( EEthncity.FIRE ),
+                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+                Stream.of(),
+                Stream.of(),
+                Stream.of(),
+                Stream.of()
     ),
 
     GROWLITHE( 2,
-               Stream.of( EPreferences.FIRE ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+               Stream.of( EEthncity.FIRE ),
+               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+               Stream.of(),
+               Stream.of(),
+               Stream.of(),
+               Stream.of()
     ),
 
     MAGMAR( 1,
-            Stream.of( EPreferences.FIRE ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.FIRE ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     MOLTRES( 1,
              Stream.of(
-                 EPreferences.FIRE,
-                 EPreferences.FLYING
+                 EEthncity.FIRE,
+                 EEthncity.FLYING
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             )
+             ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     PONYTA( 2,
-            Stream.of( EPreferences.FIRE ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.FIRE ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     VULPIX( 2,
-            Stream.of( EPreferences.FIRE ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.FIRE ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
 
 
     // --- water -----------------------------------------------------------------------------------------------------------------------------------------------
     GOLDEEN( 2,
-             Stream.of( EPreferences.WATER ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.WATER ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     HORSEA( 2,
-            Stream.of( EPreferences.WATER ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.WATER ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     KRABBY( 2,
-            Stream.of( EPreferences.WATER ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.WATER ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     LAPRAS( 1,
             Stream.of(
-                EPreferences.WATER,
-                EPreferences.ICE
+                EEthncity.WATER,
+                EEthncity.ICE
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            )
+            ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     MAGIKARP( 2,
-              Stream.of( EPreferences.WATER ),
-              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+              Stream.of( EEthncity.WATER ),
+              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+              Stream.of(),
+              Stream.of(),
+              Stream.of(),
+              Stream.of()
     ),
 
     POLIWAG( 3,
-             Stream.of( EPreferences.WATER ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.WATER ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     PSYDUCK( 2,
-             Stream.of( EPreferences.WATER ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.WATER ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     SEEL( 2,
-          Stream.of( EPreferences.WATER ),
-          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+          Stream.of( EEthncity.WATER ),
+          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+          Stream.of(),
+          Stream.of(),
+          Stream.of(),
+          Stream.of()
     ),
 
     SHELLDER( 2,
-              Stream.of( EPreferences.WATER ),
-              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+              Stream.of( EEthncity.WATER ),
+              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+              Stream.of(),
+              Stream.of(),
+              Stream.of(),
+              Stream.of()
     ),
 
     SLOWPOKE( 2,
               Stream.of(
-                  EPreferences.WATER,
-                  EPreferences.PSYCHIC
+                  EEthncity.WATER,
+                  EEthncity.PSYCHIC
               ),
               Stream.of(
                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
                   new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-              )
+              ),
+              Stream.of(),
+              Stream.of(),
+              Stream.of(),
+              Stream.of()
     ),
 
     SQUIRTLE( 3,
-              Stream.of( EPreferences.WATER ),
-              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+              Stream.of( EEthncity.WATER ),
+              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+              Stream.of(),
+              Stream.of(),
+              Stream.of(),
+              Stream.of()
     ),
 
     STARYU( 2,
-            Stream.of( EPreferences.WATER ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.WATER ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     TENTACOOL( 2,
                Stream.of(
-                   EPreferences.WATER,
-                   EPreferences.POISON
+                   EEthncity.WATER,
+                   EEthncity.POISON
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-               )
+               ),
+               Stream.of(),
+               Stream.of(),
+               Stream.of(),
+               Stream.of()
     ),
 
 
 
     // --- electric --------------------------------------------------------------------------------------------------------------------------------------------
     ELECTABUZZ( 1,
-                Stream.of( EPreferences.ELECTRIC ),
-                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                Stream.of( EEthncity.ELECTRIC ),
+                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+                Stream.of(),
+                Stream.of(),
+                Stream.of(),
+                Stream.of()
     ),
 
     MAGNEMITE( 2,
                Stream.of(
-                   EPreferences.ELECTRIC,
-                   EPreferences.STEEL
+                   EEthncity.ELECTRIC,
+                   EEthncity.STEEL
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-               )
+               ),
+               Stream.of(),
+               Stream.of(),
+               Stream.of(),
+               Stream.of()
     ),
 
     PIKACHU( 2,
-             Stream.of( EPreferences.ELECTRIC ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.ELECTRIC ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     VOLTORB( 2,
-             Stream.of( EPreferences.ELECTRIC ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.ELECTRIC ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     ZAPDOS( 1,
             Stream.of(
-                EPreferences.ELECTRIC,
-                EPreferences.FLYING
+                EEthncity.ELECTRIC,
+                EEthncity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            )
+            ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
 
@@ -425,51 +641,71 @@ public enum EPokemon
     // --- grass -----------------------------------------------------------------------------------------------------------------------------------------------
     BELLSPROUT( 3,
                 Stream.of(
-                    EPreferences.GRASS,
-                    EPreferences.POISON
+                    EEthncity.GRASS,
+                    EEthncity.POISON
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 0.8, 0.6, 1 ),
                     new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-                )
+                ),
+                Stream.of(),
+                Stream.of(),
+                Stream.of(),
+                Stream.of()
     ),
 
     BULBASAUR( 3,
                Stream.of(
-                   EPreferences.GRASS,
-                   EPreferences.POISON
+                   EEthncity.GRASS,
+                   EEthncity.POISON
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-               )
+               ),
+               Stream.of(),
+               Stream.of(),
+               Stream.of(),
+               Stream.of()
     ),
 
     EXEGGCUTE( 2,
                Stream.of(
-                   EPreferences.GRASS,
-                   EPreferences.PSYCHIC
+                   EEthncity.GRASS,
+                   EEthncity.PSYCHIC
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-               )
+               ),
+               Stream.of(),
+               Stream.of(),
+               Stream.of(),
+               Stream.of()
     ),
 
     ODDISH( 3,
             Stream.of(
-                EPreferences.GRASS,
-                EPreferences.POISON
+                EEthncity.GRASS,
+                EEthncity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            )
+            ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     TANGELA( 2,
-             Stream.of( EPreferences.GRASS ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.GRASS ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
 
@@ -477,206 +713,314 @@ public enum EPokemon
     // --- ice -------------------------------------------------------------------------------------------------------------------------------------------------
     ARTICUNO( 1,
               Stream.of(
-                  EPreferences.ICE,
-                  EPreferences.FLYING
+                  EEthncity.ICE,
+                  EEthncity.FLYING
               ),
               Stream.of(
                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
                   new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-              )
+              ),
+              Stream.of(),
+              Stream.of(),
+              Stream.of(),
+              Stream.of()
     ),
 
     JYNX( 1,
           Stream.of(
-              EPreferences.ICE,
-              EPreferences.PSYCHIC
+              EEthncity.ICE,
+              EEthncity.PSYCHIC
           ),
           Stream.of(
               new ImmutableTriple<>( 0.8, 0.6, 1 ),
               new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-          )
+          ),
+          Stream.of(),
+          Stream.of(),
+          Stream.of(),
+          Stream.of()
     ),
 
 
 
     // --- fighting --------------------------------------------------------------------------------------------------------------------------------------------
     HITMONCHAN( 1,
-                Stream.of( EPreferences.FIGHTING ),
-                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                Stream.of( EEthncity.FIGHTING ),
+                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+                Stream.of(),
+                Stream.of(),
+                Stream.of(),
+                Stream.of()
     ),
 
     HITMONLEE( 1,
-               Stream.of( EPreferences.FIGHTING ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+               Stream.of( EEthncity.FIGHTING ),
+               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+               Stream.of(),
+               Stream.of(),
+               Stream.of(),
+               Stream.of()
     ),
 
     MACHOP( 3,
-            Stream.of( EPreferences.FIGHTING ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.FIGHTING ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     MANKEY( 2,
-            Stream.of( EPreferences.FIGHTING ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.FIGHTING ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
 
 
     // --- poison ----------------------------------------------------------------------------------------------------------------------------------------------
     EKANS( 2,
-           Stream.of( EPreferences.POISON ),
-           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+           Stream.of( EEthncity.POISON ),
+           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+           Stream.of(),
+           Stream.of(),
+           Stream.of(),
+           Stream.of()
     ),
 
     GRIMER( 2,
-            Stream.of( EPreferences.POISON ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.POISON ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     KOFFING( 2,
-             Stream.of( EPreferences.POISON ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.POISON ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     NIDORAN_FEMALE( 3,
-                    Stream.of( EPreferences.POISON ),
-                    Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                    Stream.of( EEthncity.POISON ),
+                    Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+                    Stream.of(),
+                    Stream.of(),
+                    Stream.of(),
+                    Stream.of()
     ),
 
     NIDORAN_MALE( 3,
-                  Stream.of( EPreferences.POISON ),
-                  Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                  Stream.of( EEthncity.POISON ),
+                  Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+                  Stream.of(),
+                  Stream.of(),
+                  Stream.of(),
+                  Stream.of()
     ),
 
     ZUBAT( 2,
            Stream.of(
-               EPreferences.POISON,
-               EPreferences.FLYING
+               EEthncity.POISON,
+               EEthncity.FLYING
            ),
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-           )
+           ),
+           Stream.of(),
+           Stream.of(),
+           Stream.of(),
+           Stream.of()
     ),
 
 
 
     // --- ground ----------------------------------------------------------------------------------------------------------------------------------------------
     CUBONE( 2,
-            Stream.of( EPreferences.GROUND ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.GROUND ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     DIGLETT( 2,
-             Stream.of( EPreferences.GROUND ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.GROUND ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     RHYHORN( 2,
              Stream.of(
-                 EPreferences.GROUND,
-                 EPreferences.ROCK
+                 EEthncity.GROUND,
+                 EEthncity.ROCK
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             )
+             ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     SANDSHREW( 2,
-               Stream.of( EPreferences.GROUND ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+               Stream.of( EEthncity.GROUND ),
+               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+               Stream.of(),
+               Stream.of(),
+               Stream.of(),
+               Stream.of()
     ),
 
 
 
     // --- psychic ---------------------------------------------------------------------------------------------------------------------------------------------
     ABRA( 3,
-          Stream.of( EPreferences.PSYCHIC ),
-          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+          Stream.of( EEthncity.PSYCHIC ),
+          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+          Stream.of(),
+          Stream.of(),
+          Stream.of(),
+          Stream.of()
     ),
 
     DROWZEE( 2,
-             Stream.of( EPreferences.PSYCHIC ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.PSYCHIC ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     MEW( 1,
-         Stream.of( EPreferences.PSYCHIC ),
-         Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+         Stream.of( EEthncity.PSYCHIC ),
+         Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+         Stream.of(),
+         Stream.of(),
+         Stream.of(),
+         Stream.of()
     ),
 
     MEWTWO( 1,
-            Stream.of( EPreferences.PSYCHIC ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.PSYCHIC ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     MR_MIME( 1,
              Stream.of(
-                 EPreferences.PSYCHIC,
-                 EPreferences.FAIRY
+                 EEthncity.PSYCHIC,
+                 EEthncity.FAIRY
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             )
+             ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
 
 
     // --- bug -------------------------------------------------------------------------------------------------------------------------------------------------
     CATERPIE( 3,
-              Stream.of( EPreferences.BUG ),
-              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+              Stream.of( EEthncity.BUG ),
+              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+              Stream.of(),
+              Stream.of(),
+              Stream.of(),
+              Stream.of()
     ),
 
     PARAS( 2,
            Stream.of(
-               EPreferences.BUG,
-               EPreferences.GRASS
+               EEthncity.BUG,
+               EEthncity.GRASS
            ),
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-           )
+           ),
+           Stream.of(),
+           Stream.of(),
+           Stream.of(),
+           Stream.of()
     ),
 
     PINSIR( 1,
-            Stream.of( EPreferences.BUG ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( EEthncity.BUG ),
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     SCYTHER( 1,
              Stream.of(
-                 EPreferences.BUG,
-                 EPreferences.FLYING
+                 EEthncity.BUG,
+                 EEthncity.FLYING
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             )
+             ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     VENONAT( 2,
              Stream.of(
-                 EPreferences.BUG,
-                 EPreferences.POISON
+                 EEthncity.BUG,
+                 EEthncity.POISON
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             )
+             ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     WEEDLE( 2,
             Stream.of(
-                EPreferences.BUG,
-                EPreferences.POISON
+                EEthncity.BUG,
+                EEthncity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            )
+            ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
 
@@ -684,57 +1028,77 @@ public enum EPokemon
     // --- rock ------------------------------------------------------------------------------------------------------------------------------------------------
     AERODACTYL( 1,
                 Stream.of(
-                    EPreferences.ROCK,
-                    EPreferences.FLYING
+                    EEthncity.ROCK,
+                    EEthncity.FLYING
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 0.8, 0.6, 1 ),
                     new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-                )
+                ),
+                Stream.of(),
+                Stream.of(),
+                Stream.of(),
+                Stream.of()
     ),
 
     GEODUDE( 3,
              Stream.of(
-                 EPreferences.ROCK,
-                 EPreferences.GROUND
+                 EEthncity.ROCK,
+                 EEthncity.GROUND
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             )
+             ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     KABUTO( 2,
             Stream.of(
-                EPreferences.ROCK,
-                EPreferences.WATER
+                EEthncity.ROCK,
+                EEthncity.WATER
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            )
+            ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
     OMANYTE( 2,
              Stream.of(
-                 EPreferences.ROCK,
-                 EPreferences.WATER
+                 EEthncity.ROCK,
+                 EEthncity.WATER
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-             )
+             ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
     ONIX( 1,
           Stream.of(
-              EPreferences.ROCK,
-              EPreferences.GROUND
+              EEthncity.ROCK,
+              EEthncity.GROUND
           ),
           Stream.of(
               new ImmutableTriple<>( 0.8, 0.6, 1 ),
               new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-          )
+          ),
+          Stream.of(),
+          Stream.of(),
+          Stream.of(),
+          Stream.of()
     ),
 
 
@@ -742,29 +1106,41 @@ public enum EPokemon
     // --- ghost -----------------------------------------------------------------------------------------------------------------------------------------------
     GASTLY( 3,
             Stream.of(
-                EPreferences.GHOST,
-                EPreferences.POISON
+                EEthncity.GHOST,
+                EEthncity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
-            )
+            ),
+            Stream.of(),
+            Stream.of(),
+            Stream.of(),
+            Stream.of()
     ),
 
 
 
     // --- dragon ----------------------------------------------------------------------------------------------------------------------------------------------
     DRATINI( 3,
-             Stream.of( EPreferences.DRAGON ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( EEthncity.DRAGON ),
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+             Stream.of(),
+             Stream.of(),
+             Stream.of(),
+             Stream.of()
     ),
 
 
 
     // --- fairy -----------------------------------------------------------------------------------------------------------------------------------------------
     CLEFAIRY( 2,
-              Stream.of( EPreferences.FAIRY ),
-              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+              Stream.of( EEthncity.FAIRY ),
+              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+              Stream.of(),
+              Stream.of(),
+              Stream.of(),
+              Stream.of()
     );
 
 
@@ -778,33 +1154,87 @@ public enum EPokemon
      */
     private List<Texture> m_sprites;
     /**
-     * preference map with initialize values (initial value, min, max bounding)
+     * ethnic map map with initialize values (initial value, min, max bounding)
      */
-    private final Map<EPreferences, Triple<AbstractRealDistribution, Number, Number>> m_preference;
-
+    private final Map<EEthncity, Triple<AbstractRealDistribution, Number, Number>> m_ethnic;
+    /**
+     * attribute map with initialize values (initial value, min, max bounding)
+     */
+    private final Map<EAttributes, Triple<AbstractRealDistribution, Number, Number>> m_attributes;
+    /**
+     * motivation map with initialize values (initial value, min, max bounding)
+     */
+    private final Map<EMotivation, Triple<AbstractRealDistribution, Number, Number>> m_motivation;
 
 
     /**
      * ctor
      *
      * @param p_icons number of icons
+     * @param p_ethnic stream with ethnik types
+     * @param p_ethnic stream with ethnic values
+     * @param p_attributes stream with attributes types
+     * @param p_attributesvalue stream with attributes values
+     * @param p_motivation stream with motivation types
+     * @param p_motivationvalue stream with motivation value
      */
-    EPokemon( final int p_icons, final Stream<EPreferences> p_preferencename, final Stream<Triple<Number, Number, Number>> p_preferencevalue )
+    EPokemon( final int p_icons,
+              final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+              final Stream<EAttributes> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
+              final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
+    )
     {
         m_icons = p_icons;
-        m_preference = Collections.unmodifiableMap(
-                           StreamUtils.zip(
-                               p_preferencename,
-                               p_preferencevalue,
-                               ( n, v ) -> new ImmutablePair<>(
-                                               n,
-                                               new ImmutableTriple<AbstractRealDistribution, Number, Number>(
-                                                   new NormalDistribution( CMath.RANDOMGENERATOR, v.getLeft().doubleValue(), 0.1 ),
-                                                   v.getMiddle(),
-                                                   v.getRight()
-                                               )
-                               )
-                           ).collect( Collectors.toMap( ImmutablePair::getLeft, ImmutablePair::getRight ) )
+        m_ethnic = EPokemon.initialize( p_ethnic, p_ethnicvalue );
+        m_attributes = EPokemon.initialize( p_attributes, p_attributesvalue );
+        m_motivation = EPokemon.initialize( p_motivation, p_motivationvalue );
+    }
+
+    /**
+     * generates the random distribution for the values
+     *
+     * @param p_keys keys
+     * @param p_value tripel value set (initial value, min, max bounding)
+     * @tparam T key type
+     * @return map
+     */
+    private static <T>  Map<T, Triple<AbstractRealDistribution, Number, Number>> initialize( final Stream<T> p_keys, final Stream<Triple<Number, Number, Number>> p_value )
+    {
+        return Collections.unmodifiableMap(
+            StreamUtils.zip(
+                p_keys,
+                p_value,
+                ( n, v ) -> new ImmutablePair<>(
+                    n,
+                    new ImmutableTriple<AbstractRealDistribution, Number, Number>(
+                        new NormalDistribution( CMath.RANDOMGENERATOR, v.getLeft().doubleValue(), 0.1 ),
+                        v.getMiddle(),
+                        v.getRight()
+                    )
+                )
+            ).collect( Collectors.toMap( ImmutablePair::getLeft, ImmutablePair::getRight ) ) );
+    }
+
+    /**
+     * generates of a distribution map an set of values
+     *
+     * @param p_map distribution map
+     * @tparam T key type
+     * @return value map
+     */
+    private static <T> Map<T, Number> generate( final Map<T, Triple<AbstractRealDistribution, Number, Number>> p_map )
+    {
+        return p_map.entrySet().parallelStream().collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                i -> Math.min(
+                    Math.max(
+                        i.getValue().getLeft().sample(),
+                        i.getValue().getMiddle().doubleValue()
+                    ),
+                    i.getValue().getRight().doubleValue()
+                )
+            )
         );
     }
 
@@ -858,23 +1288,29 @@ public enum EPokemon
     }
 
     /**
-     * generates the preference map of a pokemon
-     * @return map individual preferences
+     * generates the ethnic map of a pokemon
+     * @return map individual ethnic values
      */
-    public Map<EPreferences, Number> generateCharacteristic()
+    public Map<EEthncity, Number> ethnic()
     {
-        return m_preference.entrySet().stream().collect(
-            Collectors.toMap(
-                Map.Entry::getKey,
-                i -> Math.min(
-                         Math.max(
-                             i.getValue().getLeft().sample(),
-                             i.getValue().getMiddle().doubleValue()
-                         ),
-                         i.getValue().getRight().doubleValue()
-                )
-            )
-        );
+        return EPokemon.generate( m_ethnic );
     }
 
+    /**
+     * generates the attribute map of a pokemon
+     * @return map individual attributes values
+     */
+    public Map<EAttributes, Number> attributes()
+    {
+        return EPokemon.generate( m_attributes );
+    }
+
+    /**
+     * generates the attribute map of a pokemon
+     * @return map individual attributes values
+     */
+    public Map<EMotivation, Number> motivation()
+    {
+        return EPokemon.generate( m_motivation );
+    }
 }

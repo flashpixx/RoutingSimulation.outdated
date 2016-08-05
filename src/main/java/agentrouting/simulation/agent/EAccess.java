@@ -26,7 +26,7 @@ package agentrouting.simulation.agent;
 /**
  * access for the agent to write / read preference values
  */
-public enum EPreferenceAccess
+public enum EAccess
 {
     READ,
     WRITE;

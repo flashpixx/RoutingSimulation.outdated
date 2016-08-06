@@ -94,7 +94,7 @@ public final class CPokemon extends IBaseAgent
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
             .add( new CAttributeBeliefbase().create( "attribute", m_beliefbase ) )
-            .add ( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) );
+            .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) );
     }
 
     @Override

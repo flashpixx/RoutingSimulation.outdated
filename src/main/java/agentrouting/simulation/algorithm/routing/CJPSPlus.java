@@ -67,7 +67,6 @@ final class CJPSPlus implements IRouting
         while ( !l_openlist.isEmpty() )
         {
             final CJumpPoint l_currentnode = l_openlist.pollFirst();
-
             //if the current node is the end node
             if ( l_currentnode.coordinate().equals( p_targetposition ) )
             {

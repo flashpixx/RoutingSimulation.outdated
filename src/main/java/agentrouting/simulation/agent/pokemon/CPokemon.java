@@ -36,6 +36,7 @@ import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -60,7 +61,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * attribute map
      */
-    private final Map<EAttributes, Number> m_attribute;
+    private final Map<EAttribute, Number> m_attribute;
     /**
      * motivation map
      */
@@ -90,7 +91,16 @@ public final class CPokemon extends IBaseAgent
         m_attribute = m_pokemon.attributes();
         m_motivation = m_pokemon.motivation();
 
-        m_beliefbase.add( new CMotivationBeliefbase().create( "motivation" ) ).add( new CEthnicBeliefbase().create( "ethnic" ) );
+        m_beliefbase.add( new CEthnicBeliefbase().create( "ethnic" ) ).add( new CAttributeBeliefbase().create( "attribute" ) ).add( new CMotivationBeliefbase().create( "motivation" ) );
+
+        //System.out.println( m_beliefbase + "    " + m_beliefbase.stream().collect( Collectors.toSet() ) );
+        //System.out.println( this );
+    }
+
+    @Override
+    public final String toString()
+    {
+        return MessageFormat.format( "{0} - pokemon [{1}] - ethnic {2} - attributes {3} - motivation {4}", super.toString(), m_pokemon, m_ethnic, m_attribute, m_motivation );
     }
 
     @Override
@@ -232,4 +242,70 @@ public final class CPokemon extends IBaseAgent
             return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
         }
     }
+
+    /**
+     * beliefbase of the attribute elements
+     */
+    private final class CAttributeBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    {
+        @Override
+        public final int size()
+        {
+            return m_attribute.size();
+        }
+
+        @Override
+        public final boolean empty()
+        {
+            return m_attribute.isEmpty();
+        }
+
+        @Override
+        public final Stream<ILiteral> streamLiteral()
+        {
+            return m_attribute.entrySet().parallelStream()
+                              .map( i -> this.literal( i.getKey(), i.getValue() ) );
+        }
+
+        @Override
+        public final ILiteral add( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        @Override
+        public final ILiteral remove( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        @Override
+        public final boolean containsLiteral( final String p_key )
+        {
+            return EAttribute.exist( p_key ) && m_attribute.containsKey( EAttribute.valueOf( p_key.toUpperCase() ) );
+        }
+
+        @Override
+        public final Collection<ILiteral> literal( final String p_key )
+        {
+            if ( !this.containsLiteral( p_key ) )
+                return Collections.<ILiteral>emptySet();
+
+            final EAttribute l_key =  EAttribute.valueOf( p_key.toUpperCase() );
+            return Stream.of( this.literal( l_key, m_attribute.get( l_key ) ) ).collect( Collectors.toSet() );
+        }
+
+        /**
+         * creates a literal
+         *
+         * @param p_key enum term
+         * @param p_value value
+         * @return literal
+         */
+        private ILiteral literal( final EAttribute p_key, final Number p_value )
+        {
+            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
+        }
+    }
+
 }

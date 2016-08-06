@@ -116,15 +116,15 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     }
 
     @Override
-    public final String toString()
+    public String toString()
     {
         return MessageFormat.format(
-            "{0} - current position (speed) [{1} ({2})] - route [{3}]",
+            "{0} - current position [{1}] - speed [{2}] - route [{3}]",
             super.toString(),
             m_position == null ? "" : CMath.MATRIXFORMAT.toString( m_position ),
             m_speed,
             // not null check is needed because of the super ctor
-            m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( ", " ) )
+            m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( "; " ) )
         );
     }
 

@@ -59,8 +59,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 1.1, 0.8, 1.3 ),
@@ -77,8 +77,8 @@ public enum EPokemon
            ),
 
            Stream.of(
-               EAttributes.HEIGHT,
-               EAttributes.WEIGHT
+               EAttribute.HEIGHT,
+               EAttribute.WEIGHT
            ),
            Stream.of(
                new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
@@ -97,8 +97,8 @@ public enum EPokemon
            ),
 
            Stream.of(
-               EAttributes.HEIGHT,
-               EAttributes.WEIGHT
+               EAttribute.HEIGHT,
+               EAttribute.WEIGHT
            ),
            Stream.of(
                new ImmutableTriple<>( 1.4, 1, 0.7 ),
@@ -115,8 +115,8 @@ public enum EPokemon
            ),
 
            Stream.of(
-               EAttributes.HEIGHT,
-               EAttributes.WEIGHT
+               EAttribute.HEIGHT,
+               EAttribute.WEIGHT
            ),
            Stream.of(
                new ImmutableTriple<>( 0.3, 0.1, 5 ),
@@ -135,8 +135,8 @@ public enum EPokemon
                ),
 
                Stream.of(
-                   EAttributes.HEIGHT,
-                   EAttributes.WEIGHT
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -155,8 +155,8 @@ public enum EPokemon
                 ),
 
                 Stream.of(
-                    EAttributes.HEIGHT,
-                    EAttributes.WEIGHT
+                    EAttribute.HEIGHT,
+                    EAttribute.WEIGHT
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
@@ -173,8 +173,8 @@ public enum EPokemon
                 ),
 
                 Stream.of(
-                    EAttributes.HEIGHT,
-                    EAttributes.WEIGHT
+                    EAttribute.HEIGHT,
+                    EAttribute.WEIGHT
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 2.2, 1.9, 2.7 ),
@@ -191,8 +191,8 @@ public enum EPokemon
                ),
 
                Stream.of(
-                   EAttributes.HEIGHT,
-                   EAttributes.WEIGHT
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
                ),
                Stream.of(
                    new ImmutableTriple<>( 1.2, 1, 1.4 ),
@@ -209,8 +209,8 @@ public enum EPokemon
             ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
@@ -229,8 +229,8 @@ public enum EPokemon
             ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.3, 0.2, 0.5 ),
@@ -247,8 +247,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.5, 1.1 ),
@@ -265,8 +265,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
@@ -283,8 +283,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 2.1, 1.8, 2.4 ),
@@ -303,8 +303,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.3, 0.1, 0.6 ),
@@ -321,8 +321,8 @@ public enum EPokemon
             ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 1.4, 1, 1.9 ),
@@ -338,8 +338,8 @@ public enum EPokemon
                 Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
                 Stream.of(
-                    EAttributes.HEIGHT,
-                    EAttributes.WEIGHT
+                    EAttribute.HEIGHT,
+                    EAttribute.WEIGHT
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 0.6, 0.3, 0.9 ),
@@ -352,8 +352,8 @@ public enum EPokemon
                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
                Stream.of(
-                   EAttributes.HEIGHT,
-                   EAttributes.WEIGHT
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.7, 0.4, 1 ),
@@ -366,8 +366,8 @@ public enum EPokemon
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 1.3, 1, 1.6 ),
@@ -386,8 +386,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 2, 1.8, 2.2 ),
@@ -400,8 +400,8 @@ public enum EPokemon
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 1, 0.7, 1.7 ),
@@ -414,8 +414,8 @@ public enum EPokemon
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.6, 0.4, 1.8 ),
@@ -431,8 +431,8 @@ public enum EPokemon
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.6, 0.4, 1.8 ),
@@ -445,8 +445,8 @@ public enum EPokemon
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
@@ -459,8 +459,8 @@ public enum EPokemon
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
@@ -479,8 +479,8 @@ public enum EPokemon
             ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 2.5, 2, 3 ),
@@ -493,8 +493,8 @@ public enum EPokemon
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
               Stream.of(
-                  EAttributes.HEIGHT,
-                  EAttributes.WEIGHT
+                  EAttribute.HEIGHT,
+                  EAttribute.WEIGHT
               ),
               Stream.of(
                   new ImmutableTriple<>( 0.9, 0.7, 1.1 ),
@@ -507,8 +507,8 @@ public enum EPokemon
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.6, 0.4, 0.8 ),
@@ -521,8 +521,8 @@ public enum EPokemon
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -535,8 +535,8 @@ public enum EPokemon
           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
           Stream.of(
-              EAttributes.HEIGHT,
-              EAttributes.WEIGHT
+              EAttribute.HEIGHT,
+              EAttribute.WEIGHT
           ),
           Stream.of(
               new ImmutableTriple<>( 1.1, 0.9, 1.3 ),
@@ -549,8 +549,8 @@ public enum EPokemon
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
               Stream.of(
-                  EAttributes.HEIGHT,
-                  EAttributes.WEIGHT
+                  EAttribute.HEIGHT,
+                  EAttribute.WEIGHT
               ),
               Stream.of(
                   new ImmutableTriple<>( 0.3, 0.2, 0.4 ),
@@ -569,8 +569,8 @@ public enum EPokemon
               ),
 
               Stream.of(
-                  EAttributes.HEIGHT,
-                  EAttributes.WEIGHT
+                  EAttribute.HEIGHT,
+                  EAttribute.WEIGHT
               ),
               Stream.of(
                   new ImmutableTriple<>( 1.2, 1, 1.4 ),
@@ -583,8 +583,8 @@ public enum EPokemon
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
               Stream.of(
-                  EAttributes.HEIGHT,
-                  EAttributes.WEIGHT
+                  EAttribute.HEIGHT,
+                  EAttribute.WEIGHT
               ),
               Stream.of(
                   new ImmutableTriple<>( 0.5, 0.4, 0.6 ),
@@ -597,8 +597,8 @@ public enum EPokemon
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -617,8 +617,8 @@ public enum EPokemon
                ),
 
                Stream.of(
-                   EAttributes.HEIGHT,
-                   EAttributes.WEIGHT
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.9, 0.6, 1.2 ),
@@ -634,8 +634,8 @@ public enum EPokemon
                 Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
                 Stream.of(
-                    EAttributes.HEIGHT,
-                    EAttributes.WEIGHT
+                    EAttribute.HEIGHT,
+                    EAttribute.WEIGHT
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 1.1, 0.9, 1.3 ),
@@ -654,8 +654,8 @@ public enum EPokemon
                ),
 
                Stream.of(
-                   EAttributes.HEIGHT,
-                   EAttributes.WEIGHT
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
                ),
                Stream.of(
                    new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
@@ -668,8 +668,8 @@ public enum EPokemon
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
@@ -682,8 +682,8 @@ public enum EPokemon
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.5, 0.4, 0.6 ),
@@ -702,8 +702,8 @@ public enum EPokemon
             ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 1.6, 1.3, 1.9 ),
@@ -722,6 +722,15 @@ public enum EPokemon
                 Stream.of(
                     new ImmutableTriple<>( 0.8, 0.6, 1 ),
                     new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+                ),
+
+                Stream.of(
+                    EAttribute.HEIGHT,
+                    EAttribute.WEIGHT
+                ),
+                Stream.of(
+                    new ImmutableTriple<>( 0.7, 0.5, 0.9 ),
+                    new ImmutableTriple<>( 4, 3, 5 )
                 )
     ),
 
@@ -733,6 +742,15 @@ public enum EPokemon
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+               ),
+
+               Stream.of(
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 0.7, 0.5, 0.9 ),
+                   new ImmutableTriple<>( 6.9, 6, 8 )
                )
     ),
 
@@ -744,6 +762,15 @@ public enum EPokemon
                Stream.of(
                    new ImmutableTriple<>( 0.8, 0.6, 1 ),
                    new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+               ),
+
+               Stream.of(
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+                   new ImmutableTriple<>( 2.5, 1.5, 3.5 )
                )
     ),
 
@@ -755,12 +782,30 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+            ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.5, 0.2, 0.8 ),
+                new ImmutableTriple<>( 5.4, 4.5, 6.5 )
             )
     ),
 
     TANGELA( 2,
              Stream.of( EEthncity.GRASS ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 1, 0.7, 1.3 ),
+                 new ImmutableTriple<>( 35, 30, 40 )
+             )
     ),
 
 
@@ -774,6 +819,15 @@ public enum EPokemon
               Stream.of(
                   new ImmutableTriple<>( 0.8, 0.6, 1 ),
                   new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+              ),
+
+              Stream.of(
+                  EAttribute.HEIGHT,
+                  EAttribute.WEIGHT
+              ),
+              Stream.of(
+                  new ImmutableTriple<>( 1.7, 1.2, 2.2 ),
+                  new ImmutableTriple<>( 55.4, 50, 60 )
               )
     ),
 
@@ -785,6 +839,15 @@ public enum EPokemon
           Stream.of(
               new ImmutableTriple<>( 0.8, 0.6, 1 ),
               new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+          ),
+
+          Stream.of(
+              EAttribute.HEIGHT,
+              EAttribute.WEIGHT
+          ),
+          Stream.of(
+              new ImmutableTriple<>( 1.4, 1, 1.8 ),
+              new ImmutableTriple<>( 40.6, 35, 45 )
           )
     ),
 
@@ -793,22 +856,58 @@ public enum EPokemon
     // --- fighting --------------------------------------------------------------------------------------------------------------------------------------------
     HITMONCHAN( 1,
                 Stream.of( EEthncity.FIGHTING ),
-                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+                Stream.of(
+                    EAttribute.HEIGHT,
+                    EAttribute.WEIGHT
+                ),
+                Stream.of(
+                    new ImmutableTriple<>( 1.4, 1, 1.8 ),
+                    new ImmutableTriple<>( 50.2, 45, 55 )
+                )
     ),
 
     HITMONLEE( 1,
                Stream.of( EEthncity.FIGHTING ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+               Stream.of(
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 1.5, 1, 2 ),
+                   new ImmutableTriple<>( 49.8, 40, 58 )
+               )
     ),
 
     MACHOP( 3,
             Stream.of( EEthncity.FIGHTING ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                new ImmutableTriple<>( 19.5, 18, 21 )
+            )
     ),
 
     MANKEY( 2,
             Stream.of( EEthncity.FIGHTING ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
+                new ImmutableTriple<>( 28, 25, 31 )
+            )
     ),
 
 
@@ -816,27 +915,72 @@ public enum EPokemon
     // --- poison ----------------------------------------------------------------------------------------------------------------------------------------------
     EKANS( 2,
            Stream.of( EEthncity.POISON ),
-           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+           Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+           Stream.of(
+               EAttribute.HEIGHT,
+               EAttribute.WEIGHT
+           ),
+           Stream.of(
+               new ImmutableTriple<>( 2, 1.8, 2.4 ),
+               new ImmutableTriple<>( 6.9, 6, 7.8 )
+           )
     ),
 
     GRIMER( 2,
             Stream.of( EEthncity.POISON ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.9, 0.7, 1.1 ),
+                new ImmutableTriple<>( 30, 27, 33 )
+            )
     ),
 
     KOFFING( 2,
              Stream.of( EEthncity.POISON ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.6, 0.4, 0.8 ),
+                 new ImmutableTriple<>( 1, 0.8, 1.2 )
+             )
     ),
 
     NIDORAN_FEMALE( 3,
                     Stream.of( EEthncity.POISON ),
-                    Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                    Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+                    Stream.of(
+                        EAttribute.HEIGHT,
+                        EAttribute.WEIGHT
+                    ),
+                    Stream.of(
+                        new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+                        new ImmutableTriple<>( 7, 5, 9 )
+                    )
     ),
 
     NIDORAN_MALE( 3,
                   Stream.of( EEthncity.POISON ),
-                  Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+                  Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+                  Stream.of(
+                      EAttribute.HEIGHT,
+                      EAttribute.WEIGHT
+                  ),
+                  Stream.of(
+                      new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
+                      new ImmutableTriple<>( 9, 7, 11 )
+                  )
     ),
 
     ZUBAT( 2,
@@ -847,6 +991,15 @@ public enum EPokemon
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+           ),
+
+           Stream.of(
+               EAttribute.HEIGHT,
+               EAttribute.WEIGHT
+           ),
+           Stream.of(
+               new ImmutableTriple<>( 0.8, 0.6, 1 ),
+               new ImmutableTriple<>( 7.5, 6.5, 8.5 )
            )
     ),
 
@@ -855,12 +1008,30 @@ public enum EPokemon
     // --- ground ----------------------------------------------------------------------------------------------------------------------------------------------
     CUBONE( 2,
             Stream.of( EEthncity.GROUND ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+                new ImmutableTriple<>( 6.5, 5, 8 )
+            )
     ),
 
     DIGLETT( 2,
              Stream.of( EEthncity.GROUND ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 0.2, 0.1, 0.3 ),
+                 new ImmutableTriple<>( 0.8, 0.6, 1 )
+             )
     ),
 
     RHYHORN( 2,
@@ -871,12 +1042,30 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+             ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 1, 0.8, 1.2 ),
+                 new ImmutableTriple<>( 115, 105, 125 )
              )
     ),
 
     SANDSHREW( 2,
                Stream.of( EEthncity.GROUND ),
-               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+               Stream.of(
+                   EAttribute.HEIGHT,
+                   EAttribute.WEIGHT
+               ),
+               Stream.of(
+                   new ImmutableTriple<>( 0.6, 0.4, 0.8 ),
+                   new ImmutableTriple<>( 12, 8, 16 )
+               )
     ),
 
 
@@ -884,22 +1073,58 @@ public enum EPokemon
     // --- psychic ---------------------------------------------------------------------------------------------------------------------------------------------
     ABRA( 3,
           Stream.of( EEthncity.PSYCHIC ),
-          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+          Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+          Stream.of(
+              EAttribute.HEIGHT,
+              EAttribute.WEIGHT
+          ),
+          Stream.of(
+              new ImmutableTriple<>( 0.9, 0.5, 1.3 ),
+              new ImmutableTriple<>( 19.5, 17, 22 )
+          )
     ),
 
     DROWZEE( 2,
              Stream.of( EEthncity.PSYCHIC ),
-             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 1, 0.6, 1.4 ),
+                 new ImmutableTriple<>( 32.4, 28, 36.4 )
+             )
     ),
 
     MEW( 1,
          Stream.of( EEthncity.PSYCHIC ),
-         Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+         Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+         Stream.of(
+             EAttribute.HEIGHT,
+             EAttribute.WEIGHT
+         ),
+         Stream.of(
+             new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
+             new ImmutableTriple<>( 4, 2.5, 5.5 )
+         )
     ),
 
     MEWTWO( 1,
             Stream.of( EEthncity.PSYCHIC ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 2, 1, 3 ),
+                new ImmutableTriple<>( 122, 116, 128 )
+            )
     ),
 
     MR_MIME( 1,
@@ -910,6 +1135,15 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+             ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 1.3, 1, 1.6 ),
+                 new ImmutableTriple<>( 54.5, 50, 59 )
              )
     ),
 
@@ -918,7 +1152,16 @@ public enum EPokemon
     // --- bug -------------------------------------------------------------------------------------------------------------------------------------------------
     CATERPIE( 3,
               Stream.of( EEthncity.BUG ),
-              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+              Stream.of(
+                  EAttribute.HEIGHT,
+                  EAttribute.WEIGHT
+              ),
+              Stream.of(
+                  new ImmutableTriple<>( 0.3, 0.2, 0.4 ),
+                  new ImmutableTriple<>( 2.9, 2.5, 3.3 )
+              )
     ),
 
     PARAS( 2,
@@ -929,12 +1172,30 @@ public enum EPokemon
            Stream.of(
                new ImmutableTriple<>( 0.8, 0.6, 1 ),
                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+           ),
+
+           Stream.of(
+               EAttribute.HEIGHT,
+               EAttribute.WEIGHT
+           ),
+           Stream.of(
+               new ImmutableTriple<>( 0.3, 0.2, 0.4 ),
+               new ImmutableTriple<>( 5.4, 5, 5.8 )
            )
     ),
 
     PINSIR( 1,
             Stream.of( EEthncity.BUG ),
-            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) )
+            Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.5, 1.2, 1.8 ),
+                new ImmutableTriple<>( 55, 50, 60 )
+            )
     ),
 
     SCYTHER( 1,
@@ -945,6 +1206,15 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+             ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 1.5, 1.2, 1.8 ),
+                 new ImmutableTriple<>( 56, 50, 62 )
              )
     ),
 
@@ -956,6 +1226,15 @@ public enum EPokemon
              Stream.of(
                  new ImmutableTriple<>( 0.8, 0.6, 1 ),
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+             ),
+
+             Stream.of(
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
+             ),
+             Stream.of(
+                 new ImmutableTriple<>( 1, 0.5, 1.5 ),
+                 new ImmutableTriple<>( 30, 25, 35 )
              )
     ),
 
@@ -967,6 +1246,15 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
                 new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+            ),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.3, 0.1, 0.5 ),
+                new ImmutableTriple<>( 3.2, 2.6, 3.8 )
             )
     ),
 
@@ -984,8 +1272,8 @@ public enum EPokemon
                 ),
 
                 Stream.of(
-                    EAttributes.HEIGHT,
-                    EAttributes.WEIGHT
+                    EAttribute.HEIGHT,
+                    EAttribute.WEIGHT
                 ),
                 Stream.of(
                     new ImmutableTriple<>( 1.8, 1.5, 2.1 ),
@@ -1004,8 +1292,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.4, 0.2, 0.6 ),
@@ -1024,8 +1312,8 @@ public enum EPokemon
             ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.5, 0.3, 0.7 ),
@@ -1044,8 +1332,8 @@ public enum EPokemon
              ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
@@ -1064,8 +1352,8 @@ public enum EPokemon
           ),
 
           Stream.of(
-              EAttributes.HEIGHT,
-              EAttributes.WEIGHT
+              EAttribute.HEIGHT,
+              EAttribute.WEIGHT
           ),
           Stream.of(
               new ImmutableTriple<>( 8.8, 7, 10.6 ),
@@ -1087,8 +1375,8 @@ public enum EPokemon
             ),
 
             Stream.of(
-                EAttributes.HEIGHT,
-                EAttributes.WEIGHT
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
             ),
             Stream.of(
                 new ImmutableTriple<>( 1.3, 1, 1.6 ),
@@ -1104,8 +1392,8 @@ public enum EPokemon
              Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
              Stream.of(
-                 EAttributes.HEIGHT,
-                 EAttributes.WEIGHT
+                 EAttribute.HEIGHT,
+                 EAttribute.WEIGHT
              ),
              Stream.of(
                  new ImmutableTriple<>( 1.8, 1.6, 2 ),
@@ -1121,8 +1409,8 @@ public enum EPokemon
               Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
               Stream.of(
-                  EAttributes.HEIGHT,
-                  EAttributes.WEIGHT
+                  EAttribute.HEIGHT,
+                  EAttribute.WEIGHT
               ),
               Stream.of(
                   new ImmutableTriple<>( 0.6, 0.4, 0.8 ),
@@ -1147,7 +1435,7 @@ public enum EPokemon
     /**
      * attribute map with initialize values (initial value, min, max bounding)
      */
-    private final Map<EAttributes, Triple<AbstractRealDistribution, Number, Number>> m_attributes;
+    private final Map<EAttribute, Triple<AbstractRealDistribution, Number, Number>> m_attributes;
     /**
      * motivation map with initialize values (initial value, min, max bounding)
      */
@@ -1197,7 +1485,7 @@ public enum EPokemon
      */
     EPokemon( final int p_icons,
               final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-              final Stream<EAttributes> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
+              final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
     )
     {
         this( p_icons,
@@ -1220,7 +1508,7 @@ public enum EPokemon
      */
     EPokemon( final int p_icons,
               final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-              final Stream<EAttributes> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
+              final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
               final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
     )
     {
@@ -1340,7 +1628,7 @@ public enum EPokemon
      * generates the attribute map of a pokemon
      * @return map individual attributes values
      */
-    public Map<EAttributes, Number> attributes()
+    public Map<EAttribute, Number> attributes()
     {
         return EPokemon.generate( m_attributes );
     }

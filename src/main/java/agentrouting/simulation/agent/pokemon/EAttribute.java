@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * individual attributes of an pokemon agent
  */
-public enum EAttributes
+public enum EAttribute
 {
     ENERGY( EAccess.READ ),
     HEALTH( EAccess.READ ),
@@ -30,7 +30,7 @@ public enum EAttributes
 
     static
     {
-        NAMES = Collections.unmodifiableSet( Arrays.stream( EAttributes.values() ).map( i -> i.toString().toLowerCase() ).collect( Collectors.toSet() ) );
+        NAMES = Collections.unmodifiableSet( Arrays.stream( EAttribute.values() ).map( i -> i.toString().toLowerCase() ).collect( Collectors.toSet() ) );
     }
 
     /**
@@ -42,7 +42,7 @@ public enum EAttributes
      * ctor
      * @param p_access agent access
      */
-    EAttributes( final EAccess p_access )
+    EAttribute( final EAccess p_access )
     {
         m_access = p_access;
     }

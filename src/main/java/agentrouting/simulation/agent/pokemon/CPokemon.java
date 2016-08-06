@@ -113,9 +113,45 @@ public final class CPokemon extends IBaseAgent
     }
 
     /**
+     * abstract class for demand-beliefbase
+     */
+    private abstract static class IDemandBeliefbase extends IBeliefbaseOnDemand<IAgent>
+    {
+        @Override
+        public final ILiteral add( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        @Override
+        public final ILiteral remove( final ILiteral p_literal )
+        {
+            return p_literal;
+        }
+
+        /**
+         * creates a literal
+         *
+         * @param p_key enum term
+         * @param p_value value
+         * @return literal
+         */
+        final <T extends Enum> ILiteral literal( final T p_key, final Number p_value )
+        {
+            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
+        }
+
+        @Override
+        public final String toString()
+        {
+            return this.streamLiteral().collect( Collectors.toSet() ).toString();
+        }
+    }
+
+    /**
      * beliefbase of the motivation elements
      */
-    private final class CMotivationBeliefbase extends IBeliefbaseOnDemand<IAgent>
+    private final class CMotivationBeliefbase extends IDemandBeliefbase
     {
         @Override
         public final int size()
@@ -134,18 +170,6 @@ public final class CPokemon extends IBaseAgent
         {
             return m_motivation.entrySet().parallelStream()
                                .map( i -> this.literal( i.getKey(), i.getValue() ) );
-        }
-
-        @Override
-        public final ILiteral add( final ILiteral p_literal )
-        {
-            return p_literal;
-        }
-
-        @Override
-        public final ILiteral remove( final ILiteral p_literal )
-        {
-            return p_literal;
         }
 
         @Override
@@ -181,7 +205,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * beliefbase of the motivation elements
      */
-    private final class CEthnicBeliefbase extends IBeliefbaseOnDemand<IAgent>
+    private final class CEthnicBeliefbase extends IDemandBeliefbase
     {
         @Override
         public final int size()
@@ -203,18 +227,6 @@ public final class CPokemon extends IBaseAgent
         }
 
         @Override
-        public final ILiteral add( final ILiteral p_literal )
-        {
-            return p_literal;
-        }
-
-        @Override
-        public final ILiteral remove( final ILiteral p_literal )
-        {
-            return p_literal;
-        }
-
-        @Override
         public final boolean containsLiteral( final String p_key )
         {
             return EEthncity.exist( p_key ) && m_ethnic.containsKey( EEthncity.valueOf( p_key.toUpperCase() ) );
@@ -230,23 +242,13 @@ public final class CPokemon extends IBaseAgent
             return Stream.of( this.literal( l_key, m_ethnic.get( l_key ) ) ).collect( Collectors.toSet() );
         }
 
-        /**
-         * creates a literal
-         *
-         * @param p_key enum term
-         * @param p_value value
-         * @return literal
-         */
-        private ILiteral literal( final EEthncity p_key, final Number p_value )
-        {
-            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
-        }
     }
+
 
     /**
      * beliefbase of the attribute elements
      */
-    private final class CAttributeBeliefbase extends IBeliefbaseOnDemand<IAgent>
+    private final class CAttributeBeliefbase extends IDemandBeliefbase
     {
         @Override
         public final int size()
@@ -268,18 +270,6 @@ public final class CPokemon extends IBaseAgent
         }
 
         @Override
-        public final ILiteral add( final ILiteral p_literal )
-        {
-            return p_literal;
-        }
-
-        @Override
-        public final ILiteral remove( final ILiteral p_literal )
-        {
-            return p_literal;
-        }
-
-        @Override
         public final boolean containsLiteral( final String p_key )
         {
             return EAttribute.exist( p_key ) && m_attribute.containsKey( EAttribute.valueOf( p_key.toUpperCase() ) );
@@ -293,18 +283,6 @@ public final class CPokemon extends IBaseAgent
 
             final EAttribute l_key =  EAttribute.valueOf( p_key.toUpperCase() );
             return Stream.of( this.literal( l_key, m_attribute.get( l_key ) ) ).collect( Collectors.toSet() );
-        }
-
-        /**
-         * creates a literal
-         *
-         * @param p_key enum term
-         * @param p_value value
-         * @return literal
-         */
-        private ILiteral literal( final EAttribute p_key, final Number p_value )
-        {
-            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
         }
 
     }

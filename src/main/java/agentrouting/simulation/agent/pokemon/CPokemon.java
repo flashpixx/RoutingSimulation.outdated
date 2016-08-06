@@ -92,12 +92,9 @@ public final class CPokemon extends IBaseAgent
         m_motivation = m_pokemon.motivation();
 
         m_beliefbase
-            .add( new CEthnicBeliefbase().create( "ethnic" ) )
-            .add( new CAttributeBeliefbase().create( "attribute" ) )
-            .add( new CMotivationBeliefbase().create( "motivation" ) );
-
-        //System.out.println( m_beliefbase + "    " + m_beliefbase.stream().collect( Collectors.toSet() ) );
-        //System.out.println( this );
+            .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
+            .add( new CAttributeBeliefbase().create( "attribute", m_beliefbase ) )
+            .add ( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) );
     }
 
     @Override
@@ -309,6 +306,7 @@ public final class CPokemon extends IBaseAgent
         {
             return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
         }
+
     }
 
 }

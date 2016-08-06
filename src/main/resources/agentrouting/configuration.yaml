@@ -42,20 +42,30 @@ environment :
 # agent definition
 agent :
 
-    # agent name, which will be expanded on the item number e.g. test1-0, test1-1, ...
-    test1 :
+    # agent name, asl represent the name of the agent program (relative to this configuration file), pokemon sets the name, icon and preferences
+    # of the agent:
+
+    # abra, aerodactyl, articuno, bellsprout, bulbasaur, caterpie, chansey, charmander, clefairy, cubone, diglett, ditto, doduo, dratini,
+    # drowzee, eevee, ekans, electabuzz, exeggcute, farfetchd, gastly, geodude, goldeen, grimer, growlithe, hitmonchan, hitmonlee, horsea, jigglypuff, jynx,
+    # kabuto, kangaskhan, koffing, krabby,lapras, lickitung, machop,magikarp, magnemite, magmar, mankey, meowth, mew, mewtwo, moltres, mr_mime, nidoran_female,
+    # nidoran_male, oddish, omanyte, onix, paras, pidgey, pikachu, pinsir, poliwag, ponyta, porygon, psyduck, rattata, rhyhorn, sandshrew, scyther, seel,
+    # shellder, slowpoke, snorlax, spearow, squirtle, staryu, tangela, tauros, tentacool, venonat, voltorb, vulpix,weedle, zapdos, zubat
+
+    # number the generated elements and force the force definition
+
+    gastly :
         number  : 200
         pokemon : "gastly"
         force   : "sum"
         asl     : "agent.asl"
 
-    test2 :
+    caterpie :
         number  : 200
         pokemon : "caterpie"
         force   : "sum"
         asl     : "agent.asl"
 
-    test3 :
+    koffing :
         number  : 200
         pokemon : "koffing"
         force   : "sum"

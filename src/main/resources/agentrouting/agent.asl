@@ -14,6 +14,8 @@ preferences/near-by(5).
 +!main
     <-
     route/set( 140, 140 );
+    T = route/estimatedtime();
+    generic/print("estimated time of the current route [", T , "]");
     !movement/walk/forward
 .
 

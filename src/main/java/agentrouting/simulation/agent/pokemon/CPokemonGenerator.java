@@ -31,7 +31,7 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
-import org.lightjason.agentspeak.beliefbase.CBeliefBasePersistent;
+import org.lightjason.agentspeak.beliefbase.CBeliefbasePersistent;
 import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
 import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
 import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
@@ -153,7 +153,7 @@ public final class CPokemonGenerator extends IBaseAgentGenerator<IAgent>
         public final IView<IAgent> beliefbase()
         {
             // generate root beliefbase - the beliefbase with the local environment-data is generated within the agent-ctor
-            final IView<IAgent> l_beliefbase = new CBeliefBasePersistent<>( new CMultiStorage<ILiteral, IView<IAgent>, IAgent>() )
+            final IView<IAgent> l_beliefbase = new CBeliefbasePersistent<>( new CMultiStorage<ILiteral, IView<IAgent>, IAgent>() )
                                                 .create( BELIEFBASEROOTNAME )
 
                                                 // generates beliefbase with individual preferences
@@ -162,7 +162,7 @@ public final class CPokemonGenerator extends IBaseAgentGenerator<IAgent>
                                                     @Override
                                                     public final IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
                                                     {
-                                                        return new CBeliefBasePersistent<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
+                                                        return new CBeliefbasePersistent<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
                                                     }
                                                 },
                                                 CPath.from( IBaseAgent.PREFERENCE )

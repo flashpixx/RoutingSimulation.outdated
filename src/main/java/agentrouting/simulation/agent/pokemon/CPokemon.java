@@ -30,7 +30,7 @@ import agentrouting.simulation.environment.IEnvironment;
 import agentrouting.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.lightjason.agentspeak.beliefbase.IBeliefBaseOnDemand;
+import org.lightjason.agentspeak.beliefbase.IBeliefbaseOnDemand;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
@@ -118,7 +118,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * beliefbase of the motivation elements
      */
-    private final class CMotivationBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    private final class CMotivationBeliefbase extends IBeliefbaseOnDemand<IAgent>
     {
         @Override
         public final int size()
@@ -184,7 +184,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * beliefbase of the motivation elements
      */
-    private final class CEthnicBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    private final class CEthnicBeliefbase extends IBeliefbaseOnDemand<IAgent>
     {
         @Override
         public final int size()
@@ -249,7 +249,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * beliefbase of the attribute elements
      */
-    private final class CAttributeBeliefbase extends IBeliefBaseOnDemand<IAgent>
+    private final class CAttributeBeliefbase extends IBeliefbaseOnDemand<IAgent>
     {
         @Override
         public final int size()

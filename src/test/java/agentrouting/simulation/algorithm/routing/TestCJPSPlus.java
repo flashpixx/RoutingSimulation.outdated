@@ -8,12 +8,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseObjectMatrix2D;
-import org.junit.Before;
-import org.junit.Test;
 
 
 /**
@@ -24,6 +25,7 @@ public final class TestCJPSPlus
     private ObjectMatrix2D m_grid;
     private ObjectMatrix2D m_occupiedgrid;
     private ObjectMatrix2D m_emptygrid;
+
     /**
      * initialize class with static data for routing algorithm test
      */
@@ -37,9 +39,7 @@ public final class TestCJPSPlus
         m_grid.setQuick( 3, 2, new Object() );
     }
 
-    /**
-     * initialize class with static data for empty grid
-     */
+
     @Before
     public void initializeemptygrid()
     {
@@ -69,6 +69,7 @@ public final class TestCJPSPlus
     public void testrouting()
     {
         final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) );
+        System.out.println(l_route);
         final List<DoubleMatrix1D> l_waypoint = Stream.of(
             new DenseDoubleMatrix1D( new double[]{7, 1} ),
             new DenseDoubleMatrix1D( new double[]{3, 1} ),

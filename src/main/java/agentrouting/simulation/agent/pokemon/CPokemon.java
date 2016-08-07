@@ -70,6 +70,10 @@ public final class CPokemon extends IBaseAgent
      * motivation map
      */
     private final Map<EMotivation, Number> m_motivation;
+    /**
+     * level / grown-up
+     */
+    private int m_level;
 
 
     /**
@@ -110,7 +114,7 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
-        m_sprite = new Sprite( m_pokemon.initialize() );
+        m_sprite = new Sprite( m_pokemon.sprite() );
         m_sprite.setSize( p_cellsize, p_cellsize );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setScale( p_unit );

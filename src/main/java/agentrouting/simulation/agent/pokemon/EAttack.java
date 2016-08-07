@@ -39,17 +39,29 @@ import java.util.stream.Stream;
  * @see http://pokewiki.de/Attacken-Liste
  *
  * @see http://gamedevelopment.tutsplus.com/tutorials/how-to-generate-shockingly-good-2d-lightning-effects--gamedev-2681
+ * @see http://www.alcove-games.com/opengl-es-2-tutorials/lightmap-shader-fire-effect-glsl/s
+ * @see http://www.gamedev.net/page/resources/_/creative/visual-arts/make-a-particle-explosion-effect-r2701
+ * @see http://www.gamefromscratch.com/post/2014/11/03/LibGDX-Tutorial-Part-15-Particles-Part-One-2D-Particles.aspx
  */
 public enum EAttack
 {
     POUND( 1, 1,
            Stream.of( EAttribute.ENERGY, EAttribute.VITALITY ),
-           Stream.of( 1, 1 )
+           Stream.of( 0.4, 0.1 )
+    ),
+    KARATECHOP( 1, 1,
+           Stream.of( EAttribute.ENERGY, EAttribute.VITALITY ),
+           Stream.of( 0.2, 0.5 )
+    ),
+    DOUBLESLAP( 0.5, 2,
+        Stream.of( EAttribute.ENERGY, EAttribute.VITALITY ),
+        Stream.of( 0.1, 0.85 )
+    ),
+    COMETPUNCH( 0.18, 1,
+                Stream.of( EAttribute.ENERGY, EAttribute.VITALITY ),
+                Stream.of( 0.4, 0.1 )
     );
     /*
-    KARATECHOP(),
-    DOUBLESLAP(),
-    COMETPUNCH(),
     MEGAPUNCH(),
     FIREPUNCH(),
     ICEPUNCH(),
@@ -70,7 +82,46 @@ public enum EAttack
     STOMP(),
     DOUBLEKICK(),
     MEGAKICK(),
-    JUMPKICK()
+    JUMPKICK(),
+    ROLLINGKICK(),
+    SANDATTACK(),
+    HEADBUTT(),
+    HORNATTACK(),
+    FURYATTACK(),
+    HORNDRILL(),
+    TACKLE(),
+    BODYSLAM(),
+    WRAP(),
+    BODYCHECK(),
+    THRASH(),
+    DOUBLEEDGE(),
+    TAILWHIP(),
+    POISONSTING(),
+    TWINEEDLE(),
+    PINMISSILE(),
+    LEER(),
+    BITE(),
+    GROWL(),
+    ROAR(),
+    SING(),
+    SUPERSONIC(),
+    SONICBOOM(),
+    DISABLE(),
+    ACID(),
+    EMBER(),
+    FLAMETHROWER(),
+    MIST(),
+    WATERGUN(),
+    HYDROPUMP(),
+    SURF(),
+    ICEBEAM(),
+    BLIZZARD(),
+    PSYBEAM(),
+    BUBBLEBEAM(),
+    AURORABEAM(),
+    HYPERBEAM(),
+    PECK(),
+
     */
 
 
@@ -85,7 +136,7 @@ public enum EAttack
      */
     private final double m_energy;
     /**
-     * damage values
+     * damage values in [0,1]
      */
     private final Map<EAttribute, Number> m_damage;
 

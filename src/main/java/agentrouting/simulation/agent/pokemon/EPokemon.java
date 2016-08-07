@@ -1579,9 +1579,9 @@ public enum EPokemon
     /**
      * initialize sprites
      *
-     * @return texture object
+     * @return first texture object
      */
-    public final synchronized Texture initialize()
+    public final synchronized Texture sprite()
     {
         if ( m_sprites != null )
             return m_sprites.get( 0 );
@@ -1605,12 +1605,11 @@ public enum EPokemon
     }
 
     /**
-     * returns pokemon sprite
+     * returns a version of the sprite
      *
-     * @param p_index index number
-     * @return sprite
+     * @return sprite texture
      */
-    public final synchronized Texture sprite( final int p_index )
+    public final Texture sprite( final int p_index )
     {
         return m_sprites.get( p_index );
     }

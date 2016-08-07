@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 public enum EAttribute
 {
     ENERGY( EAccess.READ ),
-    VITALITY( EAccess.READ ),
     // set daze also to mind
     MIND( EAccess.READ ),
     HEALTH( EAccess.READ ),

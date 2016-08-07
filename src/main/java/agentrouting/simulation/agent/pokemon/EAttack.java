@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 
 
 /**
- * attacks with different attributes
+ * attacks sorted by type and in type section in learning order (from weaker to stronger)
  * @see http://pokewiki.de/Attacken-Liste
  *
  * @see http://gamedevelopment.tutsplus.com/tutorials/how-to-generate-shockingly-good-2d-lightning-effects--gamedev-2681
@@ -45,338 +45,320 @@ import java.util.stream.Stream;
  */
 public enum EAttack
 {
-
-    // attacks sorted by type and in type section in learning order (from weaker to stronger)
-    // EARTH
-
-    DIG( 1, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.8 )
-    ),
-    EARTHQUAKE( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 1 )
-    ),
-    FISSURE( 0.3, 0.15,
-            Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
-            Stream.of( 1, 0.5 )
-    ),
-
-    // Dragon
-    DRAGON_RAGE( 1, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.2 )
-    ),
-
-    // Ice
-    HAZE( 1, 0.05,
-            Stream.of( EAttribute.MIND ),
-            Stream.of( 0.1 )
-    ),
-    AURORA_BEAM( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.65 )
-    ),
-    BLIZZARD( 0.7, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.SPEED ),
-            Stream.of( 1, 0.1 )
-    ),
-    ICE_BEAM( 1, 0.15,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.9, 0.3 )
-    ),
-
-    // Thunder
-    THUNDERWAVE( 1, 0.05,
-            Stream.of( EAttribute.MIND ),
-            Stream.of( 0.1 )
-    ),
-    THUNDERSHOCK( 1, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.4 )
-    ),
-    THUNDERBOLT( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.8 )
-    ),
-    THUNDER( 1, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 1 )
-    ),
-
-    // Fire
-    EMBER( 1, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.4 )
-    ),
-    FIRESPIN( 0.85, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.SPEED ),
-            Stream.of( 0.35, 0.1 )
-    ),
-    FLAMETHROWER( 1, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.8, 0.1 )
-    ),
-    FIREBLAST( 0.85, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 1 )
-    ),
-
-    // Flight
-    DRILL_PECK( 0.8, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.8 )
-    ),
-    GUST( 1, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.4 )
-    ),
-    WING_ATTACK( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.6 )
-    ),
-    SKY_ATTACK( 0.9, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 1 )
-    ),
-
-    // Ghost
-    CONFUSE_RAY( 1, 0.05,
-            Stream.of( EAttribute.MIND ),
-            Stream.of( 0.1 )
-    ),
-    LICK( 1, 0.05,
-            Stream.of( EAttribute.MIND ),
-            Stream.of( 0.2 )
-    ),
-    NIGHT_SHADE( 1, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.8 )
-    ),
-
-    // Poison
-    POISON_POWDER( 0.75, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.1, 0.2 )
-    ),
-    POISON_STING( 1, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.1, 0.15 )
-    ),
-    POISON_GAS( 0.9, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.2, 0.1 )
-    ),
-    SMOG( 0.7, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.3, 0.1 )
-    ),
-    ACID( 1, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.4, 0.1 )
-    ),
-    TOXIN( 0.9, 0.15,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.8, 0.2 )
-    ),
-
-    //Fight
-    DOUBLE_KICK( 1, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.3, 0.1 )
-    ),
-    KARATECHOP( 1, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.3, 0.1 )
-    ),
-    DOUBLESLAP( 1, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.4, 0.1 )
-    ),
-    JUMP_KICK( 0.95, 0.1,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.5, 0.1 )
-    ),
-    HIGH_JUMP_KICK( 0.95, 0.15,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.7, 0.1 )
-    ),
-    SEISMIC_TOSS( 1, 0.15,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 1, 0.1 )
-    ),
-
-    // Bug
-    LEECH_LIFE( 1, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
-            Stream.of( 0.2, 0.1 )
-    ),
-    STRING_SHOT( 0.95, 0.05,
-            Stream.of( EAttribute.SPEED ),
-            Stream.of( 0.2 )
-    ),
-    TWIN_NEEDLE( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.4 )
-    ),
-    PIN_MISSILE( 0.95, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.5 )
-    ),
-
-    // Grass
-    STUN_SPORE( 0.95, 0.05,
-            Stream.of( EAttribute.MIND ),
-            Stream.of( 0.1 )
-    ),
-    VINE_WHIP( 1, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.25 )
-    ),
-    PETAL_DANCE( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.7 )
-    ),
-    RAZOR_LEAF( 0.95, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.45 )
-    ),
-    SOLAR_BEAM( 1, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 1 )
-    ),
-
-    // Psycho
-    CONFUSION( 0.95, 0.05,
-            Stream.of( EAttribute.MIND ),
-            Stream.of( 0.1 )
-    ),
-    KINESIS( 0.8, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.4, 0.1 )
-    ),
-    PSYBEAM( 1, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.65, 0.1 )
-    ),
-    PSYCHIC( 1, 0.15,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 1, 0.1 )
-    ),
-
-    // Water
-    BUBBLE( 1, 0.05,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.3 )
-    ),
-    WATER_GUN( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.4 )
-    ),
-    BUBBLE_BEAM( 1, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.65 )
-    ),
-    SURFER( 1, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.9 )
-    ),
-    HYDRO_PUMP( 0.8, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 1 )
-    ),
-
-    // NORMAL
+    // --- normal ----------------------------------------------------------------------------------------------------------------------------------------------
     SCRATCH( 1, 0.05,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.3 )
+             Stream.of( EAttribute.HEALTH ),
+             Stream.of( 0.3 )
     ),
     TACKLE( 1, 0.05,
             Stream.of( EAttribute.HEALTH ),
             Stream.of( 0.3 )
     ),
     SLASH( 1, 0.10,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.4 )
+           Stream.of( EAttribute.HEALTH ),
+           Stream.of( 0.4 )
     ),
     SLAM( 0.9, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.4, 0.1 )
+          Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+          Stream.of( 0.4, 0.1 )
     ),
     HEADBUTT( 1, 0.10,
-            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
-            Stream.of( 0.3, 0.2 )
+              Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+              Stream.of( 0.3, 0.2 )
     ),
     POUND( 1, 1,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.4, 0.1 )
+           Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+           Stream.of( 0.4, 0.1 )
     ),
     COMETPUNCH( 0.8, 1,
-            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
-            Stream.of( 0.4, 0.1 )
-    );
-    /*
-    MEGAPUNCH(),
-    FIREPUNCH(),
-    ICEPUNCH(),
-    THUNDERPUNCH(),
-    SCRATCH(),
-    VICEGRIP(),
-    GUILLOTINE(),
-    RAZORWIND(),
-    SWORDSDANCE(),
-    CUT(),
-    GUST(),
-    WINDATTACK(),
-    WHIRLWIND(),
-    FLY(),
-    BIND(),
-    SLAM(),
-    VINEWHIP(),
-    STOMP(),
-    DOUBLEKICK(),
-    MEGAKICK(),
-    JUMPKICK(),
-    ROLLINGKICK(),
-    SANDATTACK(),
-    HEADBUTT(),
-    HORNATTACK(),
-    FURYATTACK(),
-    HORNDRILL(),
-    TACKLE(),
-    BODYSLAM(),
-    WRAP(),
-    BODYCHECK(),
-    THRASH(),
-    DOUBLEEDGE(),
-    TAILWHIP(),
-    POISONSTING(),
-    TWINEEDLE(),
-    PINMISSILE(),
-    LEER(),
-    BITE(),
-    GROWL(),
-    ROAR(),
-    SING(),
-    SUPERSONIC(),
-    SONICBOOM(),
-    DISABLE(),
-    ACID(),
-    EMBER(),
-    FLAMETHROWER(),
-    MIST(),
-    WATERGUN(),
-    HYDROPUMP(),
-    SURF(),
-    ICEBEAM(),
-    BLIZZARD(),
-    PSYBEAM(),
-    BUBBLEBEAM(),
-    AURORABEAM(),
-    HYPERBEAM(),
-    PECK(),
+                Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+                Stream.of( 0.4, 0.1 )
+    ),
+    DRILLPECK( 0.8, 0.05,
+               Stream.of( EAttribute.HEALTH ),
+               Stream.of( 0.8 )
+    ),
+    GUST( 1, 0.05,
+          Stream.of( EAttribute.HEALTH ),
+          Stream.of( 0.4 )
+    ),
+    WINGATTACK( 1, 0.10,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.6 )
+    ),
+    SKYATTACK( 0.9, 0.15,
+               Stream.of( EAttribute.HEALTH ),
+               Stream.of( 1 )
+    ),
 
-    */
+
+    // --- fire ------------------------------------------------------------------------------------------------------------------------------------------------
+    EMBER( 1, 0.05,
+           Stream.of( EAttribute.HEALTH ),
+           Stream.of( 0.4 )
+    ),
+    FIRESPIN( 0.85, 0.05,
+              Stream.of( EAttribute.HEALTH, EAttribute.SPEED ),
+              Stream.of( 0.35, 0.1 )
+    ),
+    FLAMETHROWER( 1, 0.10,
+                  Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+                  Stream.of( 0.8, 0.1 )
+    ),
+    FIREBLAST( 0.85, 0.15,
+               Stream.of( EAttribute.HEALTH ),
+               Stream.of( 1 )
+    ),
+
+
+
+    // --- water -----------------------------------------------------------------------------------------------------------------------------------------------
+    BUBBLE( 1, 0.05,
+            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+            Stream.of( 0.3 )
+    ),
+    WATERGUN( 1, 0.10,
+              Stream.of( EAttribute.HEALTH ),
+              Stream.of( 0.4 )
+    ),
+    BUBBLEBEAM( 1, 0.15,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.65 )
+    ),
+    SURFER( 1, 0.15,
+            Stream.of( EAttribute.HEALTH ),
+            Stream.of( 0.9 )
+    ),
+    HYDRO_PUMP( 0.8, 0.05,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 1 )
+    ),
+
+
+
+    // --- electric --------------------------------------------------------------------------------------------------------------------------------------------
+    THUNDERWAVE( 1, 0.05,
+                 Stream.of( EAttribute.MIND ),
+                 Stream.of( 0.1 )
+    ),
+    THUNDERSHOCK( 1, 0.05,
+                  Stream.of( EAttribute.HEALTH ),
+                  Stream.of( 0.4 )
+    ),
+    THUNDERBOLT( 1, 0.10,
+                 Stream.of( EAttribute.HEALTH ),
+                 Stream.of( 0.8 )
+    ),
+    THUNDER( 1, 0.15,
+             Stream.of( EAttribute.HEALTH ),
+             Stream.of( 1 )
+    ),
+
+
+
+    // --- grass -----------------------------------------------------------------------------------------------------------------------------------------------
+    STUNSPORE( 0.95, 0.05,
+               Stream.of( EAttribute.MIND ),
+               Stream.of( 0.1 )
+    ),
+    VINEWHIP( 1, 0.05,
+              Stream.of( EAttribute.HEALTH ),
+              Stream.of( 0.25 )
+    ),
+    PETALDANCE( 1, 0.10,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.7 )
+    ),
+    RAZORLEAF( 0.95, 0.15,
+               Stream.of( EAttribute.HEALTH ),
+               Stream.of( 0.45 )
+    ),
+    SOLARBEAM( 1, 0.15,
+               Stream.of( EAttribute.HEALTH ),
+               Stream.of( 1 )
+    ),
+
+
+
+    // --- ice -------------------------------------------------------------------------------------------------------------------------------------------------
+    HAZE( 1, 0.05,
+          Stream.of( EAttribute.MIND ),
+          Stream.of( 0.1 )
+    ),
+    AURORABEAM( 1, 0.10,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.65 )
+    ),
+    BLIZZARD( 0.7, 0.10,
+              Stream.of( EAttribute.HEALTH, EAttribute.SPEED ),
+              Stream.of( 1, 0.1 )
+    ),
+    ICEBEAM( 1, 0.15,
+             Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+             Stream.of( 0.9, 0.3 )
+    ),
+
+
+
+    // --- fighting --------------------------------------------------------------------------------------------------------------------------------------------
+    DOUBLEKICK( 1, 0.05,
+                Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+                Stream.of( 0.3, 0.1 )
+    ),
+    KARATECHOP( 1, 0.05,
+                Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+                Stream.of( 0.3, 0.1 )
+    ),
+    DOUBLESLAP( 1, 0.05,
+                Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+                Stream.of( 0.4, 0.1 )
+    ),
+    JUMPKICK( 0.95, 0.1,
+              Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+              Stream.of( 0.5, 0.1 )
+    ),
+    HIGHJUMPKICK( 0.95, 0.15,
+                  Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+                  Stream.of( 0.7, 0.1 )
+    ),
+    SEISMICTOSS( 1, 0.15,
+                 Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+                 Stream.of( 1, 0.1 )
+    ),
+
+
+
+    // --- poison ----------------------------------------------------------------------------------------------------------------------------------------------
+    POISONPOWDER( 0.75, 0.05,
+                  Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+                  Stream.of( 0.1, 0.2 )
+    ),
+    POISONSTING( 1, 0.05,
+                 Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+                 Stream.of( 0.1, 0.15 )
+    ),
+    POISONGAS( 0.9, 0.05,
+               Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+               Stream.of( 0.2, 0.1 )
+    ),
+    SMOG( 0.7, 0.10,
+          Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+          Stream.of( 0.3, 0.1 )
+    ),
+    ACID( 1, 0.10,
+          Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+          Stream.of( 0.4, 0.1 )
+    ),
+    TOXIN( 0.9, 0.15,
+           Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+           Stream.of( 0.8, 0.2 )
+    ),
+
+
+
+    // --- ground ----------------------------------------------------------------------------------------------------------------------------------------------
+    DIG( 1, 0.05,
+         Stream.of( EAttribute.HEALTH ),
+         Stream.of( 0.8 )
+    ),
+    EARTHQUAKE( 1, 0.10,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 1 )
+    ),
+    FISSURE( 0.3, 0.15,
+             Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
+             Stream.of( 1, 0.5 )
+    ),
+
+    // Dragon
+    DRAGONRAGE( 1, 0.05,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.2 )
+    ),
+
+
+
+    // --- psychic ---------------------------------------------------------------------------------------------------------------------------------------------
+    CONFUSION( 0.95, 0.05,
+               Stream.of( EAttribute.MIND ),
+               Stream.of( 0.1 )
+    ),
+    KINESIS( 0.8, 0.05,
+             Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+             Stream.of( 0.4, 0.1 )
+    ),
+    PSYBEAM( 1, 0.10,
+             Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+             Stream.of( 0.65, 0.1 )
+    ),
+    PSYCHIC( 1, 0.15,
+             Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+             Stream.of( 1, 0.1 )
+    ),
+
+
+
+    // --- bug -------------------------------------------------------------------------------------------------------------------------------------------------
+    LEECHLIFE( 1, 0.05,
+               Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
+               Stream.of( 0.2, 0.1 )
+    ),
+    STRINGSHOT( 0.95, 0.05,
+                Stream.of( EAttribute.SPEED ),
+                Stream.of( 0.2 )
+    ),
+    TWINNEEDLE( 1, 0.10,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.4 )
+    ),
+    PINMISSILE( 0.95, 0.15,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.5 )
+    ),
+
+
+
+    // --- rock ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    // --- ghost -----------------------------------------------------------------------------------------------------------------------------------------------
+    CONFUSERAY( 1, 0.05,
+                Stream.of( EAttribute.MIND ),
+                Stream.of( 0.1 )
+    ),
+    LICK( 1, 0.05,
+          Stream.of( EAttribute.MIND ),
+          Stream.of( 0.2 )
+    ),
+    NIGHTSHADE( 1, 0.10,
+                Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
+                Stream.of( 0.8 )
+    );
+
+
+
+    // --- dragon ----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    // --- fairy -----------------------------------------------------------------------------------------------------------------------------------------------
+    // used normal & psychic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

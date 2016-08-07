@@ -114,7 +114,7 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
-        m_sprite = new Sprite( m_pokemon.sprite() );
+        m_sprite = new Sprite( m_pokemon.texture() );
         m_sprite.setSize( p_cellsize, p_cellsize );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setScale( p_unit );
@@ -144,7 +144,7 @@ public final class CPokemon extends IBaseAgent
          * @param p_value value
          * @return literal
          */
-        final <T extends Enum> ILiteral literal( final T p_key, final Number p_value )
+        final <T extends Enum<?>> ILiteral literal( final T p_key, final Number p_value )
         {
             return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
         }

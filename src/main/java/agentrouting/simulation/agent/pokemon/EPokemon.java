@@ -1421,9 +1421,9 @@ public enum EPokemon
 
 
     /**
-     * number of icons
+     * number of level
      */
-    private final int m_icons;
+    private final int m_level;
     /**
      * sprite list
      */
@@ -1445,11 +1445,11 @@ public enum EPokemon
     /**
      * ctor
      *
-     * @param p_icons number of icons
+     * @param p_level number of level
      */
-    EPokemon( final int p_icons )
+    EPokemon( final int p_level )
     {
-        this( p_icons,
+        this( p_level,
               Stream.of(), Stream.of(),
               Stream.of(), Stream.of(),
               Stream.of(), Stream.of()
@@ -1459,15 +1459,15 @@ public enum EPokemon
     /**
      * ctor
      *
-     * @param p_icons number of icons
-     * @param p_ethnic stream with ethnik types
+     * @param p_level number of level
+     * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
      */
-    EPokemon( final int p_icons,
+    EPokemon( final int p_level,
               final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue
     )
     {
-        this( p_icons,
+        this( p_level,
               p_ethnic, p_ethnicvalue,
               Stream.of(), Stream.of(),
               Stream.of(), Stream.of()
@@ -1477,18 +1477,18 @@ public enum EPokemon
     /**
      * ctor
      *
-     * @param p_icons number of icons
-     * @param p_ethnic stream with ethnik types
+     * @param p_level number of level
+     * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
      * @param p_attributes stream with attributes types
      * @param p_attributesvalue stream with attributes values
      */
-    EPokemon( final int p_icons,
+    EPokemon( final int p_level,
               final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
               final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
     )
     {
-        this( p_icons,
+        this( p_level,
               p_ethnic, p_ethnicvalue,
               p_attributes, p_attributesvalue,
               Stream.of(), Stream.of()
@@ -1498,21 +1498,21 @@ public enum EPokemon
     /**
      * ctor
      *
-     * @param p_icons number of icons
-     * @param p_ethnic stream with ethnik types
+     * @param p_level number of level
+     * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
      * @param p_attributes stream with attributes types
      * @param p_attributesvalue stream with attributes values
      * @param p_motivation stream with motivation types
      * @param p_motivationvalue stream with motivation value
      */
-    EPokemon( final int p_icons,
+    EPokemon( final int p_level,
               final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
               final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
               final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
     )
     {
-        m_icons = p_icons;
+        m_level = p_level;
         m_ethnic = EPokemon.initialize( p_ethnic, p_ethnicvalue );
         m_attributes = EPokemon.initialize( p_attributes, p_attributesvalue );
         m_motivation = EPokemon.initialize( p_motivation, p_motivationvalue );
@@ -1535,7 +1535,11 @@ public enum EPokemon
                 ( n, v ) -> new ImmutablePair<>(
                     n,
                     new ImmutableTriple<AbstractRealDistribution, Number, Number>(
-                        new NormalDistribution( CMath.RANDOMGENERATOR, v.getLeft().doubleValue(), 0.1 ),
+                        new NormalDistribution(
+                            CMath.RANDOMGENERATOR,
+                            v.getLeft().doubleValue(),
+                            Math.sqrt( 0.5 * ( v.getRight().doubleValue() - v.getMiddle().doubleValue() ) )
+                        ),
                         v.getMiddle(),
                         v.getRight()
                     )
@@ -1567,13 +1571,13 @@ public enum EPokemon
     }
 
     /**
-     * returns the number of sprites
+     * returns the maxium level
      *
-     * @return sprite number
+     * @return maximum level number
      */
-    public final int size()
+    public final int level()
     {
-        return m_icons;
+        return m_level;
     }
 
     /**
@@ -1581,13 +1585,13 @@ public enum EPokemon
      *
      * @return first texture object
      */
-    public final synchronized Texture sprite()
+    public final synchronized Texture texture()
     {
         if ( m_sprites != null )
             return m_sprites.get( 0 );
 
         m_sprites = Collections.unmodifiableList(
-            IntStream.range( 0, m_icons )
+            IntStream.range( 0, m_level )
                      .mapToObj( i -> new Texture(
                                         Gdx.files.internal(
                                             MessageFormat.format( "agentrouting/pokemon/{0}_{1}.png", this.name().toLowerCase().replaceAll( " ", "_" ), i )
@@ -1598,7 +1602,7 @@ public enum EPokemon
                      .collect( Collectors.toList() )
         );
 
-        if ( ( m_sprites.isEmpty() ) || ( m_icons != m_sprites.size() ) )
+        if ( ( m_sprites.isEmpty() ) || ( m_level != m_sprites.size() ) )
             throw new RuntimeException( MessageFormat.format( "texture [{0}] cannot initialize", this ) );
 
         return m_sprites.get( 0 );
@@ -1607,9 +1611,10 @@ public enum EPokemon
     /**
      * returns a version of the sprite
      *
+     * @param p_index level
      * @return sprite texture
      */
-    public final Texture sprite( final int p_index )
+    public final Texture texture( final int p_index )
     {
         return m_sprites.get( p_index );
     }

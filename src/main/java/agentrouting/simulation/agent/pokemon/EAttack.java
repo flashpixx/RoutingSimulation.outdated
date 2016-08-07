@@ -270,11 +270,6 @@ public enum EAttack
              Stream.of( 1, 0.5 )
     ),
 
-    // Dragon
-    DRAGONRAGE( 1, 0.05,
-                Stream.of( EAttribute.HEALTH ),
-                Stream.of( 0.2 )
-    ),
 
 
 
@@ -319,7 +314,22 @@ public enum EAttack
 
 
     // --- rock ------------------------------------------------------------------------------------------------------------------------------------------------
-
+    ROCKBLAST( 0.8, 0.05,
+            Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
+            Stream.of( 0.25, 0.1 )
+    ),
+    ROLLOUT( 0.9, 0.10,
+            Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
+            Stream.of( 0.3, 0.1 )
+    ),
+    ANCIENTPOWER( 1, 0.10,
+            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
+            Stream.of( 0.6, 0.1 )
+    ),
+    ROCKSLIDE( 0.9, 0.15,
+            Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
+            Stream.of( 0.9, 0.1 )
+    ),
 
 
     // --- ghost -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -334,12 +344,19 @@ public enum EAttack
     NIGHTSHADE( 1, 0.10,
                 Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
                 Stream.of( 0.8 )
-    );
+    ),
 
 
 
     // --- dragon ----------------------------------------------------------------------------------------------------------------------------------------------
-
+    DRAGONRAGE( 1, 0.05,
+                Stream.of( EAttribute.HEALTH ),
+                Stream.of( 0.2 )
+    ),
+    DRAGONBREATH( 1, 0.10,
+            Stream.of( EAttribute.HEALTH ),
+            Stream.of( 0.6 )
+    );
 
 
     // --- fairy -----------------------------------------------------------------------------------------------------------------------------------------------

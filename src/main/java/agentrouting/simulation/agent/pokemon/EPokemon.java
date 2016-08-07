@@ -1553,7 +1553,7 @@ public enum EPokemon
     private static <T> Map<T, Number> generate( final Map<T, Triple<AbstractRealDistribution, Number, Number>> p_map )
     {
         return p_map.entrySet().parallelStream().collect(
-            Collectors.toMap(
+            Collectors.toConcurrentMap(
                 Map.Entry::getKey,
                 i -> Math.min(
                     Math.max(

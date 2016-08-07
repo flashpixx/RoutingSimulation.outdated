@@ -69,7 +69,6 @@ public final class TestCJPSPlus
     public void testrouting()
     {
         final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) );
-        System.out.println( l_route );
         final List<DoubleMatrix1D> l_waypoint = Stream.of(
             new DenseDoubleMatrix1D( new double[]{7, 1} ),
             new DenseDoubleMatrix1D( new double[]{3, 1} ),

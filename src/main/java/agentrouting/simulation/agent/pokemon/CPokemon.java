@@ -24,6 +24,7 @@
 
 package agentrouting.simulation.agent.pokemon;
 
+import agentrouting.simulation.agent.EAccess;
 import agentrouting.simulation.agent.IAgent;
 import agentrouting.simulation.agent.IBaseAgent;
 import agentrouting.simulation.environment.IEnvironment;
@@ -32,9 +33,12 @@ import cern.colt.matrix.DoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.beliefbase.IBeliefbaseOnDemand;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
+import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
+import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -118,7 +122,7 @@ public final class CPokemon extends IBaseAgent
     private abstract static class IDemandBeliefbase extends IBeliefbaseOnDemand<IAgent>
     {
         @Override
-        public final ILiteral add( final ILiteral p_literal )
+        public ILiteral add( final ILiteral p_literal )
         {
             return p_literal;
         }
@@ -254,6 +258,32 @@ public final class CPokemon extends IBaseAgent
         public final int size()
         {
             return m_attribute.size();
+        }
+
+        @Override
+        public final ILiteral add( final ILiteral p_literal )
+        {
+            // only existing attributes will be accepted
+            if ( !EAttribute.exist( p_literal.functor() ) )
+                return p_literal;
+
+            // check if the attribute can be written
+            final EAttribute l_attribute = EAttribute.valueOf( p_literal.functor().toUpperCase() );
+            if ( ( EAccess.READ.equals( l_attribute.access() ) ) || ( !m_attribute.containsKey( l_attribute ) ) )
+                return p_literal;
+
+            // check if the number of the attribute is changed
+            final Number l_newvalue = CCommon.<Number, ITerm>raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.<Double>from( 0.0 ) ) );
+            final Number l_oldvalue = m_attribute.get( l_attribute );
+            if ( l_oldvalue.doubleValue() == l_newvalue.doubleValue() )
+                return p_literal;
+
+            // set value within the map and generate event
+            m_attribute.put( l_attribute, l_newvalue );
+            this.event( ITrigger.EType.DELETEBELIEF, CLiteral.from( l_attribute.name().toLowerCase(), Stream.of( CRawTerm.from( l_oldvalue ) ) ) );
+            this.event( ITrigger.EType.ADDBELIEF, CLiteral.from( l_attribute.name().toLowerCase(), Stream.of( CRawTerm.from( l_newvalue ) ) ) );
+
+            return p_literal;
         }
 
         @Override

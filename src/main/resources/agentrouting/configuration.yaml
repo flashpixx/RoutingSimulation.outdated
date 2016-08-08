@@ -11,7 +11,7 @@ statusvisible : true
 agentprint : false
 
 # thread-sleep (in milliseconds) time to slow down the simulation speed
-threadsleeptime : 100
+threadsleeptime : 50
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
@@ -54,19 +54,19 @@ agent :
     # number the generated elements and force the force definition
 
     gastly :
-        number  : 350
+        number  : 500
         pokemon : "gastly"
         force   : "sum"
         asl     : "agent.asl"
 
     caterpie :
-        number  : 350
+        number  : 500
         pokemon : "caterpie"
         force   : "sum"
         asl     : "agent.asl"
 
     koffing :
-        number  : 350
+        number  : 500
         pokemon : "koffing"
         force   : "sum"
         asl     : "agent.asl"

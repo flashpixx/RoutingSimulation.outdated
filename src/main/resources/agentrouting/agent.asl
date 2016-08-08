@@ -1,7 +1,7 @@
 // --- individual behaviours -----------------------------------------------------------------------------------------------------------------------------------
 
 // nearby belief to define the radius around the goal position to trigger the nearby plan
-preferences/near-by(5).
+preferences/near-by(1).
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ preferences/near-by(5).
 -!movement/walk/forward
     <-
         generic/print( "walk forward fails in cycle [", Cycle, "]" );
-        !!movement/walk/left
+        !movement/walk/left
 .
 
 // walk left 90 degree to the goal position
@@ -51,7 +51,7 @@ preferences/near-by(5).
 -!movement/walk/left
     <-
         generic/print( "walk left fails in cycle [", Cycle, "]" );
-        !!movement/walk/right
+        !movement/walk/right
 .
 
 // walk right 90 degree to the goal position
@@ -101,7 +101,8 @@ preferences/near-by(5).
 +!goal/near-by(D)
     <-
         generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
-        speed/set(1)
+        speed/set(1);
+        route/next
 .
 
 

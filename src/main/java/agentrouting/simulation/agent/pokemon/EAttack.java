@@ -46,79 +46,79 @@ import java.util.stream.Stream;
 public enum EAttack
 {
     // --- normal ----------------------------------------------------------------------------------------------------------------------------------------------
-    SCRATCH( 1, 0.05,
+    SCRATCH( 1, 1, 0.05,
              Stream.of( EAttribute.HEALTH ),
              Stream.of( 0.3 )
     ),
 
-    TACKLE( 1, 0.05,
+    TACKLE( 1, 1, 0.05,
             Stream.of( EAttribute.HEALTH ),
             Stream.of( 0.3 )
     ),
 
-    SLASH( 1, 0.10,
+    SLASH( 1, 1, 0.10,
            Stream.of( EAttribute.HEALTH ),
            Stream.of( 0.4 )
     ),
 
-    SLAM( 0.9, 0.10,
+    SLAM( 1, 0.9, 0.10,
           Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
           Stream.of( 0.4, 0.1 )
     ),
 
-    HEADBUTT( 1, 0.10,
+    HEADBUTT( 1, 1, 0.10,
               Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
               Stream.of( 0.3, 0.2 )
     ),
 
-    POUND( 1, 1,
+    POUND( 1, 1, 1,
            Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
            Stream.of( 0.4, 0.1 )
     ),
 
-    COMETPUNCH( 0.8, 1,
+    COMETPUNCH( 2, 0.8, 1,
                 Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
                 Stream.of( 0.4, 0.1 )
     ),
 
-    DRILLPECK( 0.8, 0.05,
+    DRILLPECK( 3, 0.8, 0.05,
                Stream.of( EAttribute.HEALTH ),
                Stream.of( 0.8 )
     ),
 
-    GUST( 1, 0.05,
+    GUST( 4, 1, 0.05,
           Stream.of( EAttribute.HEALTH ),
           Stream.of( 0.4 )
     ),
 
-    WINGATTACK( 1, 0.10,
+    WINGATTACK( 3, 1, 0.10,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 0.6 )
     ),
 
-    SKYATTACK( 0.9, 0.15,
+    SKYATTACK( 5, 0.9, 0.15,
                Stream.of( EAttribute.HEALTH ),
                Stream.of( 1 )
     ),
 
 
     // --- fire ------------------------------------------------------------------------------------------------------------------------------------------------
-    EMBER( 1, 0.05,
+    EMBER( 2, 1, 0.05,
            Stream.of( EAttribute.HEALTH ),
            Stream.of( 0.4 )
     ),
 
-    FIRESPIN( 0.85, 0.05,
+    FIRESPIN( 3, 0.85, 0.05,
               Stream.of( EAttribute.HEALTH, EAttribute.SPEED ),
               Stream.of( 0.35, 0.1 )
     ),
 
-    FLAMETHROWER( 1, 0.10,
+    FLAMETHROWER( 5, 1, 0.10,
                   Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
                   Stream.of( 0.8, 0.1 )
     ),
 
-    FIREBLAST( 0.85, 0.15,
+    FIREBLAST( 8, 0.85, 0.15,
                Stream.of( EAttribute.HEALTH ),
                Stream.of( 1 )
     ),
@@ -126,27 +126,27 @@ public enum EAttack
 
 
     // --- water -----------------------------------------------------------------------------------------------------------------------------------------------
-    BUBBLE( 1, 0.05,
+    BUBBLE( 2, 1, 0.05,
             Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
             Stream.of( 0.3 )
     ),
 
-    WATERGUN( 1, 0.10,
+    WATERGUN( 3, 1, 0.10,
               Stream.of( EAttribute.HEALTH ),
               Stream.of( 0.4 )
     ),
 
-    BUBBLEBEAM( 1, 0.15,
+    BUBBLEBEAM( 3, 1, 0.15,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 0.65 )
     ),
 
-    SURFER( 1, 0.15,
-            Stream.of( EAttribute.HEALTH ),
-            Stream.of( 0.9 )
+    SURF( 4, 1, 0.15,
+        Stream.of( EAttribute.HEALTH ),
+        Stream.of( 0.9 )
     ),
 
-    HYDROPUMP( 0.8, 0.05,
+    HYDROPUMP( 3, 0.8, 0.05,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 1 )
     ),
@@ -154,22 +154,22 @@ public enum EAttack
 
 
     // --- electric --------------------------------------------------------------------------------------------------------------------------------------------
-    THUNDERWAVE( 1, 0.05,
+    THUNDERWAVE( 3, 1, 0.05,
                  Stream.of( EAttribute.MIND ),
                  Stream.of( 0.1 )
     ),
 
-    THUNDERSHOCK( 1, 0.05,
+    THUNDERSHOCK( 4, 1, 0.05,
                   Stream.of( EAttribute.HEALTH ),
                   Stream.of( 0.4 )
     ),
 
-    THUNDERBOLT( 1, 0.10,
+    THUNDERBOLT( 4, 1, 0.10,
                  Stream.of( EAttribute.HEALTH ),
                  Stream.of( 0.8 )
     ),
 
-    THUNDER( 1, 0.15,
+    THUNDER( 5, 1, 0.15,
              Stream.of( EAttribute.HEALTH ),
              Stream.of( 1 )
     ),
@@ -177,27 +177,27 @@ public enum EAttack
 
 
     // --- grass -----------------------------------------------------------------------------------------------------------------------------------------------
-    STUNSPORE( 0.95, 0.05,
+    STUNSPORE( 2, 0.95, 0.05,
                Stream.of( EAttribute.MIND ),
                Stream.of( 0.1 )
     ),
 
-    VINEWHIP( 1, 0.05,
+    VINEWHIP( 3, 1, 0.05,
               Stream.of( EAttribute.HEALTH ),
               Stream.of( 0.25 )
     ),
 
-    PETALDANCE( 1, 0.10,
+    PETALDANCE( 2, 1, 0.10,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 0.7 )
     ),
 
-    RAZORLEAF( 0.95, 0.15,
+    RAZORLEAF( 4, 0.95, 0.15,
                Stream.of( EAttribute.HEALTH ),
                Stream.of( 0.45 )
     ),
 
-    SOLARBEAM( 1, 0.15,
+    SOLARBEAM( 5, 1, 0.15,
                Stream.of( EAttribute.HEALTH ),
                Stream.of( 1 )
     ),
@@ -205,22 +205,22 @@ public enum EAttack
 
 
     // --- ice -------------------------------------------------------------------------------------------------------------------------------------------------
-    HAZE( 1, 0.05,
+    HAZE( 3, 1, 0.05,
           Stream.of( EAttribute.MIND ),
           Stream.of( 0.1 )
     ),
 
-    AURORABEAM( 1, 0.10,
+    AURORABEAM( 5, 1, 0.10,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 0.65 )
     ),
 
-    BLIZZARD( 0.7, 0.10,
+    BLIZZARD( 3, 0.7, 0.10,
               Stream.of( EAttribute.HEALTH, EAttribute.SPEED ),
               Stream.of( 1, 0.1 )
     ),
 
-    ICEBEAM( 1, 0.15,
+    ICEBEAM( 4, 1, 0.15,
              Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
              Stream.of( 0.9, 0.3 )
     ),
@@ -228,32 +228,32 @@ public enum EAttack
 
 
     // --- fighting --------------------------------------------------------------------------------------------------------------------------------------------
-    DOUBLEKICK( 1, 0.05,
+    DOUBLEKICK( 2, 1, 0.05,
                 Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
                 Stream.of( 0.3, 0.1 )
     ),
 
-    KARATECHOP( 1, 0.05,
+    KARATECHOP( 2, 1, 0.05,
                 Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
                 Stream.of( 0.3, 0.1 )
     ),
 
-    DOUBLESLAP( 1, 0.05,
+    DOUBLESLAP( 2, 1, 0.05,
                 Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
                 Stream.of( 0.4, 0.1 )
     ),
 
-    JUMPKICK( 0.95, 0.1,
+    JUMPKICK( 3, 0.95, 0.1,
               Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
               Stream.of( 0.5, 0.1 )
     ),
 
-    HIGHJUMPKICK( 0.95, 0.15,
+    HIGHJUMPKICK( 3, 0.95, 0.15,
                   Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
                   Stream.of( 0.7, 0.1 )
     ),
 
-    SEISMICTOSS( 1, 0.15,
+    SEISMICTOSS( 4, 1, 0.15,
                  Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
                  Stream.of( 1, 0.1 )
     ),
@@ -261,32 +261,32 @@ public enum EAttack
 
 
     // --- poison ----------------------------------------------------------------------------------------------------------------------------------------------
-    POISONPOWDER( 0.75, 0.05,
+    POISONPOWDER( 2, 0.75, 0.05,
                   Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
                   Stream.of( 0.1, 0.2 )
     ),
 
-    POISONSTING( 1, 0.05,
+    POISONSTING( 1, 1, 0.05,
                  Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
                  Stream.of( 0.1, 0.15 )
     ),
 
-    POISONGAS( 0.9, 0.05,
+    POISONGAS( 2, 0.9, 0.05,
                Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
                Stream.of( 0.2, 0.1 )
     ),
 
-    SMOG( 0.7, 0.10,
+    SMOG( 3, 0.7, 0.10,
           Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
           Stream.of( 0.3, 0.1 )
     ),
 
-    ACID( 1, 0.10,
+    ACID( 3, 1, 0.10,
           Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
           Stream.of( 0.4, 0.1 )
     ),
 
-    TOXIN( 0.9, 0.15,
+    TOXIN( 4, 0.9, 0.15,
            Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
            Stream.of( 0.8, 0.2 )
     ),
@@ -294,17 +294,17 @@ public enum EAttack
 
 
     // --- ground ----------------------------------------------------------------------------------------------------------------------------------------------
-    DIG( 1, 0.05,
+    DIG( 1, 1, 0.05,
          Stream.of( EAttribute.HEALTH ),
          Stream.of( 0.8 )
     ),
 
-    EARTHQUAKE( 1, 0.10,
+    EARTHQUAKE( 4, 1, 0.10,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 1 )
     ),
 
-    FISSURE( 0.3, 0.15,
+    FISSURE( 5, 0.3, 0.15,
              Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
              Stream.of( 1, 0.5 )
     ),
@@ -313,22 +313,22 @@ public enum EAttack
 
 
     // --- psychic ---------------------------------------------------------------------------------------------------------------------------------------------
-    CONFUSION( 0.95, 0.05,
+    CONFUSION( 1, 0.95, 0.05,
                Stream.of( EAttribute.MIND ),
                Stream.of( 0.1 )
     ),
 
-    KINESIS( 0.8, 0.05,
+    KINESIS( 2, 0.8, 0.05,
              Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
              Stream.of( 0.4, 0.1 )
     ),
 
-    PSYBEAM( 1, 0.10,
+    PSYBEAM( 3, 1, 0.10,
              Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
              Stream.of( 0.65, 0.1 )
     ),
 
-    PSYCHIC( 1, 0.15,
+    PSYCHIC( 4, 1, 0.15,
              Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
              Stream.of( 1, 0.1 )
     ),
@@ -336,22 +336,22 @@ public enum EAttack
 
 
     // --- bug -------------------------------------------------------------------------------------------------------------------------------------------------
-    LEECHLIFE( 1, 0.05,
+    LEECHLIFE( 1, 1, 0.05,
                Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
                Stream.of( 0.2, 0.1 )
     ),
 
-    STRINGSHOT( 0.95, 0.05,
+    STRINGSHOT( 3, 0.95, 0.05,
                 Stream.of( EAttribute.SPEED ),
                 Stream.of( 0.2 )
     ),
 
-    TWINNEEDLE( 1, 0.10,
+    TWINNEEDLE( 3, 1, 0.10,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 0.4 )
     ),
 
-    PINMISSILE( 0.95, 0.15,
+    PINMISSILE( 5, 0.95, 0.15,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 0.5 )
     ),
@@ -359,22 +359,22 @@ public enum EAttack
 
 
     // --- rock ------------------------------------------------------------------------------------------------------------------------------------------------
-    ROCKBLAST( 0.8, 0.05,
+    ROCKBLAST( 3, 0.8, 0.05,
             Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
             Stream.of( 0.25, 0.1 )
     ),
 
-    ROLLOUT( 0.9, 0.10,
+    ROLLOUT( 2, 0.9, 0.10,
             Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
             Stream.of( 0.3, 0.1 )
     ),
 
-    ANCIENTPOWER( 1, 0.10,
+    ANCIENTPOWER( 3, 1, 0.10,
             Stream.of( EAttribute.HEALTH, EAttribute.DEFENSE ),
             Stream.of( 0.6, 0.1 )
     ),
 
-    ROCKSLIDE( 0.9, 0.15,
+    ROCKSLIDE( 5, 0.9, 0.15,
             Stream.of( EAttribute.HEALTH, EAttribute.ENERGY ),
             Stream.of( 0.9, 0.1 )
     ),
@@ -382,17 +382,17 @@ public enum EAttack
 
 
     // --- ghost -----------------------------------------------------------------------------------------------------------------------------------------------
-    CONFUSERAY( 1, 0.05,
+    CONFUSERAY( 3, 1, 0.05,
                 Stream.of( EAttribute.MIND ),
                 Stream.of( 0.1 )
     ),
 
-    LICK( 1, 0.05,
+    LICK( 1, 1, 0.05,
           Stream.of( EAttribute.MIND ),
           Stream.of( 0.2 )
     ),
 
-    NIGHTSHADE( 1, 0.10,
+    NIGHTSHADE( 5, 1, 0.10,
                 Stream.of( EAttribute.HEALTH, EAttribute.MIND ),
                 Stream.of( 0.8 )
     ),
@@ -400,12 +400,12 @@ public enum EAttack
 
 
     // --- dragon ----------------------------------------------------------------------------------------------------------------------------------------------
-    DRAGONRAGE( 1, 0.05,
+    DRAGONRAGE( 3, 1, 0.05,
                 Stream.of( EAttribute.HEALTH ),
                 Stream.of( 0.2 )
     ),
 
-    DRAGONBREATH( 1, 0.10,
+    DRAGONBREATH( 5, 1, 0.10,
             Stream.of( EAttribute.HEALTH ),
             Stream.of( 0.6 )
     );
@@ -426,18 +426,23 @@ public enum EAttack
      */
     private final double m_energy;
     /**
+     * maximum distance of the attack in cells
+     */
+    private final double m_distance;
+    /**
      * damage values in [0,1]
      */
     private final Map<EAttribute, Number> m_damage;
 
     /**
      * ctor
+     * @param p_distance maximum distance of the attack
      * @param p_accuracy accuracy of the attack
      * @param p_energy energy of the attac
      * @param p_damagetype damage types
      * @param p_damagevalue decrese value
      */
-    EAttack( final double p_accuracy, final double p_energy, final Stream<EAttribute> p_damagetype, final Stream<Number> p_damagevalue )
+    EAttack( final double p_distance, final double p_accuracy, final double p_energy, final Stream<EAttribute> p_damagetype, final Stream<Number> p_damagevalue )
     {
         if ( ( p_accuracy <= 0 ) || ( p_accuracy > 1 ) )
             throw new RuntimeException( MessageFormat.format( "accuracy for [{0}] must be in (0,1]", this ) );
@@ -446,6 +451,7 @@ public enum EAttack
 
         m_energy = p_energy;
         m_accuracy = p_accuracy;
+        m_distance = p_distance;
         m_damage = Collections.unmodifiableMap(
             StreamUtils.zip(
                 p_damagetype,

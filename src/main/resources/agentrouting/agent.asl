@@ -62,7 +62,8 @@ preferences/near-by(1).
         !movement/walk/forward
 .
 
-// walk right fails than sleep and hope everything will be fine later
+// walk right fails than sleep and hope everything will be fine later,
+// wakeup plan will be trigger after sleeping
 -!movement/walk/right
     <-
         generic/print( "walk right fails in cycle [", Cycle, "]" );
@@ -75,8 +76,8 @@ preferences/near-by(1).
 
 
 
-// if the agent is not walking e.g. speed is low so the agent increment
-// the current speed
+// if the agent is not walking because speed is low so
+// the agent increment the current speed
 +!movement/standstill
     <-
         generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
@@ -96,8 +97,10 @@ preferences/near-by(1).
 
 // --- other calls ---------------------------------------------------------------------------------------------------------------------------------------------
 
-// is called if the distance to the goal position less equal than the
-// belief preference/near-by(V)
+// is called if the distance to the goal position less
+// equal than the belief preference/near-by(V) than we
+// will skip the current goal position and the agent walks
+// to the next goal-position
 +!goal/near-by(D)
     <-
         generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
@@ -106,8 +109,8 @@ preferences/near-by(1).
 .
 
 
-// is called if the agent achieves the goal position, than the agent
-// will sleep 5 cycles
+// is called if the agent achieves the goal position,
+// than the agent will sleep 5 cycles
 +!goal/achieve-position(P)
      <-
         generic/print( "position achieved [", P, "] in cycle [", Cycle, "] - sleep for 5 cycles" );
@@ -125,22 +128,12 @@ preferences/near-by(1).
 .
 
 
-// if the agent is wake-uped a new route is taken by random or fixed
-// around the current position and than starts walking with the initial speed
-// and a random near-by definition
+// if the agent is wake-uped the speed is set to 1 and the agent starts walking
+// to the next goal-position
 +!wakeup
     <-
         generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
-
         speed/set(1);
-        //route/random( 50 );
-
-        /*
-        N = math/statistic/randomsimple();
-        N = N*10;
-        +preferences/near-by(N);
-        */
-
         !movement/walk/forward
 .
 

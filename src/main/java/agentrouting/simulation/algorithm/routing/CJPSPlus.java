@@ -27,19 +27,19 @@ package agentrouting.simulation.algorithm.routing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import com.codepoetics.protonpack.StreamUtils;
+
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
-import com.codepoetics.protonpack.StreamUtils;
 
 
 
@@ -149,32 +149,15 @@ final class CJPSPlus implements IRouting
         final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
         this.calculateScore( l_jumpnode, p_target );
 
-        // @todo remove variables
-        boolean l_duplicatecheck = false;
-        boolean l_removecheck = false;
+        p_openlist.removeIf( s-> s.coordinate().equals( p_nextjumpnode ) && s.fscore() > l_jumpnode.fscore() );
 
-        // @todo replace it with a stream (see calculating estimatedtime method)
-        final Iterator<CJumpPoint> l_iterator = p_openlist.iterator();
-        while ( l_iterator.hasNext() )
-        {
-            final CJumpPoint l_currentelement = l_iterator.next();
-            if ( l_currentelement.coordinate().equals( p_nextjumpnode ) )
-            {
-                l_duplicatecheck = true;
-
-                // @todo check can be done with findfirst on a stream
-                if ( l_currentelement.fscore() > l_jumpnode.fscore() )
-                {
-                    l_removecheck = true;
-                    l_iterator.remove();
-                    break;
-                }
-            }
-        }
-
-        // @todo can be done after the find within the stream
-        if ( !l_duplicatecheck || l_removecheck )
+        //checking that the jump point is already exists in open list or not, if yes then check their fscore to make decision
+        final boolean l_checkscore = p_openlist.parallelStream()
+                                     .filter( s -> s.coordinate().equals( p_nextjumpnode ) )
+                                     .anyMatch( s -> s.fscore() < l_jumpnode.fscore() );
+        if ( !l_checkscore )
             p_openlist.add( l_jumpnode );
+
     }
 
     /**

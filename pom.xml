@@ -133,6 +133,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.codepoetics</groupId>
+            <artifactId>protonpack</artifactId>
+            <version>1.9</version>
+        </dependency>
 
 
         <!-- junit test -->

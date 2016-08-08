@@ -25,6 +25,7 @@ public final class TestCJPSPlus
     private ObjectMatrix2D m_grid;
     private ObjectMatrix2D m_occupiedgrid;
     private ObjectMatrix2D m_emptygrid;
+    private ObjectMatrix2D m_doublecheckgrid;
 
     /**
      * initialize class with static data for routing algorithm test
@@ -39,7 +40,25 @@ public final class TestCJPSPlus
         m_grid.setQuick( 3, 2, new Object() );
     }
 
+    /**
+     * initialize class with static data to double check routing algorithm
+     */
+    @Before
+    public void initializedoublecheck()
+    {
+        m_doublecheckgrid = new SparseObjectMatrix2D( 4, 8 );
 
+        m_doublecheckgrid.setQuick( 3, 1, new Object() );
+        m_doublecheckgrid.setQuick( 2, 1, new Object() );
+        m_doublecheckgrid.setQuick( 1, 1, new Object() );
+        m_doublecheckgrid.setQuick( 0, 6, new Object() );
+        m_doublecheckgrid.setQuick( 1, 6, new Object() );
+        m_doublecheckgrid.setQuick( 2, 6, new Object() );
+    }
+
+    /**
+     * initialize class with static data for empty grid
+     */
     @Before
     public void initializeemptygrid()
     {
@@ -79,6 +98,27 @@ public final class TestCJPSPlus
         assertEquals( l_route.size(), l_waypoint.size() );
         IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_route.get( i ) ) );
 
+    }
+
+    /**
+     * test of a correct working route with few obstacles
+     */
+    @Test
+    public void testroute()
+    {
+        final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_doublecheckgrid, new DenseDoubleMatrix1D( new double[]{3, 0} ),
+                                                                               new DenseDoubleMatrix1D( new double[]{0, 7} ) );
+        final List<DoubleMatrix1D> l_waypoint = Stream.of(
+            new DenseDoubleMatrix1D( new double[]{1, 0} ),
+            new DenseDoubleMatrix1D( new double[]{0, 1} ),
+            new DenseDoubleMatrix1D( new double[]{3, 4} ),
+            new DenseDoubleMatrix1D( new double[]{3, 6} ),
+            new DenseDoubleMatrix1D( new double[]{2, 7} ),
+            new DenseDoubleMatrix1D( new double[]{0, 7} )
+        ).collect( Collectors.toList() );
+
+        assertEquals( l_route.size(), l_waypoint.size() );
+        IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_route.get( i ) ) );
     }
 
     /**
@@ -124,6 +164,7 @@ public final class TestCJPSPlus
         new TestCJPSPlus().testemptygrid();
         new TestCJPSPlus().testoccupiedgrid();
         new TestCJPSPlus().testrouting();
+        new TestCJPSPlus().testroute();
     }
 
 

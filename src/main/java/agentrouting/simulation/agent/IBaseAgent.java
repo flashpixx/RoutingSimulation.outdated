@@ -192,16 +192,16 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     @Override
     public final Stream<ILiteral> preferences()
     {
-        return this.beliefbase().stream( CPath.from( PREFERENCE ) );
+        return this.beliefbase().stream();
     }
 
     @Override
-    public final <N> N preference( final String p_name, final N p_default )
+    public final <N> N preference( final String p_path, final N p_default )
     {
         return CCommon.raw(
-            this.beliefbase().stream( CPath.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ) ) )
+            this.beliefbase().stream( CPath.from( p_path ) )
                 .findFirst()
-                .orElseGet( () -> CLiteral.from( MessageFormat.format( "{0}/{1}", PREFERENCE, p_name ), Stream.of( CRawTerm.from( p_default ) ) ) )
+                .orElseGet( () -> CLiteral.from( p_path, Stream.of( CRawTerm.from( p_default ) ) ) )
                 .values()
                 .findFirst()
                 .orElse( CRawTerm.from( p_default ) )
@@ -435,7 +435,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( l_goalposition.equals( m_position ) )
             return;
 
-        if ( !this.equals( m_environment.position( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
+        if ( !this.equals( m_environment.move( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 

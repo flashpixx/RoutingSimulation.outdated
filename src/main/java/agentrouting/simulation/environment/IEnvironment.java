@@ -64,7 +64,7 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      * @param p_position new position
      * @return updated object or object which uses the cell
      */
-    IElement position( final IElement p_object, final DoubleMatrix1D p_position );
+    IElement move( final IElement p_object, final DoubleMatrix1D p_position );
 
     /**
      * checks if a position is empty

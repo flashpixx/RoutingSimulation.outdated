@@ -45,7 +45,8 @@ public enum EAttribute
     WEIGHT( EAccess.READ ),
     HEIGHT( EAccess.READ ),
     MAXIMUMSPEED( EAccess.READ ),
-    SPEED( EAccess.WRITE );
+    SPEED( EAccess.WRITE ),
+    AROUND( EAccess.WRITE );
 
     /**
      * string name of enums for existance checking

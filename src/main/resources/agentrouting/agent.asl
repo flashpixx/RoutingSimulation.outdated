@@ -36,11 +36,11 @@ preferences/near-by(5).
 -!movement/walk/forward
     <-
         generic/print( "walk forward fails in cycle [", Cycle, "]" );
-        !!movent/walk/left
+        !!movement/walk/left
 .
 
 // walk left 90 degree to the goal position
-+!movent/walk/left
++!movement/walk/left
     <-
         generic/print( "walk left in cycle [", Cycle, "]" );
         move/left();
@@ -48,14 +48,14 @@ preferences/near-by(5).
 .
 
 // walk left fails than go right
--!movent/walk/left
+-!movement/walk/left
     <-
         generic/print( "walk left fails in cycle [", Cycle, "]" );
-        !!movent/walk/right
+        !!movement/walk/right
 .
 
 // walk right 90 degree to the goal position
-+!movent/walk/right
++!movement/walk/right
     <-
         generic/print( "walk right in cycle [", Cycle, "]" );
         move/right();
@@ -63,11 +63,12 @@ preferences/near-by(5).
 .
 
 // walk right fails than sleep and hope everything will be fine later
--!movent/walk/right
+-!movement/walk/right
     <-
         generic/print( "walk right fails in cycle [", Cycle, "]" );
         N = math/statistic/randomsimple();
         N = N*10 + 1;
+        N = math/min(N);
         generic/sleep(N)
 .
 

@@ -34,9 +34,12 @@ import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 import java.text.MessageFormat;
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -1446,6 +1449,20 @@ public enum EPokemon
      * ctor
      *
      * @param p_level number of level
+     * @param p_function function
+     */
+    EPokemon( final int p_level, final  )
+    {
+        m_level= p_level;
+        m_ethnic = Collections.emptyMap();
+        m_attributes = Collections.emptyMap();
+        m_motivation = Collections.emptyMap();
+    }
+
+    /**
+     * ctor
+     *
+     * @param p_level number of level
      */
     EPokemon( final int p_level )
     {
@@ -1644,5 +1661,12 @@ public enum EPokemon
     public Map<EMotivation, Number> motivation()
     {
         return EPokemon.generate( m_motivation );
+    }
+
+
+    // http://www.tutego.de/blog/javainsel/2014/03/funktionale-schnittstelle-aus-dem-java-util-function-paket/
+    private static <T,U,R> Stream<Supplier<AbstractMap.Entry<T,U>>> generate( final BiFunction<T,U,R>... p_elements  )
+    {
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 // --- individual behaviours -----------------------------------------------------------------------------------------------------------------------------------
 
-// nearby belief to define the radius around the goal position to trigger the nearby plan
-preferences/near-by(1).
+// nearby belief to define the radius around the goal position to trigger the near-by plan
+preferences/near-by(5).
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -10,10 +10,10 @@ preferences/near-by(1).
 // initial-goal
 !main.
 
-// initial plan (triggered by the initial-goal) - calculates the route
+// initial plan (triggered by the initial-goal) - calculates the initial route route
 +!main
     <-
-    route/set( 140, 140 );
+    route/set/start( 140, 140 );
     T = route/estimatedtime();
     generic/print("estimated time of the current route [", T , "]");
     !movement/walk/forward
@@ -39,7 +39,7 @@ preferences/near-by(1).
         !movement/walk/left
 .
 
-// walk left 90 degree to the goal position
+// walk left - direction 90 degree to the goal position
 +!movement/walk/left
     <-
         generic/print( "walk left in cycle [", Cycle, "]" );
@@ -54,7 +54,7 @@ preferences/near-by(1).
         !movement/walk/right
 .
 
-// walk right 90 degree to the goal position
+// walk right - direction 90 degree to the goal position
 +!movement/walk/right
     <-
         generic/print( "walk right in cycle [", Cycle, "]" );
@@ -62,22 +62,19 @@ preferences/near-by(1).
         !movement/walk/forward
 .
 
-// walk right fails than sleep and hope everything will be fine later,
-// wakeup plan will be trigger after sleeping
+// walk right fails than sleep and hope everything will be
+// fine later, wakeup plan will be trigger after sleeping
 -!movement/walk/right
     <-
-        generic/print( "walk right fails in cycle [", Cycle, "]" );
-        N = math/statistic/randomsimple();
-        N = N*10 + 1;
-        N = math/min(N);
+        T = math/statistic/randomsimple();
+        T = T*10 + 1;
+        T = math/min(T,5);
+        generic/print( "walk right fails in cycle [", Cycle, "] wait [", T,"] cycles" );
         generic/sleep(N)
 .
 
-
-
-
-// if the agent is not walking because speed is low so
-// the agent increment the current speed
+// if the agent is not walking because speed is
+// low the agent increment the current speed
 +!movement/standstill
     <-
         generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
@@ -97,10 +94,9 @@ preferences/near-by(1).
 
 // --- other calls ---------------------------------------------------------------------------------------------------------------------------------------------
 
-// is called if the distance to the goal position less
-// equal than the belief preference/near-by(V) than we
-// will skip the current goal position and the agent walks
-// to the next goal-position
+// is called iif || current position - goal-position || <= near-by
+// the exact position of the goal will be skipped, so the agent
+// is walking to the next position
 +!goal/near-by(D)
     <-
         generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );

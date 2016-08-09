@@ -265,43 +265,89 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     }
 
     /**
-     * route calculation
+     * route calculation and add landmarks at the beginning
      *
      * @param p_row row position
      * @param p_column column position
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "route/set" )
-    protected final void route( final Number p_row, final Number p_column )
+    @IAgentActionName( name = "route/set/start" )
+    protected final void routeatstart( final Number p_row, final Number p_column )
     {
-        m_route.addAll( 0, m_environment.route( m_position, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) ) );
+        m_route.addAll( 0, this.route( p_row, p_column ) );
     }
 
     /**
      * creates a new route depend on the
      * distance around the current position
+     * and add landmarks at the beginning
      *
      * @param p_radius distance (in cells)
      */
     @IAgentActionAllow
-    @IAgentActionName( name = "route/random" )
-    protected final void routerandom( final Number p_radius )
+    @IAgentActionName( name = "route/random/start" )
+    protected final void routerandomatstart( final Number p_radius )
     {
         if ( p_radius.intValue() < 1 )
             throw new RuntimeException( "radius must be greater than zero" );
 
-        m_route.addAll( 0,
-                        m_environment.route(
-                            m_position,
-                            new DenseDoubleMatrix1D(
-                                new double[]{
-                                    m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
-                                    m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
-                                }
-                            )
-                        )
+        m_route.addAll(
+            0,
+            this.route(
+                m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
+                m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
+            )
         );
     }
+
+    /**
+     * route calculation and add landmarks at the end
+     *
+     * @param p_row row position
+     * @param p_column column position
+     */
+    @IAgentActionAllow
+    @IAgentActionName( name = "route/set/end" )
+    protected final void routeatend( final Number p_row, final Number p_column )
+    {
+        m_route.addAll( this.route( p_row, p_column ) );
+    }
+
+    /**
+     * creates a new route depend on the
+     * distance around the current position and
+     * add landmarks at the end
+     *
+     * @param p_radius distance (in cells)
+     */
+    @IAgentActionAllow
+    @IAgentActionName( name = "route/random/end" )
+    protected final void routerandomatend( final Number p_radius )
+    {
+        if ( p_radius.intValue() < 1 )
+            throw new RuntimeException( "radius must be greater than zero" );
+
+        m_route.addAll(
+            this.route(
+                m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
+                m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
+            )
+        );
+    }
+
+
+
+    /**
+     * calculates a new route
+     * @param p_row target row position
+     * @param p_column target column position
+     * @return route list
+     */
+    private List<DoubleMatrix1D> route( final Number p_row, final Number p_column )
+    {
+        return m_environment.route( m_position, new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} ) );
+    }
+
 
     /**
      * skips the current goal-position of the routing queue

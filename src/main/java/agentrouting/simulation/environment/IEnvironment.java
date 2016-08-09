@@ -67,6 +67,14 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
     IElement move( final IElement p_object, final DoubleMatrix1D p_position );
 
     /**
+     * removes an element from a position
+     *
+     * @param p_object element
+     * @return element
+     */
+    IElement remove( final IElement p_object );
+
+    /**
      * checks if a position is empty
      *
      * @param p_position position

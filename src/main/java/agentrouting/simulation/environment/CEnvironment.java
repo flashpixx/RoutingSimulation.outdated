@@ -176,6 +176,15 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
+    public final synchronized IElement remove( final IElement p_object )
+    {
+        final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_object.position().toArray() ) );
+        m_positions.set( (int) l_position.get( 0 ), (int) l_position.get( 1 ), null );
+
+        return p_object;
+    }
+
+    @Override
     @SuppressWarnings( "unchecked" )
     public final synchronized Stream<? extends IElement> around( final DoubleMatrix1D p_position, final int p_radius )
     {

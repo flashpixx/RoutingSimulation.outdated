@@ -33,6 +33,7 @@ import agentrouting.simulation.environment.IEnvironment;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
 import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -59,6 +60,7 @@ import java.util.stream.Stream;
  * agent class for modelling individual behaviours
  */
 @IAgentActionBlacklist
+@SuppressFBWarnings( "NM_SAME_SIMPLE_NAME_AS_SUPERCLASS" )
 public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
 {
     /**

@@ -104,9 +104,9 @@ public final class CPokemon extends IBaseAgent
             throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
-        m_ethnic = m_pokemon.ethnic();
-        m_attribute = m_pokemon.attributes();
-        m_motivation = m_pokemon.motivation();
+        m_ethnic = m_pokemon.tupel( 0 ).ethnic();
+        m_attribute = m_pokemon.tupel( 0 ).attributes();
+        m_motivation = m_pokemon.tupel( 0 ).motivation();
 
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
@@ -123,7 +123,7 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
-        m_sprite = new Sprite( m_pokemon.texture() );
+        m_sprite = new Sprite( m_pokemon.tupel( 0 ).sprite() );
         m_sprite.setSize( p_cellsize, p_cellsize );
         m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
         m_sprite.setScale( p_unit );

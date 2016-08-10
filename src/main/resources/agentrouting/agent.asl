@@ -1,7 +1,7 @@
 // --- individual behaviours -----------------------------------------------------------------------------------------------------------------------------------
 
 // nearby belief to define the radius around the goal position to trigger the near-by plan
-preferences/near-by(5).
+preferences/near-by(10).
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -94,10 +94,16 @@ preferences/near-by(5).
 
 // --- other calls ---------------------------------------------------------------------------------------------------------------------------------------------
 
+// is called if the pokemon agent increment the level
++!level-up
+    <-
+        generic/print( "level-up in cycle [", Cycle, "]" )
+.
+
 // is called iif || current position - goal-position || <= near-by
 // the exact position of the goal will be skipped, so the agent
 // is walking to the next position
-+!goal/near-by(D)
++!position/near-by(D)
     <-
         generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
         speed/set(1);
@@ -105,9 +111,9 @@ preferences/near-by(5).
 .
 
 
-// is called if the agent achieves the goal position,
+// is called if the agent achieves the exact goal-position,
 // than the agent will sleep 5 cycles
-+!goal/achieve-position(P)
++!position/achieve-exact(P)
      <-
         generic/print( "position achieved [", P, "] in cycle [", Cycle, "] - sleep for 5 cycles" );
         route/next();
@@ -117,7 +123,7 @@ preferences/near-by(5).
 
 // is called if the agent walks beyonds the goal-position, than
 // the speed is set to 1 and we try go back
-+!goal/beyond(P)
++!position/beyond(P)
     <-
         generic/print( "position beyond [", P, "] - set speed to 1 in cycle [", Cycle, "]" );
         speed/set(1)

@@ -26,6 +26,7 @@ package agentrouting.simulation.agent.pokemon;
 import agentrouting.simulation.CMath;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codepoetics.protonpack.StreamUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -1806,6 +1807,14 @@ public enum EPokemon
          * texture
          */
         private Texture m_texture;
+        /**
+         * sprite environment cellsize
+         */
+        private int m_spritecellsize;
+        /**
+         * sprite unit size
+         */
+        private float m_spriteunitsize;
 
 
         /**
@@ -1947,14 +1956,24 @@ public enum EPokemon
         /**
          * returns the texture of the sprite
          *
-         * @return texture
+         * @param p_cellsize cell size
+         * @param p_unit unit
+         * @return new sprite instance with the pokemon texture
          */
-        public final synchronized Texture sprite()
+        public final synchronized Sprite sprite( final int p_cellsize, final float p_unit )
         {
             if ( m_texture == null )
                 m_texture = new Texture( Gdx.files.internal( m_texturepath ) );
 
-            return m_texture;
+            m_spritecellsize = p_cellsize;
+            m_spriteunitsize = p_unit;
+
+            final Sprite l_sprite = new Sprite( m_texture );
+            l_sprite.setSize( m_spritecellsize, m_spritecellsize );
+            l_sprite.setOrigin( 1.5f / m_spritecellsize, 1.5f / m_spritecellsize );
+            l_sprite.setScale( m_spriteunitsize );
+
+            return l_sprite;
         }
 
         /**
@@ -1976,6 +1995,26 @@ public enum EPokemon
             );
 
             return this;
+        }
+
+        /**
+         * returns the sprite unit size
+         *
+         * @return unit size
+         */
+        public final float spriteunit()
+        {
+            return m_spriteunitsize;
+        }
+
+        /**
+         * returns the sprite cell size
+         *
+         * @return cell size
+         */
+        public final int spritecell()
+        {
+            return m_spritecellsize;
         }
 
 

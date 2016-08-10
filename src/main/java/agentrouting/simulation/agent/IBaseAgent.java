@@ -149,7 +149,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( m_sprite != null )
             m_sprite.setPosition( (float) l_position.get( 1 ), (float) l_position.get( 0 ) );
 
-
         // --- agent-cycle to create goal-trigger --------------------------------------------------
 
         // call cycle
@@ -159,25 +158,22 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( m_position.equals( l_position ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
-        // check if the agent reaches the goal-position, if it reachs, remove it from the route queue
+        // check if the agent reaches the goal-position exact
         final DoubleMatrix1D l_goalposition = this.goal();
         if ( m_position.equals( l_goalposition ) )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/achieve-position", Stream.of( CRawTerm.from( m_position ) ) ) ) );
-        else
-        {
-            // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
-            if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
-                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/achieve-exact", Stream.of( CRawTerm.from( m_position ) ) ) ) );
 
-            // otherwise check "near-by(D)" preference for the current position and the goal
-            // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
-            // Y is a literal with distance
-            final double l_distance = CMath.distance( m_position, l_goalposition );
+        // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
+        if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
 
-            // default argument must match literal-value type (and on integral types long is used)
-            if ( l_distance <= this.preference( "near-by", Long.valueOf( 0 ) ).doubleValue() )
-                this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "goal/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
-        }
+        // check "near-by(D)" preference for the current position and the goal
+        // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
+        // Y is a literal with distance,
+        // default argument must match literal-value type (and on integral types long is used)
+        final double l_distance = CMath.distance( m_position, l_goalposition );
+        if ( l_distance <= this.preference( "near-by", Long.valueOf( 0 ) ).doubleValue() )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
 
         return this;
     }

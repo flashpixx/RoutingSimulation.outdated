@@ -41,13 +41,16 @@ import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,7 +81,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * attack map
      */
-    private final Set<EAttack> m_attack = null;
+    private final Set<EAttack> m_attack = new HashSet<>();
     /**
      * level / grown-up
      */
@@ -104,9 +107,9 @@ public final class CPokemon extends IBaseAgent
             throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
-        m_ethnic = m_pokemon.tupel( 0 ).ethnic();
-        m_attribute = m_pokemon.tupel( 0 ).attributes();
-        m_motivation = m_pokemon.tupel( 0 ).motivation();
+        m_ethnic = m_pokemon.tupel( m_level ).ethnic();
+        m_attribute = m_pokemon.tupel( m_level ).attributes();
+        m_motivation = m_pokemon.tupel( m_level ).motivation();
 
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
@@ -123,10 +126,34 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
-        m_sprite = new Sprite( m_pokemon.tupel( 0 ).sprite() );
-        m_sprite.setSize( p_cellsize, p_cellsize );
-        m_sprite.setOrigin( 1.5f / p_cellsize, 1.5f / p_cellsize );
-        m_sprite.setScale( p_unit );
+        m_sprite = m_pokemon.tupel( m_level ).sprite( p_cellsize, p_unit );
+    }
+
+
+    // --- pokemon internals -----------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * runs the level-up
+     * @todo check for experience
+     */
+    private void levelup()
+    {
+        if ( m_level >= m_pokemon.level() - 1 )
+            return;
+
+        // increment level and get old and new level structure of the pokemon
+        final EPokemon.CLevelTupel l_old = m_pokemon.tupel( m_level );
+        m_level++;
+        final EPokemon.CLevelTupel l_new = m_pokemon.tupel( m_level );
+
+        // set data for visualization and internal attributes
+        m_sprite = l_new.sprite( l_old.spritecell(), l_old.spriteunit() );
+        m_attack.addAll( l_new.attack() );
+        m_attribute.putAll( l_new.attributes() );
+        m_motivation.putAll( l_new.motivation() );
+        m_ethnic.putAll( l_new.ethnic() );
+
+        this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "level-up" ) ) );
     }
 
 
@@ -140,7 +167,7 @@ public final class CPokemon extends IBaseAgent
      * @param p_row target row position
      * @param p_column target column position
      */
-    @IAgentActionName( name = "act/pointattack" )
+    @IAgentActionName( name = "act/attack/point" )
     @IAgentActionAllow( classes = CPokemon.class )
     private void pointattack( final String p_attack, final double p_power, final Number p_row, final Number p_column )
     {
@@ -154,7 +181,7 @@ public final class CPokemon extends IBaseAgent
      * @param p_power power of the attack (0,1]
      * @param p_direction direction of the attack
      */
-    @IAgentActionName( name = "act/areaattack" )
+    @IAgentActionName( name = "act/attack/area" )
     @IAgentActionAllow( classes = CPokemon.class )
     private void areaattack( final String p_attack, final double p_power, final String p_direction )
     {

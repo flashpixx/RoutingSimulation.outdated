@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
  */
 public enum EAttribute
 {
+
     ENERGY( EAccess.READ ),
     MIND( EAccess.READ ),
     HEALTH( EAccess.READ ),
@@ -45,9 +46,12 @@ public enum EAttribute
     DEFENSE( EAccess.READ ),
     WEIGHT( EAccess.READ ),
     HEIGHT( EAccess.READ ),
+    VIEWRANGE( EAccess.READ ),
+    VIEWRADIUS( EAccess.READ ),
     MAXIMUMSPEED( EAccess.READ ),
     SPEED( EAccess.WRITE ),
-    AROUND( EAccess.WRITE );
+    AROUND( EAccess.WRITE ),
+    NEARBY( EAccess.WRITE );
 
     /**
      * string name of enums for existance checking

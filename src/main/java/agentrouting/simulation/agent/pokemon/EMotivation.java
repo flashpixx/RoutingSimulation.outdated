@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
  */
 public enum EMotivation
 {
-    NEARBY,
     HUNT,
     FIGHT,
     HELP,

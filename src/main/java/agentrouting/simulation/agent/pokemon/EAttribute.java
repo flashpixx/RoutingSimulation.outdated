@@ -47,7 +47,7 @@ public enum EAttribute
     WEIGHT( EAccess.READ ),
     HEIGHT( EAccess.READ ),
     VIEWRANGE( EAccess.READ ),
-    VIEWRADIUS( EAccess.READ ),
+    VIEWANGLE( EAccess.READ ),
     MAXIMUMSPEED( EAccess.READ ),
     SPEED( EAccess.WRITE ),
     AROUND( EAccess.WRITE ),

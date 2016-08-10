@@ -442,6 +442,7 @@ public enum EPokemon
 
     TAUROS(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -466,6 +467,8 @@ public enum EPokemon
     // --- fire ------------------------------------------------------------------------------------------------------------------------------------------------
     CHARMANDER(
         3,
+
+        // charmander
         CLevelTupel.generate(
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
@@ -479,12 +482,18 @@ public enum EPokemon
                 new ImmutableTriple<>( 8.5, 7.5, 9.5 )
             )
         ),
+
+        // charmeleon
         CLevelTupel.generate(),
+
+        // charizard
         CLevelTupel.generate()
     ),
 
     GROWLITHE(
         2,
+
+        // growlithe
         CLevelTupel.generate(
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
@@ -498,11 +507,14 @@ public enum EPokemon
                 new ImmutableTriple<>( 19, 18, 20 )
             )
         ),
+
+        // arcanine
         CLevelTupel.generate()
     ),
 
     MAGMAR(
         1,
+
         CLevelTupel.generate(
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
@@ -520,6 +532,7 @@ public enum EPokemon
 
     MOLTRES(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.FIRE,
@@ -543,6 +556,8 @@ public enum EPokemon
 
     PONYTA(
         2,
+
+        // ponyta
         CLevelTupel.generate(
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
@@ -556,11 +571,15 @@ public enum EPokemon
                 new ImmutableTriple<>( 30, 25, 35 )
             )
         ),
+
+        // rapidash
         CLevelTupel.generate()
     ),
 
     VULPIX(
         2,
+
+        // vulpix
         CLevelTupel.generate(
             Stream.of( EEthncity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
@@ -574,6 +593,8 @@ public enum EPokemon
                 new ImmutableTriple<>( 9.9, 0.5, 10.3 )
             )
         ),
+
+        // ninetales
         CLevelTupel.generate()
     ),
 
@@ -582,6 +603,8 @@ public enum EPokemon
     // --- water -----------------------------------------------------------------------------------------------------------------------------------------------
     GOLDEEN(
         2,
+
+        // goldeen
         CLevelTupel.generate(
             Stream.of( EEthncity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
@@ -595,11 +618,15 @@ public enum EPokemon
                 new ImmutableTriple<>( 15, 13, 17 )
             )
         ),
+
+        // seaking
         CLevelTupel.generate()
     ),
 
     HORSEA(
         2,
+
+        // horsea
         CLevelTupel.generate(
             Stream.of( EEthncity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
@@ -613,7 +640,20 @@ public enum EPokemon
                 new ImmutableTriple<>( 8, 6, 10 )
             )
         ),
-        CLevelTupel.generate()
+
+        // kingdra
+        CLevelTupel.generate(
+            Stream.of(), Stream.of(),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.8, 1.6, 2.1 ),
+                new ImmutableTriple<>( 152, 140, 165 )
+            )
+        )
     ),
 
     KRABBY(

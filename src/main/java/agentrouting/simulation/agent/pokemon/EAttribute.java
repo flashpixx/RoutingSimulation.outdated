@@ -39,6 +39,7 @@ public enum EAttribute
     ENERGY( EAccess.READ ),
     MIND( EAccess.READ ),
     HEALTH( EAccess.READ ),
+    MAXIMUMEXPERIENCE( EAccess.READ ),
     EXPERIENCE( EAccess.READ ),
     ATTACK( EAccess.READ ),
     DEFENSE( EAccess.READ ),

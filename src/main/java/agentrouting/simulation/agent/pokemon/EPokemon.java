@@ -54,6 +54,7 @@ public enum EPokemon
     // --- normal ----------------------------------------------------------------------------------------------------------------------------------------------
     CHANSEY(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -75,6 +76,7 @@ public enum EPokemon
 
     DITTO(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -96,6 +98,8 @@ public enum EPokemon
 
     DODUO(
         2,
+
+        // doduo
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL,
@@ -111,15 +115,30 @@ public enum EPokemon
                 EAttribute.WEIGHT
             ),
             Stream.of(
-                new ImmutableTriple<>( 1.4, 1, 0.7 ),
+                new ImmutableTriple<>( 1.4, 1, 1.7 ),
                 new ImmutableTriple<>( 39.2, 36, 42 )
             )
         ),
-        CLevelTupel.generate()
+
+        // dodo
+        CLevelTupel.generate(
+            Stream.of(), Stream.of(),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.8, 1.6, 2 ),
+                new ImmutableTriple<>( 85.2, 80, 90 )
+            )
+        )
     ),
 
     EEVEE(
         4,
+
+        // eevee
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -137,13 +156,20 @@ public enum EPokemon
                 new ImmutableTriple<>( 6.5, 5.5, 7.5 )
             )
         ),
+
+        // vaporeon
         CLevelTupel.generate(),
+
+        // jolteon
         CLevelTupel.generate(),
+
+        // flareon
         CLevelTupel.generate()
     ),
 
     FARFETCHD(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL,
@@ -167,6 +193,8 @@ public enum EPokemon
 
     JIGGLYPUFF(
         2,
+
+        // jigglypuff
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL,
@@ -186,11 +214,14 @@ public enum EPokemon
                 new ImmutableTriple<>( 5.5, 4.2, 6.5 )
             )
         ),
+
+        // wigglytuff
         CLevelTupel.generate()
     ),
 
     KANGASKHAN(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -212,6 +243,7 @@ public enum EPokemon
 
     LICKITUNG(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -233,6 +265,8 @@ public enum EPokemon
 
     MEOWTH(
         2,
+
+        // meowth
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -250,11 +284,26 @@ public enum EPokemon
                 new ImmutableTriple<>( 4.2, 3.8, 4.7 )
             )
         ),
-        CLevelTupel.generate()
+
+        // persian
+        CLevelTupel.generate(
+            Stream.of(), Stream.of(),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1, 0.85, 1.3 ),
+                new ImmutableTriple<>( 32, 29, 35 )
+            )
+        )
     ),
 
     PIDGEY(
         3,
+
+        // pidgey
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL,
@@ -274,12 +323,17 @@ public enum EPokemon
                 new ImmutableTriple<>( 1.8, 1.5, 2.1 )
             )
         ),
+
+        // pidgeotto
         CLevelTupel.generate(),
+
+        // pidgeot
         CLevelTupel.generate()
     ),
 
     PORYGON(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -301,6 +355,8 @@ public enum EPokemon
 
     RATTATA(
         2,
+
+        // rattata
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -318,11 +374,14 @@ public enum EPokemon
                 new ImmutableTriple<>( 3.5, 2.8, 3.8 )
             )
         ),
+
+        // raticate
         CLevelTupel.generate()
     ),
 
     SNORLAX(
         1,
+
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL
@@ -344,6 +403,8 @@ public enum EPokemon
 
     SPEAROW(
         2,
+
+        // spearow
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.NORMAL,
@@ -363,7 +424,20 @@ public enum EPokemon
                 new ImmutableTriple<>( 2, 1.2, 2.9 )
             )
         ),
-        CLevelTupel.generate()
+
+        // fearow
+        CLevelTupel.generate(
+            Stream.of(), Stream.of(),
+
+            Stream.of(
+                EAttribute.HEIGHT,
+                EAttribute.WEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.2, 1, 0.4 ),
+                new ImmutableTriple<>( 38, 35, 40 )
+            )
+        )
     ),
 
     TAUROS(
@@ -1663,6 +1737,8 @@ public enum EPokemon
     // --- ghost -----------------------------------------------------------------------------------------------------------------------------------------------
     GASTLY(
         3,
+
+        // gastly
         CLevelTupel.generate(
             Stream.of(
                 EEthncity.GHOST,
@@ -1682,7 +1758,20 @@ public enum EPokemon
                 new ImmutableTriple<>( 0.1, 0.05, 0.2 )
             )
         ),
-        CLevelTupel.generate(),
+
+        // haunter
+        CLevelTupel.generate(
+            Stream.of(), Stream.of(),
+
+            Stream.of(
+                EAttribute.HEIGHT
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 1.6, 1.3, 1.9 )
+            )
+        ),
+
+        // phantom
         CLevelTupel.generate()
     ),
 

@@ -5,7 +5,14 @@
 
     <!--  https://www.data2type.de/xml-xslt-xslfo/xml-schema/definition-von-eindeutigkeit-s/id-im-vergleich-mit-xs-key/ -->
 
-    <xs:element name="simulation"> </xs:element>
+    <xs:element name="structure">
+        <xs:complexType>
+            <xs:all>
+                <xs:element maxOccurs="1" minOccurs="1" name="configuration" type="iconfiguration"/>
+                <xs:element name="character" type="icharacters"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
 
     <xs:complexType name="icharacters">
         <xs:annotation>
@@ -58,17 +65,44 @@
         <xs:attribute name="minimum" type="xs:double" use="required"/>
         <xs:attribute name="expectedvalue" type="xs:double" use="required"/>
     </xs:attributeGroup>
-    <xs:complexType name="ibase">
+    <xs:complexType name="iconfiguration">
         <xs:sequence>
-            <xs:element name="attacks"/>
+            <xs:element name="attack" maxOccurs="unbounded" minOccurs="0" type="iattack"/>
             <xs:element name="motivations"/>
             <xs:element name="attributes"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="imotivation">
-        <xs:sequence>
-            <xs:element name="newElement"/>
-        </xs:sequence>
+    <xs:complexType name="iattack">
+        <xs:all>
+            <xs:element name="name">
+                <xs:unique name="newUnique">
+                    <xs:selector/>
+                    <xs:field xpath="iattack/name"/>
+                </xs:unique>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="distance" type="xs:positiveInteger"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="cost">
+                <xs:simpleType>
+                    <xs:restriction base="xs:double">
+                        <xs:minExclusive value="0"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="damage">
+                <xs:complexType>
+                    <xs:attributeGroup ref="idamage"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
     </xs:complexType>
-    <xs:complexType name="iaccess"/>
+    <xs:attributeGroup name="idamage">
+        <xs:attribute name="attribute"/>
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:double">
+                    <xs:minExclusive value="0"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
 </xs:schema>

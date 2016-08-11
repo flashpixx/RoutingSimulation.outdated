@@ -67,7 +67,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * ethnic map
      */
-    private final Map<EEthncity, Number> m_ethnic;
+    private final Map<EEthnicity, Number> m_ethnic;
     /**
      * attribute map
      */
@@ -321,7 +321,7 @@ public final class CPokemon extends IBaseAgent
         @Override
         public final boolean containsLiteral( final String p_key )
         {
-            return EEthncity.exist( p_key ) && m_ethnic.containsKey( EEthncity.valueOf( p_key.toUpperCase() ) );
+            return EEthnicity.exist( p_key ) && m_ethnic.containsKey( EEthnicity.valueOf( p_key.toUpperCase() ) );
         }
 
         @Override
@@ -330,7 +330,7 @@ public final class CPokemon extends IBaseAgent
             if ( !this.containsLiteral( p_key ) )
                 return Collections.<ILiteral>emptySet();
 
-            final EEthncity l_key =  EEthncity.valueOf( p_key.toUpperCase() );
+            final EEthnicity l_key =  EEthnicity.valueOf( p_key.toUpperCase() );
             return Stream.of( this.literal( l_key, m_ethnic.get( l_key ) ) ).collect( Collectors.toSet() );
         }
 

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * @see http://bulbapedia.bulbagarden.net/wiki/Type
  * @see http://jkunst.com/r/pokemon-visualize-em-all/
  */
-public enum EEthncity
+public enum EEthnicity
 {
     NORMAL,
     FIGHTING,
@@ -64,7 +64,7 @@ public enum EEthncity
 
     static
     {
-        NAMES = Collections.unmodifiableSet( Arrays.stream( EEthncity.values() ).map( i -> i.toString().toLowerCase() ).collect( Collectors.toSet() ) );
+        NAMES = Collections.unmodifiableSet( Arrays.stream( EEthnicity.values() ).map( i -> i.toString().toLowerCase() ).collect( Collectors.toSet() ) );
     }
 
     /**

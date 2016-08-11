@@ -57,7 +57,7 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -99,7 +99,7 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -122,8 +122,8 @@ public enum EPokemon
         // doduo
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL,
-                EEthncity.FLYING
+                EEthnicity.NORMAL,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -183,7 +183,7 @@ public enum EPokemon
         // eevee
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -214,8 +214,8 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL,
-                EEthncity.FLYING
+                EEthnicity.NORMAL,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -239,8 +239,8 @@ public enum EPokemon
         // jigglypuff
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL,
-                EEthncity.FAIRY
+                EEthnicity.NORMAL,
+                EEthnicity.FAIRY
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -266,7 +266,7 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -288,7 +288,7 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -311,7 +311,7 @@ public enum EPokemon
         // meowth
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -348,8 +348,8 @@ public enum EPokemon
         // pidgey
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL,
-                EEthncity.FLYING
+                EEthnicity.NORMAL,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -378,7 +378,7 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -401,7 +401,7 @@ public enum EPokemon
         // rattata
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -426,7 +426,7 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -449,8 +449,8 @@ public enum EPokemon
         // spearow
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL,
-                EEthncity.FLYING
+                EEthnicity.NORMAL,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -487,7 +487,7 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.NORMAL
+                EEthnicity.NORMAL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
@@ -512,7 +512,7 @@ public enum EPokemon
 
         // charmander
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIRE ),
+            Stream.of( EEthnicity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -537,7 +537,7 @@ public enum EPokemon
 
         // growlithe
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIRE ),
+            Stream.of( EEthnicity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -558,7 +558,7 @@ public enum EPokemon
         1,
 
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIRE ),
+            Stream.of( EEthnicity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -577,8 +577,8 @@ public enum EPokemon
 
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.FIRE,
-                EEthncity.FLYING
+                EEthnicity.FIRE,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -601,7 +601,7 @@ public enum EPokemon
 
         // ponyta
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIRE ),
+            Stream.of( EEthnicity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -623,7 +623,7 @@ public enum EPokemon
 
         // vulpix
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIRE ),
+            Stream.of( EEthnicity.FIRE ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -648,7 +648,7 @@ public enum EPokemon
 
         // goldeen
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -670,7 +670,7 @@ public enum EPokemon
 
         // horsea
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -700,8 +700,10 @@ public enum EPokemon
 
     KRABBY(
         2,
+
+        // krabby
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -713,15 +715,18 @@ public enum EPokemon
                 new ImmutableTriple<>( 6.5, 6, 7 )
             )
         ),
+
+        // kingler
         CLevelTupel.generate()
     ),
 
     LAPRAS(
         1,
+
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.WATER,
-                EEthncity.ICE
+                EEthnicity.WATER,
+                EEthnicity.ICE
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -741,8 +746,10 @@ public enum EPokemon
 
     MAGIKARP(
         2,
+
+        // magikarp
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -754,13 +761,17 @@ public enum EPokemon
                 new ImmutableTriple<>( 10, 8, 12 )
             )
         ),
+
+        // skullkraken
         CLevelTupel.generate()
     ),
 
     POLIWAG(
         3,
+
+        // poliwag
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -772,14 +783,18 @@ public enum EPokemon
                 new ImmutableTriple<>( 12.4, 10, 14 )
             )
         ),
+
+        // poliwhirl
         CLevelTupel.generate(),
+
+        // poliwrath
         CLevelTupel.generate()
     ),
 
     PSYDUCK(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -797,7 +812,7 @@ public enum EPokemon
     SEEL(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -815,7 +830,7 @@ public enum EPokemon
     SHELLDER(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -834,8 +849,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.WATER,
-                EEthncity.PSYCHIC
+                EEthnicity.WATER,
+                EEthnicity.PSYCHIC
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -857,7 +872,7 @@ public enum EPokemon
     SQUIRTLE(
         3,
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -876,7 +891,7 @@ public enum EPokemon
     STARYU(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.WATER ),
+            Stream.of( EEthnicity.WATER ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -895,8 +910,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.WATER,
-                EEthncity.POISON
+                EEthnicity.WATER,
+                EEthnicity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -921,7 +936,7 @@ public enum EPokemon
     ELECTABUZZ(
         1,
         CLevelTupel.generate(
-            Stream.of( EEthncity.ELECTRIC ),
+            Stream.of( EEthnicity.ELECTRIC ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -939,8 +954,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ELECTRIC,
-                EEthncity.STEEL
+                EEthnicity.ELECTRIC,
+                EEthnicity.STEEL
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -962,7 +977,7 @@ public enum EPokemon
     PIKACHU(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.ELECTRIC ),
+            Stream.of( EEthnicity.ELECTRIC ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -980,7 +995,7 @@ public enum EPokemon
     VOLTORB(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.ELECTRIC ),
+            Stream.of( EEthnicity.ELECTRIC ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -999,8 +1014,8 @@ public enum EPokemon
         1,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ELECTRIC,
-                EEthncity.FLYING
+                EEthnicity.ELECTRIC,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1025,8 +1040,8 @@ public enum EPokemon
         3,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.GRASS,
-                EEthncity.POISON
+                EEthnicity.GRASS,
+                EEthnicity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1050,8 +1065,8 @@ public enum EPokemon
         3,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.GRASS,
-                EEthncity.POISON
+                EEthnicity.GRASS,
+                EEthnicity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1075,8 +1090,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.GRASS,
-                EEthncity.PSYCHIC
+                EEthnicity.GRASS,
+                EEthnicity.PSYCHIC
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1099,8 +1114,8 @@ public enum EPokemon
         3,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.GRASS,
-                EEthncity.POISON
+                EEthnicity.GRASS,
+                EEthnicity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1123,7 +1138,7 @@ public enum EPokemon
     TANGELA(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.GRASS ),
+            Stream.of( EEthnicity.GRASS ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1145,8 +1160,8 @@ public enum EPokemon
         1,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ICE,
-                EEthncity.FLYING
+                EEthnicity.ICE,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1168,8 +1183,8 @@ public enum EPokemon
         1,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ICE,
-                EEthncity.PSYCHIC
+                EEthnicity.ICE,
+                EEthnicity.PSYCHIC
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1193,7 +1208,7 @@ public enum EPokemon
     HITMONCHAN(
         1,
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIGHTING ),
+            Stream.of( EEthnicity.FIGHTING ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1210,7 +1225,7 @@ public enum EPokemon
     HITMONLEE(
         1,
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIGHTING ),
+            Stream.of( EEthnicity.FIGHTING ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1227,7 +1242,7 @@ public enum EPokemon
     MACHOP(
         3,
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIGHTING ),
+            Stream.of( EEthnicity.FIGHTING ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1246,7 +1261,7 @@ public enum EPokemon
     MANKEY(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.FIGHTING ),
+            Stream.of( EEthnicity.FIGHTING ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1267,7 +1282,7 @@ public enum EPokemon
     EKANS(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.POISON ),
+            Stream.of( EEthnicity.POISON ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1285,7 +1300,7 @@ public enum EPokemon
     GRIMER(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.POISON ),
+            Stream.of( EEthnicity.POISON ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1303,7 +1318,7 @@ public enum EPokemon
     KOFFING(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.POISON ),
+            Stream.of( EEthnicity.POISON ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1321,7 +1336,7 @@ public enum EPokemon
     NIDORAN_FEMALE(
         3,
         CLevelTupel.generate(
-            Stream.of( EEthncity.POISON ),
+            Stream.of( EEthnicity.POISON ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1340,7 +1355,7 @@ public enum EPokemon
     NIDORAN_MALE(
         3,
         CLevelTupel.generate(
-            Stream.of( EEthncity.POISON ),
+            Stream.of( EEthnicity.POISON ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1360,8 +1375,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.POISON,
-                EEthncity.FLYING
+                EEthnicity.POISON,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1386,7 +1401,7 @@ public enum EPokemon
     CUBONE(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.GROUND ),
+            Stream.of( EEthnicity.GROUND ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1404,7 +1419,7 @@ public enum EPokemon
     DIGLETT(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.GROUND ),
+            Stream.of( EEthnicity.GROUND ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1423,8 +1438,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.GROUND,
-                EEthncity.ROCK
+                EEthnicity.GROUND,
+                EEthnicity.ROCK
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1446,7 +1461,7 @@ public enum EPokemon
     SANDSHREW(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.GROUND ),
+            Stream.of( EEthnicity.GROUND ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1467,7 +1482,7 @@ public enum EPokemon
     ABRA(
         3,
         CLevelTupel.generate(
-            Stream.of( EEthncity.PSYCHIC ),
+            Stream.of( EEthnicity.PSYCHIC ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1486,7 +1501,7 @@ public enum EPokemon
     DROWZEE(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.PSYCHIC ),
+            Stream.of( EEthnicity.PSYCHIC ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1504,7 +1519,7 @@ public enum EPokemon
     MEW(
         1,
         CLevelTupel.generate(
-            Stream.of( EEthncity.PSYCHIC ),
+            Stream.of( EEthnicity.PSYCHIC ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1521,7 +1536,7 @@ public enum EPokemon
     MEWTWO(
         1,
         CLevelTupel.generate(
-            Stream.of( EEthncity.PSYCHIC ),
+            Stream.of( EEthnicity.PSYCHIC ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1539,8 +1554,8 @@ public enum EPokemon
         1,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.PSYCHIC,
-                EEthncity.FAIRY
+                EEthnicity.PSYCHIC,
+                EEthnicity.FAIRY
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1564,7 +1579,7 @@ public enum EPokemon
     CATERPIE(
         3,
         CLevelTupel.generate(
-            Stream.of( EEthncity.BUG ),
+            Stream.of( EEthnicity.BUG ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1584,8 +1599,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.BUG,
-                EEthncity.GRASS
+                EEthnicity.BUG,
+                EEthnicity.GRASS
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1607,7 +1622,7 @@ public enum EPokemon
     PINSIR(
         1,
         CLevelTupel.generate(
-            Stream.of( EEthncity.BUG ),
+            Stream.of( EEthnicity.BUG ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1625,8 +1640,8 @@ public enum EPokemon
         1,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.BUG,
-                EEthncity.FLYING
+                EEthnicity.BUG,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1648,8 +1663,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.BUG,
-                EEthncity.POISON
+                EEthnicity.BUG,
+                EEthnicity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1672,8 +1687,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.BUG,
-                EEthncity.POISON
+                EEthnicity.BUG,
+                EEthnicity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1699,8 +1714,8 @@ public enum EPokemon
         1,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ROCK,
-                EEthncity.FLYING
+                EEthnicity.ROCK,
+                EEthnicity.FLYING
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1722,8 +1737,8 @@ public enum EPokemon
         3,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ROCK,
-                EEthncity.GROUND
+                EEthnicity.ROCK,
+                EEthnicity.GROUND
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1747,8 +1762,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ROCK,
-                EEthncity.WATER
+                EEthnicity.ROCK,
+                EEthnicity.WATER
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1771,8 +1786,8 @@ public enum EPokemon
         2,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ROCK,
-                EEthncity.WATER
+                EEthnicity.ROCK,
+                EEthnicity.WATER
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1795,8 +1810,8 @@ public enum EPokemon
         1,
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.ROCK,
-                EEthncity.GROUND
+                EEthnicity.ROCK,
+                EEthnicity.GROUND
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1823,8 +1838,8 @@ public enum EPokemon
         // gastly
         CLevelTupel.generate(
             Stream.of(
-                EEthncity.GHOST,
-                EEthncity.POISON
+                EEthnicity.GHOST,
+                EEthnicity.POISON
             ),
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 ),
@@ -1863,7 +1878,7 @@ public enum EPokemon
     DRATINI(
         3,
         CLevelTupel.generate(
-            Stream.of( EEthncity.DRAGON ),
+            Stream.of( EEthnicity.DRAGON ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1885,7 +1900,7 @@ public enum EPokemon
     CLEFAIRY(
         2,
         CLevelTupel.generate(
-            Stream.of( EEthncity.FAIRY ),
+            Stream.of( EEthnicity.FAIRY ),
             Stream.of( new ImmutableTriple<>( 0.8, 0.6, 1 ) ),
 
             Stream.of(
@@ -1901,7 +1916,10 @@ public enum EPokemon
     );
 
 
-
+    /**
+     * filename of the icon
+     */
+    private static final String ICONFILENAME = "agentrouting/pokemon/icon/{0}_{1}.png";
     /**
      * sprite list
      */
@@ -1957,7 +1975,7 @@ public enum EPokemon
         /**
          * ethnic map map with initialize values (initial value, min, max bounding)
          */
-        private final Map<EEthncity, Triple<AbstractRealDistribution, Number, Number>> m_ethnic;
+        private final Map<EEthnicity, Triple<AbstractRealDistribution, Number, Number>> m_ethnic;
         /**
          * attribute map with initialize values (initial value, min, max bounding)
          */
@@ -2007,7 +2025,7 @@ public enum EPokemon
          * @param p_ethnic stream with ethnic types
          * @param p_ethnicvalue stream with ethnic values
          */
-        private CLevelTupel( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue )
+        private CLevelTupel( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue )
         {
             this(
                 p_ethnic, p_ethnicvalue,
@@ -2025,7 +2043,7 @@ public enum EPokemon
          * @param p_attributes stream with attributes types
          * @param p_attributesvalue stream with attributes values
          */
-        private CLevelTupel( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        private CLevelTupel( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                              final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
         )
         {
@@ -2047,7 +2065,7 @@ public enum EPokemon
          * @param p_motivation stream with motivation types
          * @param p_motivationvalue stream with motivation value
          */
-        private CLevelTupel( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        private CLevelTupel( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                              final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                              final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
         )
@@ -2070,7 +2088,7 @@ public enum EPokemon
          * @param p_motivation stream with motivation types
          * @param p_motivationvalue stream with motivation value
          */
-        private CLevelTupel( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        private CLevelTupel( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                              final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                              final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
                              final Stream<EAttack> p_attack
@@ -2088,7 +2106,7 @@ public enum EPokemon
          *
          * @return map individual ethnic values
          */
-        public Map<EEthncity, Number> ethnic()
+        public Map<EEthnicity, Number> ethnic()
         {
             return CLevelTupel.generate( m_ethnic );
         }
@@ -2160,7 +2178,7 @@ public enum EPokemon
                 return this;
 
             m_texturepath = MessageFormat.format(
-                "agentrouting/pokemon/{0}_{1}.png",
+                ICONFILENAME,
                 p_pokemon.name().toLowerCase().replaceAll( " ", "_" ),
                 p_index
             );
@@ -2262,7 +2280,7 @@ public enum EPokemon
          * @param p_ethnicvalue stream with ethnic values
          * @return tupel
          */
-        public static CLevelTupel generate( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue )
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue )
         {
             return new CLevelTupel(
                 p_ethnic, p_ethnicvalue
@@ -2278,7 +2296,7 @@ public enum EPokemon
          * @param p_attributesvalue stream with attributes values
          * @return tupel
          */
-        public static CLevelTupel generate( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                                             final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
         )
         {
@@ -2299,7 +2317,7 @@ public enum EPokemon
          * @param p_motivationvalue stream with motivation value
          * @return tupel
          */
-        public static CLevelTupel generate( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                                             final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                                             final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
         )
@@ -2322,7 +2340,7 @@ public enum EPokemon
          * @param p_motivationvalue stream with motivation value
          * @return tupel
          */
-        public static CLevelTupel generate( final Stream<EEthncity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                                             final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                                             final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
                                             final Stream<EAttack> p_attack

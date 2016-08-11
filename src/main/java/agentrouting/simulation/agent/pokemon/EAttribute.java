@@ -50,7 +50,6 @@ public enum EAttribute
     VIEWANGLE( EAccess.READ ),
     MAXIMUMSPEED( EAccess.READ ),
     SPEED( EAccess.WRITE ),
-    AROUND( EAccess.WRITE ),
     NEARBY( EAccess.WRITE );
 
     /**

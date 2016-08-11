@@ -62,14 +62,34 @@ public enum EPokemon
             Stream.of(
                 new ImmutableTriple<>( 0.8, 0.6, 1 )
             ),
-
             Stream.of(
                 EAttribute.HEIGHT,
-                EAttribute.WEIGHT
+                EAttribute.WEIGHT,
+                EAttribute.VIEWANGLE,
+                EAttribute.VIEWRANGE,
+                EAttribute.NEARBY
             ),
             Stream.of(
                 new ImmutableTriple<>( 1.1, 0.8, 1.3 ),
-                new ImmutableTriple<>( 34.6, 30, 40 )
+                new ImmutableTriple<>( 34.6, 30, 40 ),
+                new ImmutableTriple<>( 110, 105, 120 ),
+                new ImmutableTriple<>( 2, 1, 3 ),
+                new ImmutableTriple<>( 2, 1, 3 )
+            ),
+            Stream.of(
+                EMotivation.HELP,
+                EMotivation.CURE,
+                EMotivation.CAUTIOUSNESS
+            ),
+            Stream.of(
+                new ImmutableTriple<>( 0.8, 0.6, 1 ),
+                new ImmutableTriple<>( 0.4, 0.3, 0.5 ),
+                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+            ),
+            Stream.of(
+                EAttack.POUND,
+                EAttack.COMETPUNCH,
+                EAttack.DOUBLESLAP
             )
         )
     ),
@@ -112,11 +132,33 @@ public enum EPokemon
 
             Stream.of(
                 EAttribute.HEIGHT,
-                EAttribute.WEIGHT
+                EAttribute.WEIGHT,
+                EAttribute.NEARBY,
+                EAttribute.VIEWRANGE,
+                EAttribute.VIEWANGLE
             ),
+
             Stream.of(
                 new ImmutableTriple<>( 1.4, 1, 1.7 ),
-                new ImmutableTriple<>( 39.2, 36, 42 )
+                new ImmutableTriple<>( 39.2, 36, 42 ),
+                new ImmutableTriple<>( 3, 1, 4 ),
+                new ImmutableTriple<>( 3, 1, 4 ),
+                new ImmutableTriple<>( 170, 160, 180 )
+            ),
+
+            Stream.of(
+                EMotivation.HUNT,
+                EMotivation.IGNORANCE
+            ),
+
+            Stream.of(
+                new ImmutableTriple<>( 0.85, 0.7, 1 ),
+                new ImmutableTriple<>( 0.4, 0.3, 0.5 )
+            ),
+
+            Stream.of(
+                EAttack.DRILLPECK,
+                EAttack.SLAM
             )
         ),
 

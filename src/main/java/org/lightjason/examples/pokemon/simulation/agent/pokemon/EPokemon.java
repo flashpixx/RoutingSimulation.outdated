@@ -1919,7 +1919,7 @@ public enum EPokemon
     /**
      * filename of the icon
      */
-    private static final String ICONFILENAME = "org/lightjason/examples/pokemon/pokemon/icon/{0}_{1}.png";
+    private static final String ICONFILENAME = "org/lightjason/examples/pokemon/datasource/icon/{0}_{1}.png";
     /**
      * sprite list
      */

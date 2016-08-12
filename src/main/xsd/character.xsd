@@ -236,7 +236,7 @@
         <xs:annotation>
             <xs:documentation>abstract attack definition</xs:documentation>
         </xs:annotation>
-        <xs:all>
+        <xs:sequence>
             <xs:element maxOccurs="unbounded" minOccurs="1" name="damage">
                 <xs:complexType>
                     <xs:attribute name="id" use="required">
@@ -256,7 +256,7 @@
                     </xs:attribute>
                 </xs:complexType>
             </xs:element>
-        </xs:all>
+        </xs:sequence>
     </xs:complexType>
     <xs:complexType name="iconfigurationitem">
         <xs:annotation>

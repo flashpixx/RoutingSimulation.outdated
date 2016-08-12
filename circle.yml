@@ -20,7 +20,7 @@ machine:
         GIT_AUTHOR_EMAIL: info@flashpixx.de
         GIT_COMMITTER_NAME: CircleCI
         GIT_COMMITTER_EMAIL: info@flashpixx.de
-        JAR: routing-0.1-SNAPSHOT.jar
+        JAR: pokemon-0.1-SNAPSHOT.jar
 
     java:
         version: oraclejdk8

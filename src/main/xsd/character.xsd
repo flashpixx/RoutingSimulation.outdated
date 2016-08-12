@@ -3,59 +3,61 @@
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
     vc:minVersion="1.1">
 
-    <!--  https://www.data2type.de/xml-xslt-xslfo/xml-schema/definition-von-eindeutigkeit-s/id-im-vergleich-mit-xs-key/ -->
+    <!--  
+        https://www.data2type.de/xml-xslt-xslfo/xml-schema/definition-von-eindeutigkeit-s/id-im-vergleich-mit-xs-key/ 
+        http://4webmaster.de/wiki/XML-Schema
+        https://jaxb.java.net/tutorial/section_2_2_15-Referring-to-Another-XML-Element.html
+    -->
 
     <xs:element name="structure">
         <xs:complexType>
             <xs:all>
-                <xs:element maxOccurs="1" minOccurs="1" name="configuration" type="iconfiguration"/>
-                <xs:element name="character" type="icharacters"/>
+                <xs:element maxOccurs="1" minOccurs="1" name="configuration">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ethnicity">
+                                <xs:complexType>
+                                    <xs:sequence minOccurs="1">
+                                        <xs:element maxOccurs="unbounded" minOccurs="1" name="item">
+                                            <xs:complexType>
+                                                <xs:attribute name="id"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                                <xs:key id="keyethnicity" name="keyethnicity">
+                                    <xs:selector xpath="item"/>
+                                    <xs:field xpath="@id"/>
+                                </xs:key>
+                            </xs:element>
+                            <xs:element name="motivations" maxOccurs="unbounded" minOccurs="0"
+                                type="iname"/>
+                            <xs:element name="attack" maxOccurs="unbounded" minOccurs="0"
+                                type="iattack"/>
+                            <xs:element name="attributes" maxOccurs="unbounded" minOccurs="0"
+                                type="iattribut"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="character">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="unbounded">
+                            <xs:element name="pokemon">
+                                <xs:complexType>
+                                    <xs:complexContent>
+                                        <xs:extension base="ipokemon">
+                                            <xs:attribute name="name" type="xs:string"
+                                                use="required"/>
+                                        </xs:extension>
+                                    </xs:complexContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
             </xs:all>
         </xs:complexType>
     </xs:element>
-
-    <xs:complexType name="icharacters">
-        <xs:annotation>
-            <xs:documentation>pokemon character elements</xs:documentation>
-        </xs:annotation>
-        <xs:sequence maxOccurs="unbounded">
-            <xs:element name="pokemon" type="ipokemon"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="ipokemon">
-        <xs:annotation>
-            <xs:documentation>pokemon definition with all generations</xs:documentation>
-        </xs:annotation>
-        <xs:sequence maxOccurs="unbounded" minOccurs="1">
-            <xs:element name="generation" type="igeneration"/>
-        </xs:sequence>
-        <xs:attribute name="id" type="xs:string" use="required"/>
-    </xs:complexType>
-
-    <xs:complexType name="igeneration">
-        <xs:annotation>
-            <xs:documentation>generation definition</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element maxOccurs="1" minOccurs="0" name="ethnicity">
-                <xs:complexType>
-                    <xs:attributeGroup ref="ivaluetriple"/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element maxOccurs="1" minOccurs="0" name="attribut">
-                <xs:complexType>
-                    <xs:attributeGroup ref="ivaluetriple"/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element maxOccurs="1" minOccurs="0" name="motivation">
-                <xs:complexType>
-                    <xs:attributeGroup ref="ivaluetriple"/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="attack" maxOccurs="1" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
 
     <xs:attributeGroup name="ivaluetriple">
         <xs:annotation>
@@ -65,21 +67,63 @@
         <xs:attribute name="minimum" type="xs:double" use="required"/>
         <xs:attribute name="expectedvalue" type="xs:double" use="required"/>
     </xs:attributeGroup>
-    <xs:complexType name="iconfiguration">
-        <xs:sequence>
-            <xs:element name="attack" maxOccurs="unbounded" minOccurs="0" type="iattack"/>
-            <xs:element name="motivations"/>
-            <xs:element name="attributes"/>
+    <xs:complexType final="restriction" name="ipokemon">
+        <xs:sequence maxOccurs="unbounded" minOccurs="1">
+            <xs:element name="generation">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="0" name="ethnicity">
+                            <xs:complexType>
+                                <xs:attribute name="id" use="required"/>
+                                <xs:attributeGroup ref="ivaluetriple"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="attribut">
+                            <xs:complexType>
+                                <xs:attribute name="id" use="required"/>
+                                <xs:attributeGroup ref="ivaluetriple"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="motivation">
+                            <xs:complexType>
+                                <xs:attribute name="id" use="required"/>
+                                <xs:attributeGroup ref="ivaluetriple"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="attack" maxOccurs="1" minOccurs="0">
+                            <xs:complexType>
+                                <xs:attribute name="id"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:keyref name="xxx" refer="keyethnicity">
+                    <xs:selector xpath="ethnicity"/>
+                    <xs:field xpath="@id"/>
+                </xs:keyref>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="iattack">
+    <xs:complexType final="#all" name="iname" abstract="true">
+        <xs:sequence>
+            <xs:element name="name"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="iattribut" abstract="true" final="#all">
         <xs:all>
-            <xs:element name="name">
-                <xs:unique name="newUnique">
-                    <xs:selector/>
-                    <xs:field xpath="iattack/name"/>
-                </xs:unique>
+            <xs:element id="keyattribute" maxOccurs="1" minOccurs="1" name="name" type="xs:ID"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="access">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="read, write"/>
+                    </xs:restriction>
+                </xs:simpleType>
             </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="iattack" abstract="true" final="#all">
+        <xs:all>
+
             <xs:element maxOccurs="1" minOccurs="1" name="distance" type="xs:positiveInteger"/>
             <xs:element maxOccurs="1" minOccurs="1" name="cost">
                 <xs:simpleType>
@@ -90,19 +134,16 @@
             </xs:element>
             <xs:element maxOccurs="unbounded" minOccurs="1" name="damage">
                 <xs:complexType>
-                    <xs:attributeGroup ref="idamage"/>
+                    <xs:attribute name="id" type="xs:IDREF" use="required"/>
+                    <xs:attribute name="value" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:double">
+                                <xs:minExclusive value="0"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
                 </xs:complexType>
             </xs:element>
         </xs:all>
     </xs:complexType>
-    <xs:attributeGroup name="idamage">
-        <xs:attribute name="attribute"/>
-        <xs:attribute name="value">
-            <xs:simpleType>
-                <xs:restriction base="xs:double">
-                    <xs:minExclusive value="0"/>
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
-    </xs:attributeGroup>
 </xs:schema>

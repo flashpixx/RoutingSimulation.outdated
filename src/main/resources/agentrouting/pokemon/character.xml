@@ -55,7 +55,7 @@
 
 
         <attack>
-            <!-- === normal ==================================================================================================================================== -->
+            <!-- === normal ================================================================================================================================ -->
             <item id="scratch" distance="1" accuracy="1" energycost="0.05">
                 <damage id="health" value="0.3"/>
             </item>
@@ -104,7 +104,7 @@
                 <damage id="health" value="1"/>
             </item>
 
-            <!-- === fire ====================================================================================================================================== -->
+            <!-- === fire ================================================================================================================================== -->
             <item id="ember" distance="2" accuracy="1" energycost="0.05">
                 <damage id="health" value="0.4"/>
             </item>
@@ -124,7 +124,7 @@
             </item>
 
 
-            <!-- === water ===================================================================================================================================== -->
+            <!-- === water ================================================================================================================================= -->
             <item id="bubble" distance="2" accuracy="1" energycost="0.05">
                 <damage id="health" value="0.3"/>
                 <damage id="mind" value="0.1"/>
@@ -146,6 +146,24 @@
                 <damage id="health" value="1"/>
             </item>
 
+
+            <!-- === electric ============================================================================================================================== -->
+            <item id="thunderwave" distance="3" accuracy="1" energycost="0.05">
+                <damage id="mind" value="0.1"/>
+            </item>
+
+            <item id="thundershock" distance="4" accuracy="1" energycost="0.05">
+                <damage id="health" value="0.4"/>
+            </item>
+            
+            <item id="thunderbolt" distance="4" accuracy="1" energycost="0.1">
+                <damage id="health" value="0.8"/>
+            </item>
+            
+            <item id="thunder" distance="5" accuracy="1" energycost="0.15">
+                <damage id="health" value="1"/>
+            </item>
+            
         </attack>
     </configuration>
 
@@ -170,7 +188,7 @@
 
                 <attack id="pound"/>
                 <attack id="cometpunch"/>
-                <attack id="doubleslap"/>
+                <!-- <attack id="doubleslap"/> -->
             </generation>
         </pokemon>
 

@@ -6,7 +6,12 @@
     <xs:element name="structure">
         <xs:complexType>
             <xs:all>
-                <xs:element maxOccurs="1" minOccurs="1" name="configuration" type="iconfiguration"/>
+                <xs:element maxOccurs="1" minOccurs="1" name="configuration" type="iconfiguration">
+                    <xs:keyref name="ref-attack-attribute" refer="key-attribute">
+                        <xs:selector xpath=".//attack/item/damage"/>
+                        <xs:field xpath="@id"/>
+                    </xs:keyref>
+                </xs:element>
                 <xs:element name="character">
                     <xs:complexType>
                         <xs:sequence maxOccurs="unbounded">
@@ -91,7 +96,13 @@
                             <xs:complexType mixed="false">
                                 <xs:complexContent>
                                     <xs:extension base="iattack">
-                                        <xs:attribute name="id" use="required"/>
+                                        <xs:attribute name="id" use="required">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:pattern value="([a-z0-9_-])+"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:attribute>
                                         <xs:attribute name="distance" use="required">
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:double">
@@ -228,7 +239,13 @@
         <xs:all>
             <xs:element maxOccurs="unbounded" minOccurs="1" name="damage">
                 <xs:complexType>
-                    <xs:attribute name="id" use="required"/>
+                    <xs:attribute name="id" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:pattern value="([a-z0-9_-])+"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
                     <xs:attribute name="value" use="required">
                         <xs:simpleType>
                             <xs:restriction base="xs:double">
@@ -245,6 +262,12 @@
         <xs:annotation>
             <xs:documentation>abstract definition of a configuration element</xs:documentation>
         </xs:annotation>
-        <xs:attribute name="id" use="required"/>
+        <xs:attribute name="id" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="([a-z0-9_-])+"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
 </xs:schema>

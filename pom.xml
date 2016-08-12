@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     
     <!-- defines the main project information -->
-    <groupId>simulation</groupId>
-    <artifactId>routing</artifactId>
+    <groupId>org.lightjason</groupId>
+    <artifactId>pokemon</artifactId>
     <version>0.1-SNAPSHOT</version>
     
     <!-- project build configuration -->
@@ -331,7 +331,7 @@
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <!-- here is the class defined, which has got the "public static coid main( final String[] p_args )" class -->
-                                        <Main-Class>agentrouting.CMain</Main-Class>
+                                        <Main-Class>org.lightjason.examples.pokemon.CMain</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>

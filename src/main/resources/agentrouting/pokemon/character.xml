@@ -154,7 +154,7 @@
     <character>
 
         <!-- === normal ======================================================================================================================================== -->
-        <pokemon name="chansey">
+        <pokemon id="chansey">
             <generation>
                 <ethnicity id="normal" expected="0.8" minimum="0.6" maximum="1"/>
 

@@ -2,11 +2,7 @@
 <xs:schema elementFormDefault="qualified" vc:minVersion="1.1"
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <!--  
-        https://www.data2type.de/xml-xslt-xslfo/xml-schema/definition-von-eindeutigkeit-s/id-im-vergleich-mit-xs-key/ 
-        http://4webmaster.de/wiki/XML-Schema
-        https://jaxb.java.net/tutorial/section_2_2_15-Referring-to-Another-XML-Element.html
-    -->
+
     <xs:element name="structure">
         <xs:complexType>
             <xs:all>
@@ -26,19 +22,27 @@
                             </xs:element>
                         </xs:sequence>
                     </xs:complexType>
-                    <xs:key name="keypokemon">
+                    <xs:key name="key-pokemon">
                         <xs:selector xpath="pokemon"/>
                         <xs:field xpath="@id"/>
                     </xs:key>
                 </xs:element>
             </xs:all>
         </xs:complexType>
-        <xs:keyref name="refethnicity" refer="keyethnicity">
-            <xs:selector xpath=".//character/pokemon/ethnicity"/>
+        <xs:keyref name="keyref-pokemon-ethnicity" refer="key-ethnicity">
+            <xs:selector xpath=".//character/pokemon/generation/ethnicity"/>
             <xs:field xpath="@id"/>
         </xs:keyref>
-        <xs:keyref name="refattribute" refer="keyattribute">
-            <xs:selector xpath="damage"/>
+        <xs:keyref name="keyref-pokemon-attribute" refer="key-attribute">
+            <xs:selector xpath=".//character/pokemon/generation/attribute"/>
+            <xs:field xpath="@id"/>
+        </xs:keyref>
+        <xs:keyref name="keyref-pokemon-motivation" refer="key-motivation">
+            <xs:selector xpath=".//character/pokemon/generation/motivation"/>
+            <xs:field xpath="@id"/>
+        </xs:keyref>
+        <xs:keyref name="keyref-pokemon-attack" refer="key-attack">
+            <xs:selector xpath=".//character/pokemon/generation/attack"/>
             <xs:field xpath="@id"/>
         </xs:keyref>
     </xs:element>
@@ -63,7 +67,7 @@
                             type="iconfigurationitem"> </xs:element>
                     </xs:sequence>
                 </xs:complexType>
-                <xs:key id="keyethnicity" name="keyethnicity">
+                <xs:key name="key-ethnicity">
                     <xs:selector xpath="item"/>
                     <xs:field xpath="@id"/>
                 </xs:key>
@@ -75,7 +79,7 @@
                             type="iconfigurationitem"> </xs:element>
                     </xs:sequence>
                 </xs:complexType>
-                <xs:key name="keymotivation">
+                <xs:key name="key-motivation">
                     <xs:selector xpath="item"/>
                     <xs:field xpath="@id"/>
                 </xs:key>
@@ -113,14 +117,14 @@
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
-                            <xs:unique name="uniqueyattack">
+                            <xs:unique name="uniquey-attack">
                                 <xs:selector xpath="damage"/>
                                 <xs:field xpath="@id"/>
                             </xs:unique>
                         </xs:element>
                     </xs:sequence>
                 </xs:complexType>
-                <xs:key name="keyattack">
+                <xs:key name="key-attack">
                     <xs:selector xpath="item"/>
                     <xs:field xpath="@id"/>
                 </xs:key>
@@ -146,7 +150,7 @@
                         </xs:element>
                     </xs:sequence>
                 </xs:complexType>
-                <xs:key name="keyattribute">
+                <xs:key name="key-attribute">
                     <xs:selector xpath="item"/>
                     <xs:field xpath="@id"/>
                 </xs:key>
@@ -198,19 +202,19 @@
                         </xs:element>
                     </xs:sequence>
                 </xs:complexType>
-                <xs:unique name="uniqueethnicity">
+                <xs:unique name="unique-ethnicity">
                     <xs:selector xpath="ethnicity"/>
                     <xs:field xpath="@id"/>
                 </xs:unique>
-                <xs:unique name="uniqueattribute">
+                <xs:unique name="unique-attribute">
                     <xs:selector xpath="attribute"/>
                     <xs:field xpath="@id"/>
                 </xs:unique>
-                <xs:unique name="uniquemotivation">
+                <xs:unique name="unique-motivation">
                     <xs:selector xpath="motivation"/>
                     <xs:field xpath="@id"/>
                 </xs:unique>
-                <xs:unique name="uniqueattack">
+                <xs:unique name="unique-attack">
                     <xs:selector xpath="attack"/>
                     <xs:field xpath="@id"/>
                 </xs:unique>

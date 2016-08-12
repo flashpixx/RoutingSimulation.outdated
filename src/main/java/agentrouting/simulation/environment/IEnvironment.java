@@ -118,13 +118,4 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      */
     IEnvironment initialize();
 
-    /**
-     * stream to get all items around a position
-     *
-     * @param p_position center position
-     * @param p_radius radius around the center in cells
-     * @return stream over elements
-     */
-    Stream<? extends IElement> around( final DoubleMatrix1D p_position, final int p_radius );
-
 }

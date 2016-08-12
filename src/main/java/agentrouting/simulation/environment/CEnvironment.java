@@ -185,24 +185,6 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
-    @SuppressWarnings( "unchecked" )
-    public final synchronized Stream<? extends IElement> around( final DoubleMatrix1D p_position, final int p_radius )
-    {
-        return IntStream.rangeClosed( -p_radius, p_radius )
-                        .parallel()
-                        .boxed()
-                        .flatMap( i -> IntStream.rangeClosed( -p_radius, p_radius )
-                                                .boxed()
-                                                .map( j -> (IElement) m_positions.getQuick(
-                                                               (int) CEnvironment.clip( p_position.get( 0 ) + i, m_row ),
-                                                               (int) CEnvironment.clip( p_position.getQuick( 1 ) + j, m_column )
-                                                           )
-                                                )
-                        )
-                        .filter( i -> i != null );
-    }
-
-    @Override
     public final synchronized boolean empty( final DoubleMatrix1D p_position )
     {
         final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );

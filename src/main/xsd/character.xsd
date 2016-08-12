@@ -33,15 +33,15 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:attributeGroup name="ivaluetriple">
+    <xs:complexType name="igenerationitem">
         <xs:annotation>
-            <xs:documentation>attribute triple for distribution structure</xs:documentation>
+            <xs:documentation>abstract definition of a generation item elementn</xs:documentation>
         </xs:annotation>
-        <xs:attribute name="maximum" type="xs:double" use="required"/>
+        <xs:attribute name="id" use="required"/>
+        <xs:attribute name="expected" type="xs:double" use="required"/>
         <xs:attribute name="minimum" type="xs:double" use="required"/>
-        <xs:attribute name="expectedvalue" type="xs:double" use="required"/>
-    </xs:attributeGroup>
-
+        <xs:attribute name="maximum" type="xs:double" use="required"/>
+    </xs:complexType>
     <xs:complexType name="iconfiguration" final="#all">
         <xs:annotation>
             <xs:documentation>abstract definition of the configuration</xs:documentation>
@@ -78,15 +78,23 @@
                             <xs:complexType mixed="false">
                                 <xs:complexContent>
                                     <xs:extension base="iattack">
-                                        <xs:attribute name="id"/>
-                                        <xs:attribute name="distance">
+                                        <xs:attribute name="id" use="required"/>
+                                        <xs:attribute name="distance" use="required">
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:double">
                                                   <xs:minExclusive value="0"/>
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:attribute>
-                                        <xs:attribute name="cost">
+                                        <xs:attribute name="accuracy" use="required">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:double">
+                                                  <xs:minExclusive value="0"/>
+                                                  <xs:maxInclusive value="1"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:attribute>
+                                        <xs:attribute name="energycost" use="required">
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:double">
                                                   <xs:minExclusive value="0"/>
@@ -111,16 +119,14 @@
                             <xs:complexType>
                                 <xs:complexContent>
                                     <xs:extension base="iconfigurationitem">
-                                        <xs:sequence>
-                                            <xs:element maxOccurs="1" minOccurs="1" name="access">
-                                                <xs:simpleType>
-                                                  <xs:restriction base="xs:string">
+                                        <xs:attribute name="agentaccess">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
                                                   <xs:enumeration value="read"/>
                                                   <xs:enumeration value="write"/>
-                                                  </xs:restriction>
-                                                </xs:simpleType>
-                                            </xs:element>
-                                        </xs:sequence>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:attribute>
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
@@ -144,25 +150,37 @@
                     <xs:sequence>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="ethnicity">
                             <xs:complexType>
-                                <xs:attribute name="id" use="required"/>
-                                <xs:attributeGroup ref="ivaluetriple"/>
+                                <xs:complexContent>
+                                    <xs:extension base="igenerationitem">
+                                        <xs:assert test="@minimum &lt; @expected"/>
+                                        <xs:assert test="@expected &lt; @maximum"/>
+                                    </xs:extension>
+                                </xs:complexContent>
                             </xs:complexType>
                         </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="attribute">
                             <xs:complexType>
-                                <xs:attribute name="id" use="required"/>
-                                <xs:attributeGroup ref="ivaluetriple"/>
+                                <xs:complexContent>
+                                    <xs:extension base="igenerationitem">
+                                        <xs:assert test="@minimum &lt; @expected"/>
+                                        <xs:assert test="@expected &lt; @maximum"/>
+                                    </xs:extension>
+                                </xs:complexContent>
                             </xs:complexType>
                         </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="motivation">
                             <xs:complexType>
-                                <xs:attribute name="id" use="required"/>
-                                <xs:attributeGroup ref="ivaluetriple"/>
+                                <xs:complexContent>
+                                    <xs:extension base="igenerationitem">
+                                        <xs:assert test="@minimum &lt; @expected"/>
+                                        <xs:assert test="@expected &lt; @maximum"/>
+                                    </xs:extension>
+                                </xs:complexContent>
                             </xs:complexType>
                         </xs:element>
                         <xs:element name="attack" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType>
-                                <xs:attribute name="id"/>
+                                <xs:attribute name="id" use="required"/>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
@@ -203,6 +221,7 @@
                         <xs:simpleType>
                             <xs:restriction base="xs:double">
                                 <xs:minExclusive value="0"/>
+                                <xs:maxInclusive value="1"/>
                             </xs:restriction>
                         </xs:simpleType>
                     </xs:attribute>

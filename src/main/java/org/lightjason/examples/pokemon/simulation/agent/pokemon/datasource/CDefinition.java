@@ -42,12 +42,12 @@ import java.util.stream.Collectors;
 /**
  * pokemon definition class
  */
-public final class CPokemonSource
+public final class CDefinition
 {
     /**
      * singleton instance
      */
-    public static final CPokemonSource INSTANCE = new CPokemonSource();
+    public static final CDefinition INSTANCE = new CDefinition();
     /**
      * logger
      */
@@ -60,7 +60,7 @@ public final class CPokemonSource
     /**
      * ctor
      */
-    private CPokemonSource()
+    private CDefinition()
     {
         Structure l_structure = null;
         try

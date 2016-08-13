@@ -37,25 +37,25 @@
             </xs:all>
         </xs:complexType>
         <xs:keyref name="keyref-pokemon-ethnicity" refer="key-ethnicity">
-            <xs:selector xpath=".//character/pokemon/generation/ethnicity"/>
+            <xs:selector xpath=".//character/pokemon/level/ethnicity"/>
             <xs:field xpath="@id"/>
         </xs:keyref>
         <xs:keyref name="keyref-pokemon-attribute" refer="key-attribute">
-            <xs:selector xpath=".//character/pokemon/generation/attribute"/>
+            <xs:selector xpath=".//character/pokemon/level/attribute"/>
             <xs:field xpath="@id"/>
         </xs:keyref>
         <xs:keyref name="keyref-pokemon-motivation" refer="key-motivation">
-            <xs:selector xpath=".//character/pokemon/generation/motivation"/>
+            <xs:selector xpath=".//character/pokemon/level/motivation"/>
             <xs:field xpath="@id"/>
         </xs:keyref>
         <xs:keyref name="keyref-pokemon-attack" refer="key-attack">
-            <xs:selector xpath=".//character/pokemon/generation/attack"/>
+            <xs:selector xpath=".//character/pokemon/level/attack"/>
             <xs:field xpath="@id"/>
         </xs:keyref>
     </xs:element>
-    <xs:complexType name="igenerationitem">
+    <xs:complexType name="ilevelitem">
         <xs:annotation>
-            <xs:documentation>abstract definition of a generation item elementn</xs:documentation>
+            <xs:documentation>abstract definition of a level item elementn</xs:documentation>
         </xs:annotation>
         <xs:attribute name="id" use="required"/>
         <xs:attribute name="expected" type="xs:double" use="required"/>
@@ -175,45 +175,42 @@
             <xs:documentation>abstract definition of s single pokemon character</xs:documentation>
         </xs:annotation>
         <xs:sequence maxOccurs="unbounded" minOccurs="1">
-            <xs:element name="generation">
+            <xs:element name="level">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="ethnicity">
                             <!--
                             <xs:complexType>
                                 <xs:complexContent>
-                                    <xs:extension base="igenerationitem">
+                                    <xs:extension base="ilevelitem">
                                         <xs:assert test="@minimum &lt; @expected"/>
                                         <xs:assert test="@expected &lt; @maximum"/>
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
-                            -->
-                        </xs:element>
+                            --> </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="attribute">
                             <!--
                             <xs:complexType>
                                 <xs:complexContent>
-                                    <xs:extension base="igenerationitem">
+                                    <xs:extension base="ilevelitem">
                                         <xs:assert test="@minimum &lt; @expected"/>
                                         <xs:assert test="@expected &lt; @maximum"/>
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
-                            -->
-                        </xs:element>
+                            --> </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="motivation">
                             <!--
                             <xs:complexType>
                                 <xs:complexContent>
-                                    <xs:extension base="igenerationitem">
+                                    <xs:extension base="ilevelitem">
                                         <xs:assert test="@minimum &lt; @expected"/>
                                         <xs:assert test="@expected &lt; @maximum"/>
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
-                            -->
-                        </xs:element>
+                            --> </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="attack">
                             <xs:complexType>
                                 <xs:attribute name="id" use="required"/>

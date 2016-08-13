@@ -36,6 +36,7 @@ import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.CConfiguration;
 import org.lightjason.examples.pokemon.datasource.Structure;
 import org.lightjason.examples.pokemon.simulation.CMath;
+import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -66,7 +67,7 @@ public final class CPokemonDefinition
      */
     private static final Logger LOGGER = Logger.getLogger( CConfiguration.class.getName() );
     /**
-     * mapt with pokemon data
+     * map with pokemon data
      */
     private Map<String, List<CLevelTupel>> m_pokemon;
 
@@ -127,6 +128,54 @@ public final class CPokemonDefinition
     {
         return m_pokemon.getOrDefault( p_pokemon.trim().toLowerCase(), Collections.emptyList() ).get( p_index );
     }
+
+
+    /**
+     * attack class
+     */
+    public static final class CAttack
+    {
+        /**
+         * name of the attack
+         */
+        private final String m_name;
+        /**
+         * access
+         */
+        private final EAccess m_access;
+
+        /**
+         * ctor
+         *
+         * @param p_name name
+         * @param p_access access
+         */
+        public CAttack( final String p_name, final EAccess p_access )
+        {
+            m_name = p_name;
+            m_access = p_access;
+        }
+
+        @Override
+        public final int hashCode()
+        {
+            return m_name.hashCode();
+        }
+
+        @Override
+        public final boolean equals( final Object p_object )
+        {
+            return ( p_object != null ) && ( p_object instanceof CAttack ) && ( this.hashCode() == p_object.hashCode() );
+        }
+
+        @Override
+        public final String toString()
+        {
+            return MessageFormat.format( "attack( {0} - {1} )", m_name, m_access );
+        }
+    }
+
+
 
 
     /**
@@ -256,9 +305,9 @@ public final class CPokemonDefinition
                              final Stream<EAttack> p_attack
         )
         {
-            m_ethnic = EPokemon.CLevelTupel.initialize( p_ethnic, p_ethnicvalue );
-            m_attributes = EPokemon.CLevelTupel.initialize( p_attributes, p_attributesvalue );
-            m_motivation = EPokemon.CLevelTupel.initialize( p_motivation, p_motivationvalue );
+            m_ethnic = CLevelTupel.initialize( p_ethnic, p_ethnicvalue );
+            m_attributes = CLevelTupel.initialize( p_attributes, p_attributesvalue );
+            m_motivation = CLevelTupel.initialize( p_motivation, p_motivationvalue );
             m_attack = Collections.unmodifiableSet( p_attack.collect( Collectors.toSet() ) );
         }
 
@@ -270,7 +319,7 @@ public final class CPokemonDefinition
          */
         public Map<EEthnicity, Number> ethnic()
         {
-            return EPokemon.CLevelTupel.generate( m_ethnic );
+            return CLevelTupel.generate( m_ethnic );
         }
 
         /**
@@ -280,7 +329,7 @@ public final class CPokemonDefinition
          */
         public Map<EAttribute, Number> attributes()
         {
-            return EPokemon.CLevelTupel.generate( m_attributes );
+            return CLevelTupel.generate( m_attributes );
         }
 
         /**
@@ -290,7 +339,7 @@ public final class CPokemonDefinition
          */
         public Map<EMotivation, Number> motivation()
         {
-            return EPokemon.CLevelTupel.generate( m_motivation );
+            return CLevelTupel.generate( m_motivation );
         }
 
         /**
@@ -334,13 +383,13 @@ public final class CPokemonDefinition
          * @param p_index index
          * @return self reference
          */
-        public final synchronized EPokemon.CLevelTupel sprite( final EPokemon p_pokemon, final int p_index )
+        public final synchronized CLevelTupel sprite( final EPokemon p_pokemon, final int p_index )
         {
             if ( m_texture != null )
                 return this;
 
             m_texturepath = MessageFormat.format(
-                ICONFILENAME,
+                "foo",
                 p_pokemon.name().toLowerCase().replaceAll( " ", "_" ),
                 p_index
             );
@@ -373,9 +422,9 @@ public final class CPokemonDefinition
          *
          * @return tupel
          */
-        public static EPokemon.CLevelTupel generate()
+        public static CLevelTupel generate()
         {
-            return new EPokemon.CLevelTupel();
+            return new CLevelTupel();
         }
 
         /**
@@ -385,9 +434,9 @@ public final class CPokemonDefinition
          * @param p_ethnicvalue stream with ethnic values
          * @return tupel
          */
-        public static EPokemon.CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue )
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue )
         {
-            return new EPokemon.CLevelTupel(
+            return new CLevelTupel(
                 p_ethnic, p_ethnicvalue
             );
         }
@@ -401,11 +450,11 @@ public final class CPokemonDefinition
          * @param p_attributesvalue stream with attributes values
          * @return tupel
          */
-        public static EPokemon.CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                                                      final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
         )
         {
-            return new EPokemon.CLevelTupel(
+            return new CLevelTupel(
                 p_ethnic, p_ethnicvalue,
                 p_attributes, p_attributesvalue
             );
@@ -422,12 +471,12 @@ public final class CPokemonDefinition
          * @param p_motivationvalue stream with motivation value
          * @return tupel
          */
-        public static EPokemon.CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                                                      final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                                                      final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
         )
         {
-            return new EPokemon.CLevelTupel(
+            return new CLevelTupel(
                 p_ethnic, p_ethnicvalue,
                 p_attributes, p_attributesvalue,
                 p_motivation, p_motivationvalue
@@ -445,13 +494,13 @@ public final class CPokemonDefinition
          * @param p_motivationvalue stream with motivation value
          * @return tupel
          */
-        public static EPokemon.CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+        public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                                                      final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                                                      final Stream<EMotivation> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
                                                      final Stream<EAttack> p_attack
         )
         {
-            return new EPokemon.CLevelTupel(
+            return new CLevelTupel(
                 p_ethnic, p_ethnicvalue,
                 p_attributes, p_attributesvalue,
                 p_motivation, p_motivationvalue,

@@ -104,6 +104,8 @@ public final class CPokemon extends IBaseAgent
         if ( p_pokemon.isEmpty() )
             throw new RuntimeException( "pokemon name need not to be empty" );
 
+        System.out.println( CPokemonDefinition.INSTANCE );
+
         m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
         m_ethnic = m_pokemon.tupel( m_level ).ethnic();
         m_attribute = m_pokemon.tupel( m_level ).attributes();

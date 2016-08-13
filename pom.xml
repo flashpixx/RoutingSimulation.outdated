@@ -308,7 +308,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Jaxb for XSD compiligng
+            <!-- Jaxb for XSD compiligng -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
@@ -326,7 +326,6 @@
                     <encoding>utf-8</encoding>
                 </configuration>
             </plugin>
-            -->
 
             <!-- the project should be build into one executable Jar file, which stores any dependencies which are included above -->
             <plugin>

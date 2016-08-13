@@ -48,7 +48,9 @@ import java.util.stream.Stream;
  * enum to define all sprites by name
  *
  * @see http://www.pokewiki.de/Pok%C3%A9mon-Liste
+ * @deprecated remove
  */
+@Deprecated
 public enum EPokemon
 {
     // --- normal ----------------------------------------------------------------------------------------------------------------------------------------------

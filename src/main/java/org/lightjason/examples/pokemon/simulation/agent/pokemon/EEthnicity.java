@@ -34,7 +34,10 @@ import java.util.stream.Collectors;
  * ethncity of a pokemon agent
  * @see http://bulbapedia.bulbagarden.net/wiki/Type
  * @see http://jkunst.com/r/pokemon-visualize-em-all/
+ *
+ * @deprecated remove
  */
+@Deprecated
 public enum EEthnicity
 {
     NORMAL,

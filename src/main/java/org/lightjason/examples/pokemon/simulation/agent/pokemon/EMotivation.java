@@ -31,7 +31,9 @@ import java.util.stream.Collectors;
 
 /**
  * enum for defining the motivation value of an pokemon agent
+ * @deprecated remove
  */
+@Deprecated
 public enum EMotivation
 {
     HUNT,

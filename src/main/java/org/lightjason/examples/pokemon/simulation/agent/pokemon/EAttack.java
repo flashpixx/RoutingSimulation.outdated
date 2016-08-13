@@ -42,7 +42,10 @@ import java.util.stream.Stream;
  * @see http://www.alcove-games.com/opengl-es-2-tutorials/lightmap-shader-fire-effect-glsl/s
  * @see http://www.gamedev.net/page/resources/_/creative/visual-arts/make-a-particle-explosion-effect-r2701
  * @see http://www.gamefromscratch.com/post/2014/11/03/LibGDX-Tutorial-Part-15-Particles-Part-One-2D-Particles.aspx
+ *
+ * @deprecated remove
  */
+@Deprecated
 public enum EAttack
 {
     // --- normal ----------------------------------------------------------------------------------------------------------------------------------------------

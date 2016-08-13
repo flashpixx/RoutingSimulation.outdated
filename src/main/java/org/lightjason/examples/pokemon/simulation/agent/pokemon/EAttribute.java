@@ -33,7 +33,10 @@ import java.util.stream.Collectors;
 
 /**
  * individual attributes of an pokemon agent
+ *
+ * @deprecated remove
  */
+@Deprecated
 public enum EAttribute
 {
 

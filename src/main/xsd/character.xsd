@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" vc:minVersion="1.1"
+<xs:schema elementFormDefault="qualified" vc:minVersion="1.0"
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <!-- disable assert because Jaxb cannot deal with asserts -->
 
     <xs:element name="structure">
         <xs:complexType>
@@ -177,6 +179,7 @@
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="ethnicity">
+                            <!--
                             <xs:complexType>
                                 <xs:complexContent>
                                     <xs:extension base="igenerationitem">
@@ -185,8 +188,10 @@
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
+                            -->
                         </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="attribute">
+                            <!--
                             <xs:complexType>
                                 <xs:complexContent>
                                     <xs:extension base="igenerationitem">
@@ -195,8 +200,10 @@
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
+                            -->
                         </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="motivation">
+                            <!--
                             <xs:complexType>
                                 <xs:complexContent>
                                     <xs:extension base="igenerationitem">
@@ -205,6 +212,7 @@
                                     </xs:extension>
                                 </xs:complexContent>
                             </xs:complexType>
+                            -->
                         </xs:element>
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="attack">
                             <xs:complexType>

@@ -119,16 +119,16 @@ public final class CLevel
      *
      * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
-     * @param p_attributes stream with attributes types
-     * @param p_attributesvalue stream with attributes values
+     * @param p_motivation stream with motivation types
+     * @param p_motivationvalue stream with motivation value
      */
     private CLevel( final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                    final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
+                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
     )
     {
         this(
             p_ethnic, p_ethnicvalue,
-            p_attributes, p_attributesvalue,
+            p_motivation, p_motivationvalue,
             Stream.of(), Stream.of(),
             Stream.of()
         );
@@ -139,20 +139,20 @@ public final class CLevel
      *
      * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
-     * @param p_attributes stream with attributes types
-     * @param p_attributesvalue stream with attributes values
      * @param p_motivation stream with motivation types
      * @param p_motivationvalue stream with motivation value
+     * @param p_attributes stream with attributes types
+     * @param p_attributesvalue stream with attributes values
      */
     private CLevel( final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                    final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
-                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
+                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
+                    final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
     )
     {
         this(
             p_ethnic, p_ethnicvalue,
-            p_attributes, p_attributesvalue,
             p_motivation, p_motivationvalue,
+            p_attributes, p_attributesvalue,
             Stream.of()
         );
     }
@@ -162,14 +162,14 @@ public final class CLevel
      *
      * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
-     * @param p_attributes stream with attributes types
-     * @param p_attributesvalue stream with attributes values
      * @param p_motivation stream with motivation types
      * @param p_motivationvalue stream with motivation value
+     * @param p_attributes stream with attributes types
+     * @param p_attributesvalue stream with attributes values
      */
     private CLevel( final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                    final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                     final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
+                    final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                     final Stream<CAttack> p_attack
     )
     {
@@ -314,39 +314,16 @@ public final class CLevel
      *
      * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
-     * @param p_attributes stream with attributes types
-     * @param p_attributesvalue stream with attributes values
-     * @return tupel
-     */
-    public static CLevel generate( final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                                   final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
-    )
-    {
-        return new CLevel(
-            p_ethnic, p_ethnicvalue,
-            p_attributes, p_attributesvalue
-        );
-    }
-
-    /**
-     * factory of tupel
-     *
-     * @param p_ethnic stream with ethnic types
-     * @param p_ethnicvalue stream with ethnic values
-     * @param p_attributes stream with attributes types
-     * @param p_attributesvalue stream with attributes values
      * @param p_motivation stream with motivation types
      * @param p_motivationvalue stream with motivation value
      * @return tupel
      */
     public static CLevel generate( final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                                   final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
     )
     {
         return new CLevel(
             p_ethnic, p_ethnicvalue,
-            p_attributes, p_attributesvalue,
             p_motivation, p_motivationvalue
         );
     }
@@ -356,22 +333,45 @@ public final class CLevel
      *
      * @param p_ethnic stream with ethnic types
      * @param p_ethnicvalue stream with ethnic values
-     * @param p_attributes stream with attributes types
-     * @param p_attributesvalue stream with attributes values
      * @param p_motivation stream with motivation types
      * @param p_motivationvalue stream with motivation value
+     * @param p_attributes stream with attributes types
+     * @param p_attributesvalue stream with attributes values
      * @return tupel
      */
     public static CLevel generate( final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                                   final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
+                                   final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
+    )
+    {
+        return new CLevel(
+            p_ethnic, p_ethnicvalue,
+            p_motivation, p_motivationvalue,
+            p_attributes, p_attributesvalue
+        );
+    }
+
+    /**
+     * factory of tupel
+     *
+     * @param p_ethnic stream with ethnic types
+     * @param p_ethnicvalue stream with ethnic values
+     * @param p_motivation stream with motivation types
+     * @param p_motivationvalue stream with motivation value
+     * @param p_attributes stream with attributes types
+     * @param p_attributesvalue stream with attributes values
+     * @return tupel
+     */
+    public static CLevel generate( final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
+                                   final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
+                                   final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
                                    final Stream<CAttack> p_attack
     )
     {
         return new CLevel(
             p_ethnic, p_ethnicvalue,
-            p_attributes, p_attributesvalue,
             p_motivation, p_motivationvalue,
+            p_attributes, p_attributesvalue,
             p_attack
         );
     }

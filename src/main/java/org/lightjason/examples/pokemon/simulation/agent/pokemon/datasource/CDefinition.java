@@ -23,8 +23,10 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource;
 
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.CConfiguration;
+import org.lightjason.examples.pokemon.datasource.Ilevelitem;
 import org.lightjason.examples.pokemon.datasource.Structure;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 
@@ -109,7 +111,29 @@ public final class CDefinition
                            .getPokemon()
                            .parallelStream()
                            .collect(
-                               Collectors.toMap( i -> i.getId().trim().toLowerCase(), i -> Collections.<CLevel>emptyList() )
+                               Collectors.toMap(
+                                   i -> i.getId().trim().toLowerCase(),
+                                   i -> //Collections.emptyList()
+
+                                       Collections.unmodifiableList(
+                                            i.getLevel().stream()
+                                             .map( j -> CLevel.generate(
+                                                            j.getEthnicity().stream().map( Ilevelitem::getId ),
+                                                            j.getEthnicity().stream().map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+
+                                                            j.getMotivation().stream().map( Ilevelitem::getId ),
+                                                            j.getMotivation().stream().map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+
+                                                            j.getAttribute().stream().map( n -> l_attribute.get( n.getId().trim().toLowerCase() ) ),
+                                                            j.getAttribute().stream().map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+
+                                                            j.getAttack().stream().map( n -> l_attack.get( n.getId().trim().toLowerCase() ) )
+                                                        )
+                                             )
+                                             .collect( Collectors.toList() )
+                                       )
+
+                               )
                            )
             );
         }

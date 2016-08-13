@@ -178,7 +178,8 @@
             <xs:element name="level">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="ethnicity">
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="ethnicity"
+                            type="ilevelitem">
                             <!--
                             <xs:complexType>
                                 <xs:complexContent>
@@ -189,7 +190,8 @@
                                 </xs:complexContent>
                             </xs:complexType>
                             --> </xs:element>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="attribute">
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="attribute"
+                            type="ilevelitem">
                             <!--
                             <xs:complexType>
                                 <xs:complexContent>
@@ -200,7 +202,8 @@
                                 </xs:complexContent>
                             </xs:complexType>
                             --> </xs:element>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="motivation">
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="motivation"
+                            type="ilevelitem">
                             <!--
                             <xs:complexType>
                                 <xs:complexContent>

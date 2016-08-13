@@ -77,6 +77,7 @@ public final class CDefinition
         }
         catch ( final JAXBException | MalformedURLException | URISyntaxException l_exception )
         {
+            System.out.println( l_exception );
             LOGGER.warning( l_exception.toString() );
         }
 
@@ -91,7 +92,7 @@ public final class CDefinition
                            .getAttribute()
                            .getItem()
                            .stream()
-                           .map( i -> new CAttribute( i.getId(), EAccess.valueOf( i.getAgentaccess() ) ) )
+                           .map( i -> new CAttribute( i.getId(), EAccess.valueOf( i.getAgentaccess().trim().toUpperCase() ) ) )
                            .collect( Collectors.toMap( CAttribute::name, i -> i ) )
             );
 
@@ -109,13 +110,11 @@ public final class CDefinition
             m_pokemon = Collections.unmodifiableMap(
                 l_structure.getCharacter()
                            .getPokemon()
-                           .parallelStream()
+                           .stream()
                            .collect(
                                Collectors.toMap(
                                    i -> i.getId().trim().toLowerCase(),
-                                   i -> //Collections.emptyList()
-
-                                       Collections.unmodifiableList(
+                                   i -> Collections.unmodifiableList(
                                             i.getLevel().stream()
                                              .map( j -> CLevel.generate(
                                                             j.getEthnicity().stream().map( Ilevelitem::getId ),

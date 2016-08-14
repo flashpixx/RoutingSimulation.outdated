@@ -23,6 +23,7 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
+import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.CMath;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -1921,7 +1922,7 @@ public enum EPokemon
     /**
      * filename of the icon
      */
-    private static final String ICONFILENAME = "org/lightjason/examples/pokemon/datasource/icon/{0}_{1}.png";
+    private static final String ICONFILENAME = CCommon.PACKAGEPATH + "data/icon/{0}_{1}.png";
     /**
      * sprite list
      */

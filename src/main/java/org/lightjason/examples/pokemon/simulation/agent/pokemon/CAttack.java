@@ -21,10 +21,10 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource;
+package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
-import org.lightjason.examples.pokemon.datasource.Iattack;
-import org.lightjason.examples.pokemon.datasource.Iconfiguration;
+import org.lightjason.examples.pokemon.data.Iattack;
+import org.lightjason.examples.pokemon.data.Iconfiguration;
 
 import java.text.MessageFormat;
 import java.util.Collections;

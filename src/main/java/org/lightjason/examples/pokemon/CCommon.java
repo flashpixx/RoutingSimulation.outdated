@@ -45,6 +45,10 @@ import java.util.stream.Stream;
 public final class CCommon
 {
     /**
+     * package path
+     */
+    public static final String PACKAGEPATH = "org/lightjason/examples/pokemon/";
+    /**
      * logger
      */
     private static final Logger LOGGER = Logger.getLogger( IAgent.class.getName() );

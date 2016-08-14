@@ -23,6 +23,7 @@
 
 package org.lightjason.examples.pokemon.simulation.agent;
 
+import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemonGenerator;
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
@@ -36,6 +37,7 @@ import org.junit.Test;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.language.score.IAggregation;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Set;
 import java.util.logging.LogManager;
@@ -87,7 +89,7 @@ public final class TestCAgent
         Assume.assumeNotNull( m_actions );
         new CPokemonGenerator(
             m_environment,
-            TestCAgent.class.getResourceAsStream( "/org/lightjason/examples/pokemon/agent.asl" ),
+            TestCAgent.class.getResourceAsStream( MessageFormat.format( "/{0}/agent.asl", CCommon.PACKAGEPATH ) ),
             m_actions,
             IAggregation.EMPTY
         ).generatesingle( EForceFactory.SUM.get(), "eevee" );

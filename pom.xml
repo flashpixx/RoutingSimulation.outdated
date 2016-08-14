@@ -324,8 +324,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <packageName>org.lightjason.examples.pokemon.datasource</packageName>
-                    <encoding>utf-8</encoding>
+                    <packageName>org.lightjason.examples.pokemon.data</packageName>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <clearOutputDir>true</clearOutputDir>
+                    <skipTestXjc>true</skipTestXjc>
                 </configuration>
             </plugin>
 

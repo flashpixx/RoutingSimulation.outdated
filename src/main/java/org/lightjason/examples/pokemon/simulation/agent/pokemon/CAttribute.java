@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource;
+package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 

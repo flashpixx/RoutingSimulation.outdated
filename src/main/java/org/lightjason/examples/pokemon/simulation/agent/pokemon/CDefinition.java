@@ -21,13 +21,13 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource;
+package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.CConfiguration;
-import org.lightjason.examples.pokemon.datasource.Ilevelitem;
-import org.lightjason.examples.pokemon.datasource.Structure;
+import org.lightjason.examples.pokemon.data.Ilevelitem;
+import org.lightjason.examples.pokemon.data.Structure;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 
 import javax.xml.bind.JAXBContext;
@@ -73,7 +73,7 @@ public final class CDefinition
             l_structure = (Structure) JAXBContext.newInstance( Structure.class )
                                                                  .createUnmarshaller()
                                                                  .unmarshal(
-                                                                     CCommon.getResourceURL( "org/lightjason/examples/pokemon/datasource/character.xml" )
+                                                                     CCommon.getResourceURL( CCommon.PACKAGEPATH + "data/character.xml" )
                                                                  );
 
         }

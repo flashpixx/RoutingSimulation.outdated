@@ -112,8 +112,8 @@ public final class CMain
                     try
                     {
                         FileUtils.copyURLToFile(
-                            CCommon.getResourceURL( "org/lightjason/examples/pokemon/" + i ),
-                            Paths.get( l_cli.getOptionValue( "generate" ), i ).normalize().toFile()
+                            CCommon.getResourceURL( CCommon.PACKAGEPATH + i ),
+                            Paths.get( l_cli.getOptionValue( "generate", "." ), i ).normalize().toFile()
                         );
                         return true;
                     }
@@ -136,7 +136,7 @@ public final class CMain
         CConfiguration.INSTANCE.load(
             l_cli.hasOption( "configuration" )
             ? l_cli.getOptionValue( "configuration" )
-            : "org/lightjason/examples/pokemon/configuration.yaml"
+            : CCommon.PACKAGEPATH + "configuration.yaml"
         );
 
 

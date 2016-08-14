@@ -21,7 +21,7 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource;
+package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,6 +31,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.CMath;
 
 import java.text.MessageFormat;
@@ -49,7 +50,7 @@ public final class CLevel
     /**
      * filename of the icon
      */
-    private static final String ICONFILENAME = "org/lightjason/examples/pokemon/datasource/icon/{0}_{1}.png";
+    private static final String ICONFILENAME = CCommon.PACKAGEPATH + "/data/icon/{0}_{1}.png";
     /**
      * ethnic map map with initialize values (initial value, min, max bounding)
      */

@@ -55,7 +55,7 @@
     </xs:element>
     <xs:complexType name="ilevelitem">
         <xs:annotation>
-            <xs:documentation>abstract definition of a level item elementn</xs:documentation>
+            <xs:documentation>abstract definition of a level item element</xs:documentation>
         </xs:annotation>
         <xs:attribute name="id" use="required"/>
         <xs:attribute name="expected" type="xs:double" use="required"/>

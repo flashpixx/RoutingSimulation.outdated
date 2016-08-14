@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 /**
@@ -110,31 +111,42 @@ public final class CDefinition
             // read pokemon character
             m_pokemon = Collections.unmodifiableMap(
                 l_structure.getCharacter()
-                           .getPokemon()
-                           .stream()
-                           .collect(
-                               Collectors.toMap(
-                                   i -> i.getId().trim().toLowerCase(),
-                                   i -> Collections.unmodifiableList(
-                                            i.getLevel().stream()
-                                             .map( j -> CLevel.generate(
-                                                            j.getEthnicity().stream().map( Ilevelitem::getId ),
-                                                            j.getEthnicity().stream().map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                    .getPokemon()
+                    .stream()
+                    .collect(
+                        Collectors.toMap(
+                            i -> i.getId().trim().toLowerCase(),
+                            i -> Collections.unmodifiableList(
+                                     IntStream.range( 0, i.getLevel().size() )
+                                         .mapToObj( j -> new CLevel(
+                                                             i.getId().trim().toLowerCase(),
+                                                             j,
 
-                                                            j.getMotivation().stream().map( Ilevelitem::getId ),
-                                                            j.getMotivation().stream().map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                                             i.getLevel().get( j ).getEthnicity().stream()
+                                                                 .map( Ilevelitem::getId ),
+                                                             i.getLevel().get( j ).getEthnicity().stream()
+                                                                 .map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
 
-                                                            j.getAttribute().stream().map( n -> l_attribute.get( n.getId().trim().toLowerCase() ) ),
-                                                            j.getAttribute().stream().map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                                             i.getLevel().get( j ).getMotivation().stream()
+                                                                 .map( Ilevelitem::getId ),
+                                                             i.getLevel().get( j ).getMotivation().stream()
+                                                                 .map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
 
-                                                            j.getAttack().stream().map( n -> l_attack.get( n.getId().trim().toLowerCase() ) )
-                                                        )
-                                             )
-                                             .collect( Collectors.toList() )
-                                       )
+                                                             i.getLevel().get( j ).getAttribute().stream()
+                                                                 .map( n -> l_attribute.get( n.getId().trim().toLowerCase() ) ),
+                                                             i.getLevel().get( j ).getAttribute().stream()
+                                                                 .map( n -> new ImmutableTriple<>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
 
-                               )
-                           )
+                                                             i.getLevel().get( j ).getAttack().stream()
+                                                                 .map( n -> l_attack.get( n.getId().trim().toLowerCase() ) )
+
+                                                         )
+                                         )
+                                         .collect( Collectors.toList() )
+                                 )
+
+                        )
+                    )
             );
 
         }

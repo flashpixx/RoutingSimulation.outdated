@@ -27,6 +27,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codepoetics.protonpack.StreamUtils;
+import net.jcip.annotations.Immutable;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
@@ -54,15 +55,15 @@ public final class CLevel
     /**
      * ethnic map map with initialize values (initial value, min, max bounding)
      */
-    private final Map<String, Triple<AbstractRealDistribution, Number, Number>> m_ethnic;
+    private final Map<String, ImmutableTriple<AbstractRealDistribution, Number, Number>> m_ethnic;
     /**
      * attribute map with initialize values (initial value, min, max bounding)
      */
-    private final Map<CAttribute, Triple<AbstractRealDistribution, Number, Number>> m_attributes;
+    private final Map<CAttribute, ImmutableTriple<AbstractRealDistribution, Number, Number>> m_attributes;
     /**
      * motivation map with initialize values (initial value, min, max bounding)
      */
-    private final Map<String, Triple<AbstractRealDistribution, Number, Number>> m_motivation;
+    private final Map<String, ImmutableTriple<AbstractRealDistribution, Number, Number>> m_motivation;
     /**
      * attack set
      */
@@ -111,7 +112,7 @@ public final class CLevel
      * @param p_ethnicvalue stream with ethnic values
      */
     public CLevel( final String p_pokemon, final int p_index,
-                    final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue )
+                    final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue )
     {
         this(
             p_pokemon, p_index,
@@ -133,8 +134,8 @@ public final class CLevel
      * @param p_motivationvalue stream with motivation value
      */
     public CLevel( final String p_pokemon, final int p_index,
-                    final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue
+                    final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue,
+                    final Stream<String> p_motivation, final Stream<ImmutableTriple<Number, Number, Number>> p_motivationvalue
     )
     {
         this(
@@ -159,9 +160,9 @@ public final class CLevel
      * @param p_attributesvalue stream with attributes values
      */
     public CLevel( final String p_pokemon, final int p_index,
-                    final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
-                    final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue
+                    final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue,
+                    final Stream<String> p_motivation, final Stream<ImmutableTriple<Number, Number, Number>> p_motivationvalue,
+                    final Stream<CAttribute> p_attributes, final Stream<ImmutableTriple<Number, Number, Number>> p_attributesvalue
     )
     {
         this(
@@ -186,10 +187,10 @@ public final class CLevel
      * @param p_attributesvalue stream with attributes values
      */
     public CLevel( final String p_pokemon, final int p_index,
-                    final Stream<String> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
-                    final Stream<String> p_motivation, final Stream<Triple<Number, Number, Number>> p_motivationvalue,
-                    final Stream<CAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
-                    final Stream<CAttack> p_attack
+                   final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue,
+                   final Stream<String> p_motivation, final Stream<ImmutableTriple<Number, Number, Number>> p_motivationvalue,
+                   final Stream<CAttribute> p_attributes, final Stream<ImmutableTriple<Number, Number, Number>> p_attributesvalue,
+                   final Stream<CAttack> p_attack
     )
     {
         m_texturepath = MessageFormat.format(
@@ -297,8 +298,8 @@ public final class CLevel
      *
      * @tparam T key type
      */
-    private static <T> Map<T, Triple<AbstractRealDistribution, Number, Number>> initialize( final Stream<T> p_keys,
-                                                                                            final Stream<Triple<Number, Number, Number>> p_value
+    private static <T> Map<T, ImmutableTriple<AbstractRealDistribution, Number, Number>> initialize( final Stream<T> p_keys,
+                                                                                            final Stream<ImmutableTriple<Number, Number, Number>> p_value
     )
     {
         return Collections.unmodifiableMap(
@@ -328,7 +329,7 @@ public final class CLevel
      *
      * @tparam T key type
      */
-    private static <T> Map<T, Number> generate( final Map<T, Triple<AbstractRealDistribution, Number, Number>> p_map )
+    private static <T> Map<T, Number> generate( final Map<T, ImmutableTriple<AbstractRealDistribution, Number, Number>> p_map )
     {
         return p_map.entrySet().parallelStream().collect(
             Collectors.toConcurrentMap(

@@ -24,14 +24,11 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CAttack;
-import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CAttribute;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CDefinition;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CLevel;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;

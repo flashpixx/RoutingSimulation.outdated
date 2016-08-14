@@ -34,8 +34,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -160,7 +160,7 @@ public final class CDefinition
      */
     public final int level( final String p_pokemon )
     {
-        return m_pokemon.getOrDefault( p_pokemon.trim().toLowerCase(), Collections.emptyList() ).size();
+        return this.getOrThrow( p_pokemon ).size();
     }
 
     /**
@@ -168,11 +168,24 @@ public final class CDefinition
      *
      * @param p_pokemon pokemon name
      * @param p_index level
-     * @®eturn tupel
+     * @®eturn level tupel
      */
     public final CLevel tupel( final String p_pokemon, final int p_index )
     {
-        return m_pokemon.getOrDefault( p_pokemon.trim().toLowerCase(), Collections.emptyList() ).get( p_index );
+        return this.getOrThrow( p_pokemon ).get( p_index );
+    }
+
+    /**
+     * returns the list of a pokemon or throws an exception
+     * @param p_pokemon pokemon name
+     * @return level list
+     */
+    private List<CLevel> getOrThrow( final String p_pokemon )
+    {
+        final List<CLevel> l_level = m_pokemon.get( p_pokemon.trim().toLowerCase() );
+        if ( l_level == null )
+            throw new RuntimeException( MessageFormat.format( "pokemon [{0}] not found", p_pokemon ) );
+        return l_level;
     }
 
 }

@@ -407,6 +407,33 @@
             </level>
         </pokemon>
         
+        <pokemon id = "eevee">
+            
+            <!-- eevee -->
+            <level>
+                <ethnicity id="normal" expected="0.8" minimum="0.6" maximum="1"/>
+                
+                <attribute id="height" expected="0.3" minimum="0.1" maximum="5"/>
+                <attribute id="weight" expected="6.5" minimum="5.5" maximum="7.5"/>
+            </level>
+            
+            <!-- vaporeon -->
+            <!-- jolteon -->
+            <!-- flareon -->
+            
+        </pokemon>
+        
+        
+        <!-- === bug =========================================================================================================================================== -->
+        <pokemon id="caterpie">
+            <level>
+                <ethnicity id="bug" expected="0.8" minimum="0.6" maximum="1"/>
+                
+                <attribute id="height" expected="0.3" minimum="0.2" maximum="0.4"/>
+                <attribute id="weight" expected="2.9" minimum="2.5" maximum="3.3"/>
+            </level>
+        </pokemon>
+        
         
         <!-- === poison ======================================================================================================================================== -->
         <pokemon id="koffing">

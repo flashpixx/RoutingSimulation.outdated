@@ -35,6 +35,7 @@ import javax.xml.bind.JAXBException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -101,7 +102,7 @@ public final class CDefinition
                 l_structure.getConfiguration()
                            .getAttack()
                            .getItem()
-                           .parallelStream()
+                           .stream()
                            .map( i -> new CAttack( i, l_attribute ) )
                            .collect( Collectors.toMap( CAttack::name, i -> i ) )
             );
@@ -135,6 +136,7 @@ public final class CDefinition
                                )
                            )
             );
+
         }
     }
 

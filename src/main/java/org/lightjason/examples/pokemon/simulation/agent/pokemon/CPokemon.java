@@ -25,6 +25,7 @@
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
@@ -52,17 +53,13 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
 /**
  * BDI agent for dynamic / moving elements
- * @todo add pokemon name
  */
 @IAgentActionBlacklist
 public final class CPokemon extends IBaseAgent
@@ -86,7 +83,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * attribute map
      */
-    private final Map<String, Pair<EAccess, Number>> m_attribute;
+    private final Map<String, MutablePair<EAccess, Number>> m_attribute;
     /**
      * maximum level
      */
@@ -121,9 +118,9 @@ public final class CPokemon extends IBaseAgent
 
         m_ethnic = l_level.ethnic();
         m_motivation = l_level.motivation();
-        m_attack = l_level.attack().stream().collect( Collectors.toMap( CAttack::name, i -> i ) );
+        m_attack = l_level.attack().stream().collect( Collectors.toConcurrentMap( CAttack::name, i -> i ) );
         m_attribute = l_level.attribute().entrySet().stream().collect(
-                          Collectors.toMap( i -> i.getKey().name(), i -> new ImmutablePair<>( i.getKey().access(), i.getValue() ) )
+                          Collectors.toConcurrentMap( i -> i.getKey().name(), i -> new MutablePair<>( i.getKey().access(), i.getValue() ) )
                       );
 
         m_beliefbase
@@ -157,16 +154,16 @@ public final class CPokemon extends IBaseAgent
             return;
 
         // increment level and get old and new level structure of the pokemon
-        final EPokemon.CLevelTupel l_old = m_pokemon.tupel( m_level );
+        final CLevel l_old = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
         m_level++;
         final CLevel l_new = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
 
         // set data for visualization and internal attributes
         m_sprite = l_new.sprite( l_old.spritecell(), l_old.spriteunit() );
-        m_attack.addAll( l_new.attack() );
-        m_attribute.putAll( l_new.attributes() );
-        m_motivation.putAll( l_new.motivation() );
-        m_ethnic.putAll( l_new.ethnic() );
+        l_new.attack().forEach( i -> m_attack.put( i.name(), i ) );
+        l_new.attribute().entrySet().forEach( i -> m_attribute.put( i.getKey().name(), new MutablePair<>( i.getKey().access(), i.getValue() ) ) );
+        l_new.motivation().entrySet().forEach( i -> m_motivation.put( i.getKey(), i.getValue() ) );
+        l_new.ethnic().entrySet().forEach( i -> m_ethnic.put( i.getKey(), i.getValue() ) );
 
         this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "level-up" ) ) );
     }
@@ -241,13 +238,13 @@ public final class CPokemon extends IBaseAgent
         /**
          * creates a literal
          *
-         * @param p_key enum term
+         * @param p_key string name
          * @param p_value value
          * @return literal
          */
-        final <T extends Enum<?>> ILiteral literal( final T p_key, final Number p_value )
+        final ILiteral literal( final String p_key, final Number p_value )
         {
-            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
+            return CLiteral.from( p_key, Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
         }
 
         @Override
@@ -277,36 +274,21 @@ public final class CPokemon extends IBaseAgent
         @Override
         public final Stream<ILiteral> streamLiteral()
         {
-            return m_motivation.entrySet().parallelStream()
-                               .map( i -> this.literal( i.getKey(), i.getValue() ) );
+            return m_motivation.entrySet().parallelStream().map( i -> this.literal( i.getKey(), i.getValue() ) );
         }
 
         @Override
         public final boolean containsLiteral( final String p_key )
         {
-            return EMotivation.exist( p_key ) && m_motivation.containsKey( EMotivation.valueOf( p_key.toUpperCase() ) );
+            return m_motivation.containsKey( p_key.toLowerCase() );
         }
 
         @Override
         public final Collection<ILiteral> literal( final String p_key )
         {
-            if ( !this.containsLiteral( p_key ) )
-                return Collections.<ILiteral>emptySet();
-
-            final EMotivation l_key =  EMotivation.valueOf( p_key.toUpperCase() );
-            return Stream.of( this.literal( l_key, m_motivation.get( l_key ) ) ).collect( Collectors.toSet() );
-        }
-
-        /**
-         * creates a literal
-         *
-         * @param p_key enum term
-         * @param p_value value
-         * @return literal
-         */
-        private ILiteral literal( final EMotivation p_key, final Number p_value )
-        {
-            return CLiteral.from( p_key.name().toLowerCase(), Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
+            return this.containsLiteral( p_key )
+                   ? Stream.of( this.literal( p_key, m_motivation.get( p_key ) ) ).collect( Collectors.toSet() )
+                   : Collections.emptySet();
         }
     }
 
@@ -331,24 +313,21 @@ public final class CPokemon extends IBaseAgent
         @Override
         public final Stream<ILiteral> streamLiteral()
         {
-            return m_ethnic.entrySet().parallelStream()
-                           .map( i -> this.literal( i.getKey(), i.getValue() ) );
+            return m_ethnic.entrySet().parallelStream().map( i -> this.literal( i.getKey(), i.getValue() ) );
         }
 
         @Override
         public final boolean containsLiteral( final String p_key )
         {
-            return EEthnicity.exist( p_key ) && m_ethnic.containsKey( EEthnicity.valueOf( p_key.toUpperCase() ) );
+            return m_ethnic.containsKey( p_key );
         }
 
         @Override
         public final Collection<ILiteral> literal( final String p_key )
         {
-            if ( !this.containsLiteral( p_key ) )
-                return Collections.<ILiteral>emptySet();
-
-            final EEthnicity l_key =  EEthnicity.valueOf( p_key.toUpperCase() );
-            return Stream.of( this.literal( l_key, m_ethnic.get( l_key ) ) ).collect( Collectors.toSet() );
+            return this.containsLiteral( p_key )
+                   ? Stream.of( this.literal( p_key, m_ethnic.get( p_key ) ) ).collect( Collectors.toSet() )
+                   : Collections.emptySet();
         }
 
     }
@@ -368,25 +347,19 @@ public final class CPokemon extends IBaseAgent
         @Override
         public final ILiteral add( final ILiteral p_literal )
         {
-            // only existing attributes will be accepted
-            if ( !EAttribute.exist( p_literal.functor() ) )
-                return p_literal;
-
-            // check if the attribute can be written
-            final EAttribute l_attribute = EAttribute.valueOf( p_literal.functor().toUpperCase() );
-            if ( ( EAccess.READ.equals( l_attribute.access() ) ) || ( !m_attribute.containsKey( l_attribute ) ) )
+            final MutablePair<EAccess, Number> l_value = m_attribute.get( p_literal.functor() );
+            if ( (  l_value == null ) || ( EAccess.READ.equals( l_value.getLeft() ) ) )
                 return p_literal;
 
             // check if the number of the attribute is changed
-            final Number l_newvalue = CCommon.<Number, ITerm>raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.<Double>from( 0.0 ) ) );
-            final Number l_oldvalue = m_attribute.get( l_attribute );
-            if ( l_oldvalue.doubleValue() == l_newvalue.doubleValue() )
+            final Number l_newvalue = CCommon.<Number, ITerm>raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 0.0 ) ) );
+            if ( l_value.getRight().doubleValue() == l_newvalue.doubleValue() )
                 return p_literal;
 
-            // set value within the map and generate event
-            m_attribute.put( l_attribute, l_newvalue );
-            this.event( ITrigger.EType.DELETEBELIEF, CLiteral.from( l_attribute.name().toLowerCase(), Stream.of( CRawTerm.from( l_oldvalue ) ) ) );
-            this.event( ITrigger.EType.ADDBELIEF, CLiteral.from( l_attribute.name().toLowerCase(), Stream.of( CRawTerm.from( l_newvalue ) ) ) );
+            // creates the trigger and sets the new value
+            this.event( ITrigger.EType.DELETEBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().doubleValue() ) ) ) );
+            l_value.setRight( l_newvalue );
+            this.event( ITrigger.EType.ADDBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().doubleValue() ) ) ) );
 
             return p_literal;
         }
@@ -401,23 +374,21 @@ public final class CPokemon extends IBaseAgent
         public final Stream<ILiteral> streamLiteral()
         {
             return m_attribute.entrySet().parallelStream()
-                              .map( i -> this.literal( i.getKey(), i.getValue() ) );
+                              .map( i -> this.literal( i.getKey(), i.getValue().getRight() ) );
         }
 
         @Override
         public final boolean containsLiteral( final String p_key )
         {
-            return EAttribute.exist( p_key ) && m_attribute.containsKey( EAttribute.valueOf( p_key.toUpperCase() ) );
+            return m_attribute.containsKey( p_key );
         }
 
         @Override
         public final Collection<ILiteral> literal( final String p_key )
         {
-            if ( !this.containsLiteral( p_key ) )
-                return Collections.<ILiteral>emptySet();
-
-            final EAttribute l_key =  EAttribute.valueOf( p_key.toUpperCase() );
-            return Stream.of( this.literal( l_key, m_attribute.get( l_key ) ) ).collect( Collectors.toSet() );
+            return this.containsLiteral( p_key )
+                   ? Stream.of( this.literal( p_key, m_attribute.getOrDefault( p_key, new MutablePair<>( EAccess.READ, 0 ) ).getRight() ) ).collect( Collectors.toSet() )
+                   : Collections.emptySet();
         }
 
     }

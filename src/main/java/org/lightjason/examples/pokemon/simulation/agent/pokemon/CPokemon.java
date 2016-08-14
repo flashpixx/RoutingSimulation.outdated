@@ -24,9 +24,15 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
+import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CAttack;
+import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CAttribute;
+import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CDefinition;
+import org.lightjason.examples.pokemon.simulation.agent.pokemon.datasource.CLevel;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
@@ -46,6 +52,7 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -63,23 +70,23 @@ public final class CPokemon extends IBaseAgent
     /**
      * pokemon type
      */
-    private final EPokemon m_pokemon;
+    private final String m_pokemon;
     /**
      * ethnic map
      */
-    private final Map<EEthnicity, Number> m_ethnic;
-    /**
-     * attribute map
-     */
-    private final Map<EAttribute, Number> m_attribute;
+    private final Map<String, Number> m_ethnic;
     /**
      * motivation map
      */
-    private final Map<EMotivation, Number> m_motivation;
+    private final Map<String, Number> m_motivation;
     /**
      * attack map
      */
-    private final Set<EAttack> m_attack = new HashSet<>();
+    private final Map<String, CAttack> m_attack;
+    /**
+     * attribute map
+     */
+    private final Map<String, Pair<CAttribute, Number>> m_attribute;
     /**
      * level / grown-up
      */
@@ -104,10 +111,16 @@ public final class CPokemon extends IBaseAgent
         if ( p_pokemon.isEmpty() )
             throw new RuntimeException( "pokemon name need not to be empty" );
 
-        m_pokemon = EPokemon.valueOf( p_pokemon.trim().toUpperCase() );
-        m_ethnic = m_pokemon.tupel( m_level ).ethnic();
-        m_attribute = m_pokemon.tupel( m_level ).attributes();
-        m_motivation = m_pokemon.tupel( m_level ).motivation();
+        m_pokemon = p_pokemon;
+
+        final CLevel l_level = CDefinition.INSTANCE.tupel( m_pokemon, 0 );
+        m_ethnic = l_level.ethnic();
+        m_motivation = l_level.motivation();
+        m_attack = l_level.attack().stream().collect( Collectors.toMap( CAttack::name, i -> i ) );
+        m_attribute = l_level.attribute().entrySet().stream()
+                          .collect(
+                                    Collectors.toMap( i -> i.getKey().name(), i -> new ImmutablePair<>( i.getKey(), i.getValue() ) )
+        );
 
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
@@ -124,7 +137,7 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
-        m_sprite = m_pokemon.tupel( m_level ).sprite( p_cellsize, p_unit );
+        m_sprite = CDefinition.INSTANCE.tupel( m_pokemon, 0 ).sprite( p_cellsize, p_unit );
     }
 
 

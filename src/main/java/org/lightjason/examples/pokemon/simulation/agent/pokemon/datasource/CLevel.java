@@ -27,10 +27,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.codepoetics.protonpack.StreamUtils;
-import net.jcip.annotations.Immutable;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
 import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.lightjason.examples.pokemon.simulation.CMath;
@@ -59,7 +57,7 @@ public final class CLevel
     /**
      * attribute map with initialize values (initial value, min, max bounding)
      */
-    private final Map<CAttribute, ImmutableTriple<AbstractRealDistribution, Number, Number>> m_attributes;
+    private final Map<CAttribute, ImmutableTriple<AbstractRealDistribution, Number, Number>> m_attribute;
     /**
      * motivation map with initialize values (initial value, min, max bounding)
      */
@@ -156,20 +154,20 @@ public final class CLevel
      * @param p_ethnicvalue stream with ethnic values
      * @param p_motivation stream with motivation types
      * @param p_motivationvalue stream with motivation value
-     * @param p_attributes stream with attributes types
+     * @param p_attribute stream with attributes types
      * @param p_attributesvalue stream with attributes values
      */
     public CLevel( final String p_pokemon, final int p_index,
-                    final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue,
-                    final Stream<String> p_motivation, final Stream<ImmutableTriple<Number, Number, Number>> p_motivationvalue,
-                    final Stream<CAttribute> p_attributes, final Stream<ImmutableTriple<Number, Number, Number>> p_attributesvalue
+                   final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue,
+                   final Stream<String> p_motivation, final Stream<ImmutableTriple<Number, Number, Number>> p_motivationvalue,
+                   final Stream<CAttribute> p_attribute, final Stream<ImmutableTriple<Number, Number, Number>> p_attributesvalue
     )
     {
         this(
             p_pokemon, p_index,
             p_ethnic, p_ethnicvalue,
             p_motivation, p_motivationvalue,
-            p_attributes, p_attributesvalue,
+            p_attribute, p_attributesvalue,
             Stream.of()
         );
     }
@@ -183,13 +181,13 @@ public final class CLevel
      * @param p_ethnicvalue stream with ethnic values
      * @param p_motivation stream with motivation types
      * @param p_motivationvalue stream with motivation value
-     * @param p_attributes stream with attributes types
+     * @param p_attribute stream with attributes types
      * @param p_attributesvalue stream with attributes values
      */
     public CLevel( final String p_pokemon, final int p_index,
                    final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue,
                    final Stream<String> p_motivation, final Stream<ImmutableTriple<Number, Number, Number>> p_motivationvalue,
-                   final Stream<CAttribute> p_attributes, final Stream<ImmutableTriple<Number, Number, Number>> p_attributesvalue,
+                   final Stream<CAttribute> p_attribute, final Stream<ImmutableTriple<Number, Number, Number>> p_attributesvalue,
                    final Stream<CAttack> p_attack
     )
     {
@@ -199,7 +197,7 @@ public final class CLevel
             p_index
         );
         m_ethnic = CLevel.initialize( p_ethnic, p_ethnicvalue );
-        m_attributes = CLevel.initialize( p_attributes, p_attributesvalue );
+        m_attribute = CLevel.initialize( p_attribute, p_attributesvalue );
         m_motivation = CLevel.initialize( p_motivation, p_motivationvalue );
         m_attack = Collections.unmodifiableSet( p_attack.collect( Collectors.toSet() ) );
     }
@@ -220,9 +218,9 @@ public final class CLevel
      *
      * @return map individual attributes values
      */
-    public Map<CAttribute, Number> attributes()
+    public Map<CAttribute, Number> attribute()
     {
-        return CLevel.generate( m_attributes );
+        return CLevel.generate( m_attribute );
     }
 
     /**

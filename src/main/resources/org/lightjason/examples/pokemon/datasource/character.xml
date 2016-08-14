@@ -2,8 +2,6 @@
 <structure xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="../../../../../../../main/xsd/character.xsd">
-
-<!-- <structure> -->
     <configuration>
 
 
@@ -388,6 +386,8 @@
 
         <!-- === normal ======================================================================================================================================== -->
         <pokemon id="chansey">
+            
+            <!-- chansey -->
             <level>
                 <ethnicity id="normal" expected="0.8" minimum="0.6" maximum="1"/>
 
@@ -406,6 +406,37 @@
                 <attack id="doubleslap"/>
             </level>
         </pokemon>
+        
+        
+        <!-- === poison ======================================================================================================================================== -->
+        <pokemon id="koffing">
+            
+            <!-- koffing -->
+            <level>
+                <ethnicity id="poison" expected="0.8" minimum="0.6" maximum="1"/>
+                
+                <attribute id="height" expected="0.6" minimum="0.4" maximum="0.8"/>
+                <attribute id="weight" expected="1" minimum="0.8" maximum="1.2"/>
+            </level>
+        </pokemon>
+        
+        
+        <!-- === ghost ========================================================================================================================================= -->
+        <pokemon id="gastly">
+            
+            <!-- gastly -->
+            <level>
+                <ethnicity id="ghost" expected="0.8" minimum="0.6" maximum="1"/>
+                <ethnicity id="poison" expected="0.4" minimum="0.3" maximum="0.5"/>
+                
+                <attribute id="height" expected="1.3" minimum="1" maximum="1.6"/>
+                <attribute id="weight" expected="0.1" minimum="0.05" maximum="0.2"/>
+            </level>
+            
+            <!-- haunter -->
+            <!-- phantom -->
+        </pokemon>
+        
         
     </character>
 </structure>

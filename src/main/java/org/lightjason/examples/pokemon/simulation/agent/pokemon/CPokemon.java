@@ -86,9 +86,13 @@ public final class CPokemon extends IBaseAgent
     /**
      * attribute map
      */
-    private final Map<String, Pair<CAttribute, Number>> m_attribute;
+    private final Map<String, Pair<EAccess, Number>> m_attribute;
     /**
-     * level / grown-up
+     * maximum level
+     */
+    private final int m_maximumlevel;
+    /**
+     * current level
      */
     private int m_level;
 
@@ -112,15 +116,15 @@ public final class CPokemon extends IBaseAgent
             throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_pokemon = p_pokemon;
+        m_maximumlevel = CDefinition.INSTANCE.level( m_pokemon );
+        final CLevel l_level = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
 
-        final CLevel l_level = CDefinition.INSTANCE.tupel( m_pokemon, 0 );
         m_ethnic = l_level.ethnic();
         m_motivation = l_level.motivation();
         m_attack = l_level.attack().stream().collect( Collectors.toMap( CAttack::name, i -> i ) );
-        m_attribute = l_level.attribute().entrySet().stream()
-                          .collect(
-                                    Collectors.toMap( i -> i.getKey().name(), i -> new ImmutablePair<>( i.getKey(), i.getValue() ) )
-        );
+        m_attribute = l_level.attribute().entrySet().stream().collect(
+                          Collectors.toMap( i -> i.getKey().name(), i -> new ImmutablePair<>( i.getKey().access(), i.getValue() ) )
+                      );
 
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
@@ -149,13 +153,13 @@ public final class CPokemon extends IBaseAgent
      */
     private void levelup()
     {
-        if ( m_level >= m_pokemon.level() - 1 )
+        if ( m_level >= m_maximumlevel - 1 )
             return;
 
         // increment level and get old and new level structure of the pokemon
         final EPokemon.CLevelTupel l_old = m_pokemon.tupel( m_level );
         m_level++;
-        final EPokemon.CLevelTupel l_new = m_pokemon.tupel( m_level );
+        final CLevel l_new = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
 
         // set data for visualization and internal attributes
         m_sprite = l_new.sprite( l_old.spritecell(), l_old.spriteunit() );

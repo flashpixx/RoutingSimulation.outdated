@@ -1,0 +1,14 @@
+
+*.*
+
+!.gitignore
+!circle.yml
+!*.htm*
+!*.png
+!*.css
+!*.js
+!*.svg
+!*.map
+!*.gif
+!*.rss
+

@@ -120,7 +120,8 @@ public final class CPokemon extends IBaseAgent
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
             .add( new CAttributeBeliefbase().create( "attribute", m_beliefbase ) )
-            .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) );
+            .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) )
+            .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) );
     }
 
     @Override
@@ -236,7 +237,7 @@ public final class CPokemon extends IBaseAgent
          * @param p_value value
          * @return literal
          */
-        final ILiteral literal( final String p_key, final Number p_value )
+        final ILiteral numberliteral( final String p_key, final Number p_value )
         {
             return CLiteral.from( p_key, Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
         }
@@ -266,22 +267,22 @@ public final class CPokemon extends IBaseAgent
         }
 
         @Override
-        public final Stream<ILiteral> streamLiteral()
-        {
-            return m_motivation.entrySet().parallelStream().map( i -> this.literal( i.getKey(), i.getValue() ) );
-        }
-
-        @Override
         public final boolean containsLiteral( final String p_key )
         {
             return m_motivation.containsKey( p_key.toLowerCase() );
         }
 
         @Override
+        public final Stream<ILiteral> streamLiteral()
+        {
+            return m_motivation.entrySet().parallelStream().map( i -> this.numberliteral( i.getKey(), i.getValue() ) );
+        }
+
+        @Override
         public final Collection<ILiteral> literal( final String p_key )
         {
             return this.containsLiteral( p_key )
-                   ? Stream.of( this.literal( p_key, m_motivation.get( p_key ) ) ).collect( Collectors.toSet() )
+                   ? Stream.of( this.numberliteral( p_key, m_motivation.get( p_key ) ) ).collect( Collectors.toSet() )
                    : Collections.emptySet();
         }
     }
@@ -305,22 +306,22 @@ public final class CPokemon extends IBaseAgent
         }
 
         @Override
-        public final Stream<ILiteral> streamLiteral()
-        {
-            return m_ethnic.entrySet().parallelStream().map( i -> this.literal( i.getKey(), i.getValue() ) );
-        }
-
-        @Override
         public final boolean containsLiteral( final String p_key )
         {
             return m_ethnic.containsKey( p_key );
         }
 
         @Override
+        public final Stream<ILiteral> streamLiteral()
+        {
+            return m_ethnic.entrySet().parallelStream().map( i -> this.numberliteral( i.getKey(), i.getValue() ) );
+        }
+
+        @Override
         public final Collection<ILiteral> literal( final String p_key )
         {
             return this.containsLiteral( p_key )
-                   ? Stream.of( this.literal( p_key, m_ethnic.get( p_key ) ) ).collect( Collectors.toSet() )
+                   ? Stream.of( this.numberliteral( p_key, m_ethnic.get( p_key ) ) ).collect( Collectors.toSet() )
                    : Collections.emptySet();
         }
 
@@ -336,6 +337,18 @@ public final class CPokemon extends IBaseAgent
         public final int size()
         {
             return m_attribute.size();
+        }
+
+        @Override
+        public final boolean empty()
+        {
+            return m_attribute.isEmpty();
+        }
+
+        @Override
+        public final boolean containsLiteral( final String p_key )
+        {
+            return m_attribute.containsKey( p_key );
         }
 
         @Override
@@ -359,32 +372,100 @@ public final class CPokemon extends IBaseAgent
         }
 
         @Override
-        public final boolean empty()
-        {
-            return m_attribute.isEmpty();
-        }
-
-        @Override
         public final Stream<ILiteral> streamLiteral()
         {
             return m_attribute.entrySet().parallelStream()
-                              .map( i -> this.literal( i.getKey(), i.getValue().getRight() ) );
-        }
-
-        @Override
-        public final boolean containsLiteral( final String p_key )
-        {
-            return m_attribute.containsKey( p_key );
+                              .map( i -> this.numberliteral( i.getKey(), i.getValue().getRight() ) );
         }
 
         @Override
         public final Collection<ILiteral> literal( final String p_key )
         {
             return this.containsLiteral( p_key )
-                   ? Stream.of( this.literal( p_key, m_attribute.getOrDefault( p_key, new MutablePair<>( EAccess.READ, 0 ) ).getRight() ) ).collect( Collectors.toSet() )
+                   ? Stream.of( this.numberliteral( p_key, m_attribute.getOrDefault( p_key, new MutablePair<>( EAccess.READ, 0 ) ).getRight() ) ).collect( Collectors.toSet() )
                    : Collections.emptySet();
         }
 
+    }
+
+
+    /**
+     * beliefbase of the attack elements
+     */
+    private final class CAttackBeliefbase extends IDemandBeliefbase
+    {
+        @Override
+        public final int size()
+        {
+            return m_attack.size();
+        }
+
+        @Override
+        public final boolean empty()
+        {
+            return m_attack.isEmpty();
+        }
+
+        @Override
+        public final boolean containsLiteral( final String p_key )
+        {
+            return m_attack.containsKey( p_key );
+        }
+
+        @Override
+        public final Stream<ILiteral> streamLiteral()
+        {
+            return Stream.concat(
+                       m_attack.values().parallelStream().map( this::attackliteral ),
+                       Stream.of( this.attacklist() )
+            );
+        }
+
+        @Override
+        public final Collection<ILiteral> literal( final String p_key )
+        {
+            return Stream.of(
+                              "list".equals( p_key )
+                              ? this.attacklist()
+                              : this.attackliteral( m_attack.get( p_key ) )
+            )
+            .filter( i -> i != null )
+            .collect( Collectors.toSet() );
+        }
+
+        /**
+         * creates a literal with a list of attacks
+         *
+         * @return literal
+         */
+        private ILiteral attacklist()
+        {
+            return CLiteral.from( "list", m_attack.keySet().stream().map( CLiteral::from ) );
+        }
+
+        /**
+         * create a literal for an attack
+         *
+         * @param p_attack attack
+         * @return literal
+         */
+        private ILiteral attackliteral( final CAttack p_attack )
+        {
+            return p_attack == null
+                   ? null
+                   : CLiteral.from(
+                                   p_attack.name(),
+                                   Stream.of(
+                                       this.numberliteral( "accuracy", p_attack.accuracy() ),
+                                       this.numberliteral( "distance", p_attack.distance() ),
+                                       this.numberliteral( "cost", p_attack.cost() ),
+                                       CLiteral.from( "damage", p_attack.damage().entrySet().stream()
+                                                                   .map( i -> this.numberliteral( i.getKey().name(), i.getValue() ) )
+                                       )
+                                   )
+
+                   );
+        }
     }
 
 }

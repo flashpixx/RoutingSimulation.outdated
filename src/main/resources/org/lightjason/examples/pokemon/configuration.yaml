@@ -11,7 +11,7 @@ statusvisible : true
 agentprint : false
 
 # thread-sleep (in milliseconds) time to slow down the simulation speed
-threadsleeptime : 25
+threadsleeptime : 20
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity

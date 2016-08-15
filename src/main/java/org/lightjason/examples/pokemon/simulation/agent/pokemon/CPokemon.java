@@ -54,6 +54,9 @@ import java.util.stream.Stream;
 
 /**
  * BDI agent for dynamic / moving elements
+ *
+ * @see http://pokewiki.de/
+ * @see http://bulbapedia.bulbagarden.net/wiki/Main_Page
  */
 @IAgentActionBlacklist
 public final class CPokemon extends IBaseAgent

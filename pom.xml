@@ -308,7 +308,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Jaxb for XSD compiligng -->
+            <!-- Jaxb for XSD compiling -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
@@ -328,6 +328,10 @@
                     <skipTestXjc>true</skipTestXjc>
                 </configuration>
             </plugin>
+
+            <!--
+            https://github.com/highsource/maven-jaxb2-plugin/wiki/Configure-Target-Packages-in-Binding-Files
+            -->
 
             <!-- the project should be build into one executable Jar file, which stores any dependencies which are included above -->
             <plugin>

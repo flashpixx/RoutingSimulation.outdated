@@ -23,8 +23,9 @@
 
 package org.lightjason.examples.pokemon.simulation.agent;
 
+import org.lightjason.agentspeak.action.binding.IAgentAction;
+import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.examples.pokemon.simulation.CMath;
-import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import org.lightjason.examples.pokemon.simulation.environment.EDirection;
 import org.lightjason.examples.pokemon.simulation.environment.EQuadrant;
@@ -33,8 +34,6 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
-import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
@@ -58,7 +57,7 @@ import java.util.stream.Stream;
 /**
  * agent class for modelling individual behaviours
  */
-@IAgentActionBlacklist
+@IAgentAction
 @SuppressFBWarnings( "NM_SAME_SIMPLE_NAME_AS_SUPERCLASS" )
 public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
 {
@@ -224,8 +223,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @param p_speed spped value
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "speed/set" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void setspeed( final Number p_speed )
     {
         if ( p_speed.intValue() < 1 )
@@ -238,8 +237,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @param p_speed increment value
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "speed/increment" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void incrementspeed( final Number p_speed )
     {
         if ( p_speed.intValue() < 1 )
@@ -252,8 +251,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @param p_speed decrement value
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "speed/decrement" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void decrementspeed( final Number p_speed )
     {
         if ( ( p_speed.intValue() < 1 ) || ( m_speed - p_speed.intValue() < 1 ) )
@@ -267,7 +266,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      * @param p_row row position
      * @param p_column column position
      */
-    @IAgentActionAllow
+    @IAgentActionFilter
     @IAgentActionName( name = "route/set/start" )
     protected final void routeatstart( final Number p_row, final Number p_column )
     {
@@ -281,7 +280,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @param p_radius distance (in cells)
      */
-    @IAgentActionAllow
+    @IAgentActionFilter
     @IAgentActionName( name = "route/random/start" )
     protected final void routerandomatstart( final Number p_radius )
     {
@@ -303,7 +302,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      * @param p_row row position
      * @param p_column column position
      */
-    @IAgentActionAllow
+    @IAgentActionFilter
     @IAgentActionName( name = "route/set/end" )
     protected final void routeatend( final Number p_row, final Number p_column )
     {
@@ -317,7 +316,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @param p_radius distance (in cells)
      */
-    @IAgentActionAllow
+    @IAgentActionFilter
     @IAgentActionName( name = "route/random/end" )
     protected final void routerandomatend( final Number p_radius )
     {
@@ -349,7 +348,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * skips the current goal-position of the routing queue
      */
-    @IAgentActionAllow
+    @IAgentActionFilter
     @IAgentActionName( name = "route/next" )
     protected final void routenext()
     {
@@ -362,7 +361,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @param p_value number of elements
      */
-    @IAgentActionAllow
+    @IAgentActionFilter
     @IAgentActionName( name = "route/skip" )
     protected final void routeskip( final Number p_value )
     {
@@ -378,7 +377,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @return time
      */
-    @IAgentActionAllow
+    @IAgentActionFilter
     @IAgentActionName( name = "route/estimatedtime" )
     protected final double routeestimatedtime()
     {
@@ -390,8 +389,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move forward into goal direction
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/forward" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforward()
     {
         this.move( EDirection.FORWARD );
@@ -400,8 +399,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move left forward into goal direction
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/forwardright" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforwardright()
     {
         this.move( EDirection.FORWARDRIGHT );
@@ -410,8 +409,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move right to the goal direction
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/right" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveright()
     {
         this.move( EDirection.RIGHT );
@@ -420,8 +419,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move backward right from goal direction
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/backwardright" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackwardright()
     {
         this.move( EDirection.BACKWARDRIGHT );
@@ -430,8 +429,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move backward from goal direction
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/backward" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackward()
     {
         this.move( EDirection.BACKWARD );
@@ -440,8 +439,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move backward right from goal direction
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/backwardleft" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void movebackwardleft()
     {
         this.move( EDirection.BACKWARDLEFT );
@@ -450,8 +449,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move left to the goal
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/left" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveleft()
     {
         this.move( EDirection.LEFT );
@@ -460,8 +459,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * move forward left into goal direction
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "move/forwardleft" )
-    @IAgentActionAllow( classes = CPokemon.class )
     protected final void moveforwardleft()
     {
         this.move( EDirection.FORWARDLEFT );

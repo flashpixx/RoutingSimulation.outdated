@@ -25,14 +25,14 @@
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.lightjason.agentspeak.action.binding.IAgentAction;
+import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
-import org.lightjason.agentspeak.action.binding.IAgentActionAllow;
-import org.lightjason.agentspeak.action.binding.IAgentActionBlacklist;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.beliefbase.IBeliefbaseOnDemand;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
@@ -58,7 +58,7 @@ import java.util.stream.Stream;
  * @see http://pokewiki.de/
  * @see http://bulbapedia.bulbagarden.net/wiki/Main_Page
  */
-@IAgentActionBlacklist
+@IAgentAction
 public final class CPokemon extends IBaseAgent
 {
     /**
@@ -177,8 +177,8 @@ public final class CPokemon extends IBaseAgent
      * @param p_row target row position
      * @param p_column target column position
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "act/attack/point" )
-    @IAgentActionAllow( classes = CPokemon.class )
     private void pointattack( final String p_attack, final double p_power, final Number p_row, final Number p_column )
     {
 
@@ -191,8 +191,8 @@ public final class CPokemon extends IBaseAgent
      * @param p_power power of the attack (0,1]
      * @param p_direction direction of the attack
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "act/attack/area" )
-    @IAgentActionAllow( classes = CPokemon.class )
     private void areaattack( final String p_attack, final double p_power, final String p_direction )
     {
 
@@ -205,8 +205,8 @@ public final class CPokemon extends IBaseAgent
      * @param p_row target row position
      * @param p_column target column position
      */
+    @IAgentActionFilter
     @IAgentActionName( name = "act/cure" )
-    @IAgentActionAllow( classes = CPokemon.class )
     private void cure( final double p_power, final Number p_row, final Number p_column )
     {
 

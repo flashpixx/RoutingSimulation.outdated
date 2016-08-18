@@ -67,6 +67,15 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
     IElement move( final IElement p_object, final DoubleMatrix1D p_position );
 
     /**
+     * returns an object from the given position
+     *
+     * @param p_row row position
+     * @param p_column column position
+     * @return object or null
+     */
+    IElement get( final double p_row, final double p_column );
+
+    /**
      * removes an element from a position
      *
      * @param p_object element

@@ -176,6 +176,13 @@ public final class CEnvironment implements IEnvironment
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
+    public final synchronized IElement get( final double p_row, final double p_column )
+    {
+        return (IElement) m_positions.getQuick( (int) CEnvironment.clip( p_row, m_row ), (int) CEnvironment.clip( p_column, m_column ) );
+    }
+
+    @Override
     public final synchronized IElement remove( final IElement p_object )
     {
         final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_object.position().toArray() ) );

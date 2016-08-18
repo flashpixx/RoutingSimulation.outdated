@@ -27,6 +27,12 @@ package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
+import org.lightjason.agentspeak.beliefbase.CBeliefbasePersistent;
+import org.lightjason.agentspeak.beliefbase.IBaseBeliefbase;
+import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
+import org.lightjason.agentspeak.beliefbase.storage.IBaseStorage;
+import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
+import org.lightjason.agentspeak.beliefbase.view.IView;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
@@ -124,7 +130,8 @@ public final class CPokemon extends IBaseAgent
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
             .add( new CAttributeBeliefbase().create( "attribute", m_beliefbase ) )
             .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) )
-            .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) );
+            .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) )
+            .add( new CBeliefbasePersistent( new CSingleStorage<>( new CEnvironmentPerceive() ) ).create( "env", m_beliefbase ) );
     }
 
     @Override
@@ -468,6 +475,18 @@ public final class CPokemon extends IBaseAgent
                                    )
 
                    );
+        }
+    }
+
+    /**
+     * environment beliefbase
+     */
+    private final class CEnvironmentPerceive implements IBeliefPerceive<IAgent>
+    {
+        @Override
+        public final void perceive( final IAgent p_agent )
+        {
+            p_agent.beliefbase().
         }
     }
 

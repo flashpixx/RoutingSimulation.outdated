@@ -130,7 +130,7 @@ public final class CPokemon extends IBaseAgent
             .add( new CAttributeBeliefbase().create( "attribute", m_beliefbase ) )
             .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) )
             .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) )
-            .add( new CBeliefbasePersistent( new CSingleStorage<>( new CEnvironmentPerceive() ) ).create( "env", m_beliefbase ) );
+            .add( new CEnvironmentBeliefbase().create( "env", m_beliefbase ) );
 
 
     }
@@ -487,16 +487,13 @@ public final class CPokemon extends IBaseAgent
     }
 
     /**
-     * environment beliefbase
+     * environment beliefbase with angle- and radius-based view-range
      */
-    private final class CEnvironmentPerceive implements IBeliefPerceive<ILiteral, IView<IAgent>, IAgent>
+    private final class CEnvironmentBeliefbase extends IDemandBeliefbase
     {
+        // http://stackoverflow.com/questions/13652518/efficiently-find-points-inside-a-circle-sector
+        // http://stackoverflow.com/questions/6270785/how-to-determine-whether-a-point-x-y-is-contained-within-an-arc-section-of-a-c
 
-        @Override
-        public final void perceive( final IAgent p_agent, final IStorage<ILiteral, IView<IAgent>, IAgent> p_storage )
-        {
-
-        }
     }
 
 }

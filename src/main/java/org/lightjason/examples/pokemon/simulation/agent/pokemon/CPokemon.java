@@ -24,12 +24,9 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
-import cern.colt.matrix.impl.DenseDoubleMatrix1D;
-import cern.colt.matrix.linalg.Algebra;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
-import org.lightjason.examples.pokemon.simulation.CMath;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
@@ -503,11 +500,6 @@ public final class CPokemon extends IBaseAgent
      */
     private final class CEnvironmentBeliefbase extends IDemandBeliefbase
     {
-        // http://stackoverflow.com/questions/13652518/efficiently-find-points-inside-a-circle-sector
-        // http://stackoverflow.com/questions/6270785/how-to-determine-whether-a-point-x-y-is-contained-within-an-arc-section-of-a-c
-
-
-
         @Override
         public Stream<ILiteral> streamLiteral()
         {
@@ -520,10 +512,10 @@ public final class CPokemon extends IBaseAgent
                             .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
                                                     .filter( x -> CPokemon.positioninsideangle( x, y, l_radius, l_angle ) )
                                                     .mapToObj( x -> {
-                                                         final double l_ypos = y + m_position.getQuick( 0 );
-                                                         final double l_xpos = x + m_position.getQuick( 1 );
+                                                        final double l_ypos = y + m_position.getQuick( 0 );
+                                                        final double l_xpos = x + m_position.getQuick( 1 );
 
-                                                         return this.elementliteral( m_environment.get( l_ypos, l_xpos ), l_ypos, l_xpos );
+                                                        return this.elementliteral( m_environment.get( l_ypos, l_xpos ), l_ypos, l_xpos );
                                                     } )
                                                     .filter( i -> i != null )
                             );

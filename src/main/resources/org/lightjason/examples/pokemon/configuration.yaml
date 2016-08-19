@@ -1,5 +1,5 @@
 # enable / disable logger
-logging : true
+logging : false
 
 # enable / disable status line
 statusvisible : true
@@ -11,7 +11,7 @@ statusvisible : true
 agentprint : false
 
 # thread-sleep (in milliseconds) time to slow down the simulation speed
-threadsleeptime : 20
+threadsleeptime : 10
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
@@ -85,7 +85,7 @@ element :
         left  : [ 60, 60 ]
         right : [ 75, 95 ]
         color : "ffbb00"
-git
+
     - static :
         left  : [ 90, 100 ]
         right : [ 110, 120 ]

@@ -492,9 +492,9 @@
         <pokemon id="caterpie">
             <level>
                 <ethnicity id="bug" expected="0.8" minimum="0.6" maximum="1"/>
+
                 <attribute id="height" expected="0.3" minimum="0.2" maximum="0.4"/>
                 <attribute id="weight" expected="2.9" minimum="2.5" maximum="3.3"/>
-
                 <attribute id="viewangle" expected="130" minimum="120" maximum="140"/>
                 <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
                 <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
@@ -516,9 +516,9 @@
             <!-- koffing -->
             <level>
                 <ethnicity id="poison" expected="0.8" minimum="0.6" maximum="1"/>
+
                 <attribute id="height" expected="0.6" minimum="0.4" maximum="0.8"/>
                 <attribute id="weight" expected="1" minimum="0.8" maximum="1.2"/>
-
                 <attribute id="viewangle" expected="110" minimum="105" maximum="120"/>
                 <attribute id="viewrange" expected="3" minimum="2" maximum="4"/>
                 <attribute id="nearby" expected="3" minimum="2" maximum="4"/>
@@ -542,9 +542,9 @@
             <level>
                 <ethnicity id="ghost" expected="0.8" minimum="0.6" maximum="1"/>
                 <ethnicity id="poison" expected="0.4" minimum="0.3" maximum="0.5"/>
+
                 <attribute id="height" expected="1.3" minimum="1" maximum="1.6"/>
                 <attribute id="weight" expected="0.1" minimum="0.05" maximum="0.2"/>
-
                 <attribute id="viewangle" expected="140" minimum="130" maximum="150"/>
                 <attribute id="viewrange" expected="4" minimum="3" maximum="5"/>
                 <attribute id="nearby" expected="4" minimum="3" maximum="5"/>
@@ -561,9 +561,9 @@
             <level>
                 <ethnicity id="ghost" expected="0.8" minimum="0.6" maximum="1"/>
                 <ethnicity id="poison" expected="0.4" minimum="0.3" maximum="0.5"/>
+
                 <attribute id="height" expected="1.6" minimum="1.4" maximum="1.8"/>
                 <attribute id="weight" expected="0.1" minimum="0.05" maximum="0.2"/>
-
                 <attribute id="viewangle" expected="160" minimum="150" maximum="170"/>
                 <attribute id="viewrange" expected="4" minimum="3" maximum="5"/>
                 <attribute id="nearby" expected="4" minimum="3" maximum="5"/>
@@ -579,9 +579,9 @@
             <level>
                 <ethnicity id="ghost" expected="0.8" minimum="0.6" maximum="1"/>
                 <ethnicity id="poison" expected="0.4" minimum="0.3" maximum="0.5"/>
+
                 <attribute id="height" expected="1.5" minimum="1.4" maximum="1.6"/>
                 <attribute id="weight" expected="40.5" minimum="38" maximum="43"/>
-
                 <attribute id="viewangle" expected="160" minimum="150" maximum="170"/>
                 <attribute id="viewrange" expected="5" minimum="4" maximum="6"/>
                 <attribute id="nearby" expected="4" minimum="3" maximum="5"/>

@@ -24,14 +24,13 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.linalg.Algebra;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
-import org.lightjason.agentspeak.beliefbase.CBeliefbasePersistent;
-import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
-import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
-import org.lightjason.agentspeak.beliefbase.storage.IStorage;
-import org.lightjason.agentspeak.beliefbase.view.IView;
+import org.lightjason.examples.pokemon.simulation.CMath;
+import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
@@ -48,12 +47,14 @@ import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
+import org.lightjason.examples.pokemon.simulation.item.IItem;
 
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -131,8 +132,6 @@ public final class CPokemon extends IBaseAgent
             .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) )
             .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) )
             .add( new CEnvironmentBeliefbase().create( "env", m_beliefbase ) );
-
-
     }
 
     @Override
@@ -175,10 +174,23 @@ public final class CPokemon extends IBaseAgent
     }
 
 
-    private static Stream<DoubleMatrix1D> frustrumplanes( final double p_radius, final double p_angel )
+    /**
+     * checks if a point is within the visual range
+     *
+     * @param p_xpos x-position of the point (relative position [-radius, +radius])
+     * @param p_ypos y-position of the point (relative position [-radius, +radius])
+     * @param p_radius radius of the view-range
+     * @param p_angle angle of the view-range
+     * @return boolean if the position is inside
+     */
+    private static boolean positioninsideangle( final double p_xpos, final double p_ypos, final double p_radius, final double p_angle )
     {
+        if ( Math.sqrt( p_xpos * p_xpos + p_ypos * p_ypos ) > p_radius )
+            return false;
 
-        return Stream.of();
+        final double l_segment = 0.5 * p_angle;
+        final double l_angle = Math.toDegrees( Math.atan( p_ypos / p_xpos ) );
+        return ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
     }
 
 
@@ -494,6 +506,53 @@ public final class CPokemon extends IBaseAgent
         // http://stackoverflow.com/questions/13652518/efficiently-find-points-inside-a-circle-sector
         // http://stackoverflow.com/questions/6270785/how-to-determine-whether-a-point-x-y-is-contained-within-an-arc-section-of-a-c
 
+
+
+        @Override
+        public Stream<ILiteral> streamLiteral()
+        {
+            final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
+            final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
+
+            return IntStream.rangeClosed( -l_radius, l_radius )
+                            .parallel()
+                            .boxed()
+                            .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
+                                                    .filter( x -> CPokemon.positioninsideangle( x, y, l_radius, l_angle ) )
+                                                    .mapToObj( x -> {
+                                                         final double l_ypos = y + m_position.getQuick( 0 );
+                                                         final double l_xpos = x + m_position.getQuick( 1 );
+
+                                                         return this.elementliteral( m_environment.get( l_ypos, l_xpos ), l_ypos, l_xpos );
+                                                    } )
+                                                    .filter( i -> i != null )
+                            );
+        }
+
+        /**
+         * generates the literal of an object
+         *
+         * @param p_element element or null
+         * @param p_ypos y-position of the element
+         * @param p_xpos x-position of the element
+         * @return null or literal
+         */
+        private ILiteral elementliteral( final IElement p_element, final double p_ypos, final double p_xpos )
+        {
+            if ( p_element instanceof CPokemon )
+                return CLiteral.from( "pokemon", Stream.of(
+                    CLiteral.from( "x", Stream.of( CRawTerm.from( p_xpos ) ) ),
+                    CLiteral.from( "y", Stream.of( CRawTerm.from( p_ypos ) ) )
+                ) );
+
+            if ( p_element instanceof IItem )
+                return CLiteral.from( "obstacle", Stream.of(
+                    CLiteral.from( "x", Stream.of( CRawTerm.from( p_xpos ) ) ),
+                    CLiteral.from( "y", Stream.of( CRawTerm.from( p_ypos ) ) )
+                ) );
+
+            return null;
+        }
     }
 
 }

@@ -29,7 +29,6 @@ import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
-import org.lightjason.agentspeak.agent.IPlanBundle;
 import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
 import org.lightjason.agentspeak.beliefbase.CBeliefbasePersistent;
 import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
@@ -82,14 +81,15 @@ public final class CPokemonGenerator extends IBaseAgentGenerator<IAgent>
                               final Set<IAction> p_actions, final IAggregation p_aggregation
     ) throws Exception
     {
-        super( p_stream, p_actions, p_aggregation, Collections.<IPlanBundle>emptySet(), Collections.<IBeliefPerceive<IAgent>>emptySet(), IVariableBuilder.EMPTY );
+        super( p_stream, p_actions, p_aggregation, Collections.emptySet(), Collections.emptySet(), IVariableBuilder.EMPTY );
         m_environment = p_environment;
     }
 
 
     @Override
     protected final IAgentConfiguration<IAgent> configuration( final IFuzzy<Boolean, IAgent> p_fuzzy, final Collection<ILiteral> p_initalbeliefs,
-                                                               final Set<IBeliefPerceive<IAgent>> p_beliefperceive, final Set<IPlan> p_plans, final Set<IRule> p_rules,
+                                                               final Set<IBeliefPerceive<ILiteral, IView<IAgent>, IAgent>> p_beliefperceive,
+                                                               final Set<IPlan> p_plans, final Set<IRule> p_rules,
                                                                final ILiteral p_initialgoal, final IUnifier p_unifier, final IAggregation p_aggregation,
                                                                final IVariableBuilder p_variablebuilder
     )
@@ -140,7 +140,7 @@ public final class CPokemonGenerator extends IBaseAgentGenerator<IAgent>
          * @param p_variablebuilder variable builder
          */
         CAgentConfiguration( final IFuzzy<Boolean, IAgent> p_fuzzy, final Collection<ILiteral> p_initalbeliefs,
-                                    final Set<IBeliefPerceive<IAgent>> p_beliefperceive, final Set<IPlan> p_plans,
+                                    final Set<IBeliefPerceive<ILiteral, IView<IAgent>, IAgent>> p_beliefperceive, final Set<IPlan> p_plans,
                                     final Set<IRule> p_rules, final ILiteral p_initialgoal, final IUnifier p_unifier, final IAggregation p_aggregation,
                                     final IVariableBuilder p_variablebuilder
         )

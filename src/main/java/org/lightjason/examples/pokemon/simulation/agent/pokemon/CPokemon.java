@@ -30,6 +30,8 @@ import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.beliefbase.CBeliefbasePersistent;
 import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
 import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
+import org.lightjason.agentspeak.beliefbase.storage.IStorage;
+import org.lightjason.agentspeak.beliefbase.view.IView;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
@@ -487,13 +489,13 @@ public final class CPokemon extends IBaseAgent
     /**
      * environment beliefbase
      */
-    private final class CEnvironmentPerceive implements IBeliefPerceive<IAgent>
+    private final class CEnvironmentPerceive implements IBeliefPerceive<ILiteral, IView<IAgent>, IAgent>
     {
 
         @Override
-        public final void perceive( final IAgent p_agent )
+        public final void perceive( final IAgent p_agent, final IStorage<ILiteral, IView<IAgent>, IAgent> p_storage )
         {
-            //p_agent.beliefbase().
+
         }
     }
 

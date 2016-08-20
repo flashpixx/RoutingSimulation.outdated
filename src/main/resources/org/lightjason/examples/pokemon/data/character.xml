@@ -395,6 +395,7 @@
                 <attribute id="height" expected="1.1" minimum="0.8" maximum="1.3"/>
                 <attribute id="weight" expected="34.6" minimum="30" maximum="40"/>
 
+                <attribute id="speed" expected="2" minimum="1" maximum="5"/>
                 <attribute id="viewangle" expected="110" minimum="105" maximum="120"/>
                 <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
                 <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
@@ -417,6 +418,7 @@
                 <attribute id="height" expected="0.3" minimum="0.1" maximum="5"/>
                 <attribute id="weight" expected="6.5" minimum="5.5" maximum="7.5"/>
 
+                <attribute id="speed" expected="2" minimum="1" maximum="5"/>
                 <attribute id="viewangle" expected="110" minimum="105" maximum="120"/>
                 <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
                 <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
@@ -493,6 +495,7 @@
             <level>
                 <ethnicity id="bug" expected="0.8" minimum="0.6" maximum="1"/>
 
+                <attribute id="speed" expected="2" minimum="1" maximum="5"/>
                 <attribute id="height" expected="0.3" minimum="0.2" maximum="0.4"/>
                 <attribute id="weight" expected="2.9" minimum="2.5" maximum="3.3"/>
                 <attribute id="viewangle" expected="130" minimum="120" maximum="140"/>
@@ -517,6 +520,7 @@
             <level>
                 <ethnicity id="poison" expected="0.8" minimum="0.6" maximum="1"/>
 
+                <attribute id="speed" expected="2" minimum="1" maximum="5"/>
                 <attribute id="height" expected="0.6" minimum="0.4" maximum="0.8"/>
                 <attribute id="weight" expected="1" minimum="0.8" maximum="1.2"/>
                 <attribute id="viewangle" expected="110" minimum="105" maximum="120"/>
@@ -543,6 +547,7 @@
                 <ethnicity id="ghost" expected="0.8" minimum="0.6" maximum="1"/>
                 <ethnicity id="poison" expected="0.4" minimum="0.3" maximum="0.5"/>
 
+                <attribute id="speed" expected="2" minimum="1" maximum="5"/>
                 <attribute id="height" expected="1.3" minimum="1" maximum="1.6"/>
                 <attribute id="weight" expected="0.1" minimum="0.05" maximum="0.2"/>
                 <attribute id="viewangle" expected="140" minimum="130" maximum="150"/>

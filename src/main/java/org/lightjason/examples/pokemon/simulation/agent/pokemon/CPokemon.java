@@ -68,6 +68,14 @@ import java.util.stream.Stream;
 public final class CPokemon extends IBaseAgent
 {
     /**
+     * attribute of speed
+     */
+    private static final String ATTRIBUTESPEED = "speed";
+    /**
+     * near-by attribute
+     */
+    private static final String ATTRIBUTENEARBY = "nearby";
+    /**
      * pokemon type
      */
     private final String m_pokemon;
@@ -191,6 +199,26 @@ public final class CPokemon extends IBaseAgent
         final double l_segment = 0.5 * p_angle;
         final double l_angle = Math.toDegrees( Math.atan( p_ypos / p_xpos ) );
         return ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
+    }
+
+    @Override
+    protected final int speed()
+    {
+        // must be set because toString of base class
+        if ( m_attribute == null )
+            return 0;
+
+        return m_attribute.getOrDefault( ATTRIBUTESPEED, new MutablePair<>( EAccess.READ, 0 ) ).getRight().intValue();
+    }
+
+    @Override
+    protected final double nearby()
+    {
+        // must be set because toString of base class
+        if ( m_attribute == null )
+            return 0;
+
+        return m_attribute.getOrDefault( ATTRIBUTENEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
     }
 
 

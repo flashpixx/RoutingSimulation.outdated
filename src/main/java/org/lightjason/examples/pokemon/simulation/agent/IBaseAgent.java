@@ -84,13 +84,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      */
     protected final IEnvironment m_environment;
     /**
-     * current moving speed
-     *
-     * @deprecated move to preference
-     */
-    @Deprecated
-    private int m_speed = 1;
-    /**
      * route
      */
     private final List<DoubleMatrix1D> m_route = Collections.synchronizedList( new LinkedList<>() );
@@ -122,7 +115,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
             "{0} - current position [{1}] - speed [{2}] - route [{3}]",
             super.toString(),
             m_position == null ? "" : CMath.MATRIXFORMAT.toString( m_position ),
-            m_speed,
+            this.speed(),
             // not null check is needed because of the super ctor
             m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( "; " ) )
         );
@@ -170,7 +163,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         // Y is a literal with distance,
         // default argument must match literal-value type (and on integral types long is used)
         final double l_distance = CMath.distance( m_position, l_goalposition );
-        if ( l_distance <= this.preference( "near-by", Long.valueOf( 0 ) ).doubleValue() )
+        if ( l_distance <= this.nearby() )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
 
         return this;
@@ -178,6 +171,20 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
 
 
     // --- object getter ---------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * returns the speed
+     *
+     * @return speed
+     */
+    protected abstract int speed();
+
+    /**
+     * returns the near-by attribute
+     *
+     * @return near-by value
+     */
+    protected abstract double nearby();
 
     @Override
     public final DoubleMatrix1D position()
@@ -218,47 +225,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
     // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
 
-    /**
-     * agent action to set speed to a fixed value
-     *
-     * @param p_speed spped value
-     */
-    @IAgentActionFilter
-    @IAgentActionName( name = "speed/set" )
-    protected final void setspeed( final Number p_speed )
-    {
-        if ( p_speed.intValue() < 1 )
-            throw new RuntimeException( "speed cannot be less than one" );
-        m_speed = p_speed.intValue();
-    }
-
-    /**
-     * agent action to increment speed
-     *
-     * @param p_speed increment value
-     */
-    @IAgentActionFilter
-    @IAgentActionName( name = "speed/increment" )
-    protected final void incrementspeed( final Number p_speed )
-    {
-        if ( p_speed.intValue() < 1 )
-            throw new RuntimeException( "speed cannot be less than one" );
-        m_speed += p_speed.intValue();
-    }
-
-    /**
-     * agent action to decrement speed
-     *
-     * @param p_speed decrement value
-     */
-    @IAgentActionFilter
-    @IAgentActionName( name = "speed/decrement" )
-    protected final void decrementspeed( final Number p_speed )
-    {
-        if ( ( p_speed.intValue() < 1 ) || ( m_speed - p_speed.intValue() < 1 ) )
-            throw new RuntimeException( "speed cannot be less than one or cannot be smaler than one" );
-        m_speed -= p_speed.intValue();
-    }
 
     /**
      * route calculation and add landmarks at the beginning
@@ -383,7 +349,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     {
         return m_route.size() < 1
                ? 0
-               : m_environment.routestimatedtime( Stream.concat( Stream.of( m_position ), m_route.stream() ), m_speed );
+               : m_environment.routestimatedtime( Stream.concat( Stream.of( m_position ), m_route.stream() ), this.speed() );
     }
 
     /**
@@ -477,7 +443,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( l_goalposition.equals( m_position ) )
             return;
 
-        if ( !this.equals( m_environment.move( this, p_direction.position( m_position, l_goalposition, m_speed ) ) ) )
+        if ( !this.equals( m_environment.move( this, p_direction.position( m_position, l_goalposition, this.speed() ) ) ) )
             throw new RuntimeException( MessageFormat.format( "cannot move {0}", p_direction ) );
     }
 

@@ -78,7 +78,9 @@ preferences/near-by(10).
 +!movement/standstill
     <-
         generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
-        speed/increment( 1 );
+        >>attribute/speed(S);
+        S = S + 1;
+        +attribute/speed( S );
         !movement/walk/forward
 .
 
@@ -106,7 +108,7 @@ preferences/near-by(10).
 +!position/near-by(D)
     <-
         generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
-        speed/set(1);
+        +attribute/speed( 1 );
         route/next
 .
 
@@ -126,7 +128,7 @@ preferences/near-by(10).
 +!position/beyond(P)
     <-
         generic/print( "position beyond [", P, "] - set speed to 1 in cycle [", Cycle, "]" );
-        speed/set(1)
+        +attribute/speed( 1 )
 .
 
 
@@ -135,7 +137,7 @@ preferences/near-by(10).
 +!wakeup
     <-
         generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
-        speed/set(1);
+        +attribute/speed( 1 );
         !movement/walk/forward
 .
 

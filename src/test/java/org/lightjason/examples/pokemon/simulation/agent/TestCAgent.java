@@ -96,4 +96,18 @@ public final class TestCAgent
     }
 
 
+    /**
+     * main
+     *
+     * @param p_args arguments
+     * @throws Exception is thrown on errors
+     */
+    public static void main( final String[] p_args ) throws Exception
+    {
+        final TestCAgent l_test = new TestCAgent();
+        l_test.initialize();
+
+        l_test.testMovingAgentGenerator();
+    }
+
 }

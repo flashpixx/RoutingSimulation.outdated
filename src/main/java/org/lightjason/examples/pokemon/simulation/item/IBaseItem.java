@@ -29,14 +29,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
+import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.examples.pokemon.simulation.CMath;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -52,7 +55,7 @@ public abstract class IBaseItem implements IItem
     /**
      * set with preferences
      */
-    private final Map<String, ILiteral> m_preferences;
+    private final Set<ITerm> m_preferences;
     /**
      * color
      */
@@ -87,20 +90,38 @@ public abstract class IBaseItem implements IItem
             Math.abs( p_rightbottom.get( 0 ) - p_leftupper.get( 0 ) ),
             Math.abs( p_rightbottom.get( 1 ) - p_leftupper.get( 1 ) )
         } );
-        //m_preferences = Collections.unmodifiableMap( p_preference.parallelStream().collect( Collectors.toMap( ITerm::functor, i -> i ) ) );
-        m_preferences = Collections.emptyMap();
+
+        m_preferences = Collections.unmodifiableSet( Stream.of(
+            CLiteral.from( "topleft",  IBaseItem.streamposition( m_position.getQuick( 0 ), m_position.getQuick( 1 ) ) ),
+            CLiteral.from( "bottomright",  IBaseItem.streamposition(
+                                               m_position.getQuick( 0 ) + m_position.getQuick( 2 ),
+                                               m_position.getQuick( 1 ) + m_position.getQuick( 3 )
+                                           )
+            )
+        ).collect( Collectors.toSet() ) );
     }
 
-    @Override
-    public final Stream<ILiteral> preferences()
+    /**
+     * creates a stream with position data
+     *
+     * @param p_ypos y-position
+     * @param p_xpos x-position
+     * @return literal stream
+     */
+    @SuppressWarnings( "unchecked" )
+    private static Stream<ITerm> streamposition( final double p_ypos, final double p_xpos )
     {
-        return m_preferences.values().stream();
+        return Stream.of(
+            CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) ),
+            CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) )
+        );
     }
 
+
     @Override
-    public final <N> N preference( final String p_name, final N p_default )
+    public final Stream<ITerm> attribute()
     {
-        return CCommon.raw( m_preferences.getOrDefault( p_name, CLiteral.from( p_name, Stream.of( CRawTerm.from( p_default ) ) ) ) );
+        return m_preferences.parallelStream();
     }
 
     @Override

@@ -23,9 +23,9 @@
 
 package org.lightjason.examples.pokemon.simulation;
 
+import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.examples.pokemon.ui.ISprite;
 import cern.colt.matrix.DoubleMatrix1D;
-import org.lightjason.agentspeak.language.ILiteral;
 
 import java.util.stream.Stream;
 
@@ -39,21 +39,11 @@ public interface IElement extends ISprite
 {
 
     /**
-     * returns a stream of all preferences
+     * returns a stream of all attributes
      *
-     * @return preference stream
+     * @return attribute stream
      */
-    Stream<ILiteral> preferences();
-
-    /**
-     * returns a single preference
-     *
-     * @param p_name name of the preference
-     * @param p_default default value if preference not exists
-     * @tparam N any object type
-     * @return preference value
-     */
-    <N> N preference( final String p_name, final N p_default );
+    Stream<ITerm> attribute();
 
     /**
      * returns the current position of the object

@@ -202,6 +202,12 @@ public final class CPokemon extends IBaseAgent
     }
 
     @Override
+    public final Stream<ITerm> attribute()
+    {
+        return m_ethnic.entrySet().parallelStream().map( i -> CLiteral.from( i.getKey(), Stream.of( CRawTerm.from( i.getValue() ) ) ) );
+    }
+
+    @Override
     protected final int speed()
     {
         // null check because of initialization of base class
@@ -581,13 +587,15 @@ public final class CPokemon extends IBaseAgent
             if ( p_element instanceof CPokemon )
                 return CLiteral.from( "pokemon", Stream.of(
                     CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
-                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) )
+                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) ),
+                    CLiteral.from( "attribute", p_element.attribute() )
                 ) );
 
             if ( p_element instanceof IItem )
                 return CLiteral.from( "obstacle", Stream.of(
                     CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
-                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) )
+                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) ),
+                    CLiteral.from( "attribute", p_element.attribute() )
                 ) );
 
             return null;

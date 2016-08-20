@@ -192,25 +192,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         return m_position;
     }
 
-    @Override
-    public final Stream<ILiteral> preferences()
-    {
-        return this.beliefbase().stream();
-    }
-
-    @Override
-    public final <N> N preference( final String p_path, final N p_default )
-    {
-        return CCommon.raw(
-            this.beliefbase().stream( CPath.from( p_path ) )
-                .findFirst()
-                .orElseGet( () -> CLiteral.from( p_path, Stream.of( CRawTerm.from( p_default ) ) ) )
-                .values()
-                .findFirst()
-                .orElse( CRawTerm.from( p_default ) )
-        );
-    }
-
     /**
      * returns the goal-position
      * @return position

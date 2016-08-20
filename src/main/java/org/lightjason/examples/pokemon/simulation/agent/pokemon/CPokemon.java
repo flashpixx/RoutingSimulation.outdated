@@ -204,21 +204,19 @@ public final class CPokemon extends IBaseAgent
     @Override
     protected final int speed()
     {
-        // must be set because toString of base class
-        if ( m_attribute == null )
-            return 0;
-
-        return m_attribute.getOrDefault( ATTRIBUTESPEED, new MutablePair<>( EAccess.READ, 0 ) ).getRight().intValue();
+        // null check because of initialization of base class
+        return m_attribute == null
+               ? 0
+               : m_attribute.getOrDefault( ATTRIBUTESPEED, new MutablePair<>( EAccess.READ, 0 ) ).getRight().intValue();
     }
 
     @Override
     protected final double nearby()
     {
-        // must be set because toString of base class
-        if ( m_attribute == null )
-            return 0;
-
-        return m_attribute.getOrDefault( ATTRIBUTENEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
+        // null check because of initialization of base class
+        return m_attribute == null
+               ? 0
+               : m_attribute.getOrDefault( ATTRIBUTENEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
     }
 
 

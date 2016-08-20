@@ -39,6 +39,47 @@ import java.util.stream.Stream;
 public interface IEnvironment extends Callable<IEnvironment>, ITileMap
 {
 
+    // --- main elements ---------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * clip position data
+     *
+     * @param p_position position vector
+     * @return modified clipped vector
+     */
+    DoubleMatrix1D clip( final DoubleMatrix1D p_position );
+
+    /**
+     * returns the number of rows
+     *
+     * @return rows
+     */
+    int row();
+
+    /**
+     * returns the number of columns
+     *
+     * @return columns
+     */
+    int column();
+
+    /**
+     * returns the cell size
+     *
+     * @return cell size
+     */
+    int cellsize();
+
+    /**
+     * run initialization of the environment
+     *
+     * @return self reference
+     */
+    IEnvironment initialize();
+
+
+    // --- dynamic object access -------------------------------------------------------------------------------------------------------------------------------
+
     /**
      * calculate route
      *
@@ -90,41 +131,5 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      * @return boolean result
      */
     boolean empty( final DoubleMatrix1D p_position );
-
-    /**
-     * clip position data
-     *
-     * @param p_position position vector
-     * @return modified clipped vector
-     */
-    DoubleMatrix1D clip( final DoubleMatrix1D p_position );
-
-    /**
-     * returns the number of rows
-     *
-     * @return rows
-     */
-    int row();
-
-    /**
-     * returns the number of columns
-     *
-     * @return columns
-     */
-    int column();
-
-    /**
-     * returns the cell size
-     *
-     * @return cell size
-     */
-    int cellsize();
-
-    /**
-     * run initialization of the environment
-     *
-     * @return self reference
-     */
-    IEnvironment initialize();
 
 }

@@ -29,7 +29,6 @@ import cern.jet.math.Functions;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
-import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.examples.pokemon.simulation.CMath;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;

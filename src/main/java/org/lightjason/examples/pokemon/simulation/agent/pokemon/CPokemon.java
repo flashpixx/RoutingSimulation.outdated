@@ -24,9 +24,13 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.jet.math.Functions;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
+import org.lightjason.agentspeak.common.CPath;
+import org.lightjason.examples.pokemon.simulation.CMath;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
@@ -503,17 +507,35 @@ public final class CPokemon extends IBaseAgent
         @Override
         public Stream<ILiteral> streamLiteral()
         {
+            // read attribute data
             final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
             final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
 
+            // rotate view-range into the direction of the next goal-position
+            // calculate angle from current position to goal-position
+            final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult(
+                CMath.rotationmatrix(
+                    Math.toRadians(
+                        CMath.angel(
+                            new DenseDoubleMatrix1D( CPokemon.this.goal().toArray() )
+                                .assign( m_position, Functions.minus ),
+                            new DenseDoubleMatrix1D( m_position.toArray() )
+                                .assign( new DenseDoubleMatrix1D( new double[]{0, l_radius} ), Functions.plus )
+                        )
+                    )
+                ),
+                m_position
+            );
+
+            // iterate over the possible cells of the grid
             return IntStream.rangeClosed( -l_radius, l_radius )
                             .parallel()
                             .boxed()
                             .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
                                                     .filter( x -> CPokemon.positioninsideangle( x, y, l_radius, l_angle ) )
                                                     .mapToObj( x -> {
-                                                        final double l_ypos = y + m_position.getQuick( 0 );
-                                                        final double l_xpos = x + m_position.getQuick( 1 );
+                                                        final double l_ypos = y + l_viewposition.getQuick( 0 );
+                                                        final double l_xpos = x + l_viewposition.getQuick( 1 );
 
                                                         return this.elementliteral( m_environment.get( l_ypos, l_xpos ), l_ypos, l_xpos );
                                                     } )
@@ -533,14 +555,14 @@ public final class CPokemon extends IBaseAgent
         {
             if ( p_element instanceof CPokemon )
                 return CLiteral.from( "pokemon", Stream.of(
-                    CLiteral.from( "x", Stream.of( CRawTerm.from( p_xpos ) ) ),
-                    CLiteral.from( "y", Stream.of( CRawTerm.from( p_ypos ) ) )
+                    CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
+                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) )
                 ) );
 
             if ( p_element instanceof IItem )
                 return CLiteral.from( "obstacle", Stream.of(
-                    CLiteral.from( "x", Stream.of( CRawTerm.from( p_xpos ) ) ),
-                    CLiteral.from( "y", Stream.of( CRawTerm.from( p_ypos ) ) )
+                    CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
+                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) )
                 ) );
 
             return null;

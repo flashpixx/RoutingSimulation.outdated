@@ -80,6 +80,18 @@ public final class CMath
         return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
     }
 
+    /**
+     * returns the angel
+     *
+     * @param p_first first vector
+     * @param p_second second vector
+     * @return angel in degree
+     */
+    public static double angel( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
+    {
+        return p_first.zDotProduct( p_second ) / ( Math.sqrt( ALGEBRA.norm2( p_first ) ) * Math.sqrt( ALGEBRA.norm2( p_second ) ) );
+    }
+
 
     /**
      * returns the distance between to points

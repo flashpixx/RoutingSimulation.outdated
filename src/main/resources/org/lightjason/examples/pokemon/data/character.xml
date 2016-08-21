@@ -884,6 +884,228 @@
             </level>
         </pokemon>
 
+        <!-- === fire =========================================================================================================================================== -->
+        <pokemon id = "charmander">
+
+            <!-- charmander -->
+            <level>
+                <ethnicity id="fire" expected="0.8" minimum="0.6" maximum="1"/>
+                <attribute id="height" expected="0.6" minimum="0.5" maximum="0.7"/>
+                <attribute id="weight" expected="8.5" minimum="8" maximum="9"/>
+
+                <attribute id="speed" expected="2" minimum="1" maximum="3"/>
+                <attribute id="viewangle" expected="110" minimum="105" maximum="120"/>
+                <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
+                <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
+
+                <motivation id="hunt" expected="0.3" minimum="0.1" maximum="0.5"/>
+                <motivation id="fight" expected="0.6" minimum="0.5" maximum="0.8"/>
+                <motivation id="play" expected="0.3" minimum="0.2" maximum="0.4"/>
+
+                <attack id="scratch"/>
+                <attack id="ember"/>
+                <attack id="tackle"/>
+            </level>
+
+            <!-- charmeleon -->
+            <level>
+                <attribute id="height" expected="1.1" minimum="1" maximum="1.2"/>
+                <attribute id="weight" expected="19" minimum="18" maximum="20"/>
+
+                <attribute id="speed" expected="3" minimum="2" maximum="4"/>
+                <attribute id="viewrange" expected="3" minimum="2" maximum="4"/>
+                <attribute id="nearby" expected="3" minimum="2" maximum="4"/>
+
+                <motivation id="fight" expected="0.7" minimum="0.5" maximum="0.9"/>
+                <motivation id="play" expected="0.2" minimum="0.1" maximum="0.3"/>
+
+                <attack id="firespin"/>
+                <attack id="flamethrower"/>
+            </level>
+
+            <!-- charizard -->
+            <level>
+                <ethnicity id="flying" expected="0.8" minimum="0.6" maximum="1"/>
+                <attribute id="height" expected="1.7" minimum="1.6" maximum="2"/>
+                <attribute id="weight" expected="90.5" minimum="88" maximum="93"/>
+
+                <attribute id="viewangle" expected="130" minimum="120" maximum="140"/>
+                <attribute id="viewrange" expected="4" minimum="3" maximum="5"/>
+                <attribute id="nearby" expected="4" minimum="3" maximum="5"/>
+
+                <motivation id="fight" expected="0.8" minimum="0.6" maximum="1"/>
+                <motivation id="play" expected="0.2" minimum="0.1" maximum="0.3"/>
+
+                <attack id="fireblast"/>
+                <attack id="wingattack"/>
+                <attack id="gust"/>
+            </level>
+        </pokemon>
+
+        <pokemon id = "growlithe">
+
+            <!-- growlithe -->
+            <level>
+                <ethnicity id="fire" expected="0.8" minimum="0.6" maximum="1"/>
+                <attribute id="height" expected="0.7" minimum="0.5" maximum="0.7"/>
+                <attribute id="weight" expected="19" minimum="8" maximum="9"/>
+
+                <attribute id="speed" expected="2" minimum="1" maximum="3"/>
+                <attribute id="viewangle" expected="110" minimum="105" maximum="120"/>
+                <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
+                <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
+
+                <motivation id="hunt" expected="0.3" minimum="0.1" maximum="0.5"/>
+                <motivation id="fight" expected="0.6" minimum="0.5" maximum="0.8"/>
+                <motivation id="cautiousness" expected="0.6" minimum="0.5" maximum="0.8"/>
+                <motivation id="help" expected="0.6" minimum="0.5" maximum="0.8"/>
+
+                <attack id="scratch"/>
+                <attack id="ember"/>
+                <attack id="bite"/>
+            </level>
+
+            <!-- arcanine -->
+            <level>
+                <attribute id="height" expected="1.9" minimum="1.8" maximum="2"/>
+                <attribute id="weight" expected="155" minimum="150" maximum="160"/>
+
+                <attribute id="speed" expected="3" minimum="2" maximum="4"/>
+                <attribute id="nearby" expected="3" minimum="2" maximum="4"/>
+
+                <motivation id="hunt" expected="0.4" minimum="0.1" maximum="0.5"/>
+                <motivation id="fight" expected="0.5" minimum="0.4" maximum="0.8"/>
+                <motivation id="cautiousness" expected="0.3" minimum="0.2" maximum="0.4"/>
+
+                <attack id="flamethrower"/>
+                <attack id="firespin"/>
+                <attack id="fireblast"/>
+            </level>
+        </pokemon>
+
+        <pokemon id = "magmar">
+
+            <!-- magmar -->
+            <level>
+                <ethnicity id="fire" expected="0.8" minimum="0.6" maximum="1"/>
+                <attribute id="height" expected="1.3" minimum="1.2" maximum="1.5"/>
+                <attribute id="weight" expected="44.5" minimum="43" maximum="46"/>
+
+                <attribute id="speed" expected="3" minimum="2" maximum="4"/>
+                <attribute id="viewangle" expected="110" minimum="105" maximum="120"/>
+                <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
+                <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
+
+                <motivation id="hunt" expected="0.3" minimum="0.1" maximum="0.5"/>
+                <motivation id="fight" expected="0.6" minimum="0.5" maximum="0.8"/>
+                <motivation id="help" expected="0.6" minimum="0.5" maximum="0.8"/>
+
+                <attack id="slam"/>
+                <attack id="flamethrower"/>
+                <attack id="firespin"/>
+                <attack id="fireblast"/>
+            </level>
+        </pokemon>
+
+        <pokemon id = "molres">
+
+            <!-- moltres -->
+            <level>
+                <ethnicity id="fire" expected="0.8" minimum="0.6" maximum="1"/>
+                <ethnicity id="flying" expected="0.8" minimum="0.6" maximum="1"/>
+                <attribute id="height" expected="2" minimum="1.8" maximum="2.2"/>
+                <attribute id="weight" expected="60" minimum="58" maximum="62"/>
+
+                <attribute id="speed" expected="5" minimum="4" maximum="6"/>
+                <attribute id="viewangle" expected="120" minimum="110" maximum="130"/>
+                <attribute id="viewrange" expected="3" minimum="2" maximum="4"/>
+                <attribute id="nearby" expected="3" minimum="2" maximum="4"/>
+
+                <motivation id="hunt" expected="0.3" minimum="0.1" maximum="0.5"/>
+                <motivation id="cautiousness" expected="0.5" minimum="0.4" maximum="0.6"/>
+                <motivation id="fight" expected="0.3" minimum="0.2" maximum="0.4"/>
+                <motivation id="help" expected="0.4" minimum="0.3" maximum="0.5"/>
+
+                <attack id="wingattack"/>
+                <attack id="flamethrower"/>
+                <attack id="firespin"/>
+                <attack id="fireblast"/>
+            </level>
+        </pokemon>
+
+        <pokemon id = "ponyta">
+
+            <!-- ponyta -->
+            <level>
+                <ethnicity id="fire" expected="0.8" minimum="0.6" maximum="1"/>
+                <attribute id="height" expected="1" minimum="0.8" maximum="1.2"/>
+                <attribute id="weight" expected="30" minimum="28" maximum="32"/>
+
+                <attribute id="speed" expected="3" minimum="2" maximum="4"/>
+                <attribute id="viewangle" expected="120" minimum="110" maximum="130"/>
+                <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
+                <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
+
+                <motivation id="hunt" expected="0.3" minimum="0.1" maximum="0.5"/>
+                <motivation id="fight" expected="0.5" minimum="0.2" maximum="0.8"/>
+                <motivation id="help" expected="0.4" minimum="0.3" maximum="0.5"/>
+
+                <attack id="tackle"/>
+                <attack id="firespin"/>
+            </level>
+
+            <!-- rapidash -->
+            <level>
+                <attribute id="height" expected="1.7" minimum="1.5" maximum="1.9"/>
+                <attribute id="weight" expected="95" minimum="90" maximum="100"/>
+
+                <attribute id="speed" expected="6" minimum="4" maximum="7"/>
+
+                <motivation id="hunt" expected="0.6" minimum="0.4" maximum="0.8"/>
+                <motivation id="fight" expected="0.6" minimum="0.4" maximum="0.8"/>
+
+                <attack id="flamethrower"/>
+                <attack id="fireblast"/>
+            </level>
+
+        </pokemon>
+
+        <pokemon id = "vulpix">
+
+            <!-- vulpix -->
+            <level>
+                <ethnicity id="fire" expected="0.8" minimum="0.6" maximum="1"/>
+                <attribute id="height" expected="0.6" minimum="0.5" maximum="0.7"/>
+                <attribute id="weight" expected="9.9" minimum="9" maximum="10.8"/>
+
+                <attribute id="speed" expected="2" minimum="1" maximum="3"/>
+                <attribute id="viewangle" expected="120" minimum="110" maximum="130"/>
+                <attribute id="viewrange" expected="2" minimum="1" maximum="3"/>
+                <attribute id="nearby" expected="2" minimum="1" maximum="3"/>
+
+                <motivation id="hunt" expected="0.3" minimum="0.1" maximum="0.5"/>
+                <motivation id="fight" expected="0.3" minimum="0.2" maximum="0.4"/>
+                <motivation id="help" expected="0.5" minimum="0.3" maximum="0.6"/>
+
+                <attack id="tackle"/>
+                <attack id="firespin"/>
+            </level>
+
+            <!-- ninetales -->
+            <level>
+                <attribute id="height" expected="1.1" minimum="1" maximum="1.2"/>
+                <attribute id="weight" expected="19.9" minimum="19" maximum="20.8"/>
+
+                <attribute id="speed" expected="3" minimum="2" maximum="4"/>
+
+                <motivation id="ignorance" expected="0.4" minimum="0.3" maximum="0.5"/>
+                <motivation id="help" expected="0.2" minimum="0.1" maximum="0.3"/>
+
+                <attack id="flamethrower"/>
+                <attack id="fireblast"/>
+            </level>
+
+        </pokemon>
 
         <!-- === bug =========================================================================================================================================== -->
         <pokemon id="caterpie">
@@ -989,9 +1211,6 @@
             
             <!-- haunter -->
             <level>
-                <ethnicity id="ghost" expected="0.8" minimum="0.6" maximum="1"/>
-                <ethnicity id="poison" expected="0.4" minimum="0.3" maximum="0.5"/>
-
                 <attribute id="height" expected="1.6" minimum="1.4" maximum="1.8"/>
                 <attribute id="weight" expected="0.1" minimum="0.05" maximum="0.2"/>
                 <attribute id="viewangle" expected="160" minimum="150" maximum="170"/>
@@ -1007,8 +1226,6 @@
 
             <!-- gengar -->
             <level>
-                <ethnicity id="ghost" expected="0.8" minimum="0.6" maximum="1"/>
-                <ethnicity id="poison" expected="0.4" minimum="0.3" maximum="0.5"/>
 
                 <attribute id="height" expected="1.5" minimum="1.4" maximum="1.6"/>
                 <attribute id="weight" expected="40.5" minimum="38" maximum="43"/>

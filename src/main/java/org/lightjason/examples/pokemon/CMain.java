@@ -45,6 +45,8 @@ import java.util.stream.Stream;
 
 /**
  * main desktop application
+ *
+ * @note add JVM parameters: -Djava.util.concurrent.ForkJoinPool.common.parallelism=8 -XX:+UseParallelGC -Xmx8g
  */
 public final class CMain
 {
@@ -169,10 +171,6 @@ public final class CMain
      */
     private static void execute( final CScreen p_screen )
     {
-        // https://www.infoq.com/articles/Functional-Style-Callbacks-Using-CompletableFuture
-        // http://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples/
-        // final ExecutorService l_pool = Executors.newWorkStealingPool();
-
         IntStream
             .range( 0, CConfiguration.INSTANCE.simulationsteps() )
             .mapToObj( i ->

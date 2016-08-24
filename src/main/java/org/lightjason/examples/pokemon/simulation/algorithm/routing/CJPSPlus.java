@@ -58,35 +58,33 @@ final class CJPSPlus implements IRouting
         m_staticjumppoints = new ArrayList<>();
 
         IntStream.range( 0, p_objects.rows() )
-            .forEach( i->
-            {
-                IntStream.range( 0, p_objects.columns() )
-                    .filter( j -> this.isOccupied( p_objects, i, j ) )
-                    .forEach( j ->
-                    {
-                        this.createstaticjump( m_staticjumppoints, i, j, p_objects );
-                    } );
-            } );
+            .forEach( i ->  IntStream.range( 0, p_objects.columns() )
+                                .filter( j -> this.isOccupied( p_objects, i, j ) )
+                                .forEach( j -> this.createstaticjump( m_staticjumppoints, i, j, p_objects ) )
+            );
         return this;
     }
 
     @Override
     public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
     {
-        final TreeSet<CJumpPoint> l_openlist = new TreeSet<CJumpPoint>( new CCompareJumpPoint() );
-
+        final TreeSet<CJumpPoint> l_openlist = new TreeSet<>( new CCompareJumpPoint() );
         final ArrayList<DoubleMatrix1D> l_closedlist = new ArrayList<>();
-
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
 
         l_openlist.add( new CJumpPoint( p_currentposition, null ) );
 
         final ArrayList<DoubleMatrix1D> l_staticjumppoints = new ArrayList<>( m_staticjumppoints );
-
         final List<DoubleMatrix1D> l_requiredstaticjumppoints = l_staticjumppoints.parallelStream()
-            .filter( i -> this.staticjumppointfilter( p_currentposition.getQuick( 0 ), p_targetposition.getQuick( 0 ), p_currentposition.getQuick( 1 ),
-                      p_targetposition.getQuick( 1 ), i.getQuick( 0 ), i.getQuick( 1 ) ) )
-            .collect( Collectors.toList() );
+                                                                    .filter( i -> this.staticjumppointfilter(
+                                                                                      p_currentposition.getQuick( 0 ),
+                                                                                      p_targetposition.getQuick( 0 ),
+                                                                                      p_currentposition.getQuick( 1 ),
+                                                                                      p_targetposition.getQuick( 1 ),
+                                                                                      i.getQuick( 0 ),
+                                                                                      i.getQuick( 1 ) )
+                                                                    )
+                                                                    .collect( Collectors.toList() );
 
         while ( !l_openlist.isEmpty() )
         {
@@ -136,11 +134,13 @@ final class CJPSPlus implements IRouting
     {
 
         Stream.of( new DenseDoubleMatrix1D( new double[]{p_row + 1, p_column} ), new DenseDoubleMatrix1D( new double[]{p_row - 1, p_column} ),
-                new DenseDoubleMatrix1D( new double[]{p_row, p_column + 1} ), new DenseDoubleMatrix1D( new double[]{p_row, p_column - 1} ) )
-
-            .filter( s -> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
-                     && !p_staticjumppoints.contains( s ) )
-            .forEach( p_staticjumppoints::add );
+                   new DenseDoubleMatrix1D( new double[]{p_row, p_column + 1} ), new DenseDoubleMatrix1D( new double[]{p_row, p_column - 1} )
+        )
+        .filter( s -> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
+                      && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
+                      && !p_staticjumppoints.contains( s )
+        )
+        .forEach( p_staticjumppoints::add );
     }
 
     /**
@@ -171,18 +171,24 @@ final class CJPSPlus implements IRouting
             final TreeSet<CJumpPoint> p_openlist, final List<DoubleMatrix1D> p_requiredstaticjumppoints )
     {
         IntStream.rangeClosed( -1, 1 )
-            .forEach( i ->
-            {
-                IntStream.rangeClosed( -1, 1 )
-                    .filter( j -> ( i != 0 || j != 0 )
-                                 && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j, p_closedlist )
-                                 && !this.isOccupied( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j ) )
-                    .forEach( j ->
-                    {
-                        final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects, p_requiredstaticjumppoints, p_closedlist );
-                        this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
-                    } );
-            } );
+            .forEach( i -> IntStream.rangeClosed( -1, 1 )
+                               .filter( j -> ( i != 0 || j != 0 )
+                                             && !this.isNotNeighbour( p_objects,
+                                                                      p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j,
+                                                                      p_closedlist
+                                             )
+                                             && !this.isOccupied( p_objects,
+                                                                  p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j
+                                             )
+                               )
+                               .forEach( j -> {
+                                                final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(),
+                                                                                                 p_target, i, j, p_objects,
+                                                                                                 p_requiredstaticjumppoints, p_closedlist
+                                                );
+                                                this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
+                               } )
+            );
     }
 
     /**

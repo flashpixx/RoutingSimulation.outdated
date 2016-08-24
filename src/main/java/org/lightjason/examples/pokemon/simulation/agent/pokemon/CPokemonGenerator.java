@@ -24,7 +24,6 @@
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
-import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
@@ -32,11 +31,8 @@ import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
 import org.lightjason.agentspeak.beliefbase.CBeliefbasePersistent;
 import org.lightjason.agentspeak.beliefbase.storage.CMultiStorage;
-import org.lightjason.agentspeak.beliefbase.storage.CSingleStorage;
 import org.lightjason.agentspeak.beliefbase.storage.IBeliefPerceive;
 import org.lightjason.agentspeak.beliefbase.view.IView;
-import org.lightjason.agentspeak.beliefbase.view.IViewGenerator;
-import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.configuration.CDefaultAgentConfiguration;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.generator.IBaseAgentGenerator;

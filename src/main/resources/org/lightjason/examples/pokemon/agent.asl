@@ -61,7 +61,7 @@
         T = T*10 + 1;
         T = math/min(T,5);
         generic/print( "walk right fails in cycle [", Cycle, "] wait [", T,"] cycles" );
-        generic/sleep(N)
+        generic/sleep(T)
 .
 
 // if the agent is not walking because speed is

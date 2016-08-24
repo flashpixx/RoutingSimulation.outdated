@@ -311,7 +311,7 @@ final class CJPSPlus implements IRouting
             return p_nextnode;
 
         final List<DoubleMatrix1D> l_jumplist = p_staticjp.stream()
-                .filter( i-> ( Math.abs( i.getQuick( 0 ) - p_nextnode.getQuick( 0 ) ) == Math.abs( i.getQuick( 1 ) - p_nextnode.getQuick( 1 ) ) )
+                .filter( i -> ( Math.abs( i.getQuick( 0 ) - p_nextnode.getQuick( 0 ) ) == Math.abs( i.getQuick( 1 ) - p_nextnode.getQuick( 1 ) ) )
                 && ( ( p_row == -1 && i.getQuick( 0 ) < p_nextnode.getQuick( 0 ) ) || ( p_row == 1 && i.getQuick( 0 ) > p_nextnode.getQuick( 0 ) ) )
                 && !this.choosediagstaticjump( p_objects, i.getQuick( 0 ), p_nextnode.getQuick( 0 ), p_nextnode.getQuick( 1 ), i.getQuick( 1 ),
                 p_closedlist, p_nextnode, p_curnode, i ) ).collect( Collectors.toList() );

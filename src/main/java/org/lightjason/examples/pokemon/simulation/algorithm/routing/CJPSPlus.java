@@ -137,10 +137,9 @@ final class CJPSPlus implements IRouting
                    new DenseDoubleMatrix1D( new double[]{p_row, p_column + 1} ), new DenseDoubleMatrix1D( new double[]{p_row, p_column - 1} )
         )
         .filter( s -> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
-                      && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
-                      && !p_staticjumppoints.contains( s )
-        )
-        .forEach( p_staticjumppoints::add );
+                          && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
+                          && !p_staticjumppoints.contains( s )
+        ).forEach( p_staticjumppoints::add );
     }
 
     /**
@@ -182,11 +181,11 @@ final class CJPSPlus implements IRouting
                                              )
                                )
                                .forEach( j -> {
-                                                final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(),
-                                                                                                 p_target, i, j, p_objects,
-                                                                                                 p_requiredstaticjumppoints, p_closedlist
-                                                );
-                                                this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
+                                   final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(),
+                                                                                    p_target, i, j, p_objects,
+                                                                                    p_requiredstaticjumppoints, p_closedlist
+                                   );
+                                   this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
                                } )
             );
     }

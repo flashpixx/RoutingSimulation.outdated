@@ -75,12 +75,6 @@
         !movement/walk/forward
 .
 
-// near-by belief change
-+preferences/near-by(X)
-    <-
-        generic/print( "near-by preference belief modified to [", X ,"] in cycle [", Cycle, "]" )
-.
-
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

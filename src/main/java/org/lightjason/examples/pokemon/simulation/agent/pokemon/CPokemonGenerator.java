@@ -154,19 +154,7 @@ public final class CPokemonGenerator extends IBaseAgentGenerator<IAgent>
         {
             // generate root beliefbase - the beliefbase with the local environment-data is generated within the agent-ctor
             final IView<IAgent> l_beliefbase = new CBeliefbasePersistent<>( new CMultiStorage<ILiteral, IView<IAgent>, IAgent>() )
-                                                .create( BELIEFBASEROOTNAME )
-
-                                                // generates beliefbase with individual preferences
-                                                .generate( new IViewGenerator<IAgent>()
-                                                {
-                                                    @Override
-                                                    public final IView<IAgent> generate( final String p_name, final IView<IAgent> p_parent )
-                                                    {
-                                                        return new CBeliefbasePersistent<IAgent>( new CSingleStorage<>() ).create( p_name, p_parent );
-                                                    }
-                                                },
-                                                CPath.from( IBaseAgent.PREFERENCE )
-                                                );
+                                                .create( BELIEFBASEROOTNAME );
 
             m_initialbeliefs.parallelStream().forEach( i -> l_beliefbase.add( i.shallowcopy() ) );
             return l_beliefbase;

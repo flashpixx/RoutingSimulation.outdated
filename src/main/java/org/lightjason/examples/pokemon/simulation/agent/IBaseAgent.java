@@ -59,10 +59,6 @@ import java.util.stream.Stream;
 public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAgent<IAgent> implements IAgent
 {
     /**
-     * name of the beliefbase for individual preferences
-     */
-    public static final String PREFERENCE = "preferences";
-    /**
      * sprite
      */
     protected Sprite m_sprite;

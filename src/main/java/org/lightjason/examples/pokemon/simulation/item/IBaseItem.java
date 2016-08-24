@@ -31,6 +31,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
+import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.ITerm;
 
 import java.util.Collections;
@@ -53,7 +54,7 @@ public abstract class IBaseItem implements IItem
     /**
      * set with preferences
      */
-    private final Set<ITerm> m_preferences;
+    private final Set<ILiteral> m_preferences;
     /**
      * color
      */
@@ -115,9 +116,14 @@ public abstract class IBaseItem implements IItem
         );
     }
 
+    @Override
+    public final Stream<ILiteral> environmentview()
+    {
+        return Stream.of();
+    }
 
     @Override
-    public final Stream<ITerm> attribute()
+    public final Stream<ILiteral> attribute()
     {
         return m_preferences.parallelStream();
     }

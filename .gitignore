@@ -4,6 +4,7 @@
 !circle.yml
 !*.java
 !*.xsd
+!*.xjb
 !*.md
 
 !src/analysis/**/*.xml

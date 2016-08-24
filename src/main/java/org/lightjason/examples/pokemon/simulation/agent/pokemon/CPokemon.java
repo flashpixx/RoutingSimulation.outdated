@@ -29,6 +29,7 @@ import cern.jet.math.Functions;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
+import org.lightjason.agentspeak.beliefbase.view.IView;
 import org.lightjason.examples.pokemon.simulation.CMath;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
@@ -96,6 +97,10 @@ public final class CPokemon extends IBaseAgent
      */
     private final Map<String, MutablePair<EAccess, Number>> m_attribute;
     /**
+     * environment view
+     */
+    private final IView<IAgent> m_envview;
+    /**
      * maximum level
      */
     private final int m_maximumlevel;
@@ -134,12 +139,13 @@ public final class CPokemon extends IBaseAgent
                           Collectors.toConcurrentMap( i -> i.getKey().name(), i -> new MutablePair<>( i.getKey().access(), i.getValue() ) )
                       );
 
+        m_envview = new CEnvironmentBeliefbase().create( "env", m_beliefbase );
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
             .add( new CAttributeBeliefbase().create( "attribute", m_beliefbase ) )
             .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) )
             .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) )
-            .add( new CEnvironmentBeliefbase().create( "env", m_beliefbase ) );
+            .add( m_envview );
     }
 
     @Override
@@ -202,9 +208,15 @@ public final class CPokemon extends IBaseAgent
     }
 
     @Override
-    public final Stream<ITerm> attribute()
+    public final Stream<ILiteral> attribute()
     {
         return m_ethnic.entrySet().parallelStream().map( i -> CLiteral.from( i.getKey(), Stream.of( CRawTerm.from( i.getValue() ) ) ) );
+    }
+
+    @Override
+    public final Stream<ILiteral> environmentview()
+    {
+        return m_envview.stream();
     }
 
     @Override
@@ -582,20 +594,26 @@ public final class CPokemon extends IBaseAgent
          * @param p_xpos x-position of the element
          * @return null or literal
          */
+        @SuppressWarnings( "unchecked" )
         private ILiteral elementliteral( final IElement p_element, final double p_ypos, final double p_xpos )
         {
             if ( p_element instanceof CPokemon )
                 return CLiteral.from( "pokemon", Stream.of(
-                    CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
-                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) ),
-                    CLiteral.from( "attribute", p_element.attribute() )
+                    CLiteral.from(
+                        "position",
+                        Stream.of(
+                                   CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
+                                   CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) )
+                        )
+                    ),
+                    CLiteral.from( "attribute", (Collection<ITerm>) p_element.attribute() )
                 ) );
 
             if ( p_element instanceof IItem )
                 return CLiteral.from( "obstacle", Stream.of(
                     CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
                     CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) ),
-                    CLiteral.from( "attribute", p_element.attribute() )
+                    CLiteral.from( "attribute", (Collection<ITerm>) p_element.attribute() )
                 ) );
 
             return null;

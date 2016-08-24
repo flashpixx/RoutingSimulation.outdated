@@ -38,19 +38,19 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
-            <version>1.9.3</version>
+            <version>1.9.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>1.9.3</version>
+            <version>1.9.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-platform</artifactId>
-            <version>1.9.3</version>
+            <version>1.9.4</version>
 
             <!-- defines the binary version of the component -->
             <classifier>natives-desktop</classifier>
@@ -59,13 +59,13 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-freetype</artifactId>
-            <version>1.9.3</version>
+            <version>1.9.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-freetype-platform</artifactId>
-            <version>1.9.3</version>
+            <version>1.9.4</version>
 
             <!-- defines the binary version of the component -->
             <classifier>natives-desktop</classifier>
@@ -308,26 +308,30 @@
                 </configuration>
             </plugin>
 
-            <!-- Jaxb for XSD compiling -->
+            <!-- Jaxb for transform XSD into Java class structure -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.2</version>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.13.1</version>
                 <executions>
                     <execution>
-                        <id>xjc</id>
                         <goals>
-                            <goal>xjc</goal>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <packageName>org.lightjason.examples.pokemon.data</packageName>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <clearOutputDir>true</clearOutputDir>
-                    <skipTestXjc>true</skipTestXjc>
+                    <generateDirectory>target/generated-sources/jaxb</generateDirectory>
+                    <schemaDirectory>src/main/xsd</schemaDirectory>
+                    <schemaIncludes>
+                        <include>**/*.xsd</include>
+                    </schemaIncludes>
+                    <bindingIncludes>
+                        <include>**/*.xjb</include>
+                    </bindingIncludes>
                 </configuration>
             </plugin>
+
 
             <!--
             https://github.com/highsource/maven-jaxb2-plugin/wiki/Configure-Target-Packages-in-Binding-Files

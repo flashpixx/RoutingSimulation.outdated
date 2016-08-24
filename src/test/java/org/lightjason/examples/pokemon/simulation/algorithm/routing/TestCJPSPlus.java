@@ -48,7 +48,6 @@ public final class TestCJPSPlus
     private ObjectMatrix2D m_grid;
     private ObjectMatrix2D m_occupiedgrid;
     private ObjectMatrix2D m_emptygrid;
-    private ObjectMatrix2D m_doublecheckgrid;
 
     /**
      * initialize class with static data for routing algorithm test
@@ -56,27 +55,11 @@ public final class TestCJPSPlus
     @Before
     public void initialize()
     {
-        m_grid = new SparseObjectMatrix2D( 15, 15 );
+        m_grid = new SparseObjectMatrix2D( 10, 10 );
 
         m_grid.setQuick( 4, 2, new Object() );
         m_grid.setQuick( 4, 3, new Object() );
         m_grid.setQuick( 3, 2, new Object() );
-    }
-
-    /**
-     * initialize class with static data to double check routing algorithm
-     */
-    @Before
-    public void initializedoublecheck()
-    {
-        m_doublecheckgrid = new SparseObjectMatrix2D( 4, 8 );
-
-        m_doublecheckgrid.setQuick( 3, 1, new Object() );
-        m_doublecheckgrid.setQuick( 2, 1, new Object() );
-        m_doublecheckgrid.setQuick( 1, 1, new Object() );
-        m_doublecheckgrid.setQuick( 0, 6, new Object() );
-        m_doublecheckgrid.setQuick( 1, 6, new Object() );
-        m_doublecheckgrid.setQuick( 2, 6, new Object() );
     }
 
     /**
@@ -96,7 +79,7 @@ public final class TestCJPSPlus
     {
         m_occupiedgrid = new SparseObjectMatrix2D( 10, 10 );
         IntStream.range( 0, m_occupiedgrid.rows() )
-            .forEach( i ->
+            .forEach( i->
             {
                 IntStream.range( 0, m_occupiedgrid.columns() )
                     .forEach( j -> m_occupiedgrid.setQuick( i, j, new Object() ) );
@@ -110,7 +93,9 @@ public final class TestCJPSPlus
     @Test
     public void testrouting()
     {
-        final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) );
+        final List<DoubleMatrix1D> l_route = new CJPSPlus().initialize( m_grid ).route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ),
+                                                      new DenseDoubleMatrix1D( new double[]{2, 3} ) );
+
         final List<DoubleMatrix1D> l_waypoint = Stream.of(
             new DenseDoubleMatrix1D( new double[]{7, 1} ),
             new DenseDoubleMatrix1D( new double[]{3, 1} ),
@@ -123,26 +108,6 @@ public final class TestCJPSPlus
 
     }
 
-    /**
-     * test of a correct working route with few obstacles
-     */
-    @Test
-    public void testroute()
-    {
-        final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_doublecheckgrid, new DenseDoubleMatrix1D( new double[]{3, 0} ),
-                                                                               new DenseDoubleMatrix1D( new double[]{0, 7} ) );
-        final List<DoubleMatrix1D> l_waypoint = Stream.of(
-            new DenseDoubleMatrix1D( new double[]{1, 0} ),
-            new DenseDoubleMatrix1D( new double[]{0, 1} ),
-            new DenseDoubleMatrix1D( new double[]{3, 4} ),
-            new DenseDoubleMatrix1D( new double[]{3, 6} ),
-            new DenseDoubleMatrix1D( new double[]{2, 7} ),
-            new DenseDoubleMatrix1D( new double[]{0, 7} )
-        ).collect( Collectors.toList() );
-
-        assertEquals( l_route.size(), l_waypoint.size() );
-        IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_route.get( i ) ) );
-    }
 
     /**
      * test of a correct working route with full of obstacles
@@ -151,7 +116,7 @@ public final class TestCJPSPlus
     public void testoccupiedgrid()
     {
         assertEquals(
-            new CJPSPlus().route( m_occupiedgrid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) ),
+            new CJPSPlus().initialize( m_occupiedgrid ).route( m_occupiedgrid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) ),
             Collections.<DoubleMatrix1D>emptyList()
         );
     }
@@ -162,9 +127,10 @@ public final class TestCJPSPlus
     @Test
     public void testemptygrid()
     {
-        final List<DoubleMatrix1D> l_emptyroute = new CJPSPlus().route(
+        final List<DoubleMatrix1D> l_emptyroute = new CJPSPlus().initialize( m_emptygrid ).route(
             m_emptygrid, new DenseDoubleMatrix1D( new double[]{2, 3} ), new DenseDoubleMatrix1D( new double[]{6, 9} )
         );
+
         final List<DoubleMatrix1D> l_waypoint = Stream.of(
                 new DenseDoubleMatrix1D( new double[]{6, 7} ),
                 new DenseDoubleMatrix1D( new double[]{6, 9} )
@@ -173,6 +139,7 @@ public final class TestCJPSPlus
         assertEquals( l_emptyroute.size(), l_waypoint.size() );
         IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_emptyroute.get( i ) ) );
     }
+
 
     /**
      * it is recommand, that each test-class uses also
@@ -187,7 +154,6 @@ public final class TestCJPSPlus
         new TestCJPSPlus().testemptygrid();
         new TestCJPSPlus().testoccupiedgrid();
         new TestCJPSPlus().testrouting();
-        new TestCJPSPlus().testroute();
     }
 
 

@@ -138,9 +138,9 @@ final class CJPSPlus implements IRouting
         Stream.of( new DenseDoubleMatrix1D( new double[]{p_row + 1, p_column} ), new DenseDoubleMatrix1D( new double[]{p_row - 1, p_column} ),
                 new DenseDoubleMatrix1D( new double[]{p_row, p_column + 1} ), new DenseDoubleMatrix1D( new double[]{p_row, p_column - 1} ) )
 
-            .filter( s-> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
+            .filter( s -> !this.isNotCoordinate( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) ) && !this.isOccupied( p_objects, s.getQuick( 0 ), s.getQuick( 1 ) )
                      && !p_staticjumppoints.contains( s ) )
-            .forEach( s-> p_staticjumppoints.add( s ) );
+            .forEach( p_staticjumppoints::add );
     }
 
     /**
@@ -152,7 +152,7 @@ final class CJPSPlus implements IRouting
      * @param p_staticjumpx row number of the static jump point
      * @param p_staticjumpy column number of the static jump point
      */
-    private final boolean staticjumppointfilter( final double p_currentx, final double p_targetx, final double p_currenty,
+    private boolean staticjumppointfilter( final double p_currentx, final double p_targetx, final double p_currenty,
                                                  final double p_targety, final double p_staticjumpx, final double p_staticjumpy )
     {
         return ( p_staticjumpx >= Math.min( p_currentx, p_targetx ) - 1 && p_staticjumpx <= Math.max( p_currentx, p_targetx ) + 1 )
@@ -203,7 +203,7 @@ final class CJPSPlus implements IRouting
         final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
         this.calculateScore( l_jumpnode, p_target );
 
-        p_openlist.removeIf( s-> s.coordinate().equals( p_nextjumpnode ) && s.fscore() > l_jumpnode.fscore() );
+        p_openlist.removeIf( s -> s.coordinate().equals( p_nextjumpnode ) && s.fscore() > l_jumpnode.fscore() );
 
         //checking that the jump point is already exists in open list or not, if yes then check their fscore to make decision
         final boolean l_checkscore = p_openlist.parallelStream()
@@ -223,8 +223,8 @@ final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return l_nextnode next jump point
      */
-        private DoubleMatrix1D jump( final DoubleMatrix1D p_curnode, final DoubleMatrix1D p_target, final double p_row, final double p_col,
-                             final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_staticjp, final ArrayList<DoubleMatrix1D> p_closedlist )
+    private DoubleMatrix1D jump( final DoubleMatrix1D p_curnode, final DoubleMatrix1D p_target, final double p_row, final double p_col,
+                                 final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_staticjp, final ArrayList<DoubleMatrix1D> p_closedlist )
     {
         //The next nodes details
         final double l_nextrow = p_curnode.getQuick( 0 ) + p_row;
@@ -293,11 +293,11 @@ final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @return p_nextnode diagonal jump point
      */
-    private DoubleMatrix1D diagjump( final double p_nextrow, final double p_nextcol, final DoubleMatrix1D p_nextnode, final DoubleMatrix1D p_curnode,
+    private DoubleMatrix1D diagjump( final double p_nextrow, final double p_nextcolumn, final DoubleMatrix1D p_nextnode, final DoubleMatrix1D p_curnode,
                final DoubleMatrix1D p_target, final double p_row, final double p_col, final ObjectMatrix2D p_objects, final List<DoubleMatrix1D> p_staticjp,
                 final ArrayList<DoubleMatrix1D> p_closedlist )
     {
-        if ( this.diagonal( p_nextrow, p_nextcol, -p_row, p_col, p_row, 0, p_objects ) || this.diagonal( p_nextrow, p_nextcol, p_row, -p_col, 0, p_col, p_objects ) )
+        if ( this.diagonal( p_nextrow, p_nextcolumn, -p_row, p_col, p_row, 0, p_objects ) || this.diagonal( p_nextrow, p_nextcolumn, p_row, -p_col, 0, p_col, p_objects ) )
             return p_nextnode;
 
         //before each diagonal step the algorithm must first fail to detect any straight jump points
@@ -448,7 +448,7 @@ final class CJPSPlus implements IRouting
      * @param p_objects Snapshot of the environment
      * @param p_srtrowrange row of the current node
      * @param p_endrowrange column of the current node
-     * @param p_srtcolrange row of the current static jump point
+     * @param p_strcolrange row of the current static jump point
      * @param p_endcolrange column of the current static jump point
      * @param p_closedlist the list of coordinate that already explored
      * @param p_curnode the current node to search for

@@ -64,6 +64,7 @@ import java.util.stream.Stream;
  *
  * @see http://pokewiki.de/
  * @see http://bulbapedia.bulbagarden.net/wiki/Main_Page
+ * @bug attribute beliefs creates a conurrency, illegalstate and cast exception
  */
 @IAgentAction
 public final class CPokemon extends IBaseAgent
@@ -433,7 +434,7 @@ public final class CPokemon extends IBaseAgent
                 return p_literal;
 
             // check if the number of the attribute is changed
-            final Number l_newvalue = CCommon.raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 1.0 ) ) );
+            final Number l_newvalue = CCommon.raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 0 ) ) );
             if ( l_value.getRight().intValue() == l_newvalue.intValue() )
                 return p_literal;
 

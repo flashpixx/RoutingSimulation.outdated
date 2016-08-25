@@ -34,6 +34,9 @@ import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.SynchronizedRandomGenerator;
 
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
 
 /**
  * class for global math algorithm
@@ -66,6 +69,17 @@ public final class CMath
     private CMath()
     {}
 
+    /**
+     * consums a stream of matrix objects
+     *
+     * @param p_stream stream
+     * @param p_consumer
+     * @return stream
+     */
+    public static Stream<DoubleMatrix1D> matrixconsumer( final Stream<DoubleMatrix1D> p_stream, final Consumer<String> p_consumer )
+    {
+        return p_stream.map( i -> { p_consumer.accept( MATRIXFORMAT.toString( i ) + " " ); return i; } );
+    }
 
     /**
      * creates a rotation matrix

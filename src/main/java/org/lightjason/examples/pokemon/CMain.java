@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -193,6 +194,7 @@ public final class CMain
                         }
                         catch ( final Exception l_exception )
                         {
+                            System.out.println( l_exception );
                             LOGGER.warning( l_exception.toString() );
                         }
                     } );

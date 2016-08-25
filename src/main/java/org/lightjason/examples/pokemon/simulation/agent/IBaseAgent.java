@@ -136,14 +136,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( m_position.equals( l_position ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
-        // check if the agent reaches the goal-position exact
+        // get the next landmark
         final DoubleMatrix1D l_goalposition = this.goal();
-        if ( m_position.equals( l_goalposition ) )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/achieve-exact", Stream.of( CRawTerm.from( m_position ) ) ) ) );
-
-        // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
-        if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
 
         // check "near-by(D)" preference for the current position and the goal
         // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
@@ -151,7 +145,11 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         // default argument must match literal-value type (and on integral types long is used)
         final double l_distance = CMath.distance( m_position, l_goalposition );
         if ( l_distance <= this.nearby() )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/achieve", Stream.of( CRawTerm.from( l_goalposition ), CRawTerm.from( l_distance ) ) ) ) );
+
+        // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
+        if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
 
         return this;
     }

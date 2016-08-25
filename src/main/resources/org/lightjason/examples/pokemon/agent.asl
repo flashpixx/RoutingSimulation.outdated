@@ -90,30 +90,21 @@
 // is called iif || current position - goal-position || <= near-by
 // the exact position of the goal will be skipped, so the agent
 // is walking to the next position
-+!position/near-by(D)
++!position/achieve(P, D)
     <-
-        generic/print( "near-by - set speed to 1", D, " in cycle [", Cycle, "]" );
-        +attribute/speed( 1 );
-        route/next
+        generic/print( "position [", P, "] achieved with distance [", D, "] in cycle [", Cycle, "]" );
+        route/next;
+        !movement/walk/forward
 .
-
-
-// is called if the agent achieves the exact goal-position,
-// than the agent will sleep 5 cycles
-+!position/achieve-exact(P)
-     <-
-        generic/print( "position achieved [", P, "] in cycle [", Cycle, "] - sleep for 5 cycles" );
-        route/next();
-        generic/sleep(5)
-.
-
 
 // is called if the agent walks beyonds the goal-position, than
 // the speed is set to 1 and we try go back
 +!position/beyond(P)
     <-
         generic/print( "position beyond [", P, "] - set speed to 1 in cycle [", Cycle, "]" );
-        +attribute/speed( 1 )
+        +attribute/speed( 1 );
+        route/next;
+        !movement/walk/forward
 .
 
 

@@ -73,12 +73,15 @@ public final class CMath
      * consums a stream of matrix objects
      *
      * @param p_stream stream
-     * @param p_consumer
+     * @param p_consumer consumer function
      * @return stream
      */
     public static Stream<DoubleMatrix1D> matrixconsumer( final Stream<DoubleMatrix1D> p_stream, final Consumer<String> p_consumer )
     {
-        return p_stream.map( i -> { p_consumer.accept( MATRIXFORMAT.toString( i ) + " " ); return i; } );
+        return p_stream.map( i -> {
+            p_consumer.accept( MATRIXFORMAT.toString( i ) + " " );
+            return i;
+        } );
     }
 
     /**

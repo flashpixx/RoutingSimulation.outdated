@@ -45,7 +45,6 @@ import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -145,11 +144,21 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         // default argument must match literal-value type (and on integral types long is used)
         final double l_distance = CMath.distance( m_position, l_goalposition );
         if ( l_distance <= this.nearby() )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/achieve", Stream.of( CRawTerm.from( l_goalposition ), CRawTerm.from( l_distance ) ) ) ) );
+            this.trigger(
+                CTrigger.from(
+                    ITrigger.EType.ADDGOAL,
+                    CLiteral.from( "position/achieve", Stream.of( CRawTerm.from( l_goalposition ), CRawTerm.from( l_distance ) ) )
+                )
+            );
 
         // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
         if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
-            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
+            this.trigger(
+                CTrigger.from(
+                    ITrigger.EType.ADDGOAL,
+                    CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) )
+                )
+            );
 
         return this;
     }

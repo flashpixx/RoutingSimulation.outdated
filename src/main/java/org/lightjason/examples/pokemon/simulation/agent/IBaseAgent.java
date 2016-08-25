@@ -63,12 +63,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      */
     protected Sprite m_sprite;
     /**
-     * random generator
-     * @deprecated change to cmath generator
-     */
-    @Deprecated
-    protected final Random m_random = new Random();
-    /**
      * current position of the agent
      */
     protected final DoubleMatrix1D m_position;
@@ -230,8 +224,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         m_route.addAll(
             0,
             this.route(
-                m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
-                m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
+                m_position.getQuick( 0 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
+                m_position.getQuick( 1 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
             )
         );
     }
@@ -265,8 +259,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
 
         m_route.addAll(
             this.route(
-                m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
-                m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
+                m_position.getQuick( 0 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
+                m_position.getQuick( 1 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
             )
         );
     }

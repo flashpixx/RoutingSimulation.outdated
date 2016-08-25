@@ -433,16 +433,15 @@ public final class CPokemon extends IBaseAgent
                 return p_literal;
 
             // check if the number of the attribute is changed
-            final Number l_newvalue = CCommon.<Number, ITerm>raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 0.0 ) ) );
-            if ( l_value.getRight().doubleValue() == l_newvalue.doubleValue() )
+            final Number l_newvalue = CCommon.raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 1.0 ) ) );
+            if ( l_value.getRight().intValue() == l_newvalue.intValue() )
                 return p_literal;
 
             // creates the trigger and sets the new value
-            this.event( ITrigger.EType.DELETEBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().doubleValue() ) ) ) );
+            this.event( ITrigger.EType.DELETEBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().intValue() ) ) ) );
             l_value.setRight( l_newvalue );
-            this.event( ITrigger.EType.ADDBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().doubleValue() ) ) ) );
 
-            return p_literal;
+            return this.event( ITrigger.EType.ADDBELIEF, p_literal );
         }
 
         @Override

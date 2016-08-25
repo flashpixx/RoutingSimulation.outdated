@@ -93,7 +93,7 @@ public final class TestCJPSPlus
     @Test
     public void testrouting()
     {
-        final List<DoubleMatrix1D> l_route = new CJPSPlus().initialize( m_grid ).route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ),
+        final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ),
                                                       new DenseDoubleMatrix1D( new double[]{2, 3} ) );
 
         final List<DoubleMatrix1D> l_waypoint = Stream.of(
@@ -116,7 +116,7 @@ public final class TestCJPSPlus
     public void testoccupiedgrid()
     {
         assertEquals(
-            new CJPSPlus().initialize( m_occupiedgrid ).route( m_occupiedgrid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) ),
+            new CJPSPlus().route( m_occupiedgrid, new DenseDoubleMatrix1D( new double[]{8, 0} ), new DenseDoubleMatrix1D( new double[]{2, 3} ) ),
             Collections.<DoubleMatrix1D>emptyList()
         );
     }
@@ -127,7 +127,7 @@ public final class TestCJPSPlus
     @Test
     public void testemptygrid()
     {
-        final List<DoubleMatrix1D> l_emptyroute = new CJPSPlus().initialize( m_emptygrid ).route(
+        final List<DoubleMatrix1D> l_emptyroute = new CJPSPlus().route(
             m_emptygrid, new DenseDoubleMatrix1D( new double[]{2, 3} ), new DenseDoubleMatrix1D( new double[]{6, 9} )
         );
 

@@ -58,12 +58,11 @@ final class CJPSPlus implements IRouting
     @Override
     public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
     {
-        final TreeSet<CJumpPoint> l_openlist = new TreeSet<CJumpPoint>( new CCompareJumpPoint() );
+        final TreeSet<CJumpPoint> l_openlist = new TreeSet<>( new CCompareJumpPoint() );
         final ArrayList<DoubleMatrix1D> l_closedlist = new ArrayList<>();
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
 
         l_openlist.add( new CJumpPoint( p_currentposition, null ) );
-
         while ( !l_openlist.isEmpty() )
         {
             final CJumpPoint l_currentnode = l_openlist.pollFirst();
@@ -117,18 +116,15 @@ final class CJPSPlus implements IRouting
                              final Set<CJumpPoint> p_openlist )
     {
         IntStream.rangeClosed( -1, 1 )
-            .forEach( i ->
-            {
-                IntStream.rangeClosed( -1, 1 )
-                    .filter( j -> ( i != 0 || j != 0 )
-                                 && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j, p_closedlist )
+            .forEach( i -> IntStream.rangeClosed( -1, 1 )
+                            .filter( j -> ( i != 0 || j != 0 )
+                                && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j, p_closedlist )
                                  && !this.isOccupied( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j ) )
-                    .forEach( j ->
-                    {
-                        final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects );
-                        this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
-                    } );
-            } );
+                            .forEach( j -> {
+                                final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects );
+                                this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
+                            } )
+            );
     }
 
     /**
@@ -138,7 +134,6 @@ final class CJPSPlus implements IRouting
      * @param p_openlist the set of CJumpPoint that will be explored
      * @param p_curnode the current node to search for successors
      * @param p_target the goal node
-     * @todo refactor all todos within this method
      */
     private void addsuccessors( final DoubleMatrix1D p_nextjumpnode, final ArrayList<DoubleMatrix1D> p_closedlist,
                                      final Set<CJumpPoint> p_openlist, final CJumpPoint p_curnode, final DoubleMatrix1D p_target )
@@ -148,14 +143,10 @@ final class CJPSPlus implements IRouting
 
         final CJumpPoint l_jumpnode = new CJumpPoint( p_nextjumpnode, p_curnode );
         this.calculateScore( l_jumpnode, p_target );
-
-        p_openlist.removeIf( s-> s.coordinate().equals( p_nextjumpnode ) && s.fscore() > l_jumpnode.fscore() );
+        p_openlist.removeIf( s -> s.coordinate().equals( p_nextjumpnode ) && s.fscore() > l_jumpnode.fscore() );
 
         //checking that the jump point is already exists in open list or not, if yes then check their fscore to make decision
-        final boolean l_checkscore = p_openlist.parallelStream()
-                                     .filter( s -> s.coordinate().equals( p_nextjumpnode ) )
-                                     .anyMatch( s -> s.fscore() < l_jumpnode.fscore() );
-        if ( !l_checkscore )
+        if ( !p_openlist.parallelStream().filter( s -> s.coordinate().equals( p_nextjumpnode ) ).anyMatch( s -> s.fscore() < l_jumpnode.fscore() ) )
             p_openlist.add( l_jumpnode );
 
     }
@@ -178,23 +169,24 @@ final class CJPSPlus implements IRouting
         final DoubleMatrix1D l_nextnode =  new DenseDoubleMatrix1D( new double[]{l_nextrow, l_nextcol} );
 
         // If the l_nextnode is outside the grid or occupied then return null
-        if ( this.isOccupied( p_objects, l_nextrow, l_nextcol ) || this.isNotCoordinate( p_objects, l_nextrow, l_nextcol ) ) return null;
+        if ( this.isOccupied( p_objects, l_nextrow, l_nextcol ) || this.isNotCoordinate( p_objects, l_nextrow, l_nextcol ) )
+            return null;
 
         //If the l_nextnode is the target node then return it
-        if ( p_target.equals( l_nextnode ) ) return l_nextnode;
+        if ( p_target.equals( l_nextnode ) )
+            return l_nextnode;
 
         //If we are going in a diagonal direction check for forced neighbors
         if ( p_row != 0 && p_col != 0 )
         {
             final DoubleMatrix1D l_node = this.diagjump( l_nextrow, l_nextcol, l_nextnode, p_target, p_row, p_col, p_objects );
-            if ( l_node != null ) return l_node;
+            if ( l_node != null )
+                return l_node;
         }
         else
-        {
             if ( this.horizontal( l_nextrow, l_nextcol, p_row, p_objects, 1 ) || this.horizontal( l_nextrow, l_nextcol, p_row, p_objects, -1 )
                 || this.vertical( l_nextrow, l_nextcol, p_col, p_objects, 1 ) || this.vertical( l_nextrow, l_nextcol, p_col, p_objects, -1 ) )
                 return l_nextnode;
-        }
 
         return this.jump( l_nextnode, p_target, p_row, p_col, p_objects );
     }
@@ -237,7 +229,7 @@ final class CJPSPlus implements IRouting
                                        final ObjectMatrix2D p_objects )
     {
         return !this.isNotCoordinate( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcolumn + p_col )
-            && this.isOccupied( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcolumn + p_col );
+               && this.isOccupied( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcolumn + p_col );
     }
 
     /**
@@ -253,7 +245,7 @@ final class CJPSPlus implements IRouting
     {
         return p_row != 0 && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcol ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol )
                   && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_value ) && this.isOccupied( p_objects, p_nextrow, p_nextcol + p_value )
-                     && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol + p_value );
+                  && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol + p_value );
     }
 
     /**
@@ -269,7 +261,7 @@ final class CJPSPlus implements IRouting
     {
         return p_col != 0 && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_col ) && !this.isOccupied( p_objects, p_nextrow, p_nextcol + p_col )
                 && !this.isNotCoordinate( p_objects, p_nextrow + p_value, p_nextcol ) && this.isOccupied( p_objects, p_nextrow + p_value, p_nextcol )
-                   && !this.isOccupied( p_objects, p_nextrow + p_value, p_nextcol + p_col );
+                && !this.isOccupied( p_objects, p_nextrow + p_value, p_nextcol + p_col );
     }
 
     /**
@@ -322,7 +314,6 @@ final class CJPSPlus implements IRouting
 
         final double l_row = Math.abs( p_jumpnode.parent().coordinate().getQuick( 0 ) - p_jumpnode.coordinate().getQuick( 0 ) );
         final double l_column = Math.abs( p_jumpnode.parent().coordinate().getQuick( 1 ) - p_jumpnode.coordinate().getQuick( 1 ) );
-
         final double l_gscore = ( l_row != 0 && l_column != 0 ) ? Math.abs( 14 * l_row ) : Math.abs( 10 * Math.max( l_row, l_column ) );
 
         p_jumpnode.gscore( p_jumpnode.parent().gscore() + l_gscore );
@@ -385,7 +376,7 @@ final class CJPSPlus implements IRouting
          * @param p_coordinate postion value
          * @param p_parent parent of the current jump point
          */
-        public CJumpPoint( final DoubleMatrix1D p_coordinate, final CJumpPoint p_parent )
+        CJumpPoint( final DoubleMatrix1D p_coordinate, final CJumpPoint p_parent )
         {
             m_coordinate = p_coordinate;
             m_parent = p_parent;
@@ -396,7 +387,7 @@ final class CJPSPlus implements IRouting
          *
          * @return coordinate
          */
-        public final DoubleMatrix1D coordinate()
+        final DoubleMatrix1D coordinate()
         {
             return m_coordinate;
         }
@@ -406,7 +397,7 @@ final class CJPSPlus implements IRouting
          *
          * @return g-score
          */
-        public final double gscore()
+        final double gscore()
         {
             return m_gscore;
         }
@@ -416,7 +407,7 @@ final class CJPSPlus implements IRouting
          *
          * @return f-score
          */
-        public final double fscore()
+        final double fscore()
         {
             return m_hscore + m_gscore;
         }
@@ -426,7 +417,7 @@ final class CJPSPlus implements IRouting
          *
          * @return parent
          */
-        public final CJumpPoint parent()
+        final CJumpPoint parent()
         {
             return m_parent;
         }
@@ -436,7 +427,7 @@ final class CJPSPlus implements IRouting
          *
          * @return CJumpPoint
          */
-        public final CJumpPoint gscore( final double p_gscore )
+        final CJumpPoint gscore( final double p_gscore )
         {
             m_gscore = p_gscore;
             return this;
@@ -447,7 +438,7 @@ final class CJPSPlus implements IRouting
          *
          * @return CJumpPoint
          */
-        public final CJumpPoint hscore( final double p_hscore )
+        final CJumpPoint hscore( final double p_hscore )
         {
             m_hscore = p_hscore;
             return this;

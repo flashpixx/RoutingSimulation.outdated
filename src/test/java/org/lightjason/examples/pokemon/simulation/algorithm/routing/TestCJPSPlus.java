@@ -79,11 +79,9 @@ public final class TestCJPSPlus
     {
         m_occupiedgrid = new SparseObjectMatrix2D( 10, 10 );
         IntStream.range( 0, m_occupiedgrid.rows() )
-            .forEach( i->
-            {
-                IntStream.range( 0, m_occupiedgrid.columns() )
-                    .forEach( j -> m_occupiedgrid.setQuick( i, j, new Object() ) );
-            } );
+            .forEach( i -> IntStream.range( 0, m_occupiedgrid.columns() )
+                               .forEach( j -> m_occupiedgrid.setQuick( i, j, new Object() ) )
+            );
     }
 
 

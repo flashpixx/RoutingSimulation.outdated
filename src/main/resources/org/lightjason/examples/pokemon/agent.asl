@@ -70,7 +70,7 @@
     <-
         generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
         >>attribute/speed(S);
-        S = S + 1;
+        S = generic/typ/toint(S) + 1;
         +attribute/speed( S );
         !movement/walk/forward
 .

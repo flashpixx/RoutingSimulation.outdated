@@ -194,7 +194,6 @@ public final class CMain
                         }
                         catch ( final Exception l_exception )
                         {
-                            System.out.println( l_exception );
                             LOGGER.warning( l_exception.toString() );
                         }
                     } );

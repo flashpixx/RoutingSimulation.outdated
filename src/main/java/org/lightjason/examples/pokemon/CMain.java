@@ -193,6 +193,7 @@ public final class CMain
                         }
                         catch ( final Exception l_exception )
                         {
+                            //l_exception.printStackTrace();
                             LOGGER.warning( l_exception.toString() );
                         }
                     } );

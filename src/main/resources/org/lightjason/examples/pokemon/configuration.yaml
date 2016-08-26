@@ -63,19 +63,19 @@ agent :
     # number the generated elements and force the force definition
 
     gastly :
-        number  : 500
+        number  : 1500
         pokemon : "gastly"
         force   : "sum"
         asl     : "agent.asl"
 
     caterpie :
-        number  : 500
+        number  : 1500
         pokemon : "caterpie"
         force   : "sum"
         asl     : "agent.asl"
 
     koffing :
-        number  : 500
+        number  : 1500
         pokemon : "koffing"
         force   : "sum"
         asl     : "agent.asl"

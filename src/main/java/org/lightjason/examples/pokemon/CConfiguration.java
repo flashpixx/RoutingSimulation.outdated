@@ -75,10 +75,6 @@ public final class CConfiguration
      */
     public static final CConfiguration INSTANCE = new CConfiguration();
     /**
-     * logger
-     */
-    private static final Logger LOGGER = Logger.getLogger( CConfiguration.class.getName() );
-    /**
      * configuration path
      */
     private String m_configurationpath;
@@ -127,6 +123,10 @@ public final class CConfiguration
      * thread-sleep time in milliseconds
      */
     private int m_threadsleeptime;
+    /**
+     * boolean flag to show stack trace
+     */
+    private boolean m_stacktrace;
 
 
 
@@ -156,6 +156,7 @@ public final class CConfiguration
         m_configurationpath = FilenameUtils.getPath( l_path.toString() );
 
         // get initial values
+        m_stacktrace = (boolean) l_data.getOrDefault( "stacktrace", false );
         m_threadsleeptime = (int) l_data.getOrDefault( "threadsleeptime", 0 );
         m_statusvisible = (boolean) l_data.getOrDefault( "statusvisible", true );
         m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
@@ -224,7 +225,7 @@ public final class CConfiguration
      *
      * @return height
      */
-    public final int windowheight()
+    final int windowheight()
     {
         return m_windowheight;
     }
@@ -234,7 +235,7 @@ public final class CConfiguration
      *
      * @return weight
      */
-    public final int windowweight()
+    final int windowweight()
     {
         return m_windowweight;
     }
@@ -244,7 +245,7 @@ public final class CConfiguration
      *
      * @return steps
      */
-    public final int simulationsteps()
+    final int simulationsteps()
     {
         return m_simulationstep;
     }
@@ -254,7 +255,7 @@ public final class CConfiguration
      *
      * @return object list
      */
-    public final List<IItem> staticelements()
+    final List<IItem> staticelements()
     {
         return m_staticelements;
     }
@@ -264,7 +265,7 @@ public final class CConfiguration
      *
      * @return object list
      */
-    public final List<IAgent> agents()
+    final List<IAgent> agents()
     {
         return m_agents;
     }
@@ -284,7 +285,7 @@ public final class CConfiguration
      *
      * @return triple of screenshot information
      */
-    public final Triple<String, String, Integer> screenshot()
+    final Triple<String, String, Integer> screenshot()
     {
         return m_screenshot;
     }
@@ -314,7 +315,7 @@ public final class CConfiguration
      *
      * @return visibility flag
      */
-    public final boolean statusvisible()
+    final boolean statusvisible()
     {
         return m_statusvisible;
     }
@@ -324,10 +325,18 @@ public final class CConfiguration
      *
      * @return sleep time
      */
-    public final int threadsleeptime()
+    final int threadsleeptime()
     {
         return m_threadsleeptime;
     }
+
+    /**
+     * returns the stacktrace visiblity
+     *
+     * @return stacktrace visibility
+     */
+    final boolean stackstrace() { return m_stacktrace; }
+
 
 
     /**

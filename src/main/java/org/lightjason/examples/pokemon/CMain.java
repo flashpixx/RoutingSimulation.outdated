@@ -193,8 +193,9 @@ public final class CMain
                         }
                         catch ( final Exception l_exception )
                         {
-                            //l_exception.printStackTrace( System.err );
                             LOGGER.warning( l_exception.toString() );
+                            if ( CConfiguration.INSTANCE.stackstrace() )
+                                l_exception.printStackTrace( System.err );
                         }
                     } );
 

@@ -2,7 +2,7 @@
 logging : false
 
 # show stacktrace on error
-stacktrace : true
+stacktrace : false
 
 # agent print call will be shown
 agentprint : false

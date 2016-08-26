@@ -59,7 +59,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -335,7 +334,10 @@ public final class CConfiguration
      *
      * @return stacktrace visibility
      */
-    final boolean stackstrace() { return m_stacktrace; }
+    final boolean stackstrace()
+    {
+        return m_stacktrace;
+    }
 
 
 

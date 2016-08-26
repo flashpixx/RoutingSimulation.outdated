@@ -57,7 +57,10 @@
 // fine later, wakeup plan will be trigger after sleeping
 -!movement/walk/right
     <-
-        T = math/min( 5, generic/typ/toint( math/statistic/randomsimple() * 10 + 1 ) );
+        T = math/statistic/randomsimple();
+        T = T * 10 + 1;
+        T = math/round( T );
+        T = math/min( T, 5 );
         generic/print( "walk right fails in cycle [", Cycle, "] wait [", T,"] cycles" );
         generic/sleep(T)
 .
@@ -67,8 +70,8 @@
 +!movement/standstill
     <-
         generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
-        >>attribute/speed(S);
-        S = generic/typ/toint( S + 1 );
+        >>attribute/speed( S );
+        S++;
         +attribute/speed( S );
         !movement/walk/forward
 .

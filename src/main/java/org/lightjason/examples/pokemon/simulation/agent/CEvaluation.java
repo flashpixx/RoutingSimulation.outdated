@@ -24,6 +24,7 @@
 package org.lightjason.examples.pokemon.simulation.agent;
 
 import org.lightjason.agentspeak.consistency.CConsistency;
+import org.lightjason.agentspeak.consistency.IConsistency;
 import org.lightjason.agentspeak.consistency.filter.CPlan;
 import org.lightjason.agentspeak.consistency.metric.CWeightedDifference;
 
@@ -39,7 +40,7 @@ public final class CEvaluation implements Callable<CEvaluation>
     /**
      * concsitency value of executable plans
      */
-    private final CConsistency m_plans = new CConsistency( new CPlan(), new CWeightedDifference() );
+    private final IConsistency m_plans = CConsistency.heuristic( new CPlan(), new CWeightedDifference() );
 
     /**
      * ctor

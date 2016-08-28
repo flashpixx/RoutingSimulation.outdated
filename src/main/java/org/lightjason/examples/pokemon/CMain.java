@@ -178,7 +178,10 @@ public final class CMain
                 // update screen take screenshot and run object execution
                 p_screen.iteration( i );
                 Stream.concat(
-                    Stream.of( CConfiguration.INSTANCE.environment() ),
+                    Stream.of(
+                        //CConfiguration.INSTANCE.evaluation(),
+                        CConfiguration.INSTANCE.environment()
+                    ),
                     Stream.concat(
                         CConfiguration.INSTANCE.staticelements().parallelStream(),
                         CConfiguration.INSTANCE.agents().parallelStream()

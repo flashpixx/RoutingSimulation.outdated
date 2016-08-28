@@ -30,6 +30,7 @@ import org.lightjason.examples.pokemon.simulation.algorithm.force.EForceFactory;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.ERoutingFactory;
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
+import org.lightjason.examples.pokemon.simulation.agent.CEvaluation;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 import org.apache.commons.io.FilenameUtils;
@@ -126,6 +127,10 @@ public final class CConfiguration
      * boolean flag to show stack trace
      */
     private boolean m_stacktrace;
+    /**
+     * evaluation object
+     */
+    private CEvaluation m_evaluation;
 
 
 
@@ -212,6 +217,9 @@ public final class CConfiguration
                 )
             );
 
+        // create evaluation
+        m_evaluation = new CEvaluation( m_agents.parallelStream() );
+
 
         // run initialization processes
         m_environment.initialize();
@@ -247,6 +255,16 @@ public final class CConfiguration
     final int simulationsteps()
     {
         return m_simulationstep;
+    }
+
+    /**
+     * returns the evaluation object
+     *
+     * @return evaluation
+     */
+    final CEvaluation evaluation()
+    {
+        return m_evaluation;
     }
 
     /**

@@ -423,8 +423,7 @@ public final class CConfiguration
             .map( i -> new CStatic(
                 (List<Integer>) i.get( "left" ),
                 (List<Integer>) i.get( "right" ),
-                (Map<String, ?>) i.getOrDefault( "preferences", Collections.emptyMap() ),
-                (String) i.getOrDefault( "color", "" )
+                (String) i.getOrDefault( "color", "" ), (Map<String, ?>) i.getOrDefault( "preferences", Collections.emptyMap() )
             ) )
             .forEach( p_elements::add );
 

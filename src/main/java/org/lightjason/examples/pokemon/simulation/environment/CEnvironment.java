@@ -177,9 +177,9 @@ public final class CEnvironment implements IEnvironment
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public final synchronized IElement get( final double p_row, final double p_column )
+    public final synchronized IElement get( final DoubleMatrix1D p_position )
     {
-        return (IElement) m_positions.getQuick( (int) CEnvironment.clip( p_row, m_row ), (int) CEnvironment.clip( p_column, m_column ) );
+        return (IElement) m_positions.getQuick( (int) CEnvironment.clip( p_position.get( 0 ), m_row ), (int) CEnvironment.clip( p_position.get( 1 ), m_column ) );
     }
 
     @Override
@@ -196,6 +196,15 @@ public final class CEnvironment implements IEnvironment
     {
         final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
         return m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) ) == null;
+    }
+
+    @Override
+    public final boolean isinside( final DoubleMatrix1D p_position )
+    {
+        return ( p_position.getQuick( 0 ) >= 0 )
+               && ( p_position.getQuick( 1 ) >= 0 )
+               && ( p_position.getQuick( 0 ) < m_row )
+               && ( p_position.getQuick( 1 ) < m_column );
     }
 
     @Override

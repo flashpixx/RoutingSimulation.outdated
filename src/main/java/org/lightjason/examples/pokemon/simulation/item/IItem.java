@@ -33,13 +33,4 @@ import java.util.concurrent.Callable;
  */
 public interface IItem extends Callable<IItem>, IElement
 {
-
-    /**
-     * returns an element that can whiped by the agent
-     *
-     * @return whipable flag
-     */
-    boolean whipeable();
-
-
 }

@@ -46,14 +46,6 @@ public interface IElement extends ISprite
     Stream<ILiteral> attribute();
 
     /**
-     * returns the elements within the view range
-     * of the environment
-     *
-     * @return view range stream
-     */
-    Stream<ILiteral> environmentview();
-
-    /**
      * returns the current position of the object
      *
      * @return position tupel

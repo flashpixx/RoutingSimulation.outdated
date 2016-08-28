@@ -23,26 +23,32 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
+import com.codepoetics.protonpack.StreamUtils;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.language.score.IAggregation;
 import org.lightjason.examples.pokemon.CCommon;
+import org.lightjason.examples.pokemon.simulation.CMath;
+import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemonGenerator;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.ERoutingFactory;
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
+import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 
 import java.text.MessageFormat;
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.LogManager;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -56,6 +62,10 @@ public final class TestCForce
      */
     private static final int AGENTNUMBER = 2;
     /**
+     * number of static objects
+     */
+    private static final int STATICNUMBER = 2;
+    /**
      * list with agents
      */
     private List<IAgent> m_agent;
@@ -67,6 +77,10 @@ public final class TestCForce
      * action references
      */
     private Set<IAction> m_actions;
+    /**
+     * static attributes
+     */
+    private Set<IElement> m_element;
 
 
     /**
@@ -87,15 +101,40 @@ public final class TestCForce
             org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
         ).collect( Collectors.toSet() ) );
 
+        // generate agents
         m_agent = Collections.unmodifiableList(
-                      new CPokemonGenerator(
-                          m_environment,
-                          TestCForce.class.getResourceAsStream( MessageFormat.format( "/{0}/agent.asl", CCommon.PACKAGEPATH ) ),
-                          m_actions,
-                          IAggregation.EMPTY
-                      )
-                      .generatemultiple( AGENTNUMBER, EForceFactory.SUM.get(), "gastly" )
-                      .collect( Collectors.toList() )
+            new CPokemonGenerator(
+                m_environment,
+                TestCForce.class.getResourceAsStream( MessageFormat.format( "/{0}/agent.asl", CCommon.PACKAGEPATH ) ),
+                m_actions,
+                IAggregation.EMPTY
+            )
+                .generatemultiple( AGENTNUMBER, EForceFactory.SUM.get(), "gastly" )
+                .collect( Collectors.toList() )
+        );
+
+        // generate static elements
+        m_element = Collections.unmodifiableSet(
+            IntStream.range( 0, STATICNUMBER )
+                     .mapToObj( j -> new CStatic(
+
+                                    IntStream.range( 0, 2 ).boxed().map( i -> CMath.RANDOMGENERATOR.nextInt() ).collect( Collectors.toList() ),
+                                    IntStream.range( 0, 2 ).boxed().map( i -> CMath.RANDOMGENERATOR.nextInt() ).collect( Collectors.toList() ),
+                                    "000000",
+
+                                    StreamUtils.zip(
+                                        Stream.of( "foo", "bar" ),
+                                        Stream.of( "hallo", 3 ),
+                                        AbstractMap.SimpleImmutableEntry::new
+                                    ).collect(
+                                        Collectors.toMap(
+                                            AbstractMap.SimpleImmutableEntry::getKey,
+                                            AbstractMap.SimpleImmutableEntry::getValue
+                                        )
+                                    )
+
+                                )
+                     ).collect( Collectors.toSet() )
         );
     }
 
@@ -109,6 +148,8 @@ public final class TestCForce
         Assume.assumeNotNull( m_actions );
         Assume.assumeNotNull( m_agent );
         Assume.assumeTrue( m_agent.isEmpty() );
+        Assume.assumeNotNull( m_element );
+        Assume.assumeTrue( m_element.isEmpty() );
 
         System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toList() ) );
     }
@@ -117,6 +158,7 @@ public final class TestCForce
 
     /**
      * main method to test force algorithms
+     *
      * @param p_args CLI command
      */
     public static void main( final String[] p_args )

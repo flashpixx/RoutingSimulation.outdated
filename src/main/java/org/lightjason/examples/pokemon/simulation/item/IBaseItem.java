@@ -54,7 +54,7 @@ public abstract class IBaseItem implements IItem
     /**
      * set with preferences
      */
-    private final Set<ILiteral> m_preferences;
+    private final Set<ILiteral> m_attribute;
     /**
      * color
      */
@@ -64,15 +64,26 @@ public abstract class IBaseItem implements IItem
      */
     private Sprite m_sprite;
 
+
     /**
      * @param p_leftupper left-upper position
      * @param p_rightbottom right-bottom position
-     * @param p_preference preference map
      * @param p_color color
+     */
+    protected IBaseItem( final List<Integer> p_leftupper, final List<Integer> p_rightbottom, final String p_color )
+    {
+        this( p_leftupper, p_rightbottom, p_color, Collections.emptyMap() );
+    }
+
+
+    /**
+     * @param p_leftupper left-upper position
+     * @param p_rightbottom right-bottom position
+     * @param p_color color
+     * @param p_attribute attribute map
      * @todo add preference structure
      */
-    protected IBaseItem( final List<Integer> p_leftupper, final List<Integer> p_rightbottom, final Map<String, ?> p_preference, final String p_color
-    )
+    protected IBaseItem( final List<Integer> p_leftupper, final List<Integer> p_rightbottom, final String p_color, final Map<String, ?> p_attribute )
     {
         if ( p_color.isEmpty() )
             throw new RuntimeException( "color need not to be empty" );
@@ -90,14 +101,21 @@ public abstract class IBaseItem implements IItem
             Math.abs( p_rightbottom.get( 1 ) - p_leftupper.get( 1 ) )
         } );
 
-        m_preferences = Collections.unmodifiableSet( Stream.of(
-            CLiteral.from( "topleft",  IBaseItem.streamposition( m_position.getQuick( 0 ), m_position.getQuick( 1 ) ) ),
-            CLiteral.from( "bottomright",  IBaseItem.streamposition(
-                                               m_position.getQuick( 0 ) + m_position.getQuick( 2 ),
-                                               m_position.getQuick( 1 ) + m_position.getQuick( 3 )
-                                           )
+        this.m_attribute = Collections.unmodifiableSet(
+            Stream.concat(
+                Stream.of(
+                    CLiteral.from( "topleft",  IBaseItem.streamposition( m_position.getQuick( 0 ), m_position.getQuick( 1 ) ) ),
+                    CLiteral.from( "bottomright",
+                                   IBaseItem.streamposition(
+                                        m_position.getQuick( 0 ) + m_position.getQuick( 2 ),
+                                        m_position.getQuick( 1 ) + m_position.getQuick( 3 )
+                                   )
+                    )
+                ),
+
+                p_attribute.entrySet().parallelStream().map( i -> CLiteral.from( i.getKey().toLowerCase(), Stream.of( CRawTerm.from( i.getValue() ) ) ) )
             )
-        ).collect( Collectors.toSet() ) );
+            .collect( Collectors.toSet() ) );
     }
 
     /**
@@ -117,15 +135,9 @@ public abstract class IBaseItem implements IItem
     }
 
     @Override
-    public final Stream<ILiteral> environmentview()
-    {
-        return Stream.of();
-    }
-
-    @Override
     public final Stream<ILiteral> attribute()
     {
-        return m_preferences.parallelStream();
+        return m_attribute.parallelStream();
     }
 
     @Override

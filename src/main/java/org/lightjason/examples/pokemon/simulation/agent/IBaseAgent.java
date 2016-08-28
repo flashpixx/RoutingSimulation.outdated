@@ -62,13 +62,13 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      */
     protected Sprite m_sprite;
     /**
-     * current position of the agent
-     */
-    protected final DoubleMatrix1D m_position;
-    /**
      * reference to the environment
      */
     protected final IEnvironment m_environment;
+    /**
+     * current position of the agent
+     */
+    private final DoubleMatrix1D m_position;
     /**
      * route
      */
@@ -98,12 +98,9 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     public String toString()
     {
         return MessageFormat.format(
-            "{0} - current position [{1}] - speed [{2}] - route [{3}]",
+            "{0} - route [{1}]",
             super.toString(),
-            m_position == null ? "" : CMath.MATRIXFORMAT.toString( m_position ),
-            this.speed(),
-            // not null check is needed because of the super ctor
-            m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( "; " ) )
+            m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( "; " ) )
         );
     }
 

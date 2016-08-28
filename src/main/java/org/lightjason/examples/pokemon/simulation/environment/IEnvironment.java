@@ -110,11 +110,10 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
     /**
      * returns an object from the given position
      *
-     * @param p_row row position
-     * @param p_column column position
+     * @param p_position position vector
      * @return object or null
      */
-    IElement get( final double p_row, final double p_column );
+    IElement get( final DoubleMatrix1D p_position );
 
     /**
      * removes an element from a position
@@ -131,5 +130,13 @@ public interface IEnvironment extends Callable<IEnvironment>, ITileMap
      * @return boolean result
      */
     boolean empty( final DoubleMatrix1D p_position );
+
+    /**
+     * checks if a position is inside the environment
+     *
+     * @param p_position position
+     * @return boolean result
+     */
+    boolean isinside( final DoubleMatrix1D p_position );
 
 }

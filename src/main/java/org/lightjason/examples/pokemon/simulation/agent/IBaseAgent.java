@@ -157,6 +157,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
                 )
             );
 
+        // System.out.println( this );
+
         return this;
     }
 

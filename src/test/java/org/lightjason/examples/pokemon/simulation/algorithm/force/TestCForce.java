@@ -102,6 +102,7 @@ public final class TestCForce
         ).collect( Collectors.toSet() ) );
 
         // generate agents
+        // agent position will be set by random, so if there is an fixed position needed, add an own generator as an inner class
         m_agent = Collections.unmodifiableList(
             new CPokemonGenerator(
                 m_environment,
@@ -114,6 +115,7 @@ public final class TestCForce
         );
 
         // generate static elements
+        // obstacles position is set by random, can be changed to fixed values
         m_element = Collections.unmodifiableList(
             IntStream.range( 0, STATICNUMBER )
                      .mapToObj( j -> new CStatic(
@@ -147,9 +149,13 @@ public final class TestCForce
         Assume.assumeNotNull( m_environment );
         Assume.assumeNotNull( m_actions );
         Assume.assumeNotNull( m_agent );
-        Assume.assumeTrue( m_agent.isEmpty() );
+        Assume.assumeFalse( m_agent.isEmpty() );
         Assume.assumeNotNull( m_element );
-        Assume.assumeTrue( m_element.isEmpty() );
+        Assume.assumeFalse( m_element.isEmpty() );
+
+        // all environment data like other agents or obstacles is shown if it exists with the literal prefix "env"
+        // attribute() returns the literals of attributes which can be read by agents
+        // beliefbase() returns the full beliefbase of an agent only
 
         System.out.println( m_element.get( 0 ).attribute().collect( Collectors.toSet() ) );
         System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toSet() ) );
@@ -162,10 +168,13 @@ public final class TestCForce
      * main method to test force algorithms
      *
      * @param p_args CLI command
+     * @throws Exception on error
      */
-    public static void main( final String[] p_args )
+    public static void main( final String[] p_args ) throws Exception
     {
-
+        final TestCForce l_test = new TestCForce();
+        l_test.initialize();
+        l_test.testForce();
     }
 
 }

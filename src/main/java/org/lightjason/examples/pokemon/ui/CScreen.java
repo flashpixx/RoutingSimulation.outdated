@@ -23,7 +23,6 @@
 
 package org.lightjason.examples.pokemon.ui;
 
-import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.CConfiguration;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

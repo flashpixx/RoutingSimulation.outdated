@@ -1934,6 +1934,7 @@ public enum EPokemon
      * ctor
      *
      * @param p_level number of level
+     * @param p_tupel tupel list
      */
     EPokemon( final int p_level, final CLevelTupel... p_tupel )
     {
@@ -2090,6 +2091,7 @@ public enum EPokemon
          * @param p_attributesvalue stream with attributes values
          * @param p_motivation stream with motivation types
          * @param p_motivationvalue stream with motivation value
+         * @param p_attack attack
          */
         private CLevelTupel( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,
                              final Stream<EAttribute> p_attributes, final Stream<Triple<Number, Number, Number>> p_attributesvalue,
@@ -2341,6 +2343,7 @@ public enum EPokemon
          * @param p_attributesvalue stream with attributes values
          * @param p_motivation stream with motivation types
          * @param p_motivationvalue stream with motivation value
+         * @param p_attack attack
          * @return tupel
          */
         public static CLevelTupel generate( final Stream<EEthnicity> p_ethnic, final Stream<Triple<Number, Number, Number>> p_ethnicvalue,

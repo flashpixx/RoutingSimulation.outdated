@@ -195,11 +195,12 @@ final class CJPSPlus implements IRouting
      * In order to identify diagonal jump point
      * @param p_nextrow row of the next node to search for
      * @param p_nextcolumn column of the next node to search for
+     * @param p_nextnode next node
      * @param p_target the goal node
      * @param p_row to increase or decrease row by adding p_row
      * @param p_col to increase or decrease column by adding p_col
-     * @param p_objects Snapshot of the environment
-     * @return p_nextnode diagonal jump point
+     * @param p_objects snapshot of the environment
+     * @return diagonal jump point
      */
     private DoubleMatrix1D diagjump( final double p_nextrow, final double p_nextcolumn, final DoubleMatrix1D p_nextnode, final DoubleMatrix1D p_target,
                                         final double p_row, final double p_col, final ObjectMatrix2D p_objects )

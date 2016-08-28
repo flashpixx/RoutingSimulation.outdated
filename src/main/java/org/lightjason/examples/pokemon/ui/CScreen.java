@@ -23,6 +23,7 @@
 
 package org.lightjason.examples.pokemon.ui;
 
+import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.CConfiguration;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -135,7 +136,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         // create execution structure for painting
         m_batch = new SpriteBatch();
-        //m_font = CScreen.font( "agentrouting/Hanken-Light.ttf", 12, Color.WHITE );
+        //m_font = CScreen.font( CCommon.PACKAGEPATH + "Hanken-Light.ttf", 12, Color.WHITE );
 
         // create environment view and put all objects in it
         m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_batch );

@@ -80,7 +80,7 @@ public final class TestCForce
     /**
      * static attributes
      */
-    private Set<IElement> m_element;
+    private List<IElement> m_element;
 
 
     /**
@@ -114,7 +114,7 @@ public final class TestCForce
         );
 
         // generate static elements
-        m_element = Collections.unmodifiableSet(
+        m_element = Collections.unmodifiableList(
             IntStream.range( 0, STATICNUMBER )
                      .mapToObj( j -> new CStatic(
 
@@ -134,7 +134,7 @@ public final class TestCForce
                                     )
 
                                 )
-                     ).collect( Collectors.toSet() )
+                     ).collect( Collectors.toList() )
         );
     }
 
@@ -151,7 +151,9 @@ public final class TestCForce
         Assume.assumeNotNull( m_element );
         Assume.assumeTrue( m_element.isEmpty() );
 
-        System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toList() ) );
+        System.out.println( m_element.get( 0 ).attribute().collect( Collectors.toSet() ) );
+        System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toSet() ) );
+        System.out.println( m_agent.get( 0 ).beliefbase().stream().collect( Collectors.toSet() ) );
     }
 
 

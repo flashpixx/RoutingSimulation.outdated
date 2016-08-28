@@ -49,7 +49,7 @@ import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
-import org.lightjason.examples.pokemon.simulation.item.IItem;
+import org.lightjason.examples.pokemon.simulation.item.CStatic;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -183,7 +183,7 @@ public final class CPokemon extends IBaseAgent
     }
 
     @Override
-    public final Stream<ILiteral> attribute()
+    public final Stream<ITerm> attribute()
     {
         return m_ethnic.entrySet().parallelStream().map( i -> CLiteral.from( i.getKey(), Stream.of( CRawTerm.from( i.getValue() ) ) ) );
     }
@@ -534,20 +534,10 @@ public final class CPokemon extends IBaseAgent
             return Stream.of(
 
                 // current position within the environment
-                CLiteral.from( "myposition",
-                               Stream.of(
-                                   CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_position.getQuick( 1 ) ) ) ),
-                                   CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_position.getQuick( 0 ) ) ) )
-                               )
-                ),
+                this.literalposition( "myposition", p_position ),
 
                 // next goal-position
-                CLiteral.from( "mygoal",
-                               Stream.of(
-                                   CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_goal.getQuick( 1 ) ) ) ),
-                                   CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_goal.getQuick( 0 ) ) ) )
-                               )
-                ),
+                this.literalposition( "mygoal", p_goal ),
 
                 // pokemon type
                 CLiteral.from( "ima", Stream.of( CLiteral.from( m_pokemon.toLowerCase() ) ) )
@@ -579,23 +569,23 @@ public final class CPokemon extends IBaseAgent
             if ( !l_direction.getRight() )
                 return Stream.of();
 
+            // rote current position of the agent into view direction
             final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), p_position );
 
 
-            // iterate over the possible cells of the grid
+            // iterate over the possible cells of the grid to read other elements,
+            // center is the rotated view point and iterate the sequare with radius size
             return IntStream.rangeClosed( -l_radius, l_radius )
-                            .parallel()
-                            .boxed()
-                            .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
-                                               .boxed()
-                                               .filter( x -> this.positioninsideangle( y, x, l_angle ) )
-                                               .map( x -> new DenseDoubleMatrix1D(
-                                                             new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )}
-                                               ) )
-                                               .filter( m_environment::isinside )
-                                               .map( i -> this.elementliteral( m_environment.get( i ), i ) )
-                                               .filter( i -> i != null )
-                            );
+                       .parallel()
+                       .boxed()
+                       .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
+                                          .boxed()
+                                          .filter( x -> this.positioninsideangle( y, x, l_angle ) )
+                                          .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
+                                          .filter( m_environment::isinside )
+                                          .map( i -> this.elementliteral( m_environment.get( i ), i ) )
+                                          .filter( i -> i != null )
+                       );
         }
 
         /**
@@ -612,18 +602,18 @@ public final class CPokemon extends IBaseAgent
                 return CLiteral.from(
                     "pokemon",
                     Stream.of(
-                        this.literalposition( p_position ),
-                        CLiteral.from( "attribute", (Collection<ITerm>) p_element.attribute() )
+                        this.literalposition( "position", p_position ),
+                        CLiteral.from( "attribute", p_element.attribute() )
                     )
                 );
 
-            if ( p_element instanceof IItem )
+            if ( p_element instanceof CStatic )
                 return CLiteral.from(
-                           "obstacle",
-                           Stream.of(
-                               this.literalposition( p_position ),
-                               CLiteral.from( "attribute", (Collection<ITerm>) p_element.attribute() )
-                           )
+                    "obstacle",
+                    Stream.of(
+                        this.literalposition( "position", p_position ),
+                        CLiteral.from( "attribute", p_element.attribute() )
+                    )
                 );
 
             return null;
@@ -632,13 +622,14 @@ public final class CPokemon extends IBaseAgent
         /**
          * generate position literal
          *
+         * @param p_functor functor name
          * @param p_position position vector
          * @return position literal
          */
-        private ILiteral literalposition( final DoubleMatrix1D p_position )
+        private ILiteral literalposition( final String p_functor, final DoubleMatrix1D p_position )
         {
             return CLiteral.from(
-                "position",
+                p_functor,
                 Stream.of(
                     CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_position.getQuick( 0 ) ) ) ),
                     CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_position.getQuick( 1  ) ) ) )

@@ -31,7 +31,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
-import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.ITerm;
 
 import java.util.Collections;
@@ -54,7 +53,7 @@ public abstract class IBaseItem implements IItem
     /**
      * set with preferences
      */
-    private final Set<ILiteral> m_attribute;
+    private final Set<ITerm> m_attribute;
     /**
      * color
      */
@@ -81,7 +80,6 @@ public abstract class IBaseItem implements IItem
      * @param p_rightbottom right-bottom position
      * @param p_color color
      * @param p_attribute attribute map
-     * @todo add preference structure
      */
     protected IBaseItem( final List<Integer> p_leftupper, final List<Integer> p_rightbottom, final String p_color, final Map<String, ?> p_attribute )
     {
@@ -135,7 +133,7 @@ public abstract class IBaseItem implements IItem
     }
 
     @Override
-    public final Stream<ILiteral> attribute()
+    public final Stream<ITerm> attribute()
     {
         return m_attribute.parallelStream();
     }

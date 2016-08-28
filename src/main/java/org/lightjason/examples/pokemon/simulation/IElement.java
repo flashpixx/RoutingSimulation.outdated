@@ -23,7 +23,7 @@
 
 package org.lightjason.examples.pokemon.simulation;
 
-import org.lightjason.agentspeak.language.ILiteral;
+import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.examples.pokemon.ui.ISprite;
 import cern.colt.matrix.DoubleMatrix1D;
 
@@ -43,7 +43,7 @@ public interface IElement extends ISprite
      *
      * @return attribute stream
      */
-    Stream<ILiteral> attribute();
+    Stream<ITerm> attribute();
 
     /**
      * returns the current position of the object

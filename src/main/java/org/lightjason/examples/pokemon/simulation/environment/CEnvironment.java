@@ -23,15 +23,19 @@
 
 package org.lightjason.examples.pokemon.simulation.environment;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.IRouting;
+import org.lightjason.examples.pokemon.simulation.algorithm.routing.StaticJumpPoints;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.ObjectMatrix2D;
-import cern.colt.matrix.impl.DenseDoubleMatrix1D;
-import cern.colt.matrix.impl.SparseObjectMatrix2D;
-import cern.colt.matrix.linalg.Algebra;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,11 +45,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.colt.matrix.impl.SparseObjectMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
 
 
 /**
@@ -66,6 +70,7 @@ public final class CEnvironment implements IEnvironment
      * routing algorithm
      */
     private final IRouting m_routing;
+
     /**
      * row number
      */
@@ -79,10 +84,13 @@ public final class CEnvironment implements IEnvironment
      */
     private final int m_cellsize;
     /**
+     * static jump points
+     */
+    private final List<DoubleMatrix1D> m_static = new ArrayList<>();
+    /**
      * matrix with object positions
      */
     private final ObjectMatrix2D m_positions;
-
 
     /**
      * create environment
@@ -106,6 +114,9 @@ public final class CEnvironment implements IEnvironment
 
         // add all obstacles to the position matrix
         p_obstacles.forEach( i -> CCommon.inttupelstream( i ).forEach( j -> m_positions.setQuick( j.getLeft(), j.getRight(), i ) ) );
+        p_obstacles.parallelStream()
+            .forEach( i -> CCommon.inttupelstream( i ).forEach( j -> StaticJumpPoints.createstaticjump( m_static,
+                               i.position().getQuick( 0 ), i.position().getQuick( 1 ), m_positions ) ) );
         LOGGER.info( MessageFormat.format( "create environment with size [{0}x{1}] and cell size [{2}]", m_row, m_column, p_cellsize ) );
     }
 
@@ -146,8 +157,9 @@ public final class CEnvironment implements IEnvironment
     @Override
     public final List<DoubleMatrix1D> route( final DoubleMatrix1D p_start, final DoubleMatrix1D p_end )
     {
-        return m_routing.route( m_positions, p_start, p_end );
+        return m_routing.route( m_positions, p_start, p_end, m_static );
     }
+
 
     @Override
     public final double routestimatedtime( final Stream<DoubleMatrix1D> p_route, final double p_speed )
@@ -177,9 +189,9 @@ public final class CEnvironment implements IEnvironment
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public final synchronized IElement get( final DoubleMatrix1D p_position )
+    public final synchronized IElement get( final double p_row, final double p_column )
     {
-        return (IElement) m_positions.getQuick( (int) CEnvironment.clip( p_position.get( 0 ), m_row ), (int) CEnvironment.clip( p_position.get( 1 ), m_column ) );
+        return (IElement) m_positions.getQuick( (int) CEnvironment.clip( p_row, m_row ), (int) CEnvironment.clip( p_column, m_column ) );
     }
 
     @Override
@@ -196,15 +208,6 @@ public final class CEnvironment implements IEnvironment
     {
         final DoubleMatrix1D l_position = this.clip( new DenseDoubleMatrix1D( p_position.toArray() ) );
         return m_positions.getQuick( (int) l_position.getQuick( 0 ), (int) l_position.getQuick( 1 ) ) == null;
-    }
-
-    @Override
-    public final boolean isinside( final DoubleMatrix1D p_position )
-    {
-        return ( p_position.getQuick( 0 ) >= 0 )
-               && ( p_position.getQuick( 1 ) >= 0 )
-               && ( p_position.getQuick( 0 ) < m_row )
-               && ( p_position.getQuick( 1 ) < m_column );
     }
 
     @Override

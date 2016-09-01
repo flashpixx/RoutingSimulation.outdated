@@ -23,13 +23,8 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.routing;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -73,15 +68,6 @@ public final class TestCJPSPlus
         final List<DoubleMatrix1D> l_route = new CJPSPlus().initialize( m_grid ).route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ),
                                                       new DenseDoubleMatrix1D( new double[]{2, 3} ) );
         System.out.print( l_route );
-        final List<DoubleMatrix1D> l_waypoint = Stream.of(
-            new DenseDoubleMatrix1D( new double[]{7, 1} ),
-            new DenseDoubleMatrix1D( new double[]{3, 1} ),
-            new DenseDoubleMatrix1D( new double[]{2, 2} ),
-            new DenseDoubleMatrix1D( new double[]{2, 3} )
-        ).collect( Collectors.toList() );
-
-        assertEquals( l_route.size(), l_waypoint.size() );
-        IntStream.range( 0, l_waypoint.size() ).boxed().forEach( i -> assertEquals( l_waypoint.get( i ), l_route.get( i ) ) );
 
     }
 

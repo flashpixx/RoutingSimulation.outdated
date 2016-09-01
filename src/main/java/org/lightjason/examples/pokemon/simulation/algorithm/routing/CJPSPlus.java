@@ -50,12 +50,12 @@ import java.util.HashSet;
  */
 final class CJPSPlus implements IRouting
 {
-    private static HashSet<DoubleMatrix1D> m_staticjumppoint;
+    private static HashSet<DoubleMatrix1D> s_jumppoint;
 
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
-        m_staticjumppoint = this.createjumppoint( p_objects );
+        s_jumppoint = this.createjumppoint( p_objects );
         return this;
     }
 
@@ -66,7 +66,7 @@ final class CJPSPlus implements IRouting
         final HashSet<DoubleMatrix1D> l_closedlist = new HashSet<>();
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
         final int l_checkdirection = this.direction( p_currentposition, p_targetposition );
-        final Set<DoubleMatrix1D> l_requiredstaticjumppoints = m_staticjumppoint.stream()
+        final Set<DoubleMatrix1D> l_requiredstaticjumppoints = s_jumppoint.stream()
                 .filter( i -> this.staticjumppointfilter( p_currentposition.getQuick( 0 ), p_targetposition.getQuick( 0 ), p_currentposition.getQuick( 1 ),
                           p_targetposition.getQuick( 1 ), i.getQuick( 0 ), i.getQuick( 1 ), p_objects, l_checkdirection ) )
                 .collect( Collectors.toSet() );

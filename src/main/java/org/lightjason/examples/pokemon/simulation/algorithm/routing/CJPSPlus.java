@@ -133,7 +133,7 @@ final class CJPSPlus implements IRouting
                             final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects, p_closedlist, p_static, p_checkdirection );
                             this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
                         } )
-                );
+            );
     }
 
     /**
@@ -297,10 +297,10 @@ final class CJPSPlus implements IRouting
                                                   final Set<DoubleMatrix1D> p_static, final int p_checkdirection  )
     {
         final List<DoubleMatrix1D> l_jumplist = p_static.stream()
-                .filter( i-> ( this.jumppointcheck( p_closedlist, p_curnode, p_parent, i ) ) &&
-                        ( ( p_row != 0 && this.nondiagjumppoint( p_objects, p_row, p_curnode.getQuick( 0 ),
-                        p_curnode.getQuick( 1 ), i.getQuick( 0 ), i.getQuick( 1 ), 0 ) ) || ( p_col != 0 && this.nondiagjumppoint( p_objects, p_col, p_curnode.getQuick( 1 ),
-                        p_curnode.getQuick( 0 ), i.getQuick( 1 ), i.getQuick( 0 ), 1 ) ) ) ).collect( Collectors.toList() );
+                .filter( i-> ( this.jumppointcheck( p_closedlist, p_curnode, p_parent, i ) )
+                    && ( ( p_row != 0 && this.nondiagjumppoint( p_objects, p_row, p_curnode.getQuick( 0 ),
+                    p_curnode.getQuick( 1 ), i.getQuick( 0 ), i.getQuick( 1 ), 0 ) ) || ( p_col != 0 && this.nondiagjumppoint( p_objects, p_col, p_curnode.getQuick( 1 ),
+                    p_curnode.getQuick( 0 ), i.getQuick( 1 ), i.getQuick( 0 ), 1 ) ) ) ).collect( Collectors.toList() );
 
         if ( !l_jumplist.isEmpty() )
             return ( p_checkdirection == 2 || p_checkdirection == 3 )

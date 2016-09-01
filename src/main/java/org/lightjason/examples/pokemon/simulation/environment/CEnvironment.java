@@ -26,6 +26,7 @@ package org.lightjason.examples.pokemon.simulation.environment;
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.IRouting;
+import org.lightjason.examples.pokemon.simulation.algorithm.routing.CStaticJumpPoints;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
@@ -43,6 +44,7 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -79,6 +81,10 @@ public final class CEnvironment implements IEnvironment
      */
     private final int m_cellsize;
     /**
+     * static jump points
+     */
+    private final List<DoubleMatrix1D> m_static = new ArrayList<>();
+    /**
      * matrix with object positions
      */
     private final ObjectMatrix2D m_positions;
@@ -106,6 +112,9 @@ public final class CEnvironment implements IEnvironment
 
         // add all obstacles to the position matrix
         p_obstacles.forEach( i -> CCommon.inttupelstream( i ).forEach( j -> m_positions.setQuick( j.getLeft(), j.getRight(), i ) ) );
+        p_obstacles.parallelStream()
+                .forEach( i -> CCommon.inttupelstream( i ).forEach( j -> CStaticJumpPoints.createstaticjump( m_static,
+                        i.position().getQuick( 0 ), i.position().getQuick( 1 ), m_positions ) ) );
         LOGGER.info( MessageFormat.format( "create environment with size [{0}x{1}] and cell size [{2}]", m_row, m_column, p_cellsize ) );
     }
 
@@ -146,7 +155,7 @@ public final class CEnvironment implements IEnvironment
     @Override
     public final List<DoubleMatrix1D> route( final DoubleMatrix1D p_start, final DoubleMatrix1D p_end )
     {
-        return m_routing.route( m_positions, p_start, p_end );
+        return m_routing.route( m_positions, p_start, p_end, m_static );
     }
 
     @Override

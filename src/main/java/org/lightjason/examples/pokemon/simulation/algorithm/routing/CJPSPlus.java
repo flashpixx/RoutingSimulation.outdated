@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -49,6 +50,7 @@ import cern.jet.math.Functions;
 final class CJPSPlus implements IRouting
 {
 
+
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
@@ -56,11 +58,18 @@ final class CJPSPlus implements IRouting
     }
 
     @Override
-    public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
+    public final List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition,
+                                             final List<DoubleMatrix1D> p_static )
     {
         final TreeSet<CJumpPoint> l_openlist = new TreeSet<>( new CCompareJumpPoint() );
         final ArrayList<DoubleMatrix1D> l_closedlist = new ArrayList<>();
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
+        final int l_checkdirection = this.direction( p_currentposition, p_targetposition );
+
+        final Set<DoubleMatrix1D> l_requiredstaticjumppoints = p_static.stream()
+                .filter( i -> this.staticjumppointfilter( p_currentposition.getQuick( 0 ), p_targetposition.getQuick( 0 ), p_currentposition.getQuick( 1 ),
+                        p_targetposition.getQuick( 1 ), i.getQuick( 0 ), i.getQuick( 1 ), p_objects, l_checkdirection ) )
+                .collect( Collectors.toSet() );
 
         l_openlist.add( new CJumpPoint( p_currentposition, null ) );
         while ( !l_openlist.isEmpty() )
@@ -80,7 +89,7 @@ final class CJPSPlus implements IRouting
                 return l_finalpath;
             }
             //Find the successors to current node (add them to the open list)
-            this.successors( p_objects, l_currentnode, p_targetposition, l_closedlist, l_openlist );
+            this.successors( p_objects, l_currentnode, p_targetposition, l_closedlist, l_openlist, l_requiredstaticjumppoints, l_checkdirection );
 
             //Add the l_currentnode to the closed list (as to not open it again)
             l_closedlist.add( l_currentnode.coordinate() );
@@ -94,14 +103,14 @@ final class CJPSPlus implements IRouting
     public final double estimatedtime( final Stream<DoubleMatrix1D> p_route, final double p_speed )
     {
         return StreamUtils.windowed( p_route, 2, 1 )
-                   .mapToDouble( i -> Math.sqrt(
-                                          Algebra.DEFAULT.norm2(
-                                              new DenseDoubleMatrix1D( i.get( 1 ).toArray() )
-                                                  .assign( i.get( 0 ), Functions.minus )
-                                              )
-                                          ) / p_speed
-                   )
-                   .sum();
+                .mapToDouble( i -> Math.sqrt(
+                        Algebra.DEFAULT.norm2(
+                                new DenseDoubleMatrix1D( i.get( 1 ).toArray() )
+                                        .assign( i.get( 0 ), Functions.minus )
+                        )
+                        ) / p_speed
+                )
+                .sum();
     }
 
     /**
@@ -113,18 +122,18 @@ final class CJPSPlus implements IRouting
      * @param p_openlist the set of CJumpPoint that will be explored
      */
     private void successors( final ObjectMatrix2D p_objects, final CJumpPoint p_curnode, final DoubleMatrix1D p_target, final ArrayList<DoubleMatrix1D> p_closedlist,
-                             final Set<CJumpPoint> p_openlist )
+                             final Set<CJumpPoint> p_openlist, final Set<DoubleMatrix1D> p_static, final int p_checkdirection )
     {
         IntStream.rangeClosed( -1, 1 )
-            .forEach( i -> IntStream.rangeClosed( -1, 1 )
-                            .filter( j -> ( i != 0 || j != 0 )
+                .forEach( i -> IntStream.rangeClosed( -1, 1 )
+                        .filter( j -> ( i != 0 || j != 0 )
                                 && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j, p_closedlist )
-                                 && !this.isOccupied( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j ) )
-                            .forEach( j -> {
-                                final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects );
-                                this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
-                            } )
-            );
+                                && !this.isOccupied( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j ) )
+                        .forEach( j -> {
+                            final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects, p_closedlist, p_static, p_checkdirection );
+                            this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
+                        } )
+                );
     }
 
     /**
@@ -136,7 +145,7 @@ final class CJPSPlus implements IRouting
      * @param p_target the goal node
      */
     private void addsuccessors( final DoubleMatrix1D p_nextjumpnode, final ArrayList<DoubleMatrix1D> p_closedlist,
-                                     final Set<CJumpPoint> p_openlist, final CJumpPoint p_curnode, final DoubleMatrix1D p_target )
+                                final Set<CJumpPoint> p_openlist, final CJumpPoint p_curnode, final DoubleMatrix1D p_target )
     {
         if ( !( p_nextjumpnode != null && !p_curnode.coordinate().equals( p_nextjumpnode ) && ( !p_closedlist.contains( p_nextjumpnode ) ) ) )
             return;
@@ -152,16 +161,93 @@ final class CJPSPlus implements IRouting
     }
 
     /**
+     * Find direction for static point filter
+     * @param p_currentposition current position
+     * @param p_targetposition target position
+     */
+    private int direction( final DoubleMatrix1D p_currentposition, final DoubleMatrix1D p_targetposition )
+    {
+        // bottom to top
+        if ( p_currentposition.getQuick( 0 ) > p_targetposition.getQuick( 0 ) )
+        {
+            return 1;
+        }
+        // top to bottom
+        if ( p_currentposition.getQuick( 0 ) < p_targetposition.getQuick( 0 ) )
+        {
+            return 2;
+        }
+        // left to right
+        if ( p_currentposition.getQuick( 1 ) < p_targetposition.getQuick( 1 ) )
+        {
+            return 3;
+        }
+        //right to left
+        else
+        {
+            return 4;
+        }
+
+    }
+
+    /**
+     * filter to collect the static jump points in current range
+     * @param p_currentx row number of the current cell
+     * @param p_targetx row number of the target cell
+     * @param p_currenty column number of the current cell
+     * @param p_targety column number of the target cell
+     * @param p_staticjumpx row number of the static jump point
+     * @param p_staticjumpy column number of the static jump point
+     * @param p_objects Snapshot of the environment
+     * @param p_checkdirection direction
+     */
+    private final boolean staticjumppointfilter( final double p_currentx, final double p_targetx, final double p_currenty, final double p_targety,
+                                                 final double p_staticjumpx, final double p_staticjumpy, final ObjectMatrix2D p_objects, final int p_checkdirection )
+    {
+        return ( p_staticjumpx >= Math.min( p_currentx, p_targetx ) - 1 && p_staticjumpx <= Math.max( p_currentx, p_targetx ) + 1 )
+                && ( p_staticjumpy >= Math.min( p_currenty, p_targety ) - 1 && p_staticjumpy <= Math.max( p_currenty, p_targety ) + 1 )
+                && !this.helpstaticjumpfilter( p_staticjumpx, p_staticjumpy, p_objects, p_checkdirection );
+    }
+
+    /**
+     * Helper function of staticjumppointfilter()
+     * @param p_staticjumpx row number of the static jump point
+     * @param p_staticjumpy column number of the static jump point
+     * @param p_objects Snapshot of the environment
+     * @param p_checkdirection direction
+     */
+    private final boolean helpstaticjumpfilter( final double p_staticjumpx, final double p_staticjumpy, final ObjectMatrix2D p_objects, final int p_checkdirection )
+    {
+        if ( p_checkdirection == 1 )
+        {
+            return this.isOccupied( p_objects, p_staticjumpx + 1, p_staticjumpy );
+        }
+        if ( p_checkdirection == 2 )
+        {
+            return this.isOccupied( p_objects, p_staticjumpx - 1, p_staticjumpy );
+        }
+        if ( p_checkdirection == 3 )
+        {
+            return this.isOccupied( p_objects, p_staticjumpx, p_staticjumpy - 1 );
+        }
+        else
+        {
+            return this.isOccupied( p_objects, p_staticjumpx + 1, p_staticjumpy + 1 );
+        }
+    }
+    /**
      * In order to identify individual jump point successors heading in a given direction (run recursively until find a jump point or failure)
      * @param p_curnode the current node to search for
      * @param p_target the goal node
      * @param p_row to increase or decrease row by adding p_row
      * @param p_col to increase or decrease column by adding p_col
      * @param p_objects Snapshot of the environment
+     * @param p_checkdirection direction
      * @return l_nextnode next jump point
      */
-    private DoubleMatrix1D jump( final DoubleMatrix1D p_curnode, final DoubleMatrix1D p_target,
-                                                       final double p_row, final double p_col, final ObjectMatrix2D p_objects )
+    private DoubleMatrix1D jump( final DoubleMatrix1D p_curnode, final DoubleMatrix1D p_target, final double p_row,
+                                 final double p_col, final ObjectMatrix2D p_objects, final ArrayList<DoubleMatrix1D> p_closedlist,
+                                 final Set<DoubleMatrix1D> p_static, final int p_checkdirection )
     {
         //The next nodes details
         final double l_nextrow = p_curnode.getQuick( 0 ) + p_row;
@@ -175,43 +261,89 @@ final class CJPSPlus implements IRouting
         //If the l_nextnode is the target node then return it
         if ( p_target.equals( l_nextnode ) )
             return l_nextnode;
-
         //If we are going in a diagonal direction check for forced neighbors
         if ( p_row != 0 && p_col != 0 )
         {
-            final DoubleMatrix1D l_node = this.diagjump( l_nextrow, l_nextcol, l_nextnode, p_target, p_row, p_col, p_objects );
-            if ( l_node != null )
-                return l_node;
+            final DoubleMatrix1D l_node = this.diagjump( l_nextrow, l_nextcol, l_nextnode, p_target, p_row, p_col, p_objects, p_closedlist, p_static, p_checkdirection );
+            if ( l_node != null ) return l_node;
         }
         else
+        {
             if ( this.horizontal( l_nextrow, l_nextcol, p_row, p_objects, 1 ) || this.horizontal( l_nextrow, l_nextcol, p_row, p_objects, -1 )
-                || this.vertical( l_nextrow, l_nextcol, p_col, p_objects, 1 ) || this.vertical( l_nextrow, l_nextcol, p_col, p_objects, -1 ) )
+                    || this.vertical( l_nextrow, l_nextcol, p_col, p_objects, 1 ) || this.vertical( l_nextrow, l_nextcol, p_col, p_objects, -1 ) )
                 return l_nextnode;
 
-        return this.jump( l_nextnode, p_target, p_row, p_col, p_objects );
+            final DoubleMatrix1D l_jumpnode = this.nondiagonalstaticjump( p_curnode, l_nextnode, p_objects, p_closedlist, p_row, p_col, p_static, p_checkdirection );
+            if ( l_jumpnode != null ) return l_jumpnode;
+        }
+
+        return this.jump( l_nextnode, p_target, p_row, p_col, p_objects, p_closedlist, p_static, p_checkdirection );
     }
+
+    /**
+     * In order to identify non diagonal static jump points
+     * @param p_parent the parent node of the current node
+     * @param p_curnode the current node to search for
+     * @param p_static list of static jump points
+     * @param p_objects Snapshot of the environment
+     * @param p_closedlist the list of coordinate that already explored
+     * @param p_row to increase or decrease row by adding p_row
+     * @param p_col to increase or decrease column by adding p_col
+     * @param p_checkdirection direction
+     * @return next jump point
+     */
+    private DoubleMatrix1D nondiagonalstaticjump( final DoubleMatrix1D p_parent, final DoubleMatrix1D p_curnode, final ObjectMatrix2D p_objects,
+                                                  final ArrayList<DoubleMatrix1D> p_closedlist, final double p_row, final double p_col,
+                                                  final Set<DoubleMatrix1D> p_static, final int p_checkdirection  )
+    {
+        final List<DoubleMatrix1D> l_jumplist = p_static.stream()
+                .filter( i-> ( this.jumppointcheck( p_closedlist, p_curnode, p_parent, i ) ) &&
+                        ( ( p_row != 0 && this.nondiagjumppoint( p_objects, p_row, p_curnode.getQuick( 0 ),
+                        p_curnode.getQuick( 1 ), i.getQuick( 0 ), i.getQuick( 1 ), 0 ) ) || ( p_col != 0 && this.nondiagjumppoint( p_objects, p_col, p_curnode.getQuick( 1 ),
+                        p_curnode.getQuick( 0 ), i.getQuick( 1 ), i.getQuick( 0 ), 1 ) ) ) ).collect( Collectors.toList() );
+
+        if ( !l_jumplist.isEmpty() )
+            return ( p_checkdirection == 2 || p_checkdirection == 3 )
+                    ? l_jumplist.get( l_jumplist.size() - 1 ) : l_jumplist.get( 0 );
+
+        return null;
+
+    }
+
+
 
     /**
      * In order to identify diagonal jump point
      * @param p_nextrow row of the next node to search for
-     * @param p_nextcolumn column of the next node to search for
-     * @param p_nextnode next node
+     * @param p_nextcol column of the next node to search for
      * @param p_target the goal node
      * @param p_row to increase or decrease row by adding p_row
      * @param p_col to increase or decrease column by adding p_col
-     * @param p_objects snapshot of the environment
-     * @return diagonal jump point
+     * @param p_objects Snapshot of the environment
+     * @param p_checkdirection direction
+     * @return p_nextnode diagonal jump point
      */
-    private DoubleMatrix1D diagjump( final double p_nextrow, final double p_nextcolumn, final DoubleMatrix1D p_nextnode, final DoubleMatrix1D p_target,
-                                        final double p_row, final double p_col, final ObjectMatrix2D p_objects )
+    private DoubleMatrix1D diagjump( final double p_nextrow, final double p_nextcol, final DoubleMatrix1D p_nextnode, final DoubleMatrix1D p_target,
+                                     final double p_row, final double p_col, final ObjectMatrix2D p_objects, final ArrayList<DoubleMatrix1D> p_closedlist,
+                                     final Set<DoubleMatrix1D> p_static, final int p_checkdirection )
     {
-        if ( this.diagonal( p_nextrow, p_nextcolumn, -p_row, p_col, p_row, 0, p_objects ) || this.diagonal( p_nextrow, p_nextcolumn, p_row, -p_col, 0, p_col, p_objects ) )
+        if ( this.diagonal( p_nextrow, p_nextcol, -p_row, p_col, p_row, 0, p_objects ) || this.diagonal( p_nextrow, p_nextcol, p_row, -p_col, 0, p_col, p_objects ) )
             return p_nextnode;
 
         //before each diagonal step the algorithm must first fail to detect any straight jump points
-        if ( this.jump( p_nextnode, p_target, p_row, 0, p_objects ) != null || this.jump( p_nextnode, p_target, 0, p_col, p_objects ) != null )
+        if ( this.jump( p_nextnode, p_target, p_row, 0, p_objects, p_closedlist, p_static, p_checkdirection ) != null
+                || this.jump( p_nextnode, p_target, 0, p_col, p_objects, p_closedlist, p_static, p_checkdirection ) != null )
             return p_nextnode;
 
+        if ( ( p_checkdirection == 1 && p_row == -1 ) || ( p_checkdirection == 2 && p_row == 1 ) )
+        {
+            final List<DoubleMatrix1D> l_jumplist = p_static.stream()
+                    .filter( i-> Math.abs( i.getQuick( 0 ) - p_nextnode.getQuick( 0 ) ) == Math.abs( i.getQuick( 1 ) - p_nextnode.getQuick( 1 ) ) )
+                    .collect( Collectors.toList() );
+
+            if ( !l_jumplist.isEmpty() )
+                return ( p_checkdirection == 2 ) ? l_jumplist.get( l_jumplist.size() - 1 ) : l_jumplist.get( 0 );
+        }
         return null;
     }
 
@@ -224,13 +356,12 @@ final class CJPSPlus implements IRouting
      * @param p_hzon top or bottom direction
      * @param p_ver left or right direction
      * @param p_objects Snapshot of the environment
-     * @return true or false
      */
     private boolean diagonal( final double p_nextrow, final double p_nextcolumn, final double p_row, final double p_col, final double p_hzon, final double p_ver,
-                                       final ObjectMatrix2D p_objects )
+                              final ObjectMatrix2D p_objects )
     {
         return !this.isNotCoordinate( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcolumn + p_col )
-               && this.isOccupied( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcolumn + p_col );
+                && this.isOccupied( p_objects, p_nextrow - p_hzon, p_nextcolumn - p_ver ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcolumn + p_col );
     }
 
     /**
@@ -240,13 +371,12 @@ final class CJPSPlus implements IRouting
      * @param p_row to increase or decrease row by adding p_row
      * @param p_objects Snapshot of the environment
      * @param p_value direction
-     * @return true or false
      */
     private boolean horizontal( final double p_nextrow, final double p_nextcol, final double p_row, final ObjectMatrix2D p_objects, final double p_value )
     {
         return p_row != 0 && !this.isNotCoordinate( p_objects, p_nextrow + p_row, p_nextcol ) && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol )
-                  && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_value ) && this.isOccupied( p_objects, p_nextrow, p_nextcol + p_value )
-                  && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol + p_value );
+                && !this.isNotCoordinate( p_objects, p_nextrow, p_nextcol + p_value ) && this.isOccupied( p_objects, p_nextrow, p_nextcol + p_value )
+                && !this.isOccupied( p_objects, p_nextrow + p_row, p_nextcol + p_value );
     }
 
     /**
@@ -256,7 +386,6 @@ final class CJPSPlus implements IRouting
      * @param p_col to increase or decrease column by adding p_col
      * @param p_objects Snapshot of the environment
      * @param p_value direction
-     * @return true or false
      */
     private boolean vertical( final double p_nextrow, final double p_nextcol, final double p_col, final ObjectMatrix2D p_objects, final double p_value )
     {
@@ -266,28 +395,36 @@ final class CJPSPlus implements IRouting
     }
 
     /**
-     * To check any point in the grid environment is free or occupied
-     * @param p_objects Snapshot of the environment
-     * @param p_row the row number of the coordinate to check
-     * @param p_column the column number of the coordinate to check
-     * @return return true or false
+     * Helper function to identify static jump point
+     * @param p_closedlist the list of coordinate that already explored
+     * @param p_curnode the current node to search for
+     * @param p_parent the parent node of the current node
+     * @param p_staticjumppoint current static jump point
      */
-    private boolean isOccupied( final ObjectMatrix2D p_objects, final double p_row, final double p_column )
+    private boolean jumppointcheck( final ArrayList<DoubleMatrix1D> p_closedlist, final DoubleMatrix1D p_curnode, final DoubleMatrix1D p_parent,
+                                    final DoubleMatrix1D p_staticjumppoint )
     {
-        return p_objects.getQuick( (int) p_row, (int) p_column ) != null;
+        return !p_closedlist.contains( p_staticjumppoint ) && !p_parent.equals( p_staticjumppoint ) && !p_curnode.equals( p_staticjumppoint );
     }
 
     /**
-     * To check any point is in the grid environment or out of environment
+     * Helper function to identify non diagonal static jump point
      * @param p_objects Snapshot of the environment
-     * @param p_row the row number of the coordinate to check
-     * @param p_column the column number of the coordinate to check
-     * @return return true or false
+     * @param p_direction direction
+     * @param p_current1 row of the current node
+     * @param p_current2 column of the current node
+     * @param p_jumppoint1 row of the current static jump point
+     * @param p_jumppoint2 column of the current static jump point
+     * @param p_differ to distinguish between directions ( horizontal or vertical )
      */
-    private boolean isNotCoordinate( final ObjectMatrix2D p_objects, final double p_row, final double p_column )
+    private boolean nondiagjumppoint( final ObjectMatrix2D p_objects, final double p_direction, final double p_current1, final double p_current2,
+                                      final double p_jumppoint1, final double p_jumppoint2, final int p_differ )
     {
-        return p_column < 0 || p_column >= p_objects.columns() || p_row < 0 || p_row >= p_objects.rows();
+        return ( p_jumppoint2 == p_current2 ) && ( ( p_direction == -1 && p_jumppoint1 < p_current1 ) || ( p_direction == 1
+                && p_jumppoint1 > p_current1 ) );
     }
+
+
 
     /**
      * Finds the non valid successors of any grid
@@ -309,7 +446,7 @@ final class CJPSPlus implements IRouting
     private void calculateScore( final CJumpPoint p_jumpnode, final DoubleMatrix1D p_target )
     {
         final double l_hscore = Math.abs( p_target.getQuick( 0 ) - p_jumpnode.coordinate().getQuick( 0 ) ) * 10
-                             + Math.abs( p_target.getQuick( 1 ) - p_jumpnode.coordinate().getQuick( 1 ) ) * 10;
+                + Math.abs( p_target.getQuick( 1 ) - p_jumpnode.coordinate().getQuick( 1 ) ) * 10;
 
         p_jumpnode.hscore( l_hscore );
 
@@ -319,6 +456,31 @@ final class CJPSPlus implements IRouting
 
         p_jumpnode.gscore( p_jumpnode.parent().gscore() + l_gscore );
     }
+
+    /**
+     * To check any point in the grid environment is free or occupied
+     * @param p_objects Snapshot of the environment
+     * @param p_row the row number of the coordinate to check
+     * @param p_column the column number of the coordinate to check
+     */
+    public boolean isOccupied( final ObjectMatrix2D p_objects, final double p_row, final double p_column )
+    {
+        return p_objects.getQuick( (int) p_row, (int) p_column ) != null;
+    }
+
+    /**
+     * To check any point is in the grid environment or out of environment
+     * @param p_objects Snapshot of the environment
+     * @param p_row the row number of the coordinate to check
+     * @param p_column the column number of the coordinate to check
+     * @return return true or false
+     */
+
+    public boolean isNotCoordinate( final ObjectMatrix2D p_objects, final double p_row, final double p_column )
+    {
+        return p_column < 0 || p_column >= p_objects.columns() || p_row < 0 || p_row >= p_objects.rows();
+    }
+
 
     /**
      * class to compare two jump-points
@@ -339,10 +501,6 @@ final class CJPSPlus implements IRouting
      */
     private static final class CJumpPoint
     {
-        /**
-         * for avoid zero-jump-points we create exactly one
-         */
-        public static final CJumpPoint ZERO = new CJumpPoint();
 
         /**
          * jump-point g-score value
@@ -362,14 +520,6 @@ final class CJPSPlus implements IRouting
          * position
          */
         private final DoubleMatrix1D m_coordinate;
-
-        /**
-         * ctor - with default values
-         */
-        private CJumpPoint()
-        {
-            this( null, null );
-        }
 
         /**
          * ctor
@@ -447,3 +597,4 @@ final class CJPSPlus implements IRouting
 
     }
 }
+

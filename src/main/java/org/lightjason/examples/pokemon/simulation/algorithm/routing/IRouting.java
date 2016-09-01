@@ -25,11 +25,11 @@ package org.lightjason.examples.pokemon.simulation.algorithm.routing;
 
 
 
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.ObjectMatrix2D;
-
 import java.util.List;
 import java.util.stream.Stream;
+
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.ObjectMatrix2D;
 
 
 /**
@@ -54,7 +54,7 @@ public interface IRouting
      * @param p_target target position
      * @return list of tuples of the cellindex
      */
-    List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_source, final DoubleMatrix1D p_target, final List<DoubleMatrix1D> p_static );
+    List<DoubleMatrix1D> route( final ObjectMatrix2D p_objects, final DoubleMatrix1D p_source, final DoubleMatrix1D p_target );
 
 
     /**

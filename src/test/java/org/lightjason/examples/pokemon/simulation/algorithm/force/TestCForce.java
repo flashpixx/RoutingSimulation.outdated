@@ -23,32 +23,26 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import com.codepoetics.protonpack.StreamUtils;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.language.score.IAggregation;
 import org.lightjason.examples.pokemon.CCommon;
-import org.lightjason.examples.pokemon.simulation.CMath;
-import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemonGenerator;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.ERoutingFactory;
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
-import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 
 import java.text.MessageFormat;
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.LogManager;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -62,10 +56,6 @@ public final class TestCForce
      */
     private static final int AGENTNUMBER = 2;
     /**
-     * number of static objects
-     */
-    private static final int STATICNUMBER = 2;
-    /**
      * list with agents
      */
     private List<IAgent> m_agent;
@@ -77,10 +67,6 @@ public final class TestCForce
      * action references
      */
     private Set<IAction> m_actions;
-    /**
-     * static attributes
-     */
-    private List<IElement> m_element;
 
 
     /**
@@ -101,42 +87,15 @@ public final class TestCForce
             org.lightjason.agentspeak.common.CCommon.actionsFromAgentClass( CPokemon.class )
         ).collect( Collectors.toSet() ) );
 
-        // generate agents
-        // agent position will be set by random, so if there is an fixed position needed, add an own generator as an inner class
         m_agent = Collections.unmodifiableList(
-            new CPokemonGenerator(
-                m_environment,
-                TestCForce.class.getResourceAsStream( MessageFormat.format( "/{0}/agent.asl", CCommon.PACKAGEPATH ) ),
-                m_actions,
-                IAggregation.EMPTY
-            )
-                .generatemultiple( AGENTNUMBER, EForceFactory.SUM.get(), "gastly" )
-                .collect( Collectors.toList() )
-        );
-
-        // generate static elements
-        // obstacles position is set by random, can be changed to fixed values
-        m_element = Collections.unmodifiableList(
-            IntStream.range( 0, STATICNUMBER )
-                     .mapToObj( j -> new CStatic(
-
-                                    IntStream.range( 0, 2 ).boxed().map( i -> CMath.RANDOMGENERATOR.nextInt() ).collect( Collectors.toList() ),
-                                    IntStream.range( 0, 2 ).boxed().map( i -> CMath.RANDOMGENERATOR.nextInt() ).collect( Collectors.toList() ),
-                                    "000000",
-
-                                    StreamUtils.zip(
-                                        Stream.of( "foo", "bar" ),
-                                        Stream.of( "hallo", 3 ),
-                                        AbstractMap.SimpleImmutableEntry::new
-                                    ).collect(
-                                        Collectors.toMap(
-                                            AbstractMap.SimpleImmutableEntry::getKey,
-                                            AbstractMap.SimpleImmutableEntry::getValue
-                                        )
-                                    )
-
-                                )
-                     ).collect( Collectors.toList() )
+                      new CPokemonGenerator(
+                          m_environment,
+                          TestCForce.class.getResourceAsStream( MessageFormat.format( "/{0}/agent.asl", CCommon.PACKAGEPATH ) ),
+                          m_actions,
+                          IAggregation.EMPTY
+                      )
+                      .generatemultiple( AGENTNUMBER, EForceFactory.SUM.get(), "gastly" )
+                      .collect( Collectors.toList() )
         );
     }
 
@@ -149,32 +108,20 @@ public final class TestCForce
         Assume.assumeNotNull( m_environment );
         Assume.assumeNotNull( m_actions );
         Assume.assumeNotNull( m_agent );
-        Assume.assumeFalse( m_agent.isEmpty() );
-        Assume.assumeNotNull( m_element );
-        Assume.assumeFalse( m_element.isEmpty() );
+        Assume.assumeTrue( m_agent.isEmpty() );
 
-        // all environment data like other agents or obstacles is shown if it exists with the literal prefix "env"
-        // attribute() returns the literals of attributes which can be read by agents
-        // beliefbase() returns the full beliefbase of an agent only
-
-        System.out.println( m_element.get( 0 ).attribute().collect( Collectors.toSet() ) );
-        System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toSet() ) );
-        System.out.println( m_agent.get( 0 ).beliefbase().stream().collect( Collectors.toSet() ) );
+        System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toList() ) );
     }
 
 
 
     /**
      * main method to test force algorithms
-     *
      * @param p_args CLI command
-     * @throws Exception on error
      */
-    public static void main( final String[] p_args ) throws Exception
+    public static void main( final String[] p_args )
     {
-        final TestCForce l_test = new TestCForce();
-        l_test.initialize();
-        l_test.testForce();
+
     }
 
 }

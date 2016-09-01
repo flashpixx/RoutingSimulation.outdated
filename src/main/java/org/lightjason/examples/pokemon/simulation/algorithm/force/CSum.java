@@ -23,9 +23,13 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
+import java.util.stream.Stream;
+
 import org.lightjason.examples.pokemon.simulation.IElement;
 
-import java.util.stream.Stream;
+import cern.colt.matrix.DoubleMatrix1D;
+import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.jet.math.Functions;
 
 
 /**
@@ -33,6 +37,16 @@ import java.util.stream.Stream;
  */
 final class CSum implements IForce
 {
+    private static final DoubleMatrix1D m_dirvertical1 = new DenseDoubleMatrix1D( new double[]{1, 0} );
+    private static final DoubleMatrix1D m_dirvertical2 = new DenseDoubleMatrix1D( new double[]{-1, 0} );
+    private static final DoubleMatrix1D m_dirhorizontal1 = new DenseDoubleMatrix1D( new double[]{0, 1} );
+    private static final DoubleMatrix1D m_dirhorizontal2 = new DenseDoubleMatrix1D( new double[]{0, -1} );
+    private static final DoubleMatrix1D m_dirdiagonal1 = new DenseDoubleMatrix1D( new double[]{1, 1} );
+    private static final DoubleMatrix1D m_dirdiagonal2 = new DenseDoubleMatrix1D( new double[]{-1, -1} );
+    private static final DoubleMatrix1D m_verticalscale = new DenseDoubleMatrix1D( new double[]{-1, 1} );
+    private static final DoubleMatrix1D m_horizontalscale = new DenseDoubleMatrix1D( new double[]{1, -1} );
+
+
     @Override
     public final double calculate( final IElement p_self, final Stream<IElement> p_other )
     {
@@ -68,5 +82,11 @@ final class CSum implements IForce
                      */
         return 0;
 
+    }
+
+    public static void main(String []args)
+    {
+        DoubleMatrix1D check = new DenseDoubleMatrix1D( new double[]{8, 0} ).assign(Functions.mult(2.0));
+        System.out.println(check);
     }
 }

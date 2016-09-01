@@ -32,35 +32,24 @@ import java.util.Map;
  */
 public final class CStatic extends IBaseItem
 {
-
     /**
      * ctor
-     *
      * @param p_leftupper left-upper position
      * @param p_rightbottom right-bottom position
+     * @param p_preference map with preferences
      * @param p_color color
      */
     public CStatic( final List<Integer> p_leftupper, final List<Integer> p_rightbottom,
-                    final String p_color
+                    final Map<String, ?> p_preference, final String p_color
     )
     {
-        super( p_leftupper, p_rightbottom, p_color );
+        super( p_leftupper, p_rightbottom, p_preference, p_color );
     }
 
-
-    /**
-     * ctor
-     *
-     * @param p_leftupper left-upper position
-     * @param p_rightbottom right-bottom position
-     * @param p_color color
-     * @param p_attribute map with attributes
-     */
-    public CStatic( final List<Integer> p_leftupper, final List<Integer> p_rightbottom,
-                    final String p_color, final Map<String, ?> p_attribute
-    )
+    @Override
+    public final boolean whipeable()
     {
-        super( p_leftupper, p_rightbottom, p_color, p_attribute );
+        return false;
     }
 
     @Override

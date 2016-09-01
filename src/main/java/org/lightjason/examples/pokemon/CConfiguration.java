@@ -30,7 +30,6 @@ import org.lightjason.examples.pokemon.simulation.algorithm.force.EForceFactory;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.ERoutingFactory;
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
-import org.lightjason.examples.pokemon.simulation.agent.CEvaluation;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 import org.apache.commons.io.FilenameUtils;
@@ -60,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,6 +74,10 @@ public final class CConfiguration
      * singleton instance
      */
     public static final CConfiguration INSTANCE = new CConfiguration();
+    /**
+     * logger
+     */
+    private static final Logger LOGGER = Logger.getLogger( CConfiguration.class.getName() );
     /**
      * configuration path
      */
@@ -123,14 +127,6 @@ public final class CConfiguration
      * thread-sleep time in milliseconds
      */
     private int m_threadsleeptime;
-    /**
-     * boolean flag to show stack trace
-     */
-    private boolean m_stacktrace;
-    /**
-     * evaluation object
-     */
-    private CEvaluation m_evaluation;
 
 
 
@@ -160,7 +156,6 @@ public final class CConfiguration
         m_configurationpath = FilenameUtils.getPath( l_path.toString() );
 
         // get initial values
-        m_stacktrace = (boolean) l_data.getOrDefault( "stacktrace", false );
         m_threadsleeptime = (int) l_data.getOrDefault( "threadsleeptime", 0 );
         m_statusvisible = (boolean) l_data.getOrDefault( "statusvisible", true );
         m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
@@ -217,9 +212,6 @@ public final class CConfiguration
                 )
             );
 
-        // create evaluation
-        m_evaluation = new CEvaluation( m_agents.parallelStream() );
-
 
         // run initialization processes
         m_environment.initialize();
@@ -232,7 +224,7 @@ public final class CConfiguration
      *
      * @return height
      */
-    final int windowheight()
+    public final int windowheight()
     {
         return m_windowheight;
     }
@@ -242,7 +234,7 @@ public final class CConfiguration
      *
      * @return weight
      */
-    final int windowweight()
+    public final int windowweight()
     {
         return m_windowweight;
     }
@@ -252,19 +244,9 @@ public final class CConfiguration
      *
      * @return steps
      */
-    final int simulationsteps()
+    public final int simulationsteps()
     {
         return m_simulationstep;
-    }
-
-    /**
-     * returns the evaluation object
-     *
-     * @return evaluation
-     */
-    final CEvaluation evaluation()
-    {
-        return m_evaluation;
     }
 
     /**
@@ -272,7 +254,7 @@ public final class CConfiguration
      *
      * @return object list
      */
-    final List<IItem> staticelements()
+    public final List<IItem> staticelements()
     {
         return m_staticelements;
     }
@@ -282,7 +264,7 @@ public final class CConfiguration
      *
      * @return object list
      */
-    final List<IAgent> agents()
+    public final List<IAgent> agents()
     {
         return m_agents;
     }
@@ -302,7 +284,7 @@ public final class CConfiguration
      *
      * @return triple of screenshot information
      */
-    final Triple<String, String, Integer> screenshot()
+    public final Triple<String, String, Integer> screenshot()
     {
         return m_screenshot;
     }
@@ -332,7 +314,7 @@ public final class CConfiguration
      *
      * @return visibility flag
      */
-    final boolean statusvisible()
+    public final boolean statusvisible()
     {
         return m_statusvisible;
     }
@@ -342,21 +324,10 @@ public final class CConfiguration
      *
      * @return sleep time
      */
-    final int threadsleeptime()
+    public final int threadsleeptime()
     {
         return m_threadsleeptime;
     }
-
-    /**
-     * returns the stacktrace visiblity
-     *
-     * @return stacktrace visibility
-     */
-    final boolean stackstrace()
-    {
-        return m_stacktrace;
-    }
-
 
 
     /**
@@ -441,7 +412,8 @@ public final class CConfiguration
             .map( i -> new CStatic(
                 (List<Integer>) i.get( "left" ),
                 (List<Integer>) i.get( "right" ),
-                (String) i.getOrDefault( "color", "" ), (Map<String, ?>) i.getOrDefault( "preferences", Collections.emptyMap() )
+                (Map<String, ?>) i.getOrDefault( "preferences", Collections.emptyMap() ),
+                (String) i.getOrDefault( "color", "" )
             ) )
             .forEach( p_elements::add );
 

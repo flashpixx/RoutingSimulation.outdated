@@ -27,7 +27,6 @@ package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.jet.math.Functions;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.beliefbase.view.IView;
@@ -49,8 +48,9 @@ import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
-import org.lightjason.examples.pokemon.simulation.item.CStatic;
+import org.lightjason.examples.pokemon.simulation.item.IItem;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -64,7 +64,6 @@ import java.util.stream.Stream;
  *
  * @see http://pokewiki.de/
  * @see http://bulbapedia.bulbagarden.net/wiki/Main_Page
- * @bug attribute beliefs creates a conurrency, illegalstate exception
  */
 @IAgentAction
 public final class CPokemon extends IBaseAgent
@@ -150,6 +149,12 @@ public final class CPokemon extends IBaseAgent
     }
 
     @Override
+    public final String toString()
+    {
+        return MessageFormat.format( "{0} - pokemon [{1}] - ethnic {2} - attributes {3} - motivation {4}", super.toString(), m_pokemon, m_ethnic, m_attribute, m_motivation );
+    }
+
+    @Override
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
         m_sprite = CDefinition.INSTANCE.tupel( m_pokemon, 0 ).sprite( p_cellsize, p_unit );
@@ -182,10 +187,36 @@ public final class CPokemon extends IBaseAgent
         this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "level-up" ) ) );
     }
 
+
+    /**
+     * checks if a point is within the visual range
+     *
+     * @param p_xpos x-position of the point (relative position [-radius, +radius])
+     * @param p_ypos y-position of the point (relative position [-radius, +radius])
+     * @param p_radius radius of the view-range
+     * @param p_angle angle of the view-range
+     * @return boolean if the position is inside
+     */
+    private static boolean positioninsideangle( final double p_xpos, final double p_ypos, final double p_radius, final double p_angle )
+    {
+        if ( Math.sqrt( p_xpos * p_xpos + p_ypos * p_ypos ) > p_radius )
+            return false;
+
+        final double l_segment = 0.5 * p_angle;
+        final double l_angle = Math.toDegrees( Math.atan( p_ypos / p_xpos ) );
+        return ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
+    }
+
     @Override
-    public final Stream<ITerm> attribute()
+    public final Stream<ILiteral> attribute()
     {
         return m_ethnic.entrySet().parallelStream().map( i -> CLiteral.from( i.getKey(), Stream.of( CRawTerm.from( i.getValue() ) ) ) );
+    }
+
+    @Override
+    public final Stream<ILiteral> environmentview()
+    {
+        return m_envview.stream();
     }
 
     @Override
@@ -402,15 +433,16 @@ public final class CPokemon extends IBaseAgent
                 return p_literal;
 
             // check if the number of the attribute is changed
-            final Number l_newvalue = CCommon.raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 0 ) ) );
-            if ( l_value.getRight().intValue() == l_newvalue.intValue() )
+            final Number l_newvalue = CCommon.<Number, ITerm>raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 0.0 ) ) );
+            if ( l_value.getRight().doubleValue() == l_newvalue.doubleValue() )
                 return p_literal;
 
             // creates the trigger and sets the new value
-            this.event( ITrigger.EType.DELETEBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().intValue() ) ) ) );
+            this.event( ITrigger.EType.DELETEBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().doubleValue() ) ) ) );
             l_value.setRight( l_newvalue );
+            this.event( ITrigger.EType.ADDBELIEF, CLiteral.from( p_literal.functor(), Stream.of( CRawTerm.from( l_value.getRight().doubleValue() ) ) ) );
 
-            return this.event( ITrigger.EType.ADDBELIEF, p_literal );
+            return p_literal;
         }
 
         @Override
@@ -518,138 +550,73 @@ public final class CPokemon extends IBaseAgent
         @Override
         public Stream<ILiteral> streamLiteral()
         {
-            final DoubleMatrix1D l_goal = new DenseDoubleMatrix1D( CPokemon.this.goal().toArray() );
-            final DoubleMatrix1D l_position = new DenseDoubleMatrix1D( CPokemon.this.position().toArray() );
-
-            return Stream.concat( this.self( l_position, l_goal ), this.perceive( l_position, l_goal ) );
-        }
-
-        /**
-         * environment self-perceiving
-         *
-         * @return individual environment symbolic literals
-         */
-        private Stream<ILiteral> self( final DoubleMatrix1D p_position, final DoubleMatrix1D p_goal )
-        {
-            return Stream.of(
-
-                // current position within the environment
-                this.literalposition( "myposition", p_position ),
-
-                // next goal-position
-                this.literalposition( "mygoal", p_goal ),
-
-                // pokemon type
-                CLiteral.from( "ima", Stream.of( CLiteral.from( m_pokemon.toLowerCase() ) ) )
-            );
-        }
-
-
-        /**
-         * environment perceiving
-         *
-         * @param p_position current agent position
-         * @param  p_goal current goal position
-         * @return stream with symbolic environment literals
-         */
-        private Stream<ILiteral> perceive( final DoubleMatrix1D p_position, final DoubleMatrix1D p_goal )
-        {
             // read attribute data
             final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
             final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
 
-
             // rotate view-range into the direction of the next goal-position
             // calculate angle from current position to goal-position
-            final Pair<Double, Boolean> l_direction = CMath.angel(
-                                                                    new DenseDoubleMatrix1D( p_goal.toArray() )
-                                                                        .assign( p_position, Functions.minus ),
-                                                                    new DenseDoubleMatrix1D( new double[]{0, l_radius} )
+            final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult(
+                CMath.rotationmatrix(
+                    Math.toRadians(
+                        CMath.angel(
+                            new DenseDoubleMatrix1D( CPokemon.this.goal().toArray() )
+                                .assign( m_position, Functions.minus ),
+                            new DenseDoubleMatrix1D( m_position.toArray() )
+                                .assign( new DenseDoubleMatrix1D( new double[]{0, l_radius} ), Functions.plus )
+                        )
+                    )
+                ),
+                m_position
             );
-            if ( !l_direction.getRight() )
-                return Stream.of();
 
-            // rote current position of the agent into view direction
-            final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), p_position );
-
-
-            // iterate over the possible cells of the grid to read other elements,
-            // center is the rotated view point and iterate the sequare with radius size
+            // iterate over the possible cells of the grid
             return IntStream.rangeClosed( -l_radius, l_radius )
-                       .parallel()
-                       .boxed()
-                       .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
-                                          .boxed()
-                                          .filter( x -> this.positioninsideangle( y, x, l_angle ) )
-                                          .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
-                                          .filter( m_environment::isinside )
-                                          .map( i -> this.elementliteral( m_environment.get( i ), i ) )
-                                          .filter( i -> i != null )
-                       );
+                            .parallel()
+                            .boxed()
+                            .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
+                                                    .filter( x -> CPokemon.positioninsideangle( x, y, l_radius, l_angle ) )
+                                                    .mapToObj( x -> {
+                                                        final double l_ypos = y + l_viewposition.getQuick( 0 );
+                                                        final double l_xpos = x + l_viewposition.getQuick( 1 );
+
+                                                        return this.elementliteral( m_environment.get( l_ypos, l_xpos ), l_ypos, l_xpos );
+                                                    } )
+                                                    .filter( i -> i != null )
+                            );
         }
 
         /**
          * generates the literal of an object
          *
          * @param p_element element or null
-         * @param p_position position
+         * @param p_ypos y-position of the element
+         * @param p_xpos x-position of the element
          * @return null or literal
          */
         @SuppressWarnings( "unchecked" )
-        private ILiteral elementliteral( final IElement p_element, final DoubleMatrix1D p_position )
+        private ILiteral elementliteral( final IElement p_element, final double p_ypos, final double p_xpos )
         {
             if ( p_element instanceof CPokemon )
-                return CLiteral.from(
-                    "pokemon",
-                    Stream.of(
-                        this.literalposition( "position", p_position ),
-                        CLiteral.from( "attribute", p_element.attribute() )
-                    )
-                );
+                return CLiteral.from( "pokemon", Stream.of(
+                    CLiteral.from(
+                        "position",
+                        Stream.of(
+                                   CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
+                                   CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) )
+                        )
+                    ),
+                    CLiteral.from( "attribute", (Collection<ITerm>) p_element.attribute() )
+                ) );
 
-            if ( p_element instanceof CStatic )
-                return CLiteral.from(
-                    "obstacle",
-                    Stream.of(
-                        this.literalposition( "position", p_position ),
-                        CLiteral.from( "attribute", p_element.attribute() )
-                    )
-                );
+            if ( p_element instanceof IItem )
+                return CLiteral.from( "obstacle", Stream.of(
+                    CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_xpos ) ) ),
+                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_ypos ) ) ),
+                    CLiteral.from( "attribute", (Collection<ITerm>) p_element.attribute() )
+                ) );
 
             return null;
-        }
-
-        /**
-         * generate position literal
-         *
-         * @param p_functor functor name
-         * @param p_position position vector
-         * @return position literal
-         */
-        private ILiteral literalposition( final String p_functor, final DoubleMatrix1D p_position )
-        {
-            return CLiteral.from(
-                p_functor,
-                Stream.of(
-                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_position.getQuick( 0 ) ) ) ),
-                    CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_position.getQuick( 1  ) ) ) )
-                )
-            );
-        }
-
-        /**
-         * checks if a point is within the angel of the visual range
-         *
-         * @param p_ypos y-position of the point (relative position [-radius, +radius])
-         * @param p_xpos x-position of the point (relative position [-radius, +radius])
-         * @param p_angle angle of the view-range in degree
-         * @return boolean if the position is inside
-         */
-        private boolean positioninsideangle( final double p_ypos, final double p_xpos, final double p_angle )
-        {
-            final double l_segment = 0.5 * p_angle;
-            final double l_angle = Math.toDegrees( Math.atan( Math.abs( p_ypos ) / Math.abs( p_xpos ) ) );
-            return !Double.isNaN( l_angle ) && ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
         }
     }
 

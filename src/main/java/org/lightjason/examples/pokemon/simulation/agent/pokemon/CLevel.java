@@ -184,7 +184,6 @@ public final class CLevel
      * @param p_motivationvalue stream with motivation value
      * @param p_attribute stream with attributes types
      * @param p_attributesvalue stream with attributes values
-     * @param p_attack attack
      */
     public CLevel( final String p_pokemon, final int p_index,
                    final Stream<String> p_ethnic, final Stream<ImmutableTriple<Number, Number, Number>> p_ethnicvalue,

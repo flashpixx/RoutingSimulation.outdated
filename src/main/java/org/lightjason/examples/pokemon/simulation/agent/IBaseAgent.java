@@ -45,6 +45,7 @@ import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -62,13 +63,19 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      */
     protected Sprite m_sprite;
     /**
-     * reference to the environment
+     * random generator
+     * @deprecated change to cmath generator
      */
-    protected final IEnvironment m_environment;
+    @Deprecated
+    protected final Random m_random = new Random();
     /**
      * current position of the agent
      */
-    private final DoubleMatrix1D m_position;
+    protected final DoubleMatrix1D m_position;
+    /**
+     * reference to the environment
+     */
+    protected final IEnvironment m_environment;
     /**
      * route
      */
@@ -98,9 +105,12 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     public String toString()
     {
         return MessageFormat.format(
-            "{0} - route [{1}]",
+            "{0} - current position [{1}] - speed [{2}] - route [{3}]",
             super.toString(),
-            m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( "; " ) )
+            m_position == null ? "" : CMath.MATRIXFORMAT.toString( m_position ),
+            this.speed(),
+            // not null check is needed because of the super ctor
+            m_route == null ? "" : m_route.stream().map( CMath.MATRIXFORMAT::toString ).collect( Collectors.joining( "; " ) )
         );
     }
 
@@ -132,8 +142,14 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( m_position.equals( l_position ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
-        // get the next landmark
+        // check if the agent reaches the goal-position exact
         final DoubleMatrix1D l_goalposition = this.goal();
+        if ( m_position.equals( l_goalposition ) )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/achieve-exact", Stream.of( CRawTerm.from( m_position ) ) ) ) );
+
+        // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
+        if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) ) ) );
 
         // check "near-by(D)" preference for the current position and the goal
         // position, D is the radius (in cells) so we trigger the goal "near-by(Y)" and
@@ -141,23 +157,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         // default argument must match literal-value type (and on integral types long is used)
         final double l_distance = CMath.distance( m_position, l_goalposition );
         if ( l_distance <= this.nearby() )
-            this.trigger(
-                CTrigger.from(
-                    ITrigger.EType.ADDGOAL,
-                    CLiteral.from( "position/achieve", Stream.of( CRawTerm.from( l_goalposition ), CRawTerm.from( l_distance ) ) )
-                )
-            );
-
-        // check if the quadrant between cached position and current position relative to goal-position, if it is changed, than we have missed the goal-position
-        if ( !l_quadrant.equals( EQuadrant.quadrant( l_goalposition, m_position ) ) )
-            this.trigger(
-                CTrigger.from(
-                    ITrigger.EType.ADDGOAL,
-                    CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) )
-                )
-            );
-
-        // System.out.println( this );
+            this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "position/near-by", Stream.of( CRawTerm.from( l_distance ) ) ) ) );
 
         return this;
     }
@@ -230,8 +230,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         m_route.addAll(
             0,
             this.route(
-                m_position.getQuick( 0 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
-                m_position.getQuick( 1 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
+                m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
+                m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
             )
         );
     }
@@ -265,8 +265,8 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
 
         m_route.addAll(
             this.route(
-                m_position.getQuick( 0 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
-                m_position.getQuick( 1 ) + CMath.RANDOMGENERATOR.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
+                m_position.getQuick( 0 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue(),
+                m_position.getQuick( 1 ) + m_random.nextInt( p_radius.intValue() * 2 ) - p_radius.intValue()
             )
         );
     }

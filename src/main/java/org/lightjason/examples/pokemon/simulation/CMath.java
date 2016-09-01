@@ -30,14 +30,9 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import cern.jet.math.Functions;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.random.SynchronizedRandomGenerator;
-
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 
 /**
@@ -71,34 +66,18 @@ public final class CMath
     private CMath()
     {}
 
-    /**
-     * consums a stream of matrix objects
-     *
-     * @param p_stream stream
-     * @param p_consumer consumer function
-     * @return stream
-     */
-    public static Stream<DoubleMatrix1D> matrixconsumer( final Stream<DoubleMatrix1D> p_stream, final Consumer<String> p_consumer )
-    {
-        return p_stream.map( i -> {
-            p_consumer.accept( MATRIXFORMAT.toString( i ) + " " );
-            return i;
-        } );
-    }
 
     /**
      * creates a rotation matrix
      *
-     * @param p_alpha angel in radians
+     * @param p_alpha degree in radians
      * @return matrix
      *
      * @see https://en.wikipedia.org/wiki/Rotation_matrix
      */
     public static DoubleMatrix2D rotationmatrix( final double p_alpha )
     {
-        final double l_sin = Math.sin( p_alpha );
-        final double l_cos = Math.cos( p_alpha );
-        return new DenseDoubleMatrix2D( new double[][]{{l_cos, l_sin}, {-l_sin, l_cos}} );
+        return new DenseDoubleMatrix2D( new double[][]{{Math.cos( p_alpha ), -Math.sin( p_alpha )}, {Math.sin( p_alpha ), Math.cos( p_alpha )}} );
     }
 
     /**
@@ -106,16 +85,11 @@ public final class CMath
      *
      * @param p_first first vector
      * @param p_second second vector
-     * @return pair of angel in radians and boolean for calulation correctness
+     * @return angel in degree
      */
-    public static Pair<Double, Boolean> angel( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
+    public static double angel( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
     {
-        final double l_first = ALGEBRA.norm2( p_first );
-        final double l_second = ALGEBRA.norm2( p_second );
-
-        return ( l_first == 0 ) || ( l_second == 0 )
-               ? new ImmutablePair<>( 0.0, false )
-               : new ImmutablePair<>( Math.acos( ALGEBRA.mult( p_first, p_second ) / ( Math.sqrt( l_first ) * Math.sqrt( l_second ) ) ), true );
+        return p_first.zDotProduct( p_second ) / ( Math.sqrt( ALGEBRA.norm2( p_first ) ) * Math.sqrt( ALGEBRA.norm2( p_second ) ) );
     }
 
 

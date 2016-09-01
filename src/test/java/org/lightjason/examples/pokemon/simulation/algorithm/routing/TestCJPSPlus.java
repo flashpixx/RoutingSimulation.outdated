@@ -25,13 +25,11 @@ package org.lightjason.examples.pokemon.simulation.algorithm.routing;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import java.util.ArrayList;
-
 
 import org.junit.Before;
 import org.junit.Test;
@@ -63,14 +61,6 @@ public final class TestCJPSPlus
         m_grid.setQuick( 4, 3, new Object() );
         m_grid.setQuick( 3, 2, new Object() );
 
-        m_static.add( new DenseDoubleMatrix1D( new double[]{2, 2} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{3, 1} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{3, 3} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{4, 1} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{4, 4} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{5, 2} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{5, 3} ) );
-
     }
 
 
@@ -80,14 +70,14 @@ public final class TestCJPSPlus
     @Test
     public void testrouting()
     {
-        final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ),
-                new DenseDoubleMatrix1D( new double[]{2, 3} ), m_static );
-
+        final List<DoubleMatrix1D> l_route = new CJPSPlus().initialize(m_grid).route( m_grid, new DenseDoubleMatrix1D( new double[]{8, 0} ),
+                                                      new DenseDoubleMatrix1D( new double[]{2, 3} ));
+        System.out.print( l_route );
         final List<DoubleMatrix1D> l_waypoint = Stream.of(
-                new DenseDoubleMatrix1D( new double[]{7, 1} ),
-                new DenseDoubleMatrix1D( new double[]{3, 1} ),
-                new DenseDoubleMatrix1D( new double[]{2, 2} ),
-                new DenseDoubleMatrix1D( new double[]{2, 3} )
+            new DenseDoubleMatrix1D( new double[]{7, 1} ),
+            new DenseDoubleMatrix1D( new double[]{3, 1} ),
+            new DenseDoubleMatrix1D( new double[]{2, 2} ),
+            new DenseDoubleMatrix1D( new double[]{2, 3} )
         ).collect( Collectors.toList() );
 
         assertEquals( l_route.size(), l_waypoint.size() );

@@ -1,24 +1,17 @@
 # enable / disable logger
 logging : false
 
-# show stacktrace on error
-stacktrace : false
-
-# agent print call will be shown
-agentprint : false
-
 # enable / disable status line
 statusvisible : true
-
-
 
 # number of simulation steps - optional if not set, Integer.Max_Value is used
 #steps : 2000
 
+# agent print call will be shown
+agentprint : false
+
 # thread-sleep (in milliseconds) time to slow down the simulation speed
 threadsleeptime : 0
-
-
 
 # screen size of the window - optional with default 800x600
 # zoom speed for zoom sensitivity
@@ -38,14 +31,12 @@ screenshot :
     file   : "image{0}"
 
 
-
 # environment (grid) resolution - required
 environment :
     cellsize : 20
     rows     : 250
     columns  : 250
     routing  : "jpsplus"
-
 
 
 # agent definition

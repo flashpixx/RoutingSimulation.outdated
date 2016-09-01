@@ -50,12 +50,12 @@ import java.util.HashSet;
  */
 final class CJPSPlus implements IRouting
 {
-    private static HashSet<DoubleMatrix1D> m_staticjumppoints;
+    private static HashSet<DoubleMatrix1D> m_staticjumppoint;
 
     @Override
     public final IRouting initialize( final ObjectMatrix2D p_objects )
     {
-        m_staticjumppoints = this.createjumppoint(p_objects);
+        m_staticjumppoint = this.createjumppoint( p_objects );
         return this;
     }
 
@@ -66,7 +66,7 @@ final class CJPSPlus implements IRouting
         final HashSet<DoubleMatrix1D> l_closedlist = new HashSet<>();
         final List<DoubleMatrix1D> l_finalpath = new ArrayList<>();
         final int l_checkdirection = this.direction( p_currentposition, p_targetposition );
-        final Set<DoubleMatrix1D> l_requiredstaticjumppoints = m_staticjumppoints.stream()
+        final Set<DoubleMatrix1D> l_requiredstaticjumppoints = m_staticjumppoint.stream()
                 .filter( i -> this.staticjumppointfilter( p_currentposition.getQuick( 0 ), p_targetposition.getQuick( 0 ), p_currentposition.getQuick( 1 ),
                           p_targetposition.getQuick( 1 ), i.getQuick( 0 ), i.getQuick( 1 ), p_objects, l_checkdirection ) )
                 .collect( Collectors.toSet() );
@@ -127,17 +127,17 @@ final class CJPSPlus implements IRouting
                              final Set<CJumpPoint> p_openlist, final HashSet<DoubleMatrix1D> p_static, final int p_checkdirection )
     {
         IntStream.rangeClosed( -1, 1 )
-            .forEach(i -> {
-                        IntStream.rangeClosed(-1, 1)
-                                .filter(j -> (i != 0 || j != 0)
-                                        && !this.isNotNeighbour(p_objects, p_curnode.coordinate().getQuick(0) + i, p_curnode.coordinate().getQuick(1) + j, p_closedlist)
-                                        && !this.isOccupied(p_objects, p_curnode.coordinate().getQuick(0) + i, p_curnode.coordinate().getQuick(1) + j))
-                                .forEach(j -> {
-                                    final DoubleMatrix1D l_nextjumpnode = this.jump(p_curnode.coordinate(), p_target, i, j, p_objects, p_closedlist, p_static, p_checkdirection);
-                                    this.addsuccessors(l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target);
-                                });
-                    }
-            );
+            .forEach( i -> {
+                IntStream.rangeClosed( -1, 1 )
+                        .filter( j -> ( i != 0 || j != 0 )
+                                && !this.isNotNeighbour( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j, p_closedlist )
+                                && !this.isOccupied( p_objects, p_curnode.coordinate().getQuick( 0 ) + i, p_curnode.coordinate().getQuick( 1 ) + j ) )
+                                .forEach( j -> {
+                                    final DoubleMatrix1D l_nextjumpnode = this.jump( p_curnode.coordinate(), p_target, i, j, p_objects, p_closedlist,
+                                                                                      p_static, p_checkdirection );
+                                    this.addsuccessors( l_nextjumpnode, p_closedlist, p_openlist, p_curnode, p_target );
+                                } );
+            } );
     }
 
     /**
@@ -250,7 +250,7 @@ final class CJPSPlus implements IRouting
      * @param p_static static jump points
      * @param p_checkdirection direction  @return l_nextnode next jump point
      */
-    private DoubleMatrix1D jump(final DoubleMatrix1D p_curnode, final DoubleMatrix1D p_target, final double p_row, final double p_col,
+    private DoubleMatrix1D jump( final DoubleMatrix1D p_curnode, final DoubleMatrix1D p_target, final double p_row, final double p_col,
                                 final ObjectMatrix2D p_objects, final Set<DoubleMatrix1D> p_closedlist, final HashSet<DoubleMatrix1D> p_static, final int p_checkdirection )
     {
         //The next nodes details
@@ -416,7 +416,7 @@ final class CJPSPlus implements IRouting
      * @param p_column column number of the grid cell
      * @param p_objects Snapshot of the environment
      */
-    private void createstaticjump(final HashSet<DoubleMatrix1D> p_staticjumppoints, final double p_row, final double p_column, final ObjectMatrix2D p_objects )
+    private void createstaticjump( final HashSet<DoubleMatrix1D> p_staticjumppoints, final double p_row, final double p_column, final ObjectMatrix2D p_objects )
     {
 
         Stream.of( new DenseDoubleMatrix1D( new double[]{p_row + 1, p_column} ), new DenseDoubleMatrix1D( new double[]{p_row - 1, p_column} ),
@@ -508,7 +508,7 @@ final class CJPSPlus implements IRouting
 
     public HashSet<DoubleMatrix1D> createjumppoint( final ObjectMatrix2D p_objects )
     {
-        HashSet<DoubleMatrix1D> l_staticjumppoints = new HashSet<>();
+        final HashSet<DoubleMatrix1D> l_staticjumppoints = new HashSet<>();
         IntStream.range( 0, p_objects.rows() )
                 .forEach( i->
                 {

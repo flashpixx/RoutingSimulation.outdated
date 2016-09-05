@@ -58,6 +58,7 @@ public final class CStaticJumpPoints
             .forEach( s-> p_staticjumppoints.add( s ) );
     }
 
+
     /**
      * To check any point in the grid environment is free or occupied
      * @param p_objects Snapshot of the environment

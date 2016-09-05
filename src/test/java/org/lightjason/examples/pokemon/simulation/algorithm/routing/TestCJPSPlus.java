@@ -58,11 +58,11 @@ public final class TestCJPSPlus
         m_grid.setQuick( 4, 3, new Object() );
         m_grid.setQuick( 3, 2, new Object() );
 
+        m_static.add( new DenseDoubleMatrix1D( new double[]{4, 1} ) );
+        m_static.add( new DenseDoubleMatrix1D( new double[]{4, 4} ) );
         m_static.add( new DenseDoubleMatrix1D( new double[]{2, 2} ) );
         m_static.add( new DenseDoubleMatrix1D( new double[]{3, 1} ) );
         m_static.add( new DenseDoubleMatrix1D( new double[]{3, 3} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{4, 1} ) );
-        m_static.add( new DenseDoubleMatrix1D( new double[]{4, 4} ) );
         m_static.add( new DenseDoubleMatrix1D( new double[]{5, 2} ) );
         m_static.add( new DenseDoubleMatrix1D( new double[]{5, 3} ) );
 
@@ -79,7 +79,27 @@ public final class TestCJPSPlus
                 new DenseDoubleMatrix1D( new double[]{2, 3} ), m_static );
         System.out.println( l_route );
     }
+    /**
+     * test of a correct working route with some obstacles
+     */
+    @Test
+    public void testro()
+    {
+        final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{6, 0} ),
+                new DenseDoubleMatrix1D( new double[]{1, 3} ), m_static );
+        System.out.println( l_route );
+    }
 
+    /**
+     * test of a correct working route with some obstacles
+     */
+    @Test
+    public void testroute()
+    {
+        final List<DoubleMatrix1D> l_route = new CJPSPlus().route( m_grid, new DenseDoubleMatrix1D( new double[]{6, 0} ),
+                new DenseDoubleMatrix1D( new double[]{3, 5} ), m_static );
+        System.out.println( l_route );
+    }
 
     /**
      * it is recommand, that each test-class uses also

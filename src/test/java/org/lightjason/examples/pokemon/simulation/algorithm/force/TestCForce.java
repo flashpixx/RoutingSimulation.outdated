@@ -28,6 +28,11 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.common.CPath;
+import org.lightjason.agentspeak.language.CLiteral;
+import org.lightjason.agentspeak.language.CRawTerm;
+import org.lightjason.agentspeak.language.ILiteral;
+import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.score.IAggregation;
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.CMath;
@@ -160,6 +165,51 @@ public final class TestCForce
         System.out.println( m_element.get( 0 ).attribute().collect( Collectors.toSet() ) );
         System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toSet() ) );
         System.out.println( m_agent.get( 0 ).beliefbase().stream().collect( Collectors.toSet() ) );
+    }
+
+    /**
+     * literal test
+     */
+    @Test
+    public void literaltest()
+    {
+        // create literal
+        final ILiteral l_literal = CLiteral.from(
+                                    "fatema",
+                                    Stream.of(
+                                        CLiteral.from(
+                                            "age",
+                                            Stream.of(
+                                                CRawTerm.from( 25 )
+                                            )
+                                        ),
+                                        CLiteral.from( "study",
+                                            Stream.of(
+                                                CRawTerm.from( "computer science" )
+                                            )
+                                        )
+                                    )
+        );
+
+        // show full literal
+        System.out.println( l_literal );
+
+        // extract value from literal
+        System.out.println(
+            // raw extract the native value inside the literal - can be any Java object type
+            org.lightjason.agentspeak.language.CCommon.<Number, ITerm>raw(
+
+                // values() returns a stream of terms, so cast hard to literal
+                // parameter is the functor of the literal
+                ( (ILiteral) l_literal.values( CPath.from( "age" ) )
+                    // get the first element inside the values of the literal
+                    .findFirst().get()
+                )
+                // this element is a term with the value
+                .orderedvalues().findFirst().get()
+            )
+        );
+
     }
 
 

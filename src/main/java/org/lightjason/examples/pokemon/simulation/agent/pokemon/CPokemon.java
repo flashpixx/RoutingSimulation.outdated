@@ -42,7 +42,6 @@ import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.beliefbase.IBeliefbaseOnDemand;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
-import org.lightjason.agentspeak.language.CCommon;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
@@ -402,7 +401,7 @@ public final class CPokemon extends IBaseAgent
                 return p_literal;
 
             // check if the number of the attribute is changed
-            final Number l_newvalue = CCommon.raw( p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 0 ) ) );
+            final Number l_newvalue = p_literal.orderedvalues().findFirst().orElse( CRawTerm.from( 0 ) ).raw();
             if ( l_value.getRight().intValue() == l_newvalue.intValue() )
                 return p_literal;
 

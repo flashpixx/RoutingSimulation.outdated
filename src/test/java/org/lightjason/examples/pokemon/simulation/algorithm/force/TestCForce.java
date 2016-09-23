@@ -32,7 +32,6 @@ import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
-import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.score.IAggregation;
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.CMath;
@@ -196,18 +195,19 @@ public final class TestCForce
 
         // extract value from literal
         System.out.println(
-            // raw extract the native value inside the literal - can be any Java object type
-            org.lightjason.agentspeak.language.CCommon.<Number, ITerm>raw(
 
                 // values() returns a stream of terms, so cast hard to literal
                 // parameter is the functor of the literal
-                ( (ILiteral) l_literal.values( CPath.from( "age" ) )
-                    // get the first element inside the values of the literal
-                    .findFirst().get()
-                )
+                l_literal.values( CPath.from( "age" ) )
+                // get the first element inside the values of the literal
+                .findFirst().get()
+                //return the value as literal
+                .<ILiteral>raw()
+
                 // this element is a term with the value
                 .orderedvalues().findFirst().get()
-            )
+                // return the value as number
+                .<Number>raw()
         );
 
     }

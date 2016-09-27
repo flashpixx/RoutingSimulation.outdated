@@ -174,12 +174,22 @@ public final class TestCForce
 
         System.out.println(
             MessageFormat.format(
-                "Object Distance: {0}",
+                "Object Distance: equal agent {0}, unequal agents {1}, agent & static object {2}",
 
                 // testing different metric types
                 EMetric.NCD_BZIP.get().calculate(
                     m_agent.get( 0 ).attribute(),
                     m_agent.get( 0 ).attribute()
+                ),
+
+                EMetric.NCD_BZIP.get().calculate(
+                    m_agent.get( 0 ).attribute(),
+                    m_agent.get( 1 ).attribute()
+                ),
+
+                EMetric.NCD_BZIP.get().calculate(
+                    m_agent.get( 0 ).attribute(),
+                    m_element.get( 0 ).attribute()
                 )
             )
         );

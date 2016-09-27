@@ -178,9 +178,17 @@ public final class TestCForce
         System.out.println( m_agent.get( 1 ).beliefbase().stream().collect( Collectors.toSet() ) );
 
         System.out.println(
-            normalizedcompressiondistance(
-                m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "") ),
-                m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "") )
+            MessageFormat.format( "Object Distance: {0}",
+                                  normalizedcompressiondistance(
+
+                                      // using literals with functor and value
+                                      m_agent.get( 0 ).attribute().map( Object::toString ).collect( Collectors.joining( "" ) ),
+                                      m_agent.get( 0 ).attribute().map( Object::toString ).collect( Collectors.joining( "" ) )
+
+                                      // using literal values only
+                                      //m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "" ) ),
+                                      //m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "" ) )
+                                  )
             )
         );
 
@@ -218,10 +226,10 @@ public final class TestCForce
     /**
      * calculate the normalized-compression-distance (NCD) between two strings
      *
-     * @see https://en.wikipedia.org/wiki/Normalized_compression_distance
      * @param p_first first string
      * @param p_second second string
-     * @return distance in [0,1] with 0 == equality
+     * @return distance in [0,1] with 0 == equality (minimum distance)
+     * @see https://en.wikipedia.org/wiki/Normalized_compression_distance
      */
     private static double normalizedcompressiondistance( final String p_first, final String p_second )
     {
@@ -232,10 +240,10 @@ public final class TestCForce
 
     /**
      * compression algorithm
-     * @warning counting stream returns the correct number of bytes after flushing
      *
      * @param p_input input string
      * @return number of compression bytes
+     * @warning counting stream returns the correct number of bytes after flushing
      */
     private static int zip( final String p_input )
     {
@@ -243,7 +251,7 @@ public final class TestCForce
 
         try (
             final InputStream l_input = new ByteArrayInputStream( p_input.getBytes( StandardCharsets.UTF_8 ) );
-            final OutputStream l_compress = new BZip2CompressorOutputStream( l_counting );
+            final OutputStream l_compress = new BZip2CompressorOutputStream( l_counting )
         )
         {
             IOUtils.copy( l_input, l_compress );

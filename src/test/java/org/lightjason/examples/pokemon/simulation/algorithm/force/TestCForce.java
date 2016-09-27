@@ -24,11 +24,13 @@
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
 import com.codepoetics.protonpack.StreamUtils;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.output.NullOutputStream;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.lightjason.agentspeak.action.IAction;
-import org.lightjason.agentspeak.common.CPath;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
@@ -45,6 +47,12 @@ import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.Collections;
@@ -162,8 +170,20 @@ public final class TestCForce
         // beliefbase() returns the full beliefbase of an agent only
 
         System.out.println( m_element.get( 0 ).attribute().collect( Collectors.toSet() ) );
+        System.out.println();
         System.out.println( m_agent.get( 0 ).attribute().collect( Collectors.toSet() ) );
         System.out.println( m_agent.get( 0 ).beliefbase().stream().collect( Collectors.toSet() ) );
+        System.out.println();
+        System.out.println( m_agent.get( 1 ).attribute().collect( Collectors.toSet() ) );
+        System.out.println( m_agent.get( 1 ).beliefbase().stream().collect( Collectors.toSet() ) );
+
+        System.out.println(
+            normalizedcompressiondistance(
+                m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "") ),
+                m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "") )
+            )
+        );
+
     }
 
     /**
@@ -174,45 +194,67 @@ public final class TestCForce
     {
         // create literal
         final ILiteral l_literal = CLiteral.from(
-                                    "fatema",
-                                    Stream.of(
-                                        CLiteral.from(
-                                            "age",
-                                            Stream.of(
-                                                CRawTerm.from( 25 )
-                                            )
-                                        ),
-                                        CLiteral.from( "study",
-                                            Stream.of(
-                                                CRawTerm.from( "computer science" )
-                                            )
-                                        )
-                                    )
+            "fatema",
+            Stream.of(
+                CLiteral.from(
+                    "age",
+                    Stream.of(
+                        CRawTerm.from( 25 )
+                    )
+                ),
+                CLiteral.from( "study",
+                               Stream.of(
+                                   CRawTerm.from( "computer science" )
+                               )
+                )
+            )
         );
 
-        // show full literal
-        System.out.println( l_literal );
-
-        // extract value from literal
-        System.out.println(
-
-                // values() returns a stream of terms, so cast hard to literal
-                // parameter is the functor of the literal
-                l_literal.values( CPath.from( "age" ) )
-                // get the first element inside the values of the literal
-                .findFirst().get()
-                //return the value as literal
-                .<ILiteral>raw()
-
-                // this element is a term with the value
-                .orderedvalues().findFirst().get()
-                // return the value as number
-                .<Number>raw()
-        );
+        // show full literal - but NCD is not zero, because we need more data to calculate the distance a single literal is to short
+        System.out.println( MessageFormat.format( "literal {0} test distance: {1}", l_literal, normalizedcompressiondistance( l_literal.toString(), l_literal.toString() ) ) );
 
     }
 
+    /**
+     * calculate the normalized-compression-distance (NCD) between two strings
+     *
+     * @see https://en.wikipedia.org/wiki/Normalized_compression_distance
+     * @param p_first first string
+     * @param p_second second string
+     * @return distance in [0,1] with 0 == equality
+     */
+    private static double normalizedcompressiondistance( final String p_first, final String p_second )
+    {
+        final double l_first = zip( p_first );
+        final double l_second = zip( p_second );
+        return ( zip( p_first + p_second ) - Math.min( l_first, l_second ) ) / Math.max( l_first, l_second );
+    }
 
+    /**
+     * compression algorithm
+     * @warning counting stream returns the correct number of bytes after flushing
+     *
+     * @param p_input input string
+     * @return number of compression bytes
+     */
+    private static int zip( final String p_input )
+    {
+        final DataOutputStream l_counting = new DataOutputStream( new NullOutputStream() );
+
+        try (
+            final InputStream l_input = new ByteArrayInputStream( p_input.getBytes( StandardCharsets.UTF_8 ) );
+            final OutputStream l_compress = new BZip2CompressorOutputStream( l_counting );
+        )
+        {
+            IOUtils.copy( l_input, l_compress );
+        }
+        catch ( final IOException l_exception )
+        {
+            return 0;
+        }
+
+        return l_counting.size();
+    }
 
     /**
      * main method to test force algorithms
@@ -225,6 +267,7 @@ public final class TestCForce
         final TestCForce l_test = new TestCForce();
         l_test.initialize();
         l_test.testForce();
+        l_test.literaltest();
     }
 
 }

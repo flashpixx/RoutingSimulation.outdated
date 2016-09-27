@@ -28,6 +28,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.consistency.metric.CLevenshteinDistance;
 import org.lightjason.agentspeak.consistency.metric.CNCD;
 import org.lightjason.agentspeak.consistency.metric.CSymmetricDifference;
 import org.lightjason.agentspeak.consistency.metric.CWeightedDifference;
@@ -244,7 +245,7 @@ public final class TestCForce
     {
         final TestCForce l_test = new TestCForce();
         l_test.initialize();
-        l_test.testForce();
+        //l_test.testForce();
         l_test.literaltest();
     }
 
@@ -259,6 +260,7 @@ public final class TestCForce
         NCD_DEFLATE( new CNCD( CNCD.ECompression.DEFLATE ) ),
         NCD_XZ( new CNCD( CNCD.ECompression.XZ ) ),
         NCD_PACK200( new CNCD( CNCD.ECompression.PACK200 ) ),
+        LEVENSHTEIN( new CLevenshteinDistance() ),
         SYMMETRICDIFFERENCE( new CSymmetricDifference() ),
         WEIGHTEDDIFFERENCE( new CWeightedDifference() );
 

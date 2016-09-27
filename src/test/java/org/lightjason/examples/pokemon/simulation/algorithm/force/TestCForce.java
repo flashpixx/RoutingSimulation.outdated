@@ -213,12 +213,80 @@ public final class TestCForce
                         CRawTerm.from( 25 )
                     )
                 ),
-                CLiteral.from( "study",
-                               Stream.of(
-                                   CRawTerm.from( "computer science" )
-                               )
-                )
+                CLiteral.from(
+                        "direction",
+                            Stream.of(
+                                    CRawTerm.from( "right" )
+                            )
+                    ),
+                    CLiteral.from(
+                            "study",
+                            Stream.of(
+                                    CRawTerm.from( "computer science" )
+                            )
+                    ),
+                    CLiteral.from(
+                            "like",
+                            Stream.of(
+                                    CRawTerm.from( "tea" ),
+                                    CRawTerm.from( "rain" )
+                            )
+                    ),
+                    CLiteral.from( "goal",
+                            Stream.of(
+                                    CRawTerm.from( "teashop" )
+                            )
+
+                    ),
+                    CLiteral.from( "dislike",
+                            Stream.of(
+                                    CRawTerm.from( "coffee" ),
+                                    CRawTerm.from( "fire" )
+                            )
+                    )
             )
+        );
+
+        final ILiteral l_literal2 = CLiteral.from(
+                "sayeeda",
+                Stream.of(
+                        CLiteral.from(
+                                "age",
+                                Stream.of(
+                                        CRawTerm.from( 28 )
+                                )
+                        ),
+                        CLiteral.from(
+                                "direction",
+                                Stream.of(
+                                        CRawTerm.from( "left" )
+                                )
+                        ),
+                        CLiteral.from( "study",
+                                Stream.of(
+                                        CRawTerm.from( "statistics" )
+                                )
+                        ),
+
+                        CLiteral.from( "like",
+                                Stream.of(
+                                        CRawTerm.from( "water" ),
+                                        CRawTerm.from( "food" ),
+                                        CRawTerm.from( "fire" )
+                                )
+                        ),
+                        CLiteral.from( "goal",
+                                Stream.of(
+                                        CRawTerm.from( "trainplatform" )
+                                )
+                        ),
+                        CLiteral.from( "dislike",
+                                Stream.of(
+                                        CRawTerm.from( "coffee" ),
+                                        CRawTerm.from( "rain" )
+                                )
+                        )
+                )
         );
 
         // show full literal - but NCD is not zero, because we need more data to calculate the distance a single literal is to short
@@ -226,9 +294,9 @@ public final class TestCForce
             MessageFormat.format(
                 "literal {0} test distance: {1}",
                 l_literal,
-                EMetric.NCD_BZIP.get().calculate(
+                EMetric.NCD_DEFLATE.get().calculate(
                     Stream.of( l_literal ),
-                    Stream.of( l_literal )
+                    Stream.of( l_literal2 )
                 )
             )
         );

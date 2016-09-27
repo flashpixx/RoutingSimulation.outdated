@@ -24,13 +24,14 @@
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
 import com.codepoetics.protonpack.StreamUtils;
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.io.output.NullOutputStream;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.lightjason.agentspeak.action.IAction;
+import org.lightjason.agentspeak.consistency.metric.CNCD;
+import org.lightjason.agentspeak.consistency.metric.CSymmetricDifference;
+import org.lightjason.agentspeak.consistency.metric.CWeightedDifference;
+import org.lightjason.agentspeak.consistency.metric.IMetric;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ILiteral;
@@ -47,12 +48,6 @@ import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.Collections;
@@ -178,17 +173,14 @@ public final class TestCForce
         System.out.println( m_agent.get( 1 ).beliefbase().stream().collect( Collectors.toSet() ) );
 
         System.out.println(
-            MessageFormat.format( "Object Distance: {0}",
-                                  normalizedcompressiondistance(
+            MessageFormat.format(
+                "Object Distance: {0}",
 
-                                      // using literals with functor and value
-                                      m_agent.get( 0 ).attribute().map( Object::toString ).collect( Collectors.joining( "" ) ),
-                                      m_agent.get( 0 ).attribute().map( Object::toString ).collect( Collectors.joining( "" ) )
-
-                                      // using literal values only
-                                      //m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "" ) ),
-                                      //m_agent.get( 0 ).attribute().flatMap( i -> i.<ILiteral>raw().values().map( Object::toString ) ).collect( Collectors.joining( "" ) )
-                                  )
+                // testing different metric types
+                EMetric.NCD_BZIP.get().calculate(
+                    m_agent.get( 0 ).attribute(),
+                    m_agent.get( 0 ).attribute()
+                )
             )
         );
 
@@ -219,50 +211,18 @@ public final class TestCForce
         );
 
         // show full literal - but NCD is not zero, because we need more data to calculate the distance a single literal is to short
-        System.out.println( MessageFormat.format( "literal {0} test distance: {1}", l_literal, normalizedcompressiondistance( l_literal.toString(), l_literal.toString() ) ) );
-
+        System.out.println(
+            MessageFormat.format(
+                "literal {0} test distance: {1}",
+                l_literal,
+                EMetric.NCD_BZIP.get().calculate(
+                    Stream.of( l_literal ),
+                    Stream.of( l_literal )
+                )
+            )
+        );
     }
 
-    /**
-     * calculate the normalized-compression-distance (NCD) between two strings
-     *
-     * @param p_first first string
-     * @param p_second second string
-     * @return distance in [0,1] with 0 == equality (minimum distance)
-     * @see https://en.wikipedia.org/wiki/Normalized_compression_distance
-     */
-    private static double normalizedcompressiondistance( final String p_first, final String p_second )
-    {
-        final double l_first = zip( p_first );
-        final double l_second = zip( p_second );
-        return ( zip( p_first + p_second ) - Math.min( l_first, l_second ) ) / Math.max( l_first, l_second );
-    }
-
-    /**
-     * compression algorithm
-     *
-     * @param p_input input string
-     * @return number of compression bytes
-     * @warning counting stream returns the correct number of bytes after flushing
-     */
-    private static int zip( final String p_input )
-    {
-        final DataOutputStream l_counting = new DataOutputStream( new NullOutputStream() );
-
-        try (
-            final InputStream l_input = new ByteArrayInputStream( p_input.getBytes( StandardCharsets.UTF_8 ) );
-            final OutputStream l_compress = new BZip2CompressorOutputStream( l_counting )
-        )
-        {
-            IOUtils.copy( l_input, l_compress );
-        }
-        catch ( final IOException l_exception )
-        {
-            return 0;
-        }
-
-        return l_counting.size();
-    }
 
     /**
      * main method to test force algorithms
@@ -276,6 +236,46 @@ public final class TestCForce
         l_test.initialize();
         l_test.testForce();
         l_test.literaltest();
+    }
+
+
+    /**
+     * different metrices
+     */
+    private enum EMetric
+    {
+        NCD_BZIP( new CNCD() ),
+        NCD_GZIP( new CNCD( CNCD.ECompression.GZIP ) ),
+        NCD_DEFLATE( new CNCD( CNCD.ECompression.DEFLATE ) ),
+        NCD_XZ( new CNCD( CNCD.ECompression.XZ ) ),
+        NCD_PACK200( new CNCD( CNCD.ECompression.PACK200 ) ),
+        SYMMETRICDIFFERENCE( new CSymmetricDifference() ),
+        WEIGHTEDDIFFERENCE( new CWeightedDifference() );
+
+        /**
+         * metric object
+         */
+        private final IMetric m_metric;
+
+        /**
+         * ctor
+         * @param p_metric metric object
+         */
+        EMetric( final IMetric p_metric )
+        {
+            m_metric = p_metric;
+        }
+
+        /**
+         * returns the metric
+         *
+         * @return metric
+         */
+        public final IMetric get()
+        {
+            return m_metric;
+        }
+
     }
 
 }

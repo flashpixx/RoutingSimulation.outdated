@@ -160,6 +160,9 @@ public final class CPokemon extends IBaseAgent
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
         m_sprite = CDefinition.INSTANCE.tupel( m_pokemon, 0 ).sprite( p_cellsize, p_unit );
+
+        // initialize all other sprites
+        IntStream.range( 1, CDefinition.INSTANCE.level( m_pokemon ) ).parallel().forEach( i ->  CDefinition.INSTANCE.tupel( m_pokemon, i ).sprite( p_cellsize, p_unit ) );
     }
 
 
@@ -242,9 +245,10 @@ public final class CPokemon extends IBaseAgent
     @IAgentActionName( name = "act/attack/point" )
     private void pointattack( final String p_attack, final double p_power, final Number p_row, final Number p_column )
     {
-        //final CAttack l_attack = this.attack( p_attack );
-        //m_experience.get().add( BigInteger.valueOf( (long) ( l_attack.power() * m_levelexperience.doubleValue() * ( m_level.get() + 1 ) ) ) );
-        m_experience.set( m_experience.get().add( BigInteger.valueOf( 1000000 ) ) );
+        final CAttack l_attack = this.attack( p_attack );
+        m_experience.set(
+            m_experience.get().add( BigInteger.valueOf( (long) ( l_attack.power() * m_levelexperience.doubleValue() * ( m_level.get() + 1 ) ) ) )
+        );
     }
 
     /**
@@ -270,8 +274,14 @@ public final class CPokemon extends IBaseAgent
     private CAttack attack( final String p_attack )
     {
         final CAttack l_attack = m_attack.get( p_attack.trim().toLowerCase() );
+
+        // if attack cannot be found
         if ( l_attack == null )
-            throw new RuntimeException( MessageFormat.format( "attach [{0}] not exists", p_attack ) );
+            throw new RuntimeException( MessageFormat.format( "attack [{0}] not exists", p_attack ) );
+
+        // check accuracy that the attack will successful executed
+        if ( CMath.RANDOMGENERATOR.nextDouble() > l_attack.accuracy() )
+            throw new RuntimeException( MessageFormat.format( "attack fails [{0}]", p_attack ) );
 
         return l_attack;
     }

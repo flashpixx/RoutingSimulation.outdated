@@ -30,7 +30,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
-import org.lightjason.agentspeak.beliefbase.view.IView;
 import org.lightjason.examples.pokemon.simulation.CMath;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
@@ -50,6 +49,8 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -98,9 +99,17 @@ public final class CPokemon extends IBaseAgent
      */
     private final Map<String, MutablePair<EAccess, Number>> m_attribute;
     /**
-     * maximum level
+     * experience maximum
      */
-    private final int m_maximumlevel;
+    private final BigInteger m_experiencemaximum;
+    /**
+     * experience of level update
+     */
+    private final BigInteger m_levelexperience;
+    /**
+     * current experience
+     */
+    private BigInteger m_experience = BigInteger.ZERO;
     /**
      * current level
      */
@@ -126,9 +135,10 @@ public final class CPokemon extends IBaseAgent
             throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_pokemon = p_pokemon;
-        m_maximumlevel = CDefinition.INSTANCE.level( m_pokemon );
         final CLevel l_level = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
 
+        m_experiencemaximum = CDefinition.INSTANCE.experience( m_pokemon );
+        m_levelexperience = m_experiencemaximum.divide( BigInteger.valueOf( CDefinition.INSTANCE.level( p_pokemon ) ) );
         m_ethnic = l_level.ethnic();
         m_motivation = l_level.motivation();
         m_attack = l_level.attack().stream().collect( Collectors.toConcurrentMap( CAttack::name, i -> i ) );
@@ -156,25 +166,27 @@ public final class CPokemon extends IBaseAgent
 
 
     @Override
-    public IAgent call() throws Exception
+    public final IAgent call() throws Exception
     {
-        System.out.println( m_beliefbase );
+        // level-up if needed
+        this.levelup();
+
         return super.call();
     }
 
     /**
      * runs the level-up
-     * @todo check for experience
      */
     private void levelup()
     {
-        if ( m_level >= m_maximumlevel - 1 )
+        // check current experience and level
+        final int l_level = m_experience.divide( m_levelexperience ).intValue();
+        if ( ( l_level != m_level ) || ( m_experience.compareTo( m_experiencemaximum ) != -1 ) )
             return;
 
         // increment level and get old and new level structure of the pokemon
         final CLevel l_old = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
-        m_level++;
-        final CLevel l_new = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
+        final CLevel l_new = CDefinition.INSTANCE.tupel( m_pokemon, l_level );
 
         // set data for visualization and internal attributes
         m_sprite = l_new.sprite( l_old.spritecell(), l_old.spriteunit() );
@@ -183,6 +195,10 @@ public final class CPokemon extends IBaseAgent
         l_new.motivation().entrySet().forEach( i -> m_motivation.put( i.getKey(), i.getValue() ) );
         l_new.ethnic().entrySet().forEach( i -> m_ethnic.put( i.getKey(), i.getValue() ) );
 
+        // set new leve
+        m_level = l_level;
+
+        // create goal-trigger
         this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "level-up" ) ) );
     }
 
@@ -504,7 +520,7 @@ public final class CPokemon extends IBaseAgent
                                    Stream.of(
                                        this.numberliteral( "accuracy", p_attack.accuracy() ),
                                        this.numberliteral( "distance", p_attack.distance() ),
-                                       this.numberliteral( "cost", p_attack.cost() ),
+                                       this.numberliteral( "cost", p_attack.power() ),
                                        CLiteral.from( "damage", p_attack.damage().entrySet().stream()
                                                                    .map( i -> this.numberliteral( i.getKey().name(), i.getValue() ) )
                                        )

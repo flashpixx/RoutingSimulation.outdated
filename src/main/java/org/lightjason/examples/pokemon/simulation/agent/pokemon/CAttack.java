@@ -50,9 +50,9 @@ public final class CAttack
      */
     private final double m_accuracy;
     /**
-     * energy cost
+     * energy cost / experience increment in [0,1]
      */
-    private final double m_cost;
+    private final double m_power;
     /**
      * damages
      */
@@ -69,7 +69,7 @@ public final class CAttack
         m_name = p_attack.getId().trim().toLowerCase();
         m_distance = p_attack.getDistance();
         m_accuracy = p_attack.getAccuracy();
-        m_cost = p_attack.getEnergycost();
+        m_power = p_attack.getPower();
         m_damage = Collections.unmodifiableMap(
                        p_attack.getDamage().stream()
                                .collect( Collectors.toMap( i -> p_attribute.get( i.getId().trim().toLowerCase() ), Iattack.Damage::getValue ) )
@@ -94,8 +94,8 @@ public final class CAttack
     public final String toString()
     {
         return MessageFormat.format(
-            "attack( {0} - distance {1} - accuracy {2} - cost {3} - damage {4})",
-            m_name, m_distance, m_accuracy, m_cost, m_damage
+            "attack( {0} - distance {1} - accuracy {2} - power {3} - damage {4})",
+            m_name, m_distance, m_accuracy, m_power, m_damage
         );
     }
 
@@ -134,9 +134,9 @@ public final class CAttack
      *
      * @return cost
      */
-    public final double cost()
+    public final double power()
     {
-        return m_cost;
+        return m_power;
     }
 
     /**

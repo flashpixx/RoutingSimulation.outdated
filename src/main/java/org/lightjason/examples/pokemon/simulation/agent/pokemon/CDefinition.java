@@ -23,7 +23,9 @@
 
 package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.CConfiguration;
 import org.lightjason.examples.pokemon.data.Ilevelitem;
@@ -32,6 +34,7 @@ import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
@@ -59,7 +62,7 @@ public final class CDefinition
     /**
      * map with pokemon data
      */
-    private final Map<String, List<CLevel>> m_pokemon;
+    private final Map<String, Pair<BigInteger, List<CLevel>>> m_pokemon;
 
     /**
      * ctor
@@ -116,34 +119,39 @@ public final class CDefinition
                     .collect(
                         Collectors.toMap(
                             i -> i.getId().trim().toLowerCase(),
-                            i -> Collections.unmodifiableList(
-                                     IntStream.range( 0, i.getLevel().size() )
-                                         .mapToObj( j -> new CLevel(
-                                                             i.getId().trim().toLowerCase(),
-                                                             j,
+                            i -> new ImmutablePair<>(
 
-                                                             i.getLevel().get( j ).getEthnicity().stream()
-                                                                 .map( Ilevelitem::getId ),
-                                                             i.getLevel().get( j ).getEthnicity().stream()
-                                                                 .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                    i.getExperience(),
 
-                                                             i.getLevel().get( j ).getMotivation().stream()
-                                                                 .map( Ilevelitem::getId ),
-                                                             i.getLevel().get( j ).getMotivation().stream()
-                                                                 .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                    Collections.unmodifiableList(
+                                        IntStream.range( 0, i.getLevel().size() )
+                                            .mapToObj( j -> new CLevel(
+                                                                i.getId().trim().toLowerCase(),
+                                                                j,
 
-                                                             i.getLevel().get( j ).getAttribute().stream()
-                                                                 .map( n -> l_attribute.get( n.getId().trim().toLowerCase() ) ),
-                                                             i.getLevel().get( j ).getAttribute().stream()
-                                                                 .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                                                i.getLevel().get( j ).getEthnicity().stream()
+                                                                    .map( Ilevelitem::getId ),
+                                                                i.getLevel().get( j ).getEthnicity().stream()
+                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
 
-                                                             i.getLevel().get( j ).getAttack().stream()
-                                                                 .map( n -> l_attack.get( n.getId().trim().toLowerCase() ) )
+                                                                i.getLevel().get( j ).getMotivation().stream()
+                                                                    .map( Ilevelitem::getId ),
+                                                                i.getLevel().get( j ).getMotivation().stream()
+                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
 
-                                                         )
-                                         )
-                                         .collect( Collectors.toList() )
-                                 )
+                                                                i.getLevel().get( j ).getAttribute().stream()
+                                                                    .map( n -> l_attribute.get( n.getId().trim().toLowerCase() ) ),
+                                                                i.getLevel().get( j ).getAttribute().stream()
+                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+
+                                                                i.getLevel().get( j ).getAttack().stream()
+                                                                    .map( n -> l_attack.get( n.getId().trim().toLowerCase() ) )
+
+                                                            )
+                                            )
+                                            .collect( Collectors.toList() )
+                                    )
+                            )
 
                         )
                     )
@@ -160,7 +168,7 @@ public final class CDefinition
      */
     public final int level( final String p_pokemon )
     {
-        return this.getOrThrow( p_pokemon ).size();
+        return this.getOrThrow( p_pokemon ).getRight().size();
     }
 
     /**
@@ -172,20 +180,28 @@ public final class CDefinition
      */
     public final CLevel tupel( final String p_pokemon, final int p_index )
     {
-        return this.getOrThrow( p_pokemon ).get( p_index );
+        return this.getOrThrow( p_pokemon ).getRight().get( p_index );
     }
 
     /**
-     * returns the list of a pokemon or throws an exception
-     * @param p_pokemon pokemon name
-     * @return level list
+     * maximum experience
      */
-    private List<CLevel> getOrThrow( final String p_pokemon )
+    public final BigInteger experience( final String p_pokemon )
     {
-        final List<CLevel> l_level = m_pokemon.get( p_pokemon.trim().toLowerCase() );
-        if ( l_level == null )
+        return this.getOrThrow( p_pokemon ).getLeft();
+    }
+
+    /**
+     * returns a pokemon or throws an exception
+     * @param p_pokemon pokemon name
+     * @return pair of experience and level list
+     */
+    private Pair<BigInteger, List<CLevel>> getOrThrow( final String p_pokemon )
+    {
+        final Pair<BigInteger, List<CLevel>> l_pokemon = m_pokemon.get( p_pokemon.trim().toLowerCase() );
+        if ( l_pokemon == null )
             throw new RuntimeException( MessageFormat.format( "pokemon [{0}] not found", p_pokemon ) );
-        return l_level;
+        return l_pokemon;
     }
 
 }

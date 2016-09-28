@@ -175,7 +175,7 @@ public final class TestCForce
 
         System.out.println(
             MessageFormat.format(
-                "Object Distance: equal agent {0}, unequal agents {1}, agent & static object {2}",
+                "\nObject Distance: equal agent {0}, unequal agents {1}, agent & static object {2}\n",
 
                 // testing different metric types
                 EMetric.NCD_BZIP.get().calculate(
@@ -291,10 +291,12 @@ public final class TestCForce
         );
 
         // show full literal - but NCD is not zero, because we need more data to calculate the distance a single literal is to short
+        System.out.println();
         System.out.println(
             MessageFormat.format(
-                "literal {0} test distance: {1}",
+                "{0}\n{1}\n\ntest distance: {2}\n",
                 l_literal,
+                l_literal2,
                 EMetric.NCD_DEFLATE.get().calculate(
                     Stream.of( l_literal ),
                     Stream.of( l_literal2 )
@@ -325,7 +327,7 @@ public final class TestCForce
     {
         final TestCForce l_test = new TestCForce();
         l_test.initialize();
-        //l_test.testForce();
+        l_test.testForce();
         l_test.literaltest();
     }
 

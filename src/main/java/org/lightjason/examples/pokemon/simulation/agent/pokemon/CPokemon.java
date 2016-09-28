@@ -53,6 +53,7 @@ import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -97,10 +98,6 @@ public final class CPokemon extends IBaseAgent
      */
     private final Map<String, MutablePair<EAccess, Number>> m_attribute;
     /**
-     * environment view
-     */
-    private final IView<IAgent> m_envview;
-    /**
      * maximum level
      */
     private final int m_maximumlevel;
@@ -139,13 +136,12 @@ public final class CPokemon extends IBaseAgent
                           Collectors.toConcurrentMap( i -> i.getKey().name(), i -> new MutablePair<>( i.getKey().access(), i.getValue() ) )
                       );
 
-        m_envview = new CEnvironmentBeliefbase().create( "env", m_beliefbase );
         m_beliefbase
             .add( new CEthnicBeliefbase().create( "ethnic", m_beliefbase ) )
             .add( new CAttributeBeliefbase().create( "attribute", m_beliefbase ) )
             .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) )
             .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) )
-            .add( m_envview );
+            .add( new CEnvironmentBeliefbase().create( "env", m_beliefbase  ) );
     }
 
     @Override
@@ -156,6 +152,15 @@ public final class CPokemon extends IBaseAgent
 
 
     // --- pokemon internals -----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+    @Override
+    public IAgent call() throws Exception
+    {
+        System.out.println( m_beliefbase );
+        return super.call();
+    }
 
     /**
      * runs the level-up
@@ -470,7 +475,7 @@ public final class CPokemon extends IBaseAgent
                               ? this.attacklist()
                               : this.attackliteral( m_attack.get( p_key ) )
             )
-            .filter( i -> i != null )
+            .filter( Objects::nonNull )
             .collect( Collectors.toSet() );
         }
 
@@ -583,7 +588,7 @@ public final class CPokemon extends IBaseAgent
                                           .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
                                           .filter( m_environment::isinside )
                                           .map( i -> this.elementliteral( m_environment.get( i ), i ) )
-                                          .filter( i -> i != null )
+                                          .filter( Objects::nonNull )
                        );
         }
 

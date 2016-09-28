@@ -387,7 +387,7 @@
     <character>
 
         <!-- === normal ======================================================================================================================================== -->
-        <pokemon id="chansey">
+        <pokemon id="chansey" experience="800000">
             
             <!-- chansey -->
             <level>
@@ -410,7 +410,7 @@
             </level>
         </pokemon>
 
-        <pokemon id="ditto">
+        <pokemon id="ditto" experience="1000000">
 
             <!-- ditto -->
             <level>
@@ -431,7 +431,7 @@
             </level>
         </pokemon>
 
-        <pokemon id="doduo">
+        <pokemon id="doduo" experience="1000000">
 
             <!-- doduo -->
             <level>
@@ -467,7 +467,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "eevee">
+        <pokemon id="eevee" experience="1000000">
             
             <!-- eevee -->
             <level>
@@ -569,7 +569,7 @@
 
         </pokemon>
 
-        <pokemon id = "jigglypuff">
+        <pokemon id = "jigglypuff" experience="800000">
 
             <!-- jigglypuff -->
             <level>
@@ -608,7 +608,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "kangaskhan">
+        <pokemon id="kangaskhan" experience="1000000">
 
             <!-- kangaskhan -->
             <level>
@@ -631,7 +631,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "lickitung">
+        <pokemon id="lickitung" experience="1000000">
 
             <!-- lickitung -->
             <level>
@@ -654,7 +654,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "meowth">
+        <pokemon id="meowth" experience="1000000">
 
             <!-- meowth -->
             <level>
@@ -692,7 +692,7 @@
 
         </pokemon>
 
-        <pokemon id = "pidgey">
+        <pokemon id="pidgey" experience="1059860">
 
             <!-- meowth -->
             <level>
@@ -746,7 +746,7 @@
 
         </pokemon>
 
-        <pokemon id = "porygon">
+        <pokemon id="porygon" experience="1000000">
 
             <!-- porygon -->
             <level>
@@ -767,7 +767,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "rattata">
+        <pokemon id="rattata" experience="1000000">
 
             <!-- rattata -->
             <level>
@@ -803,7 +803,7 @@
 
         </pokemon>
 
-        <pokemon id = "snorlax">
+        <pokemon id="snorlax" experience="1250000">
 
             <!-- snorlax -->
             <level>
@@ -824,7 +824,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "spearow">
+        <pokemon id="spearow" experience="1000000">
 
             <!-- spearow -->
             <level>
@@ -861,7 +861,7 @@
 
         </pokemon>
 
-        <pokemon id = "tauros">
+        <pokemon id="tauros" experience="1250000">
 
             <!-- tauros -->
             <level>
@@ -885,7 +885,7 @@
         </pokemon>
 
         <!-- === fire =========================================================================================================================================== -->
-        <pokemon id = "charmander">
+        <pokemon id="charmander" experience="1059860">
 
             <!-- charmander -->
             <level>
@@ -942,7 +942,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "growlithe">
+        <pokemon id="growlithe" experience="1250000">
 
             <!-- growlithe -->
             <level>
@@ -983,7 +983,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "magmar">
+        <pokemon id="magmar" experience="1000000">
 
             <!-- magmar -->
             <level>
@@ -1007,7 +1007,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "molres">
+        <pokemon id="moltres" experience="1250000">
 
             <!-- moltres -->
             <level>
@@ -1033,7 +1033,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "ponyta">
+        <pokemon id="ponyta" experience="1000000">
 
             <!-- ponyta -->
             <level>
@@ -1070,7 +1070,7 @@
 
         </pokemon>
 
-        <pokemon id = "vulpix">
+        <pokemon id="vulpix" experience="1000000">
 
             <!-- vulpix -->
             <level>
@@ -1108,7 +1108,7 @@
         </pokemon>
 
         <!-- === bug =========================================================================================================================================== -->
-        <pokemon id="caterpie">
+        <pokemon id="caterpie" experience="1000000">
             <!-- caterpie -->
             <level>
                 <ethnicity id="bug" expected="0.8" minimum="0.6" maximum="1"/>
@@ -1161,7 +1161,7 @@
         
         
         <!-- === poison ======================================================================================================================================== -->
-        <pokemon id="koffing">
+        <pokemon id="koffing" experience="1000000">
 
             <!-- koffing -->
             <level>
@@ -1187,7 +1187,7 @@
         
         
         <!-- === ghost ========================================================================================================================================= -->
-        <pokemon id="gastly">
+        <pokemon id="gastly" experience="1059860">
             
             <!-- gastly -->
             <level>

@@ -50,11 +50,13 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
 
 import java.math.BigInteger;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -109,7 +111,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * current experience
      */
-    private BigInteger m_experience = BigInteger.ZERO;
+    private AtomicReference<BigInteger> m_experience = new AtomicReference<>( BigInteger.ZERO );
     /**
      * current level
      */
@@ -163,8 +165,6 @@ public final class CPokemon extends IBaseAgent
 
     // --- pokemon internals -----------------------------------------------------------------------------------------------------------------------------------
 
-
-
     @Override
     public final IAgent call() throws Exception
     {
@@ -176,12 +176,13 @@ public final class CPokemon extends IBaseAgent
 
     /**
      * runs the level-up
+     * #@see http://www.pokewiki.de/Erfahrung
      */
     private void levelup()
     {
         // check current experience depend on level and sprite
-        final int l_level = m_experience.divide( m_levelexperience ).intValue();
-        if ( ( m_sprite == null ) || ( l_level != m_level.get() ) || ( m_experience.compareTo( m_experiencemaximum ) != -1 ) )
+        final int l_level = m_experience.get().divide( m_levelexperience ).intValue();
+        if ( ( m_sprite == null ) || ( l_level == m_level.get() ) || ( m_experience.get().compareTo( m_experiencemaximum ) != -1 ) )
             return;
 
         // increment level and get old and new level structure of the pokemon
@@ -241,7 +242,9 @@ public final class CPokemon extends IBaseAgent
     @IAgentActionName( name = "act/attack/point" )
     private void pointattack( final String p_attack, final double p_power, final Number p_row, final Number p_column )
     {
-
+        //final CAttack l_attack = this.attack( p_attack );
+        //m_experience.get().add( BigInteger.valueOf( (long) ( l_attack.power() * m_levelexperience.doubleValue() * ( m_level.get() + 1 ) ) ) );
+        m_experience.set( m_experience.get().add( BigInteger.valueOf( 1000000 ) ) );
     }
 
     /**
@@ -255,8 +258,24 @@ public final class CPokemon extends IBaseAgent
     @IAgentActionName( name = "act/attack/area" )
     private void areaattack( final String p_attack, final double p_power, final String p_direction )
     {
-
+        final CAttack l_attack = this.attack( p_attack );
     }
+
+    /**
+     * get an attack
+     *
+     * @param p_attack attack name
+     * @return attack or throws an exception
+     */
+    private CAttack attack( final String p_attack )
+    {
+        final CAttack l_attack = m_attack.get( p_attack.trim().toLowerCase() );
+        if ( l_attack == null )
+            throw new RuntimeException( MessageFormat.format( "attach [{0}] not exists", p_attack ) );
+
+        return l_attack;
+    }
+
 
     /**
      * curing a pokemon on another position

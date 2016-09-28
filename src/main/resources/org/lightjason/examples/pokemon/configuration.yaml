@@ -2,7 +2,7 @@
 logging : false
 
 # show stacktrace on error
-stacktrace : false
+stacktrace : true
 
 # agent print call will be shown
 agentprint : false
@@ -69,13 +69,13 @@ agent :
         asl     : "agent.asl"
 
     caterpie :
-        number  : 1500
+        number  : 00
         pokemon : "caterpie"
         force   : "sum"
         asl     : "agent.asl"
 
     koffing :
-        number  : 1500
+        number  : 00
         pokemon : "koffing"
         force   : "sum"
         asl     : "agent.asl"

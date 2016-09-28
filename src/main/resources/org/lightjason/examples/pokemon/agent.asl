@@ -19,6 +19,7 @@
     <-
         generic/print( "walk forward in cycle [", Cycle, "]" );
         move/forward();
+        act/attack/point( "lick", 3, 3, 3 );
         !movement/walk/forward
 .
 

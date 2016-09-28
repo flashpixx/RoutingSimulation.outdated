@@ -49,12 +49,12 @@ import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -113,7 +113,7 @@ public final class CPokemon extends IBaseAgent
     /**
      * current level
      */
-    private int m_level;
+    private AtomicInteger m_level = new AtomicInteger();
 
 
     /**
@@ -135,7 +135,7 @@ public final class CPokemon extends IBaseAgent
             throw new RuntimeException( "pokemon name need not to be empty" );
 
         m_pokemon = p_pokemon;
-        final CLevel l_level = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
+        final CLevel l_level = CDefinition.INSTANCE.tupel( m_pokemon, m_level.get() );
 
         m_experiencemaximum = CDefinition.INSTANCE.experience( m_pokemon );
         m_levelexperience = m_experiencemaximum.divide( BigInteger.valueOf( CDefinition.INSTANCE.level( p_pokemon ) ) );
@@ -179,13 +179,13 @@ public final class CPokemon extends IBaseAgent
      */
     private void levelup()
     {
-        // check current experience and level
+        // check current experience depend on level and sprite
         final int l_level = m_experience.divide( m_levelexperience ).intValue();
-        if ( ( l_level != m_level ) || ( m_experience.compareTo( m_experiencemaximum ) != -1 ) )
+        if ( ( m_sprite == null ) || ( l_level != m_level.get() ) || ( m_experience.compareTo( m_experiencemaximum ) != -1 ) )
             return;
 
         // increment level and get old and new level structure of the pokemon
-        final CLevel l_old = CDefinition.INSTANCE.tupel( m_pokemon, m_level );
+        final CLevel l_old = CDefinition.INSTANCE.tupel( m_pokemon, m_level.get() );
         final CLevel l_new = CDefinition.INSTANCE.tupel( m_pokemon, l_level );
 
         // set data for visualization and internal attributes
@@ -195,8 +195,8 @@ public final class CPokemon extends IBaseAgent
         l_new.motivation().entrySet().forEach( i -> m_motivation.put( i.getKey(), i.getValue() ) );
         l_new.ethnic().entrySet().forEach( i -> m_ethnic.put( i.getKey(), i.getValue() ) );
 
-        // set new leve
-        m_level = l_level;
+        // set new level
+        m_level.set( l_level );
 
         // create goal-trigger
         this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "level-up" ) ) );

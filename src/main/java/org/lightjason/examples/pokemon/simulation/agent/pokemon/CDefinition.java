@@ -132,17 +132,31 @@ public final class CDefinition
                                                                 i.getLevel().get( j ).getEthnicity().stream()
                                                                     .map( Ilevelitem::getId ),
                                                                 i.getLevel().get( j ).getEthnicity().stream()
-                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>(
+                                                                                   n.getExpected(),
+                                                                                   n.getMinimum(),
+                                                                                   n.getMaximum()
+                                                                    ) ),
 
                                                                 i.getLevel().get( j ).getMotivation().stream()
                                                                     .map( Ilevelitem::getId ),
+
                                                                 i.getLevel().get( j ).getMotivation().stream()
-                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>(
+                                                                                  n.getExpected(),
+                                                                                  n.getMinimum(),
+                                                                                  n.getMaximum()
+                                                                    ) ),
 
                                                                 i.getLevel().get( j ).getAttribute().stream()
                                                                     .map( n -> l_attribute.get( n.getId().trim().toLowerCase() ) ),
+
                                                                 i.getLevel().get( j ).getAttribute().stream()
-                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>( n.getExpected(), n.getMinimum(), n.getMaximum() ) ),
+                                                                    .map( n -> new ImmutableTriple<Number, Number, Number>(
+                                                                                   n.getExpected(),
+                                                                                   n.getMinimum(),
+                                                                                   n.getMaximum()
+                                                                    ) ),
 
                                                                 i.getLevel().get( j ).getAttack().stream()
                                                                     .map( n -> l_attack.get( n.getId().trim().toLowerCase() ) )

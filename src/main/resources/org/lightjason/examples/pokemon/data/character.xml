@@ -31,7 +31,6 @@
             <item id="energy" agentaccess="read"/>
             <item id="mind" agentaccess="read"/>
             <item id="health" agentaccess="read"/>
-            <item id="maximumexperience" agentaccess="read"/>
             <item id="experience" agentaccess="read"/>
             <item id="attack" agentaccess="read"/>
             <item id="defense" agentaccess="read"/>
@@ -59,319 +58,323 @@
 
         <attack>
             <!-- === normal ================================================================================================================================ -->
-            <item id="scratch" distance="1" accuracy="1" energycost="0.05">
+            <item id="scratch" distance="1" accuracy="1" power="0.05">
                 <damage id="health" value="0.3"/>
             </item>
 
-            <item id="tackle" distance="1" accuracy="1" energycost="0.05">
+            <item id="tackle" distance="1" accuracy="1" power="0.05">
                 <damage id="health" value="0.3"/>
             </item>
 
-            <item id="slash" distance="1" accuracy="1" energycost="0.1">
+            <item id="bite" distance="1" accuracy="1" power="0.1">
                 <damage id="health" value="0.4"/>
             </item>
 
-            <item id="slam" distance="1" accuracy="0.9" energycost="0.1">
+            <item id="slash" distance="1" accuracy="1" power="0.1">
+                <damage id="health" value="0.4"/>
+            </item>
+
+            <item id="slam" distance="1" accuracy="0.9" power="0.1">
                 <damage id="health" value="0.4"/>
                 <damage id="mind" value="0.1"/>
             </item>
 
-            <item id="headbut" distance="1" accuracy="1" energycost="0.1">
+            <item id="headbut" distance="1" accuracy="1" power="0.1">
                 <damage id="health" value="0.3"/>
                 <damage id="mind" value="0.2"/>
             </item>
 
-            <item id="pound" distance="1" accuracy="1" energycost="1">
+            <item id="pound" distance="1" accuracy="1" power="1">
                 <damage id="health" value="0.4"/>
                 <damage id="defense" value="0.1"/>
             </item>
 
-            <item id="cometpunch" distance="2" accuracy="0.8" energycost="1">
+            <item id="cometpunch" distance="2" accuracy="0.8" power="1">
                 <damage id="health" value="0.4"/>
                 <damage id="defense" value="0.1"/>
             </item>
 
-            <item id="drillpeck" distance="3" accuracy="0.8" energycost="0.05">
+            <item id="drillpeck" distance="3" accuracy="0.8" power="0.05">
                 <damage id="health" value="0.8"/>
             </item>
 
-            <item id="gust" distance="4" accuracy="1" energycost="0.05">
+            <item id="gust" distance="4" accuracy="1" power="0.05">
                 <damage id="health" value="0.4"/>
             </item>
 
-            <item id="wingattack" distance="3" accuracy="1" energycost="0.1">
+            <item id="wingattack" distance="3" accuracy="1" power="0.1">
                 <damage id="health" value="0.6"/>
             </item>
 
-            <item id="skyattack" distance="5" accuracy="0.9" energycost="0.15">
+            <item id="skyattack" distance="5" accuracy="0.9" power="0.15">
                 <damage id="health" value="1"/>
             </item>
 
             <!-- === fire ================================================================================================================================== -->
-            <item id="ember" distance="2" accuracy="1" energycost="0.05">
+            <item id="ember" distance="2" accuracy="1" power="0.05">
                 <damage id="health" value="0.4"/>
             </item>
 
-            <item id="firespin" distance="3" accuracy="0.85" energycost="0.5">
+            <item id="firespin" distance="3" accuracy="0.85" power="0.5">
                 <damage id="health" value="0.35"/>
                 <damage id="speed" value="0.1"/>
             </item>
 
-            <item id="flamethrower" distance="5" accuracy="1" energycost="0.1">
+            <item id="flamethrower" distance="5" accuracy="1" power="0.1">
                 <damage id="health" value="0.8"/>
                 <damage id="defense" value="0.1"/>
             </item>
 
-            <item id="fireblast" distance="8" accuracy="0.85" energycost="0.15">
+            <item id="fireblast" distance="8" accuracy="0.85" power="0.15">
                 <damage id="health" value="1"/>
             </item>
 
 
             <!-- === water ================================================================================================================================= -->
-            <item id="bubble" distance="2" accuracy="1" energycost="0.05">
+            <item id="bubble" distance="2" accuracy="1" power="0.05">
                 <damage id="health" value="0.3"/>
                 <damage id="mind" value="0.1"/>
             </item>
 
-            <item id="watergun" distance="3" accuracy="1" energycost="0.1">
+            <item id="watergun" distance="3" accuracy="1" power="0.1">
                 <damage id="health" value="0.4"/>
             </item>
 
-            <item id="bubblebeam" distance="3" accuracy="1" energycost="0.15">
+            <item id="bubblebeam" distance="3" accuracy="1" power="0.15">
                 <damage id="health" value="0.65"/>
             </item>
 
-            <item id="surf" distance="4" accuracy="1" energycost="0.15">
+            <item id="surf" distance="4" accuracy="1" power="0.15">
                 <damage id="health" value="0.15"/>
             </item>
 
-            <item id="hydropump" distance="3" accuracy="0.8" energycost="0.05">
+            <item id="hydropump" distance="3" accuracy="0.8" power="0.05">
                 <damage id="health" value="1"/>
             </item>
 
 
             <!-- === electric ============================================================================================================================== -->
-            <item id="thunderwave" distance="3" accuracy="1" energycost="0.05">
+            <item id="thunderwave" distance="3" accuracy="1" power="0.05">
                 <damage id="mind" value="0.1"/>
             </item>
 
-            <item id="thundershock" distance="4" accuracy="1" energycost="0.05">
+            <item id="thundershock" distance="4" accuracy="1" power="0.05">
                 <damage id="health" value="0.4"/>
             </item>
             
-            <item id="thunderbolt" distance="4" accuracy="1" energycost="0.1">
+            <item id="thunderbolt" distance="4" accuracy="1" power="0.1">
                 <damage id="health" value="0.8"/>
             </item>
             
-            <item id="thunder" distance="5" accuracy="1" energycost="0.15">
+            <item id="thunder" distance="5" accuracy="1" power="0.15">
                 <damage id="health" value="1"/>
             </item>
             
             
             <!-- === grass ================================================================================================================================= -->
-            <item id="stunspore" distance="2" accuracy="0.95" energycost="0.05">
+            <item id="stunspore" distance="2" accuracy="0.95" power="0.05">
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="vinewhip" distance="3" accuracy="1" energycost="0.05">
+            <item id="vinewhip" distance="3" accuracy="1" power="0.05">
                 <damage id="health" value="0.25"/>
             </item>            
 
-            <item id="petaldance" distance="2" accuracy="1" energycost="0.1">
+            <item id="petaldance" distance="2" accuracy="1" power="0.1">
                 <damage id="health" value="0.7"/>
             </item>            
 
-            <item id="razorleaf" distance="4" accuracy="0.95" energycost="0.15">
+            <item id="razorleaf" distance="4" accuracy="0.95" power="0.15">
                 <damage id="health" value="0.45"/>
             </item>            
 
-            <item id="solarbeam" distance="5" accuracy="1" energycost="0.15">
+            <item id="solarbeam" distance="5" accuracy="1" power="0.15">
                 <damage id="health" value="1"/>
             </item>            
 
 
             <!-- === ice =================================================================================================================================== -->
-            <item id="haze" distance="3" accuracy="1" energycost="0.05">
+            <item id="haze" distance="3" accuracy="1" power="0.05">
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="aurorabeam" distance="5" accuracy="1" energycost="0.1">
+            <item id="aurorabeam" distance="5" accuracy="1" power="0.1">
                 <damage id="health" value="0.65"/>
             </item>
 
-            <item id="blizzard" distance="3" accuracy="0.7" energycost="0.1">
+            <item id="blizzard" distance="3" accuracy="0.7" power="0.1">
                 <damage id="health" value="0.1"/>
             </item>
             
-            <item id="icebeam" distance="4" accuracy="1" energycost="0.15">
+            <item id="icebeam" distance="4" accuracy="1" power="0.15">
                 <damage id="health" value="0.9"/>
                 <damage id="defense" value="0.3"/>
             </item>
             
             
             <!-- === fighting ================================================================================================================================== -->
-            <item id="doublekick" distance="2" accuracy="1" energycost="0.05">
+            <item id="doublekick" distance="2" accuracy="1" power="0.05">
                 <damage id="health" value="0.3"/>
                 <damage id="defense" value="0.1"/>
             </item>
             
-            <item id="karatechop" distance="2" accuracy="1" energycost="0.05">
+            <item id="karatechop" distance="2" accuracy="1" power="0.05">
                 <damage id="health" value="0.3"/>
                 <damage id="defense" value="0.1"/>
             </item>
             
-            <item id="doubleslap" distance="2" accuracy="1" energycost="0.05">
+            <item id="doubleslap" distance="2" accuracy="1" power="0.05">
                 <damage id="health" value="0.4"/>
                 <damage id="defense" value="0.1"/>
             </item>
             
-            <item id="jumpkick" distance="3" accuracy="0.95" energycost="0.1">
+            <item id="jumpkick" distance="3" accuracy="0.95" power="0.1">
                 <damage id="health" value="0.5"/>
                 <damage id="defense" value="0.1"/>
             </item>
             
-            <item id="highjumpkick" distance="3" accuracy="0.95" energycost="0.15">
+            <item id="highjumpkick" distance="3" accuracy="0.95" power="0.15">
                 <damage id="health" value="0.7"/>
                 <damage id="defense" value="0.1"/>
             </item>
             
-            <item id="seismictoss" distance="4" accuracy="1" energycost="0.15">
+            <item id="seismictoss" distance="4" accuracy="1" power="0.15">
                 <damage id="health" value="1"/>
                 <damage id="defense" value="0.1"/>
             </item>
             
             
             <!-- === poison ==================================================================================================================================== -->
-            <item id="poisonpwder" distance="2" accuracy="0.75" energycost="0.05">
+            <item id="poisonpwder" distance="2" accuracy="0.75" power="0.05">
                 <damage id="health" value="0.1"/>
                 <damage id="mind" value="0.2"/>
             </item>
             
-            <item id="poisonsting" distance="1" accuracy="1" energycost="0.05">
+            <item id="poisonsting" distance="1" accuracy="1" power="0.05">
                 <damage id="health" value="0.1"/>
                 <damage id="mind" value="0.15"/>
             </item>
             
-            <item id="poisongas" distance="2" accuracy="0.9" energycost="0.05">
+            <item id="poisongas" distance="2" accuracy="0.9" power="0.05">
                 <damage id="health" value="0.2"/>
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="smog" distance="3" accuracy="0.7" energycost="0.1">
+            <item id="smog" distance="3" accuracy="0.7" power="0.1">
                 <damage id="health" value="0.3"/>
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="acid" distance="3" accuracy="1" energycost="0.1">
+            <item id="acid" distance="3" accuracy="1" power="0.1">
                 <damage id="health" value="0.4"/>
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="toxin" distance="4" accuracy="0.9" energycost="0.15">
+            <item id="toxin" distance="4" accuracy="0.9" power="0.15">
                 <damage id="health" value="0.8"/>
                 <damage id="mind" value="0.2"/>
             </item>
             
             
             <!-- === ground ==================================================================================================================================== -->
-            <item id="dig" distance="1" accuracy="1" energycost="0.05">
+            <item id="dig" distance="1" accuracy="1" power="0.05">
                 <damage id="health" value="0.8"/>
             </item>
             
-            <item id="earthquake" distance="4" accuracy="1" energycost="0.1">
+            <item id="earthquake" distance="4" accuracy="1" power="0.1">
                 <damage id="health" value="1"/>
             </item>
             
-            <item id="fissure" distance="5" accuracy="0.3" energycost="0.15">
+            <item id="fissure" distance="5" accuracy="0.3" power="0.15">
                 <damage id="health" value="1"/>
                 <damage id="energy" value="0.5"/>
             </item> 
             
             
             <!-- === psychic =================================================================================================================================== -->
-            <item id="confusion" distance="1" accuracy="0.95" energycost="0.05">
+            <item id="confusion" distance="1" accuracy="0.95" power="0.05">
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="kinesis" distance="2" accuracy="0.8" energycost="0.05">
+            <item id="kinesis" distance="2" accuracy="0.8" power="0.05">
                 <damage id="health" value="0.4"/>
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="psybeam" distance="3" accuracy="1" energycost="0.1">
+            <item id="psybeam" distance="3" accuracy="1" power="0.1">
                 <damage id="health" value="0.65"/>
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="psychic" distance="4" accuracy="1" energycost="0.15">
+            <item id="psychic" distance="4" accuracy="1" power="0.15">
                 <damage id="health" value="1"/>
                 <damage id="mind" value="0.1"/>
             </item>
             
             
             <!-- === bug ======================================================================================================================================= -->
-            <item id="leechlife" distance="1" accuracy="1" energycost="0.05">
+            <item id="leechlife" distance="1" accuracy="1" power="0.05">
                 <damage id="health" value="0.2"/>
                 <damage id="energy" value="0.1"/>
             </item>
             
-            <item id="stringshot" distance="3" accuracy="0.95" energycost="0.05">
+            <item id="stringshot" distance="3" accuracy="0.95" power="0.05">
                 <damage id="speed" value="0.2"/>
             </item>
             
-            <item id="twinneedle" distance="3" accuracy="1" energycost="0.1">
+            <item id="twinneedle" distance="3" accuracy="1" power="0.1">
                 <damage id="health" value="0.4"/>
             </item>
             
-            <item id="pinmissile" distance="5" accuracy="0.95" energycost="0.15">
+            <item id="pinmissile" distance="5" accuracy="0.95" power="0.15">
                 <damage id="health" value="0.5"/>
             </item>
             
             
             <!-- === rock ====================================================================================================================================== -->
-            <item id="rockblast" distance="3" accuracy="0.8" energycost="0.05">
+            <item id="rockblast" distance="3" accuracy="0.8" power="0.05">
                 <damage id="health" value="0.25"/>
                 <damage id="energy" value="0.1"/>
             </item>
             
-            <item id="rollout" distance="2" accuracy="0.9" energycost="0.1">
+            <item id="rollout" distance="2" accuracy="0.9" power="0.1">
                 <damage id="health" value="0.3"/>
                 <damage id="energy" value="0.1"/>
             </item>
             
 
-            <item id="ancientpower" distance="3" accuracy="1" energycost="0.1">
+            <item id="ancientpower" distance="3" accuracy="1" power="0.1">
                 <damage id="health" value="0.6"/>
                 <damage id="energy" value="0.1"/>
             </item>
             
-            <item id="rockslide" distance="5" accuracy="0.9" energycost="0.15">
+            <item id="rockslide" distance="5" accuracy="0.9" power="0.15">
                 <damage id="health" value="0.9"/>
                 <damage id="energy" value="0.1"/>
             </item>
             
             
             <!-- === ghost ===================================================================================================================================== -->
-            <item id="confuseray" distance="3" accuracy="1" energycost="0.05">
+            <item id="confuseray" distance="3" accuracy="1" power="0.05">
                 <damage id="mind" value="0.1"/>
             </item>
             
-            <item id="lick" distance="1" accuracy="1" energycost="0.05">
+            <item id="lick" distance="1" accuracy="1" power="0.05">
                 <damage id="mind" value="0.2"/>
             </item>
             
-            <item id="nightshade" distance="5" accuracy="1" energycost="0.1">
+            <item id="nightshade" distance="5" accuracy="1" power="0.1">
                 <damage id="health" value="0.8"/>
                 <damage id="mind" value="0.2"/>
             </item>
             
             
             <!-- === dragon ==================================================================================================================================== -->
-            <item id="dragonrage" distance="3" accuracy="1" energycost="0.05">
+            <item id="dragonrage" distance="3" accuracy="1" power="0.05">
                 <damage id="health" value="0.6"/>
             </item>
             
-            <item id="dragonbreath" distance="5" accuracy="1" energycost="0.1">
+            <item id="dragonbreath" distance="5" accuracy="1" power="0.1">
                 <damage id="health" value="0.6"/>
             </item>
             
@@ -544,7 +547,7 @@
             </level>
         </pokemon>
 
-        <pokemon id = "farfetchd">
+        <pokemon id="farfetchd" experience="1000000">
 
             <!-- farfetchd -->
             <level>

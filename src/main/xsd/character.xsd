@@ -126,21 +126,13 @@
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:attribute>
-                                        <xs:attribute name="energycost" use="required">
-                                            <xs:simpleType>
-                                                <xs:restriction base="xs:double">
-                                                  <xs:minExclusive value="0"/>
-                                                </xs:restriction>
-                                            </xs:simpleType>
-                                        </xs:attribute>
-                                        <xs:attribute name="experience" use="required">
+                                        <xs:attribute name="power" use="required">
                                             <xs:annotation>
-                                                <xs:documentation>value in [0,1] to define experience addition by successfull execution of the attack</xs:documentation>
+                                                <xs:documentation>powert is in [0,1] definied and represents also the experience  increment on successfull execution and cost decrement</xs:documentation>
                                             </xs:annotation>
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:double">
-                                                  <xs:minInclusive value="0"/>
-                                                  <xs:maxInclusive value="1"/>
+                                                  <xs:minExclusive value="0"/>
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:attribute>

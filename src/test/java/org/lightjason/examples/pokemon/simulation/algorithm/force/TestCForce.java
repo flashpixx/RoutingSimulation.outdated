@@ -219,16 +219,11 @@ public final class TestCForce
                                     CRawTerm.from( "right" )
                             )
                     ),
-                    CLiteral.from(
-                            "study",
-                            Stream.of(
-                                    CRawTerm.from( "computer science" )
-                            )
-                    ),
+
                     CLiteral.from(
                             "like",
                             Stream.of(
-                                    CRawTerm.from( "tea" ),
+                                    CRawTerm.from( "coffee" ),
                                     CRawTerm.from( "rain" )
                             )
                     ),
@@ -240,7 +235,7 @@ public final class TestCForce
                     ),
                     CLiteral.from( "dislike",
                             Stream.of(
-                                    CRawTerm.from( "coffee" ),
+                                    CRawTerm.from( "tea" ),
                                     CRawTerm.from( "fire" )
                             )
                     )
@@ -260,11 +255,6 @@ public final class TestCForce
                                 "direction",
                                 Stream.of(
                                         CRawTerm.from( "left" )
-                                )
-                        ),
-                        CLiteral.from( "study",
-                                Stream.of(
-                                        CRawTerm.from( "statistics" )
                                 )
                         ),
 
@@ -289,6 +279,17 @@ public final class TestCForce
                 )
         );
 
+        final ILiteral l_literal3 = CLiteral.from(
+                "store",
+                Stream.of(
+                        CLiteral.from(
+                                "coffee",
+                                Stream.of(
+                                        CRawTerm.from( 1 )
+                                )
+                        )       )
+        );
+
         // show full literal - but NCD is not zero, because we need more data to calculate the distance a single literal is to short
         System.out.println(
             MessageFormat.format(
@@ -299,6 +300,17 @@ public final class TestCForce
                     Stream.of( l_literal2 )
                 )
             )
+        );
+
+        System.out.println(
+                MessageFormat.format(
+                        "literal {0} test distance: {1}",
+                        l_literal,
+                        EMetric.LEVENSHTEIN.get().calculate(
+                                Stream.of( l_literal ),
+                                Stream.of( l_literal3 )
+                        )
+                )
         );
     }
 

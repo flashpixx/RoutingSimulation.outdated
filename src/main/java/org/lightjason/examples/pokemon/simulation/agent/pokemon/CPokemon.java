@@ -67,7 +67,6 @@ import java.util.stream.Stream;
  *
  * @see http://pokewiki.de/
  * @see http://bulbapedia.bulbagarden.net/wiki/Main_Page
- * @bug attribute beliefs creates a conurrency, illegalstate exception
  */
 @IAgentAction
 public final class CPokemon extends IBaseAgent
@@ -270,6 +269,10 @@ public final class CPokemon extends IBaseAgent
      *
      * @param p_attack attack name
      * @return attack or throws an exception
+     * @see http://www.gamedev.net/page/share.php/_/creative/visual-arts/make-a-particle-explosion-effect-r2701
+     * @see https://github.com/libgdx/libgdx/wiki/3D-Particle-Effects
+     * @see http://codepoke.net/2011/12/27/opengl-libgdx-laser-fx/
+     * @see http://stackoverflow.com/questions/14839648/libgdx-particleeffect-rotation
      */
     private CAttack attack( final String p_attack )
     {

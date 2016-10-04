@@ -13,7 +13,7 @@ agentprint : false
 #steps : 2000
 
 # thread-sleep (in milliseconds) time to slow down the simulation speed
-threadsleeptime : 500
+threadsleeptime : 100
 
 
 
@@ -60,19 +60,19 @@ agent :
     # number the generated elements and force the force definition
 
     gastly :
-        number  : 100
+        number  : 50
         pokemon : "lickitung"
         force   : "sum"
         asl     : "agent.asl"
 
     caterpie :
-        number  : 00
+        number  : 50
         pokemon : "meowth"
         force   : "sum"
         asl     : "agent.asl"
 
     koffing :
-        number  : 00
+        number  : 50
         pokemon : "kangaskhan"
         force   : "sum"
         asl     : "agent.asl"

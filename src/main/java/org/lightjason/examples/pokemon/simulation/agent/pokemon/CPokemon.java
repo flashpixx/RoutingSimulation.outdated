@@ -270,6 +270,7 @@ public final class CPokemon extends IBaseAgent
      * @param p_attack attack name
      * @return attack or throws an exception
      * @see http://www.gamedev.net/page/share.php/_/creative/visual-arts/make-a-particle-explosion-effect-r2701
+     * @see https://www.youtube.com/watch?v=HXYqg3G5kCo
      * @see https://github.com/libgdx/libgdx/wiki/3D-Particle-Effects
      * @see http://codepoke.net/2011/12/27/opengl-libgdx-laser-fx/
      * @see http://stackoverflow.com/questions/14839648/libgdx-particleeffect-rotation

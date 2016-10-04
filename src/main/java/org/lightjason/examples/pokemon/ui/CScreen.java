@@ -23,6 +23,7 @@
 
 package org.lightjason.examples.pokemon.ui;
 
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import org.lightjason.examples.pokemon.CConfiguration;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -87,9 +88,13 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      */
     private BitmapFont m_font;
     /**
-     * batch painting
+     * sprite batch painting
      */
-    private SpriteBatch m_batch;
+    private SpriteBatch m_spritebatch;
+    /**
+     * particle batch painting
+     */
+    private ModelBatch m_particlebatch;
     /**
      * renderer
      */
@@ -134,17 +139,20 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         final float l_unit = 1.0f / m_environment.cellsize();
 
         // create execution structure for painting
-        m_batch = new SpriteBatch();
+        m_spritebatch = new SpriteBatch();
+        m_particlebatch = new ModelBatch();
         //m_font = CScreen.font( CCommon.PACKAGEPATH + "Hanken-Light.ttf", 12, Color.WHITE );
 
         // create environment view and put all objects in it
-        m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_batch );
+        m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_spritebatch );
 
         m_camera = new OrthographicCamera( m_environment.column(), m_environment.row() );
         m_camera.setToOrtho( false, m_environment.column() * l_unit, m_environment.row() * l_unit );
         m_camera.position.set( m_environment.column() / 2f, m_environment.row() / 2f, 0 );
         m_camera.zoom = m_environment.cellsize();
 
+        // create sprites and particle systems
+        CParticleSystem.INSTANCE.create();
         m_sprites.forEach( i -> i.spriteinitialize( m_environment.row(), m_environment.column(), m_environment.cellsize(), l_unit ) );
         m_render.setView( m_camera );
 
@@ -188,14 +196,16 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_render.setView( m_camera );
         m_render.render();
 
-        // object sprite painting
-        m_batch.setProjectionMatrix( m_camera.combined );
-        m_batch.begin();
-        m_sprites.forEach( i -> i.sprite().draw( m_batch ) );
 
+        // object sprite painting
+        m_spritebatch.setProjectionMatrix( m_camera.combined );
+        m_spritebatch.begin();
+        m_sprites.forEach( i -> i.sprite().draw( m_spritebatch ) );
+
+        // status message
         if ( ( m_font != null ) && m_statusvisibility )
             m_font.draw(
-                m_batch,
+                m_spritebatch,
                 MessageFormat.format(
                     "Agents {0} - Environment [{1}x{2}] - FPS: {3} - Iteration {4}",
                     m_sprites.size(),
@@ -207,7 +217,15 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
                 1, 5
             );
 
-        m_batch.end();
+        m_spritebatch.end();
+
+
+        // particle systems
+        m_particlebatch.begin( m_camera );
+        CParticleSystem.INSTANCE.get().updateAndDraw();
+        m_particlebatch.render( CParticleSystem.INSTANCE.get() );
+        m_particlebatch.end();
+
 
         // take screenshot at the rendering end
         this.screenshot();
@@ -217,11 +235,11 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     public final void dispose()
     {
         // dispose flag is set to stop parallel simulation execution outside the screen
-
         m_isdisposed = true;
         if ( m_font != null )
             m_font.dispose();
-        m_batch.dispose();
+        m_particlebatch.dispose();
+        m_spritebatch.dispose();
         m_render.dispose();
         super.dispose();
     }

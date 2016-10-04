@@ -68,7 +68,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     /**
      * current position of the agent
      */
-    private final DoubleMatrix1D m_position;
+    protected final DoubleMatrix1D m_position;
     /**
      * route
      */

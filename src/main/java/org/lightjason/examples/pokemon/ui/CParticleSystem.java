@@ -92,6 +92,7 @@ public final class CParticleSystem
     /**
      * creates the particle system
      *
+     * @param p_unit scaling factor
      * @see http://stackoverflow.com/questions/25648386/android-libgdx-3d-particle-system-not-working-billboard
      * @see http://www.gamedev.net/page/share.php/_/creative/visual-arts/make-a-particle-explosion-effect-r2701
      * @see https://www.youtube.com/watch?v=HXYqg3G5kCo
@@ -102,11 +103,15 @@ public final class CParticleSystem
      * @see http://stackoverflow.com/questions/12261439/assetmanager-particleeffectloader-of-libgdx-android
      * @see https://github.com/libgdx/libgdx/blob/master/tests/gdx-tests/src/com/badlogic/gdx/tests/ParticleEmitterTest.java
      */
-    public final void create()
+    public final void create( final float p_unit )
     {
         final FileHandle l_file = Gdx.files.internal( MessageFormat.format( PARTICLEFILENAME, "firespin" ) );
+
         final ParticleEffect l_effect = new ParticleEffect();
         l_effect.load( l_file, l_file.parent() );
+        l_effect.scaleEffect( p_unit );
+        l_effect.allowCompletion();
+
         m_effects.put( "firespin", l_effect );
     }
 

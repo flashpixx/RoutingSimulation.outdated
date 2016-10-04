@@ -120,7 +120,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         // create execution structure for painting
         m_spritebatch = new SpriteBatch();
-        //m_font = CScreen.font( CCommon.PACKAGEPATH + "Hanken-Light.ttf", 12, Color.WHITE );
 
         // create environment view and put all objects in it
         m_render = new OrthogonalTiledMapRenderer( m_environment.map(), l_unit, m_spritebatch );

@@ -283,7 +283,7 @@ public final class CPokemon extends IBaseAgent
         if ( CMath.RANDOMGENERATOR.nextDouble() > l_attack.accuracy() )
             throw new RuntimeException( MessageFormat.format( "attack fails [{0}]", p_attack ) );
 
-        CParticleSystem.INSTANCE.execute( "firespin", new DenseDoubleMatrix1D( 2 ) );
+        CParticleSystem.INSTANCE.execute( "firespin", new DenseDoubleMatrix1D( new double[]{100, 100} ) );
 
         return l_attack;
     }

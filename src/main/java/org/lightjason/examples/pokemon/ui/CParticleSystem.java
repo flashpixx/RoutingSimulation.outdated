@@ -52,7 +52,7 @@ public final class CParticleSystem
     /**
      * filename of the icon
      */
-    private static final String PARTICLEFILENAME = CCommon.PACKAGEPATH + "data/particle/{0}.efx";
+    private static final String PARTICLEFILENAME = CCommon.PACKAGEPATH + "data/particle/{0}/{0}.efx";
     /**
      * map with existing particel effects
      */
@@ -60,7 +60,7 @@ public final class CParticleSystem
     /**
      * set with current active emitters
      */
-    private final Set<ParticleEffect> m_emitter = Collections.synchronizedSet( new HashSet<>() );
+    private final Set<ParticleEffect> m_active = Collections.synchronizedSet( new HashSet<>() );
 
 
     /**
@@ -81,8 +81,8 @@ public final class CParticleSystem
     public final CParticleSystem execute( final String p_name, final DoubleMatrix1D p_position )
     {
         final ParticleEffect l_effect = new ParticleEffect( m_effects.get( p_name.trim().toLowerCase() ) );
-        l_effect.setPosition( 140, 140 );
-        m_emitter.add( l_effect );
+        l_effect.setPosition( (float) p_position.getQuick( 1 ), (float) p_position.getQuick( 0 ) );
+        m_active.add( l_effect );
         l_effect.reset();
         l_effect.start();
         return this;
@@ -106,7 +106,8 @@ public final class CParticleSystem
     {
         final FileHandle l_file = Gdx.files.internal( MessageFormat.format( PARTICLEFILENAME, "firespin" ) );
         final ParticleEffect l_effect = new ParticleEffect();
-        l_effect.loadEmitters( l_file );
+        l_effect.load( l_file, l_file.parent() );
+        m_effects.put( "firespin", l_effect );
     }
 
 
@@ -117,11 +118,8 @@ public final class CParticleSystem
      */
     public final Stream<ParticleEffect> emitter()
     {
-        return m_emitter.stream().map( i -> {
-            if ( i.isComplete() )
-                m_emitter.remove( i );
-            return i;
-        } ).filter( i -> !i.isComplete() );
+        m_active.removeIf( ParticleEffect::isComplete );
+        return m_active.stream();
     }
 
 

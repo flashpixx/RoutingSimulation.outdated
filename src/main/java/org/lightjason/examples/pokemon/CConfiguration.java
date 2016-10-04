@@ -23,13 +23,6 @@
 
 package org.lightjason.examples.pokemon;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemonGenerator;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
@@ -82,10 +75,6 @@ public final class CConfiguration
      */
     public static final CConfiguration INSTANCE = new CConfiguration();
     /**
-     * LibGDX Asset-Manager
-     */
-    private final AssetManager m_asset = new AssetManager();
-    /**
      * configuration path
      */
     private String m_configurationpath;
@@ -127,10 +116,6 @@ public final class CConfiguration
      */
     private float m_dragspeed = 1f;
     /**
-     * visibility of the status line
-     */
-    private boolean m_statusvisible;
-    /**
      * thread-sleep time in milliseconds
      */
     private int m_threadsleeptime;
@@ -150,10 +135,6 @@ public final class CConfiguration
      */
     private CConfiguration()
     {
-        // asset-manager is set internal
-        final FileHandleResolver l_resolver = new InternalFileHandleResolver();
-        m_asset.setLoader( FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader( l_resolver ) );
-        m_asset.setLoader( BitmapFont.class, ".ttf", new FreetypeFontLoader( l_resolver) );
     }
 
     /**
@@ -177,7 +158,6 @@ public final class CConfiguration
         // get initial values
         m_stacktrace = (boolean) l_data.getOrDefault( "stacktrace", false );
         m_threadsleeptime = (int) l_data.getOrDefault( "threadsleeptime", 0 );
-        m_statusvisible = (boolean) l_data.getOrDefault( "statusvisible", true );
         m_simulationstep = (int) l_data.getOrDefault( "steps", Integer.MAX_VALUE );
         if ( !(boolean) l_data.getOrDefault( "logging", false ) )
             LogManager.getLogManager().reset();
@@ -242,15 +222,6 @@ public final class CConfiguration
         return this;
     }
 
-    /**
-     * returns the LibGDX asset-manager
-     *
-     * @return manager
-     */
-    public final AssetManager asset()
-    {
-        return m_asset;
-    }
 
     /**
      * return window height
@@ -350,16 +321,6 @@ public final class CConfiguration
     public final float dragspeed()
     {
         return m_dragspeed;
-    }
-
-    /**
-     * returns the status visibility
-     *
-     * @return visibility flag
-     */
-    final boolean statusvisible()
-    {
-        return m_statusvisible;
     }
 
     /**

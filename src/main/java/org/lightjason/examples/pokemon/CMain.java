@@ -157,8 +157,7 @@ public final class CMain
                 CConfiguration.INSTANCE.agents().parallelStream()
             ).collect( Collectors.toList() ),
             CConfiguration.INSTANCE.environment(),
-            CConfiguration.INSTANCE.screenshot(),
-            CConfiguration.INSTANCE.statusvisible()
+            CConfiguration.INSTANCE.screenshot()
         );
         new LwjglApplication( l_screen, l_config );
         CMain.execute( l_screen );

@@ -24,15 +24,18 @@
 package org.lightjason.examples.pokemon.ui;
 
 import cern.colt.matrix.DoubleMatrix1D;
-import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
-import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
-import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.lightjason.examples.pokemon.CCommon;
-import org.lightjason.examples.pokemon.CConfiguration;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 
 /**
@@ -55,16 +58,17 @@ public final class CParticleSystem
      */
     private final Map<String, ParticleEffect> m_effects = new HashMap<>();
     /**
-     * particel system
+     * set with current active emitters
      */
-    private ParticleSystem m_system;
+    private final Set<ParticleEffect> m_emitter = Collections.synchronizedSet( new HashSet<>() );
 
 
     /**
      * ctor
      */
     private CParticleSystem()
-    {}
+    {
+    }
 
 
     /**
@@ -76,6 +80,11 @@ public final class CParticleSystem
      */
     public final CParticleSystem execute( final String p_name, final DoubleMatrix1D p_position )
     {
+        final ParticleEffect l_effect = new ParticleEffect( m_effects.get( p_name.trim().toLowerCase() ) );
+        l_effect.setPosition( 140, 140 );
+        m_emitter.add( l_effect );
+        l_effect.reset();
+        l_effect.start();
         return this;
     }
 
@@ -90,46 +99,31 @@ public final class CParticleSystem
      * @see http://stackoverflow.com/questions/14839648/libgdx-particleeffect-rotation
      * @see https://github.com/libgdx/libgdx/wiki/2D-ParticleEffects
      * @see https://github.com/libgdx/libgdx/wiki/3D-Particle-Effects
+     * @see http://stackoverflow.com/questions/12261439/assetmanager-particleeffectloader-of-libgdx-android
+     * @see https://github.com/libgdx/libgdx/blob/master/tests/gdx-tests/src/com/badlogic/gdx/tests/ParticleEmitterTest.java
      */
     public final void create()
     {
-        m_system = new ParticleSystem();
-
-        //final ParticleEffectLoader.ParticleEffectLoadParameter l_parameter = new ParticleEffectLoader.ParticleEffectLoadParameter( m_system.getBatches() );
-        //final ParticleEffectLoader l_loader = new ParticleEffectLoader( new InternalFileHandleResolver() );
-
-        //m_effects.put( "firepsin", this.load( "firespin" ) );
+        final FileHandle l_file = Gdx.files.internal( MessageFormat.format( PARTICLEFILENAME, "firespin" ) );
+        final ParticleEffect l_effect = new ParticleEffect();
+        l_effect.loadEmitters( l_file );
     }
 
 
     /**
-     * returns particle system instance
-     * for rendering
+     * returns a stream over all emitter
      *
-     * @return particle system instance
+     * @return emitter stream
      */
-    public final ParticleSystem get()
+    public final Stream<ParticleEffect> emitter()
     {
-        return m_system;
+        return m_emitter.stream().map( i -> {
+            if ( i.isComplete() )
+                m_emitter.remove( i );
+            return i;
+        } ).filter( i -> !i.isComplete() );
     }
 
-    /**
-     * loads a particle effect
-     *
-     * @param p_name filename of the configuration
-     * @return particle effect
-     * @see http://stackoverflow.com/questions/12261439/assetmanager-particleeffectloader-of-libgdx-android
-     */
-    private ParticleEffect load( final String p_name )
-    {
-        final String l_filename = MessageFormat.format( PARTICLEFILENAME, p_name );
-
-        final ParticleEffectLoader.ParticleEffectLoadParameter l_parameter = new ParticleEffectLoader.ParticleEffectLoadParameter( m_system.getBatches() );
-        CConfiguration.INSTANCE.asset().load( l_filename, ParticleEffect.class, l_parameter );
-        CConfiguration.INSTANCE.asset().finishLoading();
-
-        return CConfiguration.INSTANCE.asset().get( l_filename );
-    }
 
 
 }

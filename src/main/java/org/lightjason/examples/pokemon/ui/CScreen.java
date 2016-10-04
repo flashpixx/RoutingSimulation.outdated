@@ -23,20 +23,16 @@
 
 package org.lightjason.examples.pokemon.ui;
 
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import org.lightjason.examples.pokemon.CConfiguration;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -76,25 +72,13 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      */
     private final Vector3 m_lastTouch = new Vector3();
     /**
-     * show status visibility
-     */
-    private final boolean m_statusvisibility;
-    /**
      * camera definition
      */
     private OrthographicCamera m_camera;
     /**
-     * font object
-     */
-    private BitmapFont m_font;
-    /**
      * sprite batch painting
      */
     private SpriteBatch m_spritebatch;
-    /**
-     * particle batch painting
-     */
-    private ModelBatch m_particlebatch;
     /**
      * renderer
      */
@@ -120,16 +104,12 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
      * @param p_sprites list with executables
      * @param p_environment environment reference
      * @param p_screenshot screenshot configuration
-     * @param p_statusvisibility status visibility
      */
-    public CScreen( final List<? extends ISprite> p_sprites, final ITileMap p_environment, final Triple<String, String, Integer> p_screenshot,
-                    final boolean p_statusvisibility
-    )
+    public CScreen( final List<? extends ISprite> p_sprites, final ITileMap p_environment, final Triple<String, String, Integer> p_screenshot )
     {
         m_environment = p_environment;
         m_sprites = p_sprites;
         m_screenshot = p_screenshot;
-        m_statusvisibility = p_statusvisibility;
     }
 
     @Override
@@ -140,7 +120,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         // create execution structure for painting
         m_spritebatch = new SpriteBatch();
-        m_particlebatch = new ModelBatch();
         //m_font = CScreen.font( CCommon.PACKAGEPATH + "Hanken-Light.ttf", 12, Color.WHITE );
 
         // create environment view and put all objects in it
@@ -158,28 +137,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
 
         // set input processor
         Gdx.input.setInputProcessor( this );
-    }
-
-    /**
-     * creates a font object based on a TTF file
-     *
-     * @param p_path string path of TTF file
-     * @param p_size font size
-     * @param p_color font color
-     * @return font object
-     */
-    private static BitmapFont font( final String p_path, final int p_size, final Color p_color )
-    {
-        final FreeTypeFontGenerator l_fontgenerator = new FreeTypeFontGenerator( Gdx.files.internal(  p_path ) );
-        final FreeTypeFontGenerator.FreeTypeFontParameter l_fontparameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-        l_fontparameter.size = p_size;
-        l_fontparameter.color = p_color;
-
-        final BitmapFont l_font = l_fontgenerator.generateFont( l_fontparameter );
-        l_fontgenerator.dispose();
-
-        return l_font;
     }
 
     @Override
@@ -200,31 +157,15 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         // object sprite painting
         m_spritebatch.setProjectionMatrix( m_camera.combined );
         m_spritebatch.begin();
+
         m_sprites.forEach( i -> i.sprite().draw( m_spritebatch ) );
 
-        // status message
-        if ( ( m_font != null ) && m_statusvisibility )
-            m_font.draw(
-                m_spritebatch,
-                MessageFormat.format(
-                    "Agents {0} - Environment [{1}x{2}] - FPS: {3} - Iteration {4}",
-                    m_sprites.size(),
-                    m_environment.row(),
-                    m_environment.column(),
-                    m_iteration,
-                    Gdx.graphics.getFramesPerSecond()
-                ),
-                1, 5
-            );
+        final float l_delta = Gdx.graphics.getDeltaTime();
+        CParticleSystem.INSTANCE.emitter().forEach( i -> i.draw( m_spritebatch, l_delta ) );
 
         m_spritebatch.end();
 
 
-        // particle systems
-        m_particlebatch.begin( m_camera );
-        CParticleSystem.INSTANCE.get().updateAndDraw();
-        m_particlebatch.render( CParticleSystem.INSTANCE.get() );
-        m_particlebatch.end();
 
 
         // take screenshot at the rendering end
@@ -236,9 +177,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
     {
         // dispose flag is set to stop parallel simulation execution outside the screen
         m_isdisposed = true;
-        if ( m_font != null )
-            m_font.dispose();
-        m_particlebatch.dispose();
         m_spritebatch.dispose();
         m_render.dispose();
         super.dispose();

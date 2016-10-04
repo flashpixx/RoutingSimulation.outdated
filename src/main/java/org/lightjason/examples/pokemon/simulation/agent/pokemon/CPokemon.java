@@ -48,6 +48,7 @@ import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
+import org.lightjason.examples.pokemon.ui.CParticleSystem;
 
 import java.math.BigInteger;
 import java.text.MessageFormat;
@@ -281,6 +282,8 @@ public final class CPokemon extends IBaseAgent
         // check accuracy that the attack will successful executed
         if ( CMath.RANDOMGENERATOR.nextDouble() > l_attack.accuracy() )
             throw new RuntimeException( MessageFormat.format( "attack fails [{0}]", p_attack ) );
+
+        CParticleSystem.INSTANCE.execute( "firespin", new DenseDoubleMatrix1D( 2 ) );
 
         return l_attack;
     }

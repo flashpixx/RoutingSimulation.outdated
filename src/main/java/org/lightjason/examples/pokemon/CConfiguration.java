@@ -23,6 +23,13 @@
 
 package org.lightjason.examples.pokemon;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemonGenerator;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
@@ -74,6 +81,10 @@ public final class CConfiguration
      * singleton instance
      */
     public static final CConfiguration INSTANCE = new CConfiguration();
+    /**
+     * LibGDX Asset-Manager
+     */
+    private final AssetManager m_asset = new AssetManager();
     /**
      * configuration path
      */
@@ -139,6 +150,10 @@ public final class CConfiguration
      */
     private CConfiguration()
     {
+        // asset-manager is set internal
+        final FileHandleResolver l_resolver = new InternalFileHandleResolver();
+        m_asset.setLoader( FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader( l_resolver ) );
+        m_asset.setLoader( BitmapFont.class, ".ttf", new FreetypeFontLoader( l_resolver) );
     }
 
     /**
@@ -225,6 +240,16 @@ public final class CConfiguration
         m_environment.initialize();
 
         return this;
+    }
+
+    /**
+     * returns the LibGDX asset-manager
+     *
+     * @return manager
+     */
+    public final AssetManager asset()
+    {
+        return m_asset;
     }
 
     /**

@@ -17,6 +17,7 @@
 !src/main/resources/**/*.asl
 !src/main/resources/**/*.png
 !src/main/resources/**/*.ttf
+!src/main/resources/**/*.efx
 
 !src/site/*.doxyfile
 !src/site/*.htm

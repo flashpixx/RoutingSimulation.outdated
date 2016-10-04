@@ -50,7 +50,7 @@ public final class CLevel
     /**
      * filename of the icon
      */
-    private static final String ICONFILENAME = CCommon.PACKAGEPATH + "/data/icon/{0}_{1}.png";
+    private static final String ICONFILENAME = CCommon.PACKAGEPATH + "data/icon/{0}_{1}.png";
     /**
      * ethnic map map with initialize values (initial value, min, max bounding)
      */

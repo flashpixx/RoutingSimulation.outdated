@@ -23,17 +23,22 @@
 
 package org.lightjason.examples.pokemon.ui;
 
+import cern.colt.matrix.DoubleMatrix1D;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import org.lightjason.examples.pokemon.CCommon;
+import org.lightjason.examples.pokemon.CConfiguration;
 
-import java.util.Collections;
+import java.text.MessageFormat;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
  * particle effect class
+ *
+ * @see https://github.com/libgdx/libgdx/wiki/3D-Particle-Effects
  */
 public final class CParticleSystem
 {
@@ -42,13 +47,13 @@ public final class CParticleSystem
      */
     public static final CParticleSystem INSTANCE = new CParticleSystem();
     /**
+     * filename of the icon
+     */
+    private static final String PARTICLEFILENAME = CCommon.PACKAGEPATH + "data/particle/{0}.efx";
+    /**
      * map with existing particel effects
      */
-    private final Map<String, ?> m_effects = new HashMap<>();
-    /**
-     * list of current executed emitters
-     */
-    private final Set<?> m_emitters = Collections.synchronizedSet( new HashSet<>() );
+    private final Map<String, ParticleEffect> m_effects = new HashMap<>();
     /**
      * particel system
      */
@@ -59,16 +64,41 @@ public final class CParticleSystem
      * ctor
      */
     private CParticleSystem()
+    {}
+
+
+    /**
+     * runs the particel effect immediatly
+     *
+     * @param p_name name effect
+     * @param p_position emitter position
+     * @return self reference
+     */
+    public final CParticleSystem execute( final String p_name, final DoubleMatrix1D p_position )
     {
+        return this;
     }
 
 
     /**
      * creates the particle system
+     *
+     * @see http://stackoverflow.com/questions/25648386/android-libgdx-3d-particle-system-not-working-billboard
+     * @see http://www.gamedev.net/page/share.php/_/creative/visual-arts/make-a-particle-explosion-effect-r2701
+     * @see https://www.youtube.com/watch?v=HXYqg3G5kCo
+     * @see http://codepoke.net/2011/12/27/opengl-libgdx-laser-fx/
+     * @see http://stackoverflow.com/questions/14839648/libgdx-particleeffect-rotation
+     * @see https://github.com/libgdx/libgdx/wiki/2D-ParticleEffects
+     * @see https://github.com/libgdx/libgdx/wiki/3D-Particle-Effects
      */
     public final void create()
     {
         m_system = new ParticleSystem();
+
+        //final ParticleEffectLoader.ParticleEffectLoadParameter l_parameter = new ParticleEffectLoader.ParticleEffectLoadParameter( m_system.getBatches() );
+        //final ParticleEffectLoader l_loader = new ParticleEffectLoader( new InternalFileHandleResolver() );
+
+        //m_effects.put( "firepsin", this.load( "firespin" ) );
     }
 
 
@@ -83,6 +113,23 @@ public final class CParticleSystem
         return m_system;
     }
 
+    /**
+     * loads a particle effect
+     *
+     * @param p_name filename of the configuration
+     * @return particle effect
+     * @see http://stackoverflow.com/questions/12261439/assetmanager-particleeffectloader-of-libgdx-android
+     */
+    private ParticleEffect load( final String p_name )
+    {
+        final String l_filename = MessageFormat.format( PARTICLEFILENAME, p_name );
+
+        final ParticleEffectLoader.ParticleEffectLoadParameter l_parameter = new ParticleEffectLoader.ParticleEffectLoadParameter( m_system.getBatches() );
+        CConfiguration.INSTANCE.asset().load( l_filename, ParticleEffect.class, l_parameter );
+        CConfiguration.INSTANCE.asset().finishLoading();
+
+        return CConfiguration.INSTANCE.asset().get( l_filename );
+    }
 
 
 }

@@ -131,7 +131,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_camera.zoom = m_environment.cellsize();
 
         // create sprites and particle systems
-        CParticleSystem.INSTANCE.create( l_unit );
+        CParticleSystem.INSTANCE.initialize( "firespin", l_unit );
         m_sprites.forEach( i -> i.spriteinitialize( m_environment.row(), m_environment.column(), m_environment.cellsize(), l_unit ) );
         m_render.setView( m_camera );
 
@@ -161,7 +161,7 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_sprites.forEach( i -> i.sprite().draw( m_spritebatch ) );
 
         final float l_delta = Gdx.graphics.getDeltaTime();
-        CParticleSystem.INSTANCE.emitter().forEach( i -> i.draw( m_spritebatch, l_delta ) );
+        CParticleSystem.INSTANCE.clean().emitter().forEach( i -> i.draw( m_spritebatch, l_delta ) );
 
         m_spritebatch.end();
 

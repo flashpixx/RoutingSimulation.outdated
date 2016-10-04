@@ -60,7 +60,7 @@ agent :
     # number the generated elements and force the force definition
 
     gastly :
-        number  : 5
+        number  : 100
         pokemon : "lickitung"
         force   : "sum"
         asl     : "agent.asl"

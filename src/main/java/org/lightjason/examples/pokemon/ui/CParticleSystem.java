@@ -30,11 +30,15 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.lightjason.examples.pokemon.CCommon;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -56,11 +60,11 @@ public final class CParticleSystem
     /**
      * map with existing particel effects
      */
-    private final Map<String, ParticleEffect> m_effects = new HashMap<>();
+    private final Map<String, ParticleEffect> m_effects = new ConcurrentHashMap<>();
     /**
      * set with current active emitters
      */
-    private final Set<ParticleEffect> m_active = Collections.synchronizedSet( new HashSet<>() );
+    private final Collection<ParticleEffect> m_active = new CopyOnWriteArrayList<>();
 
 
     /**
@@ -80,7 +84,11 @@ public final class CParticleSystem
      */
     public final CParticleSystem execute( final String p_name, final DoubleMatrix1D p_position )
     {
-        final ParticleEffect l_effect = new ParticleEffect( m_effects.get( p_name.trim().toLowerCase() ) );
+        final ParticleEffect l_base = m_effects.get( CParticleSystem.name( p_name ) );
+        if ( l_base == null )
+            throw new RuntimeException( MessageFormat.format( "particle effect [{0}] not found", p_name ) );
+
+        final ParticleEffect l_effect = new ParticleEffect( l_base );
         l_effect.setPosition( (float) p_position.getQuick( 1 ), (float) p_position.getQuick( 0 ) );
         m_active.add( l_effect );
         l_effect.reset();
@@ -103,16 +111,18 @@ public final class CParticleSystem
      * @see http://stackoverflow.com/questions/12261439/assetmanager-particleeffectloader-of-libgdx-android
      * @see https://github.com/libgdx/libgdx/blob/master/tests/gdx-tests/src/com/badlogic/gdx/tests/ParticleEmitterTest.java
      */
-    public final void create( final float p_unit )
+    public final CParticleSystem initialize( final String p_name, final float p_unit )
     {
-        final FileHandle l_file = Gdx.files.internal( MessageFormat.format( PARTICLEFILENAME, "firespin" ) );
+        final String l_name = CParticleSystem.name( p_name );
+        final FileHandle l_file = Gdx.files.internal( MessageFormat.format( PARTICLEFILENAME, l_name ) );
 
         final ParticleEffect l_effect = new ParticleEffect();
         l_effect.load( l_file, l_file.parent() );
         l_effect.scaleEffect( p_unit );
         l_effect.allowCompletion();
 
-        m_effects.put( "firespin", l_effect );
+        m_effects.putIfAbsent( l_name, l_effect );
+        return this;
     }
 
 
@@ -123,10 +133,26 @@ public final class CParticleSystem
      */
     public final Stream<ParticleEffect> emitter()
     {
-        m_active.removeIf( ParticleEffect::isComplete );
-        return m_active.stream();
+        return m_active.stream().filter( i -> !i.isComplete() );
     }
 
+
+    public final CParticleSystem clean()
+    {
+        m_active.removeAll( m_active.parallelStream().filter( i -> i.isComplete() ).map( i -> { i.dispose(); return i; } ).collect( Collectors.toList() ) );
+        return this;
+    }
+
+    /**
+     * returns name of a particle system
+     *
+     * @param p_name name
+     * @return formated name
+     */
+    private static String name( final String p_name )
+    {
+        return p_name.trim().toLowerCase();
+    }
 
 
 }

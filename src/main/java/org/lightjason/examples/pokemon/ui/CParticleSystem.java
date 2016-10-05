@@ -31,11 +31,7 @@ import org.lightjason.examples.pokemon.CCommon;
 
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -101,6 +97,7 @@ public final class CParticleSystem
      * creates the particle system
      *
      * @param p_unit scaling factor
+     * @return self reference
      * @see http://stackoverflow.com/questions/25648386/android-libgdx-3d-particle-system-not-working-billboard
      * @see http://www.gamedev.net/page/share.php/_/creative/visual-arts/make-a-particle-explosion-effect-r2701
      * @see https://www.youtube.com/watch?v=HXYqg3G5kCo
@@ -137,9 +134,20 @@ public final class CParticleSystem
     }
 
 
+    /**
+     * removes completed emitters
+     *
+     * @return self reference
+     */
     public final CParticleSystem clean()
     {
-        m_active.removeAll( m_active.parallelStream().filter( i -> i.isComplete() ).map( i -> { i.dispose(); return i; } ).collect( Collectors.toList() ) );
+        m_active.removeAll( m_active.parallelStream()
+                                    .filter( ParticleEffect::isComplete )
+                                    .map( i -> {
+                                        i.dispose();
+                                        return i;
+                                    } )
+                                    .collect( Collectors.toList() ) );
         return this;
     }
 

@@ -112,6 +112,9 @@
                                             </xs:simpleType>
                                         </xs:attribute>
                                         <xs:attribute name="distance" use="required">
+                                            <xs:annotation>
+                                                <xs:documentation>maximum distance of the attack</xs:documentation>
+                                            </xs:annotation>
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:double">
                                                   <xs:minExclusive value="0"/>
@@ -119,12 +122,21 @@
                                             </xs:simpleType>
                                         </xs:attribute>
                                         <xs:attribute name="accuracy" use="required">
+                                            <xs:annotation>
+                                                <xs:documentation>probability that the attack will execute accurate</xs:documentation>
+                                            </xs:annotation>
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:double">
                                                   <xs:minExclusive value="0"/>
                                                   <xs:maxInclusive value="1"/>
                                                 </xs:restriction>
                                             </xs:simpleType>
+                                        </xs:attribute>
+                                        <xs:attribute name="particlesystem" type="xs:string"
+                                            use="required">
+                                            <xs:annotation>
+                                                <xs:documentation>reference of the internal name of the particle system (for visualization)</xs:documentation>
+                                            </xs:annotation>
                                         </xs:attribute>
                                         <xs:attribute name="power" use="required">
                                             <xs:annotation>

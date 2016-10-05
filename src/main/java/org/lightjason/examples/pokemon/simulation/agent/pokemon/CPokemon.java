@@ -160,9 +160,14 @@ public final class CPokemon extends IBaseAgent
     public final void spriteinitialize( final int p_rows, final int p_columns, final int p_cellsize, final float p_unit )
     {
         m_sprite = CDefinition.INSTANCE.tupel( m_pokemon, 0 ).sprite( p_cellsize, p_unit );
+        m_attack.values().stream().forEach( i -> CParticleSystem.INSTANCE.initialize( i.particlesystem(), p_unit ) );
 
-        // initialize all other sprites
+        // initialize all other sprites and particle systems
         IntStream.range( 1, CDefinition.INSTANCE.level( m_pokemon ) ).parallel().forEach( i ->  CDefinition.INSTANCE.tupel( m_pokemon, i ).sprite( p_cellsize, p_unit ) );
+        IntStream.range( 1, CDefinition.INSTANCE.level( m_pokemon ) )
+                 .boxed()
+                 .flatMap( i -> CDefinition.INSTANCE.tupel( m_pokemon, i ).attack().stream() )
+                 .forEach( i -> CParticleSystem.INSTANCE.initialize( i.particlesystem(), p_unit ) );
     }
 
 

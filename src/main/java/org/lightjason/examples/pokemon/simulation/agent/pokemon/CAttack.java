@@ -57,6 +57,10 @@ public final class CAttack
      * damages
      */
     private final Map<CAttribute, Double> m_damage;
+    /**
+     * particle system name for visualization
+     */
+    private final String m_particlesystem;
 
     /**
      * ctor
@@ -70,6 +74,7 @@ public final class CAttack
         m_distance = p_attack.getDistance();
         m_accuracy = p_attack.getAccuracy();
         m_power = p_attack.getPower();
+        m_particlesystem = p_attack.getParticlesystem();
         m_damage = Collections.unmodifiableMap(
                        p_attack.getDamage().stream()
                                .collect( Collectors.toMap( i -> p_attribute.get( i.getId().trim().toLowerCase() ), Iattack.Damage::getValue ) )
@@ -108,6 +113,17 @@ public final class CAttack
     {
         return m_name;
     }
+
+    /**
+     * returns the name of the particle system (for visualization)
+     *
+     * @return name
+     */
+    public final String particlesystem()
+    {
+        return m_particlesystem;
+    }
+
 
     /**
      * maximum attack distance

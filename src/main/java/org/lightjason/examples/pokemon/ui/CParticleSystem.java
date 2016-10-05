@@ -111,6 +111,12 @@ public final class CParticleSystem
     public final CParticleSystem initialize( final String p_name, final float p_unit )
     {
         final String l_name = CParticleSystem.name( p_name );
+        if ( l_name.isEmpty() )
+            throw new RuntimeException( "particle system name need not to be empty" );
+        if ( m_effects.containsKey( l_name ) )
+            return this;
+
+        // create particle system
         final FileHandle l_file = Gdx.files.internal( MessageFormat.format( PARTICLEFILENAME, l_name ) );
 
         final ParticleEffect l_effect = new ParticleEffect();

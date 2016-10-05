@@ -247,12 +247,31 @@ public final class CPokemon extends IBaseAgent
      * @param p_power power of the attack (0,1]
      * @param p_row target row position
      * @param p_column target column position
+     * @todo check power of attack
      */
     @IAgentActionFilter
     @IAgentActionName( name = "act/attack/point" )
     private void pointattack( final String p_attack, final double p_power, final Number p_row, final Number p_column )
     {
         final CAttack l_attack = this.attack( p_attack );
+
+        // check target position
+        final DoubleMatrix1D l_target = new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} );
+        final IElement l_element = m_environment.get( l_target );
+        if (  ( l_element == null ) || ( !( l_element instanceof IAgent ) )  )
+            throw new RuntimeException( MessageFormat.format( "target postion {0} is empty or is not an agent", CMath.MATRIXFORMAT.toString( l_target ) ) );
+
+        // check attack distance
+        if ( l_target.zDotProduct( m_position ) > l_attack.distance() )
+            throw new RuntimeException(
+                MessageFormat.format( "position between {0} and {1} greater than attack distance {2}",
+                                      CMath.MATRIXFORMAT.toString( m_position ),
+                                      CMath.MATRIXFORMAT.toString( l_target ),
+                                      l_attack.distance() )
+            );
+
+        // execute attack
+        CParticleSystem.INSTANCE.execute( l_attack.particlesystem(), l_target );
         m_experience.set(
             m_experience.get().add( BigInteger.valueOf( (long) ( l_attack.power() * m_levelexperience.doubleValue() * ( m_level.get() + 1 ) ) ) )
         );
@@ -289,8 +308,6 @@ public final class CPokemon extends IBaseAgent
         // check accuracy that the attack will successful executed
         if ( CMath.RANDOMGENERATOR.nextDouble() > l_attack.accuracy() )
             throw new RuntimeException( MessageFormat.format( "attack fails [{0}]", p_attack ) );
-
-        CParticleSystem.INSTANCE.execute( "firespin", m_position );
 
         return l_attack;
     }

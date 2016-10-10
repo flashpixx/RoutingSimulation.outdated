@@ -47,7 +47,6 @@ import org.lightjason.examples.pokemon.simulation.algorithm.routing.ERoutingFact
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import org.lightjason.examples.pokemon.simulation.item.CStatic;
-import org.lightjason.examples.pokemon.simulation.item.IItem;
 
 import java.text.MessageFormat;
 import java.util.AbstractMap;
@@ -102,7 +101,7 @@ public final class TestCForce
         // disable logging
         LogManager.getLogManager().reset();
 
-        m_environment = new CEnvironment( 100, 100, 25, ERoutingFactory.JPSPLUS.get(), Collections.<IItem>emptyList() );
+        m_environment = new CEnvironment( 100, 100, 25, ERoutingFactory.JPSPLUS.get(), Collections.emptyList() );
 
         m_actions = Collections.unmodifiableSet( Stream.concat(
             org.lightjason.agentspeak.common.CCommon.actionsFromPackage(),
@@ -118,7 +117,8 @@ public final class TestCForce
                 m_actions,
                 IAggregation.EMPTY
             )
-                .generatemultiple( AGENTNUMBER, EForceFactory.SUM.get(), "gastly" )
+                //.generatemultiple( AGENTNUMBER, EForceFactory.SUM.get(), "gastly" )
+                .generatemultiple( AGENTNUMBER, "gastly" )
                 .collect( Collectors.toList() )
         );
 

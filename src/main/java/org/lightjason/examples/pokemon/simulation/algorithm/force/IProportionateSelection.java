@@ -23,24 +23,17 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import org.lightjason.examples.pokemon.simulation.IElement;
 
-import java.util.stream.Stream;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.stream.Collector;
 
 
 /**
- * interface for force-model
+ * propability selection based of an input stream
+ *
+ * @see https://en.wikipedia.org/wiki/Fitness_proportionate_selection
  */
-public interface IForce
+public interface IProportionateSelection<T> extends Collector<Pair<T, Double>, Double, Double>
 {
-
-    /**
-     * calculates the metric-force value between two elements
-     *
-     * @param p_self element which uses the force value
-     * @param p_other other elements
-     * @return value in [-1, 1]
-     */
-    double calculate( final IElement p_self, final Stream<IElement> p_other );
-
 }

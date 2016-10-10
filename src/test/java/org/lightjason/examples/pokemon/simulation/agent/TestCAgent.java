@@ -28,7 +28,6 @@ import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemonGenerator;
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.EForceFactory;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.ERoutingFactory;
 import org.lightjason.examples.pokemon.simulation.item.IItem;
 import org.junit.Assume;
@@ -92,7 +91,9 @@ public final class TestCAgent
             TestCAgent.class.getResourceAsStream( MessageFormat.format( "/{0}/agent.asl", CCommon.PACKAGEPATH ) ),
             m_actions,
             IAggregation.EMPTY
-        ).generatesingle( EForceFactory.SUM.get(), "eevee" );
+        )
+            //.generatesingle( EForceFactory.SUM.get(), "eevee" );
+            .generatesingle( "eevee" );
     }
 
 

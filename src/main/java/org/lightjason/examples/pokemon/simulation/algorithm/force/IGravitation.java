@@ -24,7 +24,7 @@
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 
 /**
@@ -32,6 +32,6 @@ import java.util.function.Function;
  * gravitation of an element, the centering of
  * the function should be at 0
  */
-public interface IGravitation extends Function<Double, Double>
+public interface IGravitation extends UnaryOperator<Double>
 {
 }

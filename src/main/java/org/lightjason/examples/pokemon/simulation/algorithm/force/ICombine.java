@@ -23,37 +23,15 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.stream.Collector;
+
 
 /**
- * factory for creating a force object
+ * force combiner to calculate the resulting force of a object stream
  */
-public enum EForceFactory
+public interface ICombine<T> extends Collector<Pair<T, Double>, Double, Double>
 {
-    SUM( null );
-
-    /**
-     * force object
-     */
-    private final ICombine m_force;
-
-    /**
-     * ctor
-     *
-     * @param p_force force model
-     */
-    EForceFactory( final ICombine p_force )
-    {
-        m_force = p_force;
-    }
-
-    /**
-     * returns force model
-     *
-     * @return force object
-     */
-    public final ICombine get()
-    {
-        return m_force;
-    }
 
 }

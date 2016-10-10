@@ -25,7 +25,6 @@ package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import org.lightjason.agentspeak.action.IAction;
 import org.lightjason.agentspeak.agent.fuzzy.IFuzzy;
@@ -109,9 +108,7 @@ public final class CPokemonGenerator extends IBaseAgentGenerator<IAgent>
 
             l_position,
 
-            (IForce) p_data[0],
-
-            (String) p_data[1]
+            (String) p_data[0]
         );
     }
 

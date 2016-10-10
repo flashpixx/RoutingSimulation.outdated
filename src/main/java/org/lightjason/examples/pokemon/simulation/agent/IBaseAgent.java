@@ -26,7 +26,6 @@ package org.lightjason.examples.pokemon.simulation.agent;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.examples.pokemon.simulation.CMath;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import org.lightjason.examples.pokemon.simulation.environment.EDirection;
 import org.lightjason.examples.pokemon.simulation.environment.EQuadrant;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
@@ -81,12 +80,9 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
      *
      * @param p_environment environment
      * @param p_agentconfiguration agent configuration
-     * @param p_force force model
      * @param p_position initialize position
      */
-    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                          final IForce p_force, final DoubleMatrix1D p_position
-    )
+    protected IBaseAgent( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration, final DoubleMatrix1D p_position )
     {
         super( p_agentconfiguration );
 

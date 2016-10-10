@@ -36,7 +36,6 @@ import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
 import org.lightjason.agentspeak.beliefbase.IBeliefbaseOnDemand;
@@ -123,15 +122,12 @@ public final class CPokemon extends IBaseAgent
      * @param p_environment environment
      * @param p_agentconfiguration agent configuration
      * @param p_position initialize position
-     * @param p_force force model
      * @param p_pokemon pokemon name
      */
     @SuppressWarnings( "unchecked" )
-    public CPokemon( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
-                     final DoubleMatrix1D p_position, final IForce p_force, final String p_pokemon
-    )
+    public CPokemon( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration, final DoubleMatrix1D p_position, final String p_pokemon )
     {
-        super( p_environment, p_agentconfiguration, p_force, p_position );
+        super( p_environment, p_agentconfiguration, p_position );
 
         if ( p_pokemon.isEmpty() )
             throw new RuntimeException( "pokemon name need not to be empty" );

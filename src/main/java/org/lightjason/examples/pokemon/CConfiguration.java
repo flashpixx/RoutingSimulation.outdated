@@ -26,7 +26,6 @@ package org.lightjason.examples.pokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemon;
 import org.lightjason.examples.pokemon.simulation.agent.pokemon.CPokemonGenerator;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.EForceFactory;
 import org.lightjason.examples.pokemon.simulation.algorithm.routing.ERoutingFactory;
 import org.lightjason.examples.pokemon.simulation.environment.CEnvironment;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
@@ -58,6 +57,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.LogManager;
 import java.util.stream.Collectors;
@@ -397,7 +397,7 @@ public final class CConfiguration
                     l_generator.generatemultiple(
                         (int) l_parameter.getOrDefault( "number", 0 ),
 
-                        EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
+                        //EForceFactory.valueOf( ( (String) l_parameter.getOrDefault( "force", "" ) ).trim().toUpperCase() ).get(),
 
                         (String) l_parameter.getOrDefault( "pokemon", "" )
 
@@ -423,7 +423,7 @@ public final class CConfiguration
         p_elementconfiguration
             .stream()
             .map( i -> (Map<String, Object>) i.get( "static" ) )
-            .filter( i -> i != null )
+            .filter( Objects::nonNull )
             .map( i -> new CStatic(
                 (List<Integer>) i.get( "left" ),
                 (List<Integer>) i.get( "right" ),

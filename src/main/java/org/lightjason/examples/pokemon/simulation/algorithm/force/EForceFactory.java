@@ -29,7 +29,7 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force;
  */
 public enum EForceFactory
 {
-    SUM( new CSum() );
+    SUM( null );
 
     /**
      * force object

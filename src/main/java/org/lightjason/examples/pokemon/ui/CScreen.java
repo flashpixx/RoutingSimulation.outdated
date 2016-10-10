@@ -164,8 +164,6 @@ public final class CScreen extends ApplicationAdapter implements InputProcessor
         m_spritebatch.end();
 
 
-
-
         // take screenshot at the rendering end
         this.screenshot();
     }

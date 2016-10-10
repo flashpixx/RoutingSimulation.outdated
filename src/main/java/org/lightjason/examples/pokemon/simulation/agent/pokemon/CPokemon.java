@@ -615,9 +615,9 @@ public final class CPokemon extends IBaseAgent
                 case "myposition" : return Stream.of( this.literalposition( "myposition", CPokemon.this.position() ) ).collect( Collectors.toSet() );
                 case "mygoal" : return Stream.of( this.literalposition( "mygoal", CPokemon.this.goal() ) ).collect( Collectors.toSet() );
                 case "ima" : return Stream.of( CLiteral.from( "ima", Stream.of( CLiteral.from( m_pokemon.toLowerCase() ) ) ) ).collect( Collectors.toSet() );
-            }
 
-            return super.literal( p_key );
+                default: return super.literal( p_key );
+            }
         }
 
         /**

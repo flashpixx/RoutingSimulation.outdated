@@ -83,6 +83,7 @@
 
 // --- attack plans --------------------------------------------------------------------------------------------------------------------------------------------
 
+// run a random attack around the current position
 +!act/attack
     : >>env/myposition( y(Y), x(X) )
         <-

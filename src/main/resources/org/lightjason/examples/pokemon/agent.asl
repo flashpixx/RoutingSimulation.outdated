@@ -27,7 +27,8 @@
 -!movement/walk/forward
     <-
         generic/print( "walk forward fails in cycle [", Cycle, "]" );
-        !movement/walk/left
+        !movement/walk/left;
+        !act/attack
 .
 
 // walk left - direction 90 degree to the goal position
@@ -42,7 +43,8 @@
 -!movement/walk/left
     <-
         generic/print( "walk left fails in cycle [", Cycle, "]" );
-        !movement/walk/right
+        !movement/walk/right;
+        !act/attack
 .
 
 // walk right - direction 90 degree to the goal position
@@ -59,7 +61,6 @@
     <-
         T = math/statistic/randomsimple();
         T = T * 10 + 1;
-        T = math/round( T );
         T = math/min( T, 5 );
         generic/print( "walk right fails in cycle [", Cycle, "] wait [", T,"] cycles" );
         generic/sleep(T)
@@ -68,13 +69,31 @@
 // if the agent is not walking because speed is
 // low the agent increment the current speed
 +!movement/standstill
-    <-
-        generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
-        >>attribute/speed( S );
-        S++;
-        +attribute/speed( S );
-        !movement/walk/forward
+    : >>attribute/speed( S )
+        <-
+            generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
+            S++;
+            +attribute/speed( S );
+            !movement/walk/forward
 .
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+// --- attack plans --------------------------------------------------------------------------------------------------------------------------------------------
+
++!act/attack
+    : >>env/myposition( y(Y), x(X) )
+        <-
+            A = math/statistic/randomsimple();
+            B = math/statistic/randomsimple();
+            X = X + A * 4 - 2;
+            Y = Y + B * 4 - 2;
+            attack/point( "slam", 1, X, Y )
+.
+
+
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 

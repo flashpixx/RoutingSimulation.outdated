@@ -250,19 +250,20 @@ public final class CPokemon extends IBaseAgent
      * @todo check power of attack
      */
     @IAgentActionFilter
-    @IAgentActionName( name = "act/attack/point" )
+    @IAgentActionName( name = "attack/point" )
     private void pointattack( final String p_attack, final double p_power, final Number p_row, final Number p_column )
     {
         final CAttack l_attack = this.attack( p_attack );
-
-        // check target position
         final DoubleMatrix1D l_target = new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} );
         final IElement l_element = m_environment.get( l_target );
-        if (  ( l_element == null ) || ( !( l_element instanceof IAgent ) )  )
-            throw new RuntimeException( MessageFormat.format( "target postion {0} is empty or is not an agent", CMath.MATRIXFORMAT.toString( l_target ) ) );
 
         // check attack distance
-        if ( l_target.zDotProduct( m_position ) > l_attack.distance() )
+        if ( CMath.ALGEBRA.norm2(
+                new DenseDoubleMatrix1D( new double[]{p_row.doubleValue(), p_column.doubleValue()} )
+                    .assign( m_position, Functions.minus )
+             )
+             > l_attack.distance()
+        )
             throw new RuntimeException(
                 MessageFormat.format( "position between {0} and {1} greater than attack distance {2}",
                                       CMath.MATRIXFORMAT.toString( m_position ),
@@ -270,11 +271,18 @@ public final class CPokemon extends IBaseAgent
                                       l_attack.distance() )
             );
 
-        // execute attack
+        // show particle system
         CParticleSystem.INSTANCE.execute( l_attack.particlesystem(), l_target );
+
+        // check target position
+        if (  ( l_element == null ) || ( !( l_element instanceof IAgent ) )  )
+            throw new RuntimeException( MessageFormat.format( "target postion {0} is empty or is not an agent", CMath.MATRIXFORMAT.toString( l_target ) ) );
+
+        // increment experience
         m_experience.set(
             m_experience.get().add( BigInteger.valueOf( (long) ( l_attack.power() * m_levelexperience.doubleValue() * ( m_level.get() + 1 ) ) ) )
         );
+
     }
 
     /**
@@ -285,7 +293,7 @@ public final class CPokemon extends IBaseAgent
      * @param p_direction direction of the attack
      */
     @IAgentActionFilter
-    @IAgentActionName( name = "act/attack/area" )
+    @IAgentActionName( name = "attack/area" )
     private void areaattack( final String p_attack, final double p_power, final String p_direction )
     {
         final CAttack l_attack = this.attack( p_attack );
@@ -597,6 +605,19 @@ public final class CPokemon extends IBaseAgent
             final DoubleMatrix1D l_position = new DenseDoubleMatrix1D( CPokemon.this.position().toArray() );
 
             return Stream.concat( this.self( l_position, l_goal ), this.perceive( l_position, l_goal ) );
+        }
+
+        @Override
+        public final Collection<ILiteral> literal( final String p_key )
+        {
+            switch ( p_key )
+            {
+                case "myposition" : return Stream.of( this.literalposition( "myposition", CPokemon.this.position() ) ).collect( Collectors.toSet() );
+                case "mygoal" : return Stream.of( this.literalposition( "mygoal", CPokemon.this.goal() ) ).collect( Collectors.toSet() );
+                case "ima" : return Stream.of( CLiteral.from( "ima", Stream.of( CLiteral.from( m_pokemon.toLowerCase() ) ) ) ).collect( Collectors.toSet() );
+            }
+
+            return super.literal( p_key );
         }
 
         /**

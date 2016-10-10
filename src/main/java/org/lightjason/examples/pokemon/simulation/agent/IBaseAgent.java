@@ -132,6 +132,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         if ( m_position.equals( l_position ) )
             this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, CLiteral.from( "movement/standstill" ) ) );
 
+
         // get the next landmark
         final DoubleMatrix1D l_goalposition = this.goal();
 
@@ -156,8 +157,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
                     CLiteral.from( "position/beyond", Stream.of( CRawTerm.from( l_goalposition ) ) )
                 )
             );
-
-        // System.out.println( this );
 
         return this;
     }

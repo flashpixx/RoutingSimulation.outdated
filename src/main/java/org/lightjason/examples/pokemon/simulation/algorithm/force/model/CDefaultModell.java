@@ -35,7 +35,7 @@ public final class CDefaultModell<T extends IForce<T>> implements IModel<T>
 {
 
     @Override
-    public Double apply( final T p_object, final Stream<T> p_stream )
+    public final Double apply( final T p_object, final Stream<T> p_stream )
     {
         return p_stream
             .map( i -> {

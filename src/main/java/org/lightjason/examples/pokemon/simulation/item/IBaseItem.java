@@ -32,6 +32,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
+import org.lightjason.examples.pokemon.simulation.IElement;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.IObjectScale;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotential;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotentialMetric;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotentialScale;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.IReduce;
 
 import java.util.Collections;
 import java.util.List;
@@ -169,4 +175,44 @@ public abstract class IBaseItem implements IItem
     {
         return m_position;
     }
+
+    // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public final IPotentialMetric<IElement> metric()
+    {
+        return null;
+    }
+
+    @Override
+    public final IPotential potential()
+    {
+        return null;
+    }
+
+    @Override
+    public final IPotentialScale potentialscale()
+    {
+        return null;
+    }
+
+    @Override
+    public final IReduce potentialreduce()
+    {
+        return null;
+    }
+
+    @Override
+    public final IObjectScale<IElement> objectscale()
+    {
+        return null;
+    }
+
+    @Override
+    public final IReduce objectreduce()
+    {
+        return null;
+    }
+
+
 }

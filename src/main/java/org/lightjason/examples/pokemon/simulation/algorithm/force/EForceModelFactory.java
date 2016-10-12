@@ -21,36 +21,42 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation;
+package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import org.lightjason.agentspeak.language.ITerm;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
-import org.lightjason.examples.pokemon.ui.ISprite;
-import cern.colt.matrix.DoubleMatrix1D;
-
-import java.util.stream.Stream;
+import org.lightjason.examples.pokemon.simulation.IElement;
 
 
 /**
- * interface of a basic element that can be
- * executable within the simulation (so position
- * and preferences are required)
+ * force model factory
  */
-public interface IElement extends ISprite, IForce<IElement>
+public enum EForceModelFactory
 {
+    DEFAULT( new CDefaultForceModell<IElement>() );
 
     /**
-     * returns a stream of all attributes
-     *
-     * @return attribute stream
+     * force model instance
      */
-    Stream<ITerm> attribute();
+    private final IForceModel<IElement> m_modell;
+
 
     /**
-     * returns the current position of the object
+     * ctor
      *
-     * @return position tupel
+     * @param p_modell element force model
      */
-    DoubleMatrix1D position();
+    EForceModelFactory( final IForceModel<IElement> p_modell )
+    {
+        m_modell = p_modell;
+    }
+
+    /**
+     * returns the force modell
+     *
+     * @return force modell
+     */
+    public IForceModel<IElement> get()
+    {
+        return m_modell;
+    }
 
 }

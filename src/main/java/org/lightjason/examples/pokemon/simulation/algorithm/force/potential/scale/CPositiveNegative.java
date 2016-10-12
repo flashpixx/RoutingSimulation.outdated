@@ -33,7 +33,7 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.sca
  *
  * @see https://en.wikipedia.org/wiki/Sigmoid_function
  */
-public final class CPositiveNegativ implements IScale
+public final class CPositiveNegative implements IScale
 {
     /**
      * inflection point of the sigmoid function
@@ -55,7 +55,7 @@ public final class CPositiveNegativ implements IScale
      *
      * @param p_maximum maximum value
      */
-    public CPositiveNegativ( final double p_maximum )
+    public CPositiveNegative( final double p_maximum )
     {
         this( p_maximum, 1 );
     }
@@ -66,7 +66,7 @@ public final class CPositiveNegativ implements IScale
      * @param p_maximum maximum value
      * @param p_gradient gradient of the sigmoid
      */
-    public CPositiveNegativ( final double p_maximum, final double p_gradient )
+    public CPositiveNegative( final double p_maximum, final double p_gradient )
     {
         this( p_maximum, p_gradient, p_maximum / 2 );
     }
@@ -79,7 +79,7 @@ public final class CPositiveNegativ implements IScale
      * @param p_gradient gradient of the sigmoid function
      * @param p_inflectionpoint inflection point of the sigmoide function
      */
-    public CPositiveNegativ( final double p_maximum, final double p_gradient, final double p_inflectionpoint )
+    public CPositiveNegative( final double p_maximum, final double p_gradient, final double p_inflectionpoint )
     {
         m_gradient = p_gradient;
         m_inflectionpoint = p_inflectionpoint;

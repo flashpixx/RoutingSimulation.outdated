@@ -64,6 +64,14 @@ agent :
         pokemon : "lickitung"
         force   : "sum"
         asl     : "agent.asl"
+        force   :
+             model : "default"
+             potential :
+                  type  : "Exponential"
+                  scale :
+                      type : "PositiveNegative"
+                      argument1 : 1
+                      argument2 : 0.5
 
 
     caterpie :

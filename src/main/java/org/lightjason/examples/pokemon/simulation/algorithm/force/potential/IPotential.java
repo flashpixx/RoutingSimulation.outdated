@@ -21,14 +21,16 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force;
+package org.lightjason.examples.pokemon.simulation.algorithm.force.potential;
 
-import java.util.function.Function;
+
+import java.util.function.UnaryOperator;
 
 
 /**
- * metric function to calculate distance between potentials
+ * neutral potential function of any
+ * element on a scaling [0,max]
  */
-public interface IPotentialMetric<T> extends Function<T, Double>
+public interface IPotential extends UnaryOperator<Double>
 {
 }

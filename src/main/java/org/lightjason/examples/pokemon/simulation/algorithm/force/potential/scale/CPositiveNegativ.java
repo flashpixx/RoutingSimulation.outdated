@@ -21,21 +21,33 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force;
+
+package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale;
+
 
 /**
- * exponential potential function
+ * scales a value within in the range [0,max] in
+ * [0,0.5*max) to 1 (positiv potential) and
+ * [0.5*max,max] to -1 (negative potential)
+ * based on a sigmoid function
+ *
+ * @see https://en.wikipedia.org/wiki/Sigmoid_function
  */
-public final class CExponentialPotential implements IPotential
+public final class CPositiveNegativ implements IScale
 {
     /**
-     * maximum value of the metric range
+     * inflection point of the sigmoid function
      */
-    private final double m_maximum;
+    private final double m_inflectionpoint;
     /**
-     * scaling factor
+     * sigmoid value of the maximum
+     * for scaling
      */
-    private final double m_scale;
+    private final double m_resultmaximum;
+    /**
+     * gradient of the sigmoid function
+     */
+    private final double m_gradient;
 
 
     /**
@@ -43,7 +55,7 @@ public final class CExponentialPotential implements IPotential
      *
      * @param p_maximum maximum value
      */
-    public CExponentialPotential( final double p_maximum )
+    public CPositiveNegativ( final double p_maximum )
     {
         this( p_maximum, 1 );
     }
@@ -52,19 +64,32 @@ public final class CExponentialPotential implements IPotential
      * ctor
      *
      * @param p_maximum maximum value
-     * @param p_scale scaling value
+     * @param p_gradient gradient of the sigmoid
      */
-    public CExponentialPotential( final double p_maximum, final double p_scale )
+    public CPositiveNegativ( final double p_maximum, final double p_gradient )
     {
-        m_maximum = p_maximum;
-        m_scale = p_scale;
+        this( p_maximum, p_gradient, p_maximum / 2 );
     }
 
+
+    /**
+     * ctor
+     *
+     * @param p_maximum maximum value
+     * @param p_gradient gradient of the sigmoid function
+     * @param p_inflectionpoint inflection point of the sigmoide function
+     */
+    public CPositiveNegativ( final double p_maximum, final double p_gradient, final double p_inflectionpoint )
+    {
+        m_gradient = p_gradient;
+        m_inflectionpoint = p_inflectionpoint;
+        m_resultmaximum = this.apply( p_maximum );
+    }
 
     @Override
     public final Double apply( final Double p_double )
     {
-        return Math.exp( m_maximum - m_scale * p_double );
+        return ( -1 / ( 1 + Math.exp( -m_gradient * ( p_double - m_inflectionpoint ) ) ) ) / m_resultmaximum;
     }
 
 }

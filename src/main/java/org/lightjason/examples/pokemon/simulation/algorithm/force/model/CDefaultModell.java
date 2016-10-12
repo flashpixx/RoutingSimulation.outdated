@@ -21,14 +21,38 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force;
+package org.lightjason.examples.pokemon.simulation.algorithm.force.model;
 
-import java.util.function.UnaryOperator;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
+
+import java.util.stream.Stream;
 
 
 /**
- * scaling function of a single value
+ * defines a default force model
  */
-public interface IPotentialScale extends UnaryOperator<Double>
+public final class CDefaultModell<T extends IForce<T>> implements IModel<T>
 {
+
+    @Override
+    public Double apply( final T p_object, final Stream<T> p_stream )
+    {
+        return p_stream
+            .map( i -> {
+                final double l_distance = 0.5 * p_object.metric().apply( i );
+
+                return p_object.objectscale()
+                           .apply( p_object, i )
+                       *
+                       Stream.of(
+
+                           p_object.potentialscale().apply( p_object.potential().apply( l_distance ) ),
+                           p_object.potentialscale().apply( i.potential().apply( l_distance ) )
+
+                       ).collect( p_object.potentialreduce() );
+
+            } )
+            .collect( p_object.objectreduce() );
+    }
+
 }

@@ -21,16 +21,14 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force;
-
+package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale;
 
 import java.util.function.UnaryOperator;
 
 
 /**
- * neutral potential function of any
- * element on a scaling [0,max]
+ * scaling function of a single value
  */
-public interface IPotential extends UnaryOperator<Double>
+public interface IScale extends UnaryOperator<Double>
 {
 }

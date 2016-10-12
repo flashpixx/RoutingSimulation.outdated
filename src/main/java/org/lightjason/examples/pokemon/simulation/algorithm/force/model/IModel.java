@@ -21,36 +21,17 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force;
+package org.lightjason.examples.pokemon.simulation.algorithm.force.model;
 
+import org.lightjason.examples.pokemon.simulation.algorithm.force.IForce;
+
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 
 /**
- * defines a default force model
+ * defines a force complete force model
  */
-public final class CDefaultForceModell<T extends IForce<T>> implements IForceModel<T>
+public interface IModel<T extends IForce<?>> extends BiFunction<T, Stream<T>, Double>
 {
-
-    @Override
-    public Double apply( final T p_object, final Stream<T> p_stream )
-    {
-        return p_stream
-            .map( i -> {
-                final double l_distance = 0.5 * p_object.metric().apply( i );
-
-                return p_object.objectscale()
-                           .apply( p_object, i )
-                       *
-                       Stream.of(
-
-                           p_object.potentialscale().apply( p_object.potential().apply( l_distance ) ),
-                           p_object.potentialscale().apply( i.potential().apply( l_distance ) )
-
-                       ).collect( p_object.potentialreduce() );
-
-            } )
-            .collect( p_object.objectreduce() );
-    }
-
 }

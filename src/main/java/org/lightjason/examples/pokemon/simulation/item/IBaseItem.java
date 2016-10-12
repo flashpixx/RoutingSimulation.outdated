@@ -34,9 +34,9 @@ import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IObjectScale;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotential;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotentialMetric;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotentialScale;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IPotential;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IMetric;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IScale;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IReduce;
 
 import java.util.Collections;
@@ -179,7 +179,7 @@ public abstract class IBaseItem implements IItem
     // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final IPotentialMetric<IElement> metric()
+    public final IMetric<IElement> metric()
     {
         return null;
     }
@@ -191,7 +191,7 @@ public abstract class IBaseItem implements IItem
     }
 
     @Override
-    public final IPotentialScale potentialscale()
+    public final IScale potentialscale()
     {
         return null;
     }

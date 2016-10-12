@@ -21,15 +21,14 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force;
+package org.lightjason.examples.pokemon.simulation.algorithm.force.potential;
 
-import java.util.function.BiFunction;
-import java.util.stream.Stream;
+import java.util.function.Function;
 
 
 /**
- * defines a force complete force model
+ * metric function to calculate distance between potentials
  */
-public interface IForceModel<T extends IForce<?>> extends BiFunction<T, Stream<T>, Double>
+public interface IMetric<T> extends Function<T, Double>
 {
 }

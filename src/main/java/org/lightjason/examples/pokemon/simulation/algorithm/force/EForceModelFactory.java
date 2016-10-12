@@ -24,6 +24,8 @@
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
 import org.lightjason.examples.pokemon.simulation.IElement;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.model.CDefaultModell;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.model.IModel;
 
 
 /**
@@ -31,12 +33,12 @@ import org.lightjason.examples.pokemon.simulation.IElement;
  */
 public enum EForceModelFactory
 {
-    DEFAULT( new CDefaultForceModell<IElement>() );
+    DEFAULT( new CDefaultModell<IElement>() );
 
     /**
      * force model instance
      */
-    private final IForceModel<IElement> m_modell;
+    private final IModel<IElement> m_modell;
 
 
     /**
@@ -44,7 +46,7 @@ public enum EForceModelFactory
      *
      * @param p_modell element force model
      */
-    EForceModelFactory( final IForceModel<IElement> p_modell )
+    EForceModelFactory( final IModel<IElement> p_modell )
     {
         m_modell = p_modell;
     }
@@ -54,7 +56,7 @@ public enum EForceModelFactory
      *
      * @return force modell
      */
-    public IForceModel<IElement> get()
+    public IModel<IElement> get()
     {
         return m_modell;
     }

@@ -23,6 +23,11 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IPotential;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IMetric;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IScale;
+
+
 /**
  * interface for force calculation
  */
@@ -33,7 +38,7 @@ public interface IForce<T>
      *
      * @return metric function
      */
-    IPotentialMetric<T> metric();
+    IMetric<T> metric();
 
     /**
      * returns a potential function
@@ -50,7 +55,7 @@ public interface IForce<T>
      *
      * @return scaling function
      */
-    IPotentialScale potentialscale();
+    IScale potentialscale();
 
 
     /**

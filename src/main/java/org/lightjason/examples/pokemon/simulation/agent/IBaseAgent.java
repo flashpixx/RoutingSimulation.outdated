@@ -28,9 +28,9 @@ import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.examples.pokemon.simulation.CMath;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IObjectScale;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotential;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotentialMetric;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IPotentialScale;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IPotential;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IMetric;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IScale;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.IReduce;
 import org.lightjason.examples.pokemon.simulation.environment.EDirection;
 import org.lightjason.examples.pokemon.simulation.environment.EQuadrant;
@@ -167,7 +167,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final IPotentialMetric<IElement> metric()
+    public final IMetric<IElement> metric()
     {
         return null;
     }
@@ -179,7 +179,7 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     }
 
     @Override
-    public final IPotentialScale potentialscale()
+    public final IScale potentialscale()
     {
         return null;
     }

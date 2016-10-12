@@ -23,15 +23,47 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.stream.Collector;
-
-
 /**
- * force combiner to calculate the resulting force of a object stream
+ * interface for force calculation
  */
-public interface ICombine<T> extends Collector<Pair<T, Double>, Double, Double>
+public interface IForce<N extends Number, M>
 {
+
+    /**
+     * returns a potential function
+     * of the object
+     *
+     * @return potential function
+     */
+    IPotential<N> potential();
+
+
+    /**
+     * returns a potential scaling
+     * function of the object
+     *
+     * @return scaling function
+     */
+    IScale<N> potentialscale();
+
+
+    /**
+     * returns a potential reduction function,
+     * to reduce a set of potential values into
+     * a single value
+     *
+     * @return reduction function
+     */
+    IPotentialReduce<N> potentialreduce();
+
+
+    /**
+     * returns a object reduction function
+     * to reduce pairs of objects and potential
+     * values to a single vlaue
+     *
+     * @return reduction function
+     */
+    IObjectPotentialReduce<N, M> objectreduce();
 
 }

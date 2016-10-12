@@ -23,37 +23,13 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
+import java.util.function.BiFunction;
+import java.util.stream.Stream;
+
 
 /**
- * factory for creating a force object
+ * defines a force complete force model
  */
-public enum EForceFactory
+public interface IForceModel<N extends Number, M extends IForce<N, ?>> extends BiFunction<M, Stream<M>, N>
 {
-    SUM( null );
-
-    /**
-     * force object
-     */
-    private final ICombine m_force;
-
-    /**
-     * ctor
-     *
-     * @param p_force force model
-     */
-    EForceFactory( final ICombine p_force )
-    {
-        m_force = p_force;
-    }
-
-    /**
-     * returns force model
-     *
-     * @return force object
-     */
-    public final ICombine get()
-    {
-        return m_force;
-    }
-
 }

@@ -33,9 +33,6 @@ import org.lightjason.agentspeak.consistency.metric.CNCD;
 import org.lightjason.agentspeak.consistency.metric.CSymmetricDifference;
 import org.lightjason.agentspeak.consistency.metric.CWeightedDifference;
 import org.lightjason.agentspeak.consistency.metric.IMetric;
-import org.lightjason.agentspeak.language.CLiteral;
-import org.lightjason.agentspeak.language.CRawTerm;
-import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.score.IAggregation;
 import org.lightjason.examples.pokemon.CCommon;
 import org.lightjason.examples.pokemon.simulation.CMath;
@@ -178,142 +175,23 @@ public final class TestCForce
                 "\nObject Distance: equal agent {0}, unequal agents {1}, agent & static object {2}\n",
 
                 // testing different metric types
-                EMetric.NCD_BZIP.get().calculate(
+                EMetric.NCD_BZIP.get().apply(
                     m_agent.get( 0 ).attribute(),
                     m_agent.get( 0 ).attribute()
                 ),
 
-                EMetric.NCD_BZIP.get().calculate(
+                EMetric.NCD_BZIP.get().apply(
                     m_agent.get( 0 ).attribute(),
                     m_agent.get( 1 ).attribute()
                 ),
 
-                EMetric.NCD_BZIP.get().calculate(
+                EMetric.NCD_BZIP.get().apply(
                     m_agent.get( 0 ).attribute(),
                     m_element.get( 0 ).attribute()
                 )
             )
         );
 
-    }
-
-    /**
-     * literal test
-     */
-    @Test
-    public void literaltest()
-    {
-        // create literal
-        final ILiteral l_literal = CLiteral.from(
-            "fatema",
-            Stream.of(
-                CLiteral.from(
-                    "age",
-                    Stream.of(
-                        CRawTerm.from( 25 )
-                    )
-                ),
-                CLiteral.from(
-                        "direction",
-                            Stream.of(
-                                    CRawTerm.from( "right" )
-                            )
-                    ),
-
-                    CLiteral.from(
-                            "like",
-                            Stream.of(
-                                    CRawTerm.from( "coffee" ),
-                                    CRawTerm.from( "rain" )
-                            )
-                    ),
-                    CLiteral.from( "goal",
-                            Stream.of(
-                                    CRawTerm.from( "teashop" )
-                            )
-
-                    ),
-                    CLiteral.from( "dislike",
-                            Stream.of(
-                                    CRawTerm.from( "tea" ),
-                                    CRawTerm.from( "fire" )
-                            )
-                    )
-            )
-        );
-
-        final ILiteral l_literal2 = CLiteral.from(
-                "sayeeda",
-                Stream.of(
-                        CLiteral.from(
-                                "age",
-                                Stream.of(
-                                        CRawTerm.from( 28 )
-                                )
-                        ),
-                        CLiteral.from(
-                                "direction",
-                                Stream.of(
-                                        CRawTerm.from( "left" )
-                                )
-                        ),
-
-                        CLiteral.from( "like",
-                                Stream.of(
-                                        CRawTerm.from( "water" ),
-                                        CRawTerm.from( "food" ),
-                                        CRawTerm.from( "fire" )
-                                )
-                        ),
-                        CLiteral.from( "goal",
-                                Stream.of(
-                                        CRawTerm.from( "trainplatform" )
-                                )
-                        ),
-                        CLiteral.from( "dislike",
-                                Stream.of(
-                                        CRawTerm.from( "coffee" ),
-                                        CRawTerm.from( "rain" )
-                                )
-                        )
-                )
-        );
-
-        final ILiteral l_literal3 = CLiteral.from(
-                "store",
-                Stream.of(
-                        CLiteral.from(
-                                "coffee",
-                                Stream.of(
-                                        CRawTerm.from( 1 )
-                                )
-                        )       )
-        );
-
-        // show full literal - but NCD is not zero, because we need more data to calculate the distance a single literal is to short
-        System.out.println();
-        System.out.println(
-            MessageFormat.format(
-                "{0}\n{1}\n\ntest distance: {2}\n",
-                l_literal,
-                l_literal2,
-                EMetric.NCD_DEFLATE.get().calculate(
-                    Stream.of( l_literal ),
-                    Stream.of( l_literal2 )
-                )
-            )
-        );
-
-        System.out.println(
-                MessageFormat.format(
-                        "literal {0} test distance: {1}",
-                        l_literal,
-                        EMetric.LEVENSHTEIN.get().calculate(
-                                Stream.of( l_literal ),
-                                Stream.of( l_literal3 )
-                        )
-                )
-        );
     }
 
 
@@ -328,7 +206,6 @@ public final class TestCForce
         final TestCForce l_test = new TestCForce();
         l_test.initialize();
         l_test.testForce();
-        l_test.literaltest();
     }
 
 

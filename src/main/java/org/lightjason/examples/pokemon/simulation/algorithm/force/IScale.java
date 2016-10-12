@@ -23,15 +23,12 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-
 import java.util.function.UnaryOperator;
 
 
 /**
- * gravitation function, which defines the local
- * gravitation of an element, the centering of
- * the function should be at 0
+ * scaling function of a single value
  */
-public interface IGravitation extends UnaryOperator<Double>
+public interface IScale<T extends Number> extends UnaryOperator<T>
 {
 }

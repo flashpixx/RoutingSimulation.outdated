@@ -23,12 +23,12 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale;
 
-import java.util.function.UnaryOperator;
+import java.util.function.BiFunction;
 
 
 /**
- * scaling function of a single value
+ * scaling function of potential value
  */
-public interface IScale extends UnaryOperator<Double>
+public interface IScale extends BiFunction<Double, Double, Double>
 {
 }

@@ -83,13 +83,12 @@ public final class CPositiveNegative implements IScale
     {
         m_gradient = p_gradient;
         m_inflectionpoint = p_inflectionpoint;
-        m_resultmaximum = this.apply( p_maximum );
+        m_resultmaximum = this.apply( p_maximum, 1.0 );
     }
 
     @Override
-    public final Double apply( final Double p_double )
+    public final Double apply( final Double p_metric, final Double p_potential )
     {
-        return ( -1 / ( 1 + Math.exp( -m_gradient * ( p_double - m_inflectionpoint ) ) ) ) / m_resultmaximum;
+        return p_potential * ( ( -1 / ( 1 + Math.exp( -m_gradient * ( p_metric - m_inflectionpoint ) ) ) ) / m_resultmaximum );
     }
-
 }

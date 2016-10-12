@@ -26,8 +26,14 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force;
 /**
  * interface for force calculation
  */
-public interface IForce<N extends Number, M>
+public interface IForce<N extends Number, M extends IForce<N, ?>>
 {
+    /**
+     * returns the potential metric function
+     *
+     * @return metric function
+     */
+    IPotentialMetric<N, M> metric();
 
     /**
      * returns a potential function

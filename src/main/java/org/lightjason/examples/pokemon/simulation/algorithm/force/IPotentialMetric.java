@@ -23,33 +23,12 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import java.util.stream.Stream;
+import java.util.function.Function;
 
 
 /**
- * defines a default force model
+ * metric function to calculate distance between potentials
  */
-public final class CDefaultForce<N extends Number, M extends IForce<N, ?>> implements IForceModel<N, M>
+public interface IPotentialMetric<N extends Number, M> extends Function<M, N>
 {
-
-    @Override
-    public final N apply( final M p_object, final Stream<M> p_stream )
-    {
-        /*
-        p_stream
-            .map( i -> {
-                      final N l_distance = 0.5 * p_object.metric().apply( i );
-
-                      return p_object.objectscale().apply( p_object, i,
-                      Stream.of(
-                                                p_object.potentialscale().apply( p_object.potential().apply( l_distance ) ),
-                                                p_object.potentialscale().apply( i.potential().apply( l_distance ) )
-                                            ).collect( p_object.potentialreduce() )
-                                            ).collection( p_object.objectreduce() )
-            } )
-        */
-
-        return null;
-    }
-
 }

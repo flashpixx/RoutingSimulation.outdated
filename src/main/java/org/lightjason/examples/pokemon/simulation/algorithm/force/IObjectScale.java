@@ -23,13 +23,12 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import java.util.stream.Collector;
+import java.util.function.BiFunction;
 
 
 /**
- * reducing operation for a set of elements
+ * interface to define a scaling value of objects
  */
-public interface IPotentialReduce<T extends Number> extends Collector<T, T, T>
+public interface IObjectScale<T> extends BiFunction<T, T, Double>
 {
-
 }

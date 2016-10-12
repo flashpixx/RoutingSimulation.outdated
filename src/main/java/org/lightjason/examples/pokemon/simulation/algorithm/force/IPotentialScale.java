@@ -29,6 +29,6 @@ import java.util.function.UnaryOperator;
 /**
  * scaling function of a single value
  */
-public interface IScale<T extends Number> extends UnaryOperator<T>
+public interface IPotentialScale extends UnaryOperator<Double>
 {
 }

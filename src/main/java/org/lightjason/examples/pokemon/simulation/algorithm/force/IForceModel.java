@@ -30,6 +30,6 @@ import java.util.stream.Stream;
 /**
  * defines a force complete force model
  */
-public interface IForceModel<N extends Number, M extends IForce<N, ?>> extends BiFunction<M, Stream<M>, N>
+public interface IForceModel<T extends IForce<?>> extends BiFunction<T, Stream<T>, Double>
 {
 }

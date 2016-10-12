@@ -31,6 +31,6 @@ import java.util.function.UnaryOperator;
  * neutral potential function of any
  * element on a scaling [0,max]
  */
-public interface IPotential<T extends Number> extends UnaryOperator<T>
+public interface IPotential extends UnaryOperator<Double>
 {
 }

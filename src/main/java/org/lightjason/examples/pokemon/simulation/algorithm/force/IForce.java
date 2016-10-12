@@ -26,14 +26,14 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force;
 /**
  * interface for force calculation
  */
-public interface IForce<N extends Number, M extends IForce<N, ?>>
+public interface IForce<T>
 {
     /**
      * returns the potential metric function
      *
      * @return metric function
      */
-    IPotentialMetric<N, M> metric();
+    IPotentialMetric<T> metric();
 
     /**
      * returns a potential function
@@ -41,7 +41,7 @@ public interface IForce<N extends Number, M extends IForce<N, ?>>
      *
      * @return potential function
      */
-    IPotential<N> potential();
+    IPotential potential();
 
 
     /**
@@ -50,7 +50,7 @@ public interface IForce<N extends Number, M extends IForce<N, ?>>
      *
      * @return scaling function
      */
-    IScale<N> potentialscale();
+    IPotentialScale potentialscale();
 
 
     /**
@@ -60,8 +60,15 @@ public interface IForce<N extends Number, M extends IForce<N, ?>>
      *
      * @return reduction function
      */
-    IPotentialReduce<N> potentialreduce();
+    IReduce potentialreduce();
 
+
+    /**
+     * returns a object scaling function
+     *
+     * @return object scale function
+     */
+    IObjectScale<T> objectscale();
 
     /**
      * returns a object reduction function
@@ -70,6 +77,6 @@ public interface IForce<N extends Number, M extends IForce<N, ?>>
      *
      * @return reduction function
      */
-    IObjectPotentialReduce<N, M> objectreduce();
+    IReduce objectreduce();
 
 }

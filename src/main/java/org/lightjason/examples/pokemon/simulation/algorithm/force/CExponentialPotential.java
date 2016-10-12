@@ -26,7 +26,7 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force;
 /**
  * exponential potential function
  */
-public final class CExponentialPotential implements IPotential<Double>
+public final class CExponentialPotential implements IPotential
 {
     /**
      * maximum value of the metric range

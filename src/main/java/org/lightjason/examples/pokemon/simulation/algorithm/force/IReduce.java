@@ -23,15 +23,13 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.stream.Collector;
 
 
 /**
- * interface to reduce a pair of object and potential value
- * to a single value
+ * reducing operation for a set of elements
  */
-public interface IObjectPotentialReduce<N extends Number, M> extends Collector<Pair<M, N>, N, N>
+public interface IReduce extends Collector<Double, Double, Double>
 {
+
 }

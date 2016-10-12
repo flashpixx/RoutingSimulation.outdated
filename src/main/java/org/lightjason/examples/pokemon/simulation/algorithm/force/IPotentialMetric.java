@@ -29,6 +29,6 @@ import java.util.function.Function;
 /**
  * metric function to calculate distance between potentials
  */
-public interface IPotentialMetric<N extends Number, M> extends Function<M, N>
+public interface IPotentialMetric<T> extends Function<T, Double>
 {
 }

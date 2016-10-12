@@ -32,7 +32,7 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force;
  *
  * @see https://en.wikipedia.org/wiki/Sigmoid_function
  */
-public final class CLikeDislike implements IScale<Double>
+public final class CLikeDislike implements IPotentialScale
 {
     /**
      * inflection point of the sigmoid function

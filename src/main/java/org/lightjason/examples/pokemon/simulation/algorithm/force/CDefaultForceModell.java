@@ -29,27 +29,28 @@ import java.util.stream.Stream;
 /**
  * defines a default force model
  */
-public final class CDefaultForce<N extends Number, M extends IForce<N, ?>> implements IForceModel<N, M>
+public final class CDefaultForceModell<T extends IForce<T>> implements IForceModel<T>
 {
 
     @Override
-    public final N apply( final M p_object, final Stream<M> p_stream )
+    public Double apply( final T p_object, final Stream<T> p_stream )
     {
-        /*
-        p_stream
+        return p_stream
             .map( i -> {
-                      final N l_distance = 0.5 * p_object.metric().apply( i );
+                final double l_distance = 0.5 * p_object.metric().apply( i );
 
-                      return p_object.objectscale().apply( p_object, i,
-                      Stream.of(
-                                                p_object.potentialscale().apply( p_object.potential().apply( l_distance ) ),
-                                                p_object.potentialscale().apply( i.potential().apply( l_distance ) )
-                                            ).collect( p_object.potentialreduce() )
-                                            ).collection( p_object.objectreduce() )
+                return p_object.objectscale()
+                           .apply( p_object, i )
+                       *
+                       Stream.of(
+
+                           p_object.potentialscale().apply( p_object.potential().apply( l_distance ) ),
+                           p_object.potentialscale().apply( i.potential().apply( l_distance ) )
+
+                       ).collect( p_object.potentialreduce() );
+
             } )
-        */
-
-        return null;
+            .collect( p_object.objectreduce() );
     }
 
 }

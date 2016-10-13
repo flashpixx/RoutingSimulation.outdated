@@ -40,12 +40,6 @@ public abstract class IPositiveNegative implements BiFunction<Double, Double, Do
 {
 
     /**
-     * ctor
-     */
-    protected IPositiveNegative()
-    {}
-
-    /**
      * returns the gradient value
      * of the sigmoid function
      *

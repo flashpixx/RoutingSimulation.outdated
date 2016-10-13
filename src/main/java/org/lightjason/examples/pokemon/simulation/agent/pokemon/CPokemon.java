@@ -36,6 +36,7 @@ import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IExponential;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IPositiveNegative;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -393,6 +394,33 @@ public final class CPokemon extends IBaseAgent
         }
 
     }
+
+    /**
+     * like / dislike function
+     */
+    private final class CLikeDislike extends IPositiveNegative
+    {
+
+        @Override
+        protected final double gradient()
+        {
+            return 0;
+        }
+
+        @Override
+        protected final double inflectionpoint()
+        {
+            return 0;
+        }
+
+        @Override
+        protected final double resultmaximum()
+        {
+            return 0;
+        }
+
+    }
+
 
 
     // --- on-demand beliefbases -------------------------------------------------------------------------------------------------------------------------------

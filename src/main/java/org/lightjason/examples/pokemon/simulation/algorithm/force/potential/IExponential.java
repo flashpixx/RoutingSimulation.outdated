@@ -34,13 +34,6 @@ public abstract class IExponential implements UnaryOperator<Double>
 {
 
     /**
-     * ctor
-     */
-    protected IExponential()
-    {}
-
-
-    /**
      * returns maximum value of the metric range
      *
      * @return maximum value

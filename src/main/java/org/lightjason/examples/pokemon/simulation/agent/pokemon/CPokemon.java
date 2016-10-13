@@ -57,6 +57,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -233,6 +237,43 @@ public final class CPokemon extends IBaseAgent
                : m_attribute.getOrDefault( ATTRIBUTENEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
     }
 
+    // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public final Function<IElement, Double> metric()
+    {
+        return null;
+    }
+
+    @Override
+    public final UnaryOperator<Double> potential()
+    {
+        return null;
+    }
+
+    @Override
+    public final BiFunction<Double, Double, Double> potentialscale()
+    {
+        return null;
+    }
+
+    @Override
+    public final Collector<Double, ?, Double> potentialreduce()
+    {
+        return null;
+    }
+
+    @Override
+    public final BiFunction<IElement, IElement, Double> distancescale()
+    {
+        return null;
+    }
+
+    @Override
+    public final Collector<Double, ?, Double> forceresult()
+    {
+        return null;
+    }
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
 

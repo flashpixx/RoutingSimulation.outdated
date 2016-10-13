@@ -25,6 +25,9 @@
 package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale;
 
 
+import java.util.function.BiFunction;
+
+
 /**
  * scales a value within in the range [0,max] in
  * [0,0.5*max) to 1 (positiv potential) and
@@ -33,7 +36,7 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.sca
  *
  * @see https://en.wikipedia.org/wiki/Sigmoid_function
  */
-public final class CPositiveNegative implements IScale
+public final class CPositiveNegative implements BiFunction<Double, Double, Double>
 {
     /**
      * inflection point of the sigmoid function

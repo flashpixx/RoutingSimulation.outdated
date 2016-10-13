@@ -23,9 +23,10 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force;
 
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IPotential;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IMetric;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IScale;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collector;
 
 
 /**
@@ -34,11 +35,12 @@ import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scal
 public interface IForce<T>
 {
     /**
-     * returns the potential metric function
+     * returns the potential metric function,
+     * to calculate a value between objects
      *
      * @return metric function
      */
-    IMetric<T> metric();
+    Function<T, Double> metric();
 
     /**
      * returns a potential function
@@ -46,16 +48,16 @@ public interface IForce<T>
      *
      * @return potential function
      */
-    IPotential potential();
+    UnaryOperator<Double> potential();
 
 
     /**
      * returns a potential scaling
      * function of the object
      *
-     * @return scaling function
+     * @return scaling function (first parameter is metric value, second potential value)
      */
-    IScale potentialscale();
+    BiFunction<Double, Double, Double> potentialscale();
 
 
     /**
@@ -63,25 +65,29 @@ public interface IForce<T>
      * to reduce a set of potential values into
      * a single value
      *
-     * @return reduction function
+     * @return reduction function to reduce a set
+     * of (scaled) potential values into a single value
      */
-    IReduce potentialreduce();
+    Collector<Double, ?, Double> potentialreduce();
 
 
     /**
-     * returns a object scaling function
+     * returns a scaling function to
+     * scale vale based on the physical
+     * distance of objects
      *
-     * @return object scale function
+     * @return scale function
      */
-    IObjectScale<T> objectscale();
+    BiFunction<T, T, Double> distancescale();
 
     /**
-     * returns a object reduction function
-     * to reduce pairs of objects and potential
-     * values to a single vlaue
+     * returns a reduction function
+     * to reduce a set of (scaled) forces into
+     * a single force value
      *
-     * @return reduction function
+     * @return reduction function to reduce a set
+     * of obj
      */
-    IReduce objectreduce();
+    Collector<Double, ?, Double> forceresult();
 
 }

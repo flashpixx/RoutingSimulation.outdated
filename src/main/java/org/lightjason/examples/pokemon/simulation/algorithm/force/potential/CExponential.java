@@ -24,10 +24,13 @@
 package org.lightjason.examples.pokemon.simulation.algorithm.force.potential;
 
 
+import java.util.function.UnaryOperator;
+
+
 /**
  * exponential potential function
  */
-public final class CExponential implements IPotential
+public final class CExponential implements UnaryOperator<Double>
 {
     /**
      * maximum value of the metric range

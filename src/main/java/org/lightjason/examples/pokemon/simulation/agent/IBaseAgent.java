@@ -26,12 +26,6 @@ package org.lightjason.examples.pokemon.simulation.agent;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.examples.pokemon.simulation.CMath;
-import org.lightjason.examples.pokemon.simulation.IElement;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IObjectScale;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IPotential;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IMetric;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IScale;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IReduce;
 import org.lightjason.examples.pokemon.simulation.environment.EDirection;
 import org.lightjason.examples.pokemon.simulation.environment.EQuadrant;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
@@ -163,46 +157,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
         return this;
     }
 
-
-    // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public final IMetric<IElement> metric()
-    {
-        return null;
-    }
-
-    @Override
-    public final IPotential potential()
-    {
-        return null;
-    }
-
-    @Override
-    public final IScale potentialscale()
-    {
-        return null;
-    }
-
-    @Override
-    public final IReduce potentialreduce()
-    {
-        return null;
-    }
-
-    @Override
-    public final IObjectScale<IElement> objectscale()
-    {
-        return null;
-    }
-
-    @Override
-    public final IReduce objectreduce()
-    {
-        return null;
-    }
-
-
     // --- object getter ---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -237,8 +191,6 @@ public abstract class IBaseAgent extends org.lightjason.agentspeak.agent.IBaseAg
     }
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
-    // https://en.wikipedia.org/wiki/Fitness_proportionate_selection to calculate the direction
-
 
     /**
      * route calculation and add landmarks at the beginning

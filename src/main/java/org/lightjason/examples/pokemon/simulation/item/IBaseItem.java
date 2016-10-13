@@ -33,16 +33,15 @@ import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.examples.pokemon.simulation.IElement;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IObjectScale;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IPotential;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IMetric;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IScale;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.IReduce;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -179,40 +178,39 @@ public abstract class IBaseItem implements IItem
     // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public final IMetric<IElement> metric()
+    public final Function<IElement, Double> metric()
     {
         return null;
     }
 
     @Override
-    public final IPotential potential()
+    public final UnaryOperator<Double> potential()
     {
         return null;
     }
 
     @Override
-    public final IScale potentialscale()
+    public final BiFunction<Double, Double, Double> potentialscale()
     {
         return null;
     }
 
     @Override
-    public final IReduce potentialreduce()
+    public final Collector<Double, ?, Double> potentialreduce()
     {
         return null;
     }
 
     @Override
-    public final IObjectScale<IElement> objectscale()
+    public final BiFunction<IElement, IElement, Double> distancescale()
     {
         return null;
     }
 
     @Override
-    public final IReduce objectreduce()
+    public final Collector<Double, ?, Double> forceresult()
     {
         return null;
     }
-
 
 }

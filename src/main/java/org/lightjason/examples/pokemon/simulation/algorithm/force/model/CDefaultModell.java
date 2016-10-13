@@ -41,7 +41,7 @@ public final class CDefaultModell<T extends IForce<T>> implements IModel<T>
             .map( i -> {
                 final double l_distance = 0.5 * p_object.metric().apply( i );
 
-                return p_object.objectscale()
+                return p_object.distancescale()
                            .apply( p_object, i )
                        *
                        Stream.of(
@@ -52,7 +52,7 @@ public final class CDefaultModell<T extends IForce<T>> implements IModel<T>
                        ).collect( p_object.potentialreduce() );
 
             } )
-            .collect( p_object.objectreduce() );
+            .collect( p_object.forceresult() );
     }
 
 }

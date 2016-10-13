@@ -80,6 +80,7 @@ public interface IForce<T>
      */
     BiFunction<T, T, Double> distancescale();
 
+
     /**
      * returns a reduction function
      * to reduce a set of (scaled) forces into

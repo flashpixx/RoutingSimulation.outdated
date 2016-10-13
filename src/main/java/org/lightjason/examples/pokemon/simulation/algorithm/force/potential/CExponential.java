@@ -24,22 +24,24 @@
 package org.lightjason.examples.pokemon.simulation.algorithm.force.potential;
 
 
+import com.google.common.util.concurrent.AtomicDouble;
+
 import java.util.function.UnaryOperator;
 
 
 /**
  * exponential potential function
  */
-public final class CExponential implements UnaryOperator<Double>
+public class CExponential implements UnaryOperator<Double>
 {
     /**
      * maximum value of the metric range
      */
-    private final double m_maximum;
+    protected final AtomicDouble m_maximum;
     /**
      * scaling factor
      */
-    private final double m_scale;
+    protected final AtomicDouble m_scale;
 
 
     /**
@@ -60,15 +62,15 @@ public final class CExponential implements UnaryOperator<Double>
      */
     public CExponential( final double p_maximum, final double p_scale )
     {
-        m_maximum = p_maximum;
-        m_scale = p_scale;
+        m_maximum = new AtomicDouble( p_maximum );
+        m_scale = new AtomicDouble( p_scale );
     }
 
 
     @Override
     public final Double apply( final Double p_double )
     {
-        return Math.exp( m_maximum - m_scale * p_double );
+        return Math.exp( m_maximum.get() - m_scale.get() * p_double );
     }
 
 }

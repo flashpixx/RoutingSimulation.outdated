@@ -46,8 +46,8 @@ public final class CDefaultModell<T extends IForce<T>> implements IModel<T>
                        *
                        Stream.of(
 
-                           p_object.potentialscale().apply( l_distance, p_object.potential().apply( l_distance ) ),
-                           i.potentialscale().apply( l_distance, i.potential().apply( l_distance ) )
+                           p_object.potentialrating().apply( l_distance, p_object.potential().apply( l_distance ) ),
+                           i.potentialrating().apply( l_distance, i.potential().apply( l_distance ) )
 
                        ).collect( p_object.potentialreduce() );
 

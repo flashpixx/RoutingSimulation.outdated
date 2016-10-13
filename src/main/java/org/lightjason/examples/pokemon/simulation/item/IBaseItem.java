@@ -190,7 +190,7 @@ public abstract class IBaseItem implements IItem
     }
 
     @Override
-    public final BiFunction<Double, Double, Double> potentialscale()
+    public final BiFunction<Double, Double, Double> potentialrating()
     {
         return null;
     }

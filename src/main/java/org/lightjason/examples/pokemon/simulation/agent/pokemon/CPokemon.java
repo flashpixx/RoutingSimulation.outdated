@@ -26,17 +26,20 @@ package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.jet.math.Functions;
+import com.google.common.util.concurrent.AtomicDouble;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
+import org.lightjason.agentspeak.consistency.metric.CNCD;
+import org.lightjason.agentspeak.consistency.metric.IMetric;
 import org.lightjason.examples.pokemon.simulation.CMath;
 import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IExponential;
-import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale.IPositiveNegative;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.rating.IPositiveNegative;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -57,6 +60,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -80,11 +84,27 @@ public final class CPokemon extends IBaseAgent
     /**
      * attribute of speed
      */
-    private static final String ATTRIBUTESPEED = "speed";
+    private static final String ATTRIBUTE_SPEED = "speed";
     /**
      * near-by attribute
      */
-    private static final String ATTRIBUTENEARBY = "nearby";
+    private static final String ATTRIBUTE_NEARBY = "nearby";
+    /**
+     * interest attribute
+     */
+    private static final String ATTRIBUTE_INTEREST = "interest";
+    /**
+     * ratient gradient attribute
+     */
+    private static final String ATTRIBUTE_RATINGGRADIENT = "ratinggradient";
+    /**
+     * rating inflection point attribute
+     */
+    private static final String ATTRIBUTE_RATINGINFLECTIONPOINT = "ratinginflectionpoint";
+    /**
+     * social force metric
+     */
+    private static final IMetric SOCIALFORCEMETRIC = new CNCD();
     /**
      * pokemon type
      */
@@ -105,6 +125,18 @@ public final class CPokemon extends IBaseAgent
      * attribute map
      */
     private final Map<String, MutablePair<EAccess, Number>> m_attribute;
+    /**
+     * social-force potential function
+     */
+    private final CPotential m_socialforcepotential;
+    /**
+     * social-force potential rating function
+     */
+    private final CRating m_socialforcepotentialrating;
+    /**
+     * social-force metric
+     */
+    private final Function<IElement, Double> m_socialforcemetric;
     /**
      * experience maximum
      */
@@ -156,6 +188,10 @@ public final class CPokemon extends IBaseAgent
             .add( new CMotivationBeliefbase().create( "motivation", m_beliefbase ) )
             .add( new CAttackBeliefbase().create( "attack", m_beliefbase ) )
             .add( new CEnvironmentBeliefbase().create( "env", m_beliefbase  ) );
+
+        m_socialforcepotential = new CPotential();
+        m_socialforcepotentialrating = new CRating();
+        m_socialforcemetric = ( i ) -> SOCIALFORCEMETRIC.apply( this.attribute(), i.attribute() );
     }
 
     @Override
@@ -183,7 +219,14 @@ public final class CPokemon extends IBaseAgent
         // level-up if needed
         this.levelup();
 
-        return super.call();
+        // run cycle
+        super.call();
+
+        // update social-force elements
+        m_socialforcepotential.call();
+        m_socialforcepotentialrating.call();
+
+        return this;
     }
 
     /**
@@ -227,7 +270,7 @@ public final class CPokemon extends IBaseAgent
         // null check because of initialization of base class
         return m_attribute == null
                ? 0
-               : m_attribute.getOrDefault( ATTRIBUTESPEED, new MutablePair<>( EAccess.READ, 0 ) ).getRight().intValue();
+               : m_attribute.getOrDefault( ATTRIBUTE_SPEED, new MutablePair<>( EAccess.READ, 0 ) ).getRight().intValue();
     }
 
     @Override
@@ -236,7 +279,7 @@ public final class CPokemon extends IBaseAgent
         // null check because of initialization of base class
         return m_attribute == null
                ? 0
-               : m_attribute.getOrDefault( ATTRIBUTENEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
+               : m_attribute.getOrDefault( ATTRIBUTE_NEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
     }
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
@@ -337,24 +380,24 @@ public final class CPokemon extends IBaseAgent
     }
 
 
-    // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
+    // --- social-force model structure ------------------------------------------------------------------------------------------------------------------------
 
     @Override
     public final Function<IElement, Double> metric()
     {
-        return null;
+        return m_socialforcemetric;
     }
 
     @Override
     public final UnaryOperator<Double> potential()
     {
-        return null;
+        return m_socialforcepotential;
     }
 
     @Override
-    public final BiFunction<Double, Double, Double> potentialscale()
+    public final BiFunction<Double, Double, Double> potentialrating()
     {
-        return null;
+        return m_socialforcepotentialrating;
     }
 
     @Override
@@ -378,45 +421,70 @@ public final class CPokemon extends IBaseAgent
     /**
      * potential function
      */
-    private final class CPotential extends IExponential
+    private final class CPotential extends IExponential implements Callable<UnaryOperator<Double>>
     {
+        /**
+         * maximum potential value
+         */
+        private final AtomicDouble m_maximum = new AtomicDouble();
+
+        @Override
+        public UnaryOperator<Double> call() throws Exception
+        {
+            // read the attribute
+            m_maximum.set( m_attribute.getOrDefault( ATTRIBUTE_INTEREST, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue() );
+            return this;
+        }
 
         @Override
         protected final double maximum()
         {
-            return 0;
+            return m_maximum.get();
         }
 
         @Override
         protected final double scale()
         {
-            return 0;
+            return 1;
         }
 
     }
 
     /**
-     * like / dislike function
+     * potential rating function (like / dislike)
      */
-    private final class CLikeDislike extends IPositiveNegative
+    private final class CRating extends IPositiveNegative implements Callable<BiFunction<Double, Double, Double>>
     {
+        /**
+         * gradient rating value
+         */
+        private final AtomicDouble m_gradient = new AtomicDouble();
+        /**
+         * inflection point of the function
+         */
+        private final AtomicDouble m_inflectionpoint = new AtomicDouble();
+
+
+        @Override
+        public final BiFunction<Double, Double, Double> call() throws Exception
+        {
+            // read attributes
+            m_gradient.set( m_attribute.getOrDefault( ATTRIBUTE_RATINGGRADIENT, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue() );
+            m_inflectionpoint.set( m_attribute.getOrDefault( ATTRIBUTE_RATINGINFLECTIONPOINT, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue() );
+            return this;
+        }
+
 
         @Override
         protected final double gradient()
         {
-            return 0;
+            return m_gradient.get();
         }
 
         @Override
         protected final double inflectionpoint()
         {
-            return 0;
-        }
-
-        @Override
-        protected final double resultmaximum()
-        {
-            return 0;
+            return m_inflectionpoint.get();
         }
 
     }

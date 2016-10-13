@@ -42,6 +42,7 @@ environment :
     rows     : 250
     columns  : 250
     routing  : "jpsplus"
+    force    : "default"
 
 
 

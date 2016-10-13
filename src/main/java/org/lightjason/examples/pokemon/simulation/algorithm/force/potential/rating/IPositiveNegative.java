@@ -22,7 +22,7 @@
  */
 
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale;
+package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.rating;
 
 
 import java.util.function.BiFunction;
@@ -34,6 +34,8 @@ import java.util.function.BiFunction;
  * [0.5*max,max] to -1 (negative potential)
  * based on a sigmoid function
  *
+ * @note the default 1 / ( 1 + exp(-x) ) must be modified for
+ * a x-axis movment and y-axis scaling
  * @see https://en.wikipedia.org/wiki/Sigmoid_function
  */
 public abstract class IPositiveNegative implements BiFunction<Double, Double, Double>
@@ -57,16 +59,9 @@ public abstract class IPositiveNegative implements BiFunction<Double, Double, Do
     protected abstract double inflectionpoint();
 
 
-    /**
-     * sigmoid value of the maximum
-     * for scaling
-     */
-    protected abstract double resultmaximum();
-
-
     @Override
     public final Double apply( final Double p_metric, final Double p_potential )
     {
-        return p_potential * ( ( -1 / ( 1 + Math.exp( -this.gradient() * ( p_metric - this.inflectionpoint() ) ) ) ) / this.resultmaximum() );
+        return p_potential * 2 * ( 1 / ( 1 + Math.exp( -this.gradient() * ( p_metric - this.inflectionpoint() ) ) ) - 0.5 );
     }
 }

@@ -52,12 +52,12 @@ public interface IForce<T>
 
 
     /**
-     * returns a potential scaling
-     * function of the object
+     * returns a potential rating function
+     * to define a positive or negative rating
      *
      * @return scaling function (first parameter is metric value, second potential value)
      */
-    BiFunction<Double, Double, Double> potentialscale();
+    BiFunction<Double, Double, Double> potentialrating();
 
 
     /**

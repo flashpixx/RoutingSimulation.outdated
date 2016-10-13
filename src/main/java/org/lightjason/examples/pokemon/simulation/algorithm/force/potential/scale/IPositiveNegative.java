@@ -21,56 +21,58 @@
  * @endcond
  */
 
-package org.lightjason.examples.pokemon.simulation.algorithm.force.potential;
+
+package org.lightjason.examples.pokemon.simulation.algorithm.force.potential.scale;
 
 
-import com.google.common.util.concurrent.AtomicDouble;
-
-import java.util.function.UnaryOperator;
+import java.util.function.BiFunction;
 
 
 /**
- * exponential potential function
+ * scales a value within in the range [0,max] in
+ * [0,0.5*max) to 1 (positiv potential) and
+ * [0.5*max,max] to -1 (negative potential)
+ * based on a sigmoid function
+ *
+ * @see https://en.wikipedia.org/wiki/Sigmoid_function
  */
-public class CExponential implements UnaryOperator<Double>
+public abstract class IPositiveNegative implements BiFunction<Double, Double, Double>
 {
-    /**
-     * maximum value of the metric range
-     */
-    protected final AtomicDouble m_maximum;
-    /**
-     * scaling factor
-     */
-    protected final AtomicDouble m_scale;
-
 
     /**
      * ctor
-     *
-     * @param p_maximum maximum value
      */
-    public CExponential( final double p_maximum )
-    {
-        this( p_maximum, 1 );
-    }
+    protected IPositiveNegative()
+    {}
 
     /**
-     * ctor
+     * returns the gradient value
+     * of the sigmoid function
      *
-     * @param p_maximum maximum value
-     * @param p_scale scaling value
+     * @return gradient value
      */
-    public CExponential( final double p_maximum, final double p_scale )
-    {
-        m_maximum = new AtomicDouble( p_maximum );
-        m_scale = new AtomicDouble( p_scale );
-    }
+    protected abstract double gradient();
+
+
+    /**
+     * returns the inflection point of
+     * the sigmoid function
+     *
+     * @return inflection point value
+     */
+    protected abstract double inflectionpoint();
+
+
+    /**
+     * sigmoid value of the maximum
+     * for scaling
+     */
+    protected abstract double resultmaximum();
 
 
     @Override
-    public final Double apply( final Double p_double )
+    public final Double apply( final Double p_metric, final Double p_potential )
     {
-        return Math.exp( m_maximum.get() - m_scale.get() * p_double );
+        return p_potential * ( ( -1 / ( 1 + Math.exp( -this.gradient() * ( p_metric - this.inflectionpoint() ) ) ) ) / this.resultmaximum() );
     }
-
 }

@@ -35,6 +35,7 @@ import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IExponential;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
@@ -237,44 +238,6 @@ public final class CPokemon extends IBaseAgent
                : m_attribute.getOrDefault( ATTRIBUTENEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
     }
 
-    // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public final Function<IElement, Double> metric()
-    {
-        return null;
-    }
-
-    @Override
-    public final UnaryOperator<Double> potential()
-    {
-        return null;
-    }
-
-    @Override
-    public final BiFunction<Double, Double, Double> potentialscale()
-    {
-        return null;
-    }
-
-    @Override
-    public final Collector<Double, ?, Double> potentialreduce()
-    {
-        return null;
-    }
-
-    @Override
-    public final BiFunction<IElement, IElement, Double> distancescale()
-    {
-        return null;
-    }
-
-    @Override
-    public final Collector<Double, ?, Double> forceresult()
-    {
-        return null;
-    }
-
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -372,6 +335,64 @@ public final class CPokemon extends IBaseAgent
 
     }
 
+
+    // --- force model structure -------------------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public final Function<IElement, Double> metric()
+    {
+        return null;
+    }
+
+    @Override
+    public final UnaryOperator<Double> potential()
+    {
+        return null;
+    }
+
+    @Override
+    public final BiFunction<Double, Double, Double> potentialscale()
+    {
+        return null;
+    }
+
+    @Override
+    public final Collector<Double, ?, Double> potentialreduce()
+    {
+        return null;
+    }
+
+    @Override
+    public final BiFunction<IElement, IElement, Double> distancescale()
+    {
+        return null;
+    }
+
+    @Override
+    public final Collector<Double, ?, Double> forceresult()
+    {
+        return null;
+    }
+
+    /**
+     * potential function
+     */
+    private final class CPotential extends IExponential
+    {
+
+        @Override
+        protected final double maximum()
+        {
+            return 0;
+        }
+
+        @Override
+        protected final double scale()
+        {
+            return 0;
+        }
+
+    }
 
 
     // --- on-demand beliefbases -------------------------------------------------------------------------------------------------------------------------------

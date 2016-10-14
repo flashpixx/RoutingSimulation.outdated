@@ -23,64 +23,63 @@
 
 package org.lightjason.examples.pokemon.simulation.algorithm.force.collectors;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
-
-
 /**
- * sum collector function with \f$ \sum_i a_i + b_i \f$
+ * mutable double structure
  */
-public final class CSum implements Collector<Double, CMutableDouble, Double>
+final class CMutableDouble extends Number
 {
+    /**
+     * value
+     */
+    private Double m_value = 0.0;
 
     /**
      * ctor
      */
-    private CSum()
+    public CMutableDouble()
     {}
 
-    @Override
-    public final Supplier<CMutableDouble> supplier()
+    /**
+     * ctor
+     * @param p_value initialize value
+     */
+    public CMutableDouble( final double p_value )
     {
-        return CMutableDouble::new;
-    }
-
-    @Override
-    public final BiConsumer<CMutableDouble, Double> accumulator()
-    {
-        return (i, j) -> i.set( i.doubleValue() + j );
-    }
-
-    @Override
-    public final BinaryOperator<CMutableDouble> combiner()
-    {
-        return (i, j) -> i.set( i.doubleValue() + j.doubleValue() );
-    }
-
-    @Override
-    public final Function<CMutableDouble, Double> finisher()
-    {
-        return CMutableDouble::doubleValue;
-    }
-
-    @Override
-    public final Set<Characteristics> characteristics()
-    {
-        return Collections.emptySet();
+        m_value = p_value;
     }
 
     /**
-     * static factory
-     * @return collector instance
+     * set value
+     * @param p_value double value
+     * @return mutable value
      */
-    public static Collector<Double, ?, Double> factory()
+    public final CMutableDouble set( final Number p_value )
     {
-        return new CSum();
+        m_value = p_value.doubleValue();
+        return this;
     }
 
+    @Override
+    public final int intValue()
+    {
+        return m_value.intValue();
+    }
+
+    @Override
+    public final long longValue()
+    {
+        return m_value.longValue();
+    }
+
+    @Override
+    public final float floatValue()
+    {
+        return m_value.floatValue();
+    }
+
+    @Override
+    public final double doubleValue()
+    {
+        return m_value;
+    }
 }

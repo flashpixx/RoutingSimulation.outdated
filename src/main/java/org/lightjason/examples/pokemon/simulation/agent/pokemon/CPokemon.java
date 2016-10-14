@@ -38,6 +38,7 @@ import org.lightjason.examples.pokemon.simulation.IElement;
 import org.lightjason.examples.pokemon.simulation.agent.EAccess;
 import org.lightjason.examples.pokemon.simulation.agent.IAgent;
 import org.lightjason.examples.pokemon.simulation.agent.IBaseAgent;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.collectors.CSum;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IExponential;
 import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.rating.IPositiveNegative;
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
@@ -403,19 +404,20 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final Collector<Double, ?, Double> potentialreduce()
     {
-        return null;
+        return CSum.factory();
     }
 
     @Override
     public final BiFunction<IElement, IElement, Double> distancescale()
     {
-        return null;
+        //@bug distance normalized to maximum view range
+        return (i, j) -> 0.0;
     }
 
     @Override
     public final Collector<Double, ?, Double> forceresult()
     {
-        return null;
+        return CSum.factory();
     }
 
     /**

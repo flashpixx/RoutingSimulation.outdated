@@ -33,15 +33,15 @@ import java.util.stream.Collector;
 
 
 /**
- * sum collector function with \f$ \sum_i a_i + b_i \f$
+ * squared difference sum collector function with \f$ \sum_i (a_i - b_i )^2 \f$
  */
-public final class CSum implements Collector<Double, CMutableDouble, Double>
+public final class CSquaredDifferenceSum implements Collector<Double, CMutableDouble, Double>
 {
 
     /**
      * ctor
      */
-    private CSum()
+    private CSquaredDifferenceSum()
     {}
 
     @Override
@@ -53,13 +53,13 @@ public final class CSum implements Collector<Double, CMutableDouble, Double>
     @Override
     public final BiConsumer<CMutableDouble, Double> accumulator()
     {
-        return (i, j) -> i.set( i.doubleValue() + j );
+        return (i, j) -> i.set( ( i.doubleValue() - j ) * ( i.doubleValue() - j ) );
     }
 
     @Override
     public final BinaryOperator<CMutableDouble> combiner()
     {
-        return (i, j) -> i.set( i.doubleValue() + j.doubleValue() );
+        return (i, j) -> i.set( ( i.doubleValue() + j.doubleValue() ) * ( i.doubleValue() + j.doubleValue() ) );
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class CSum implements Collector<Double, CMutableDouble, Double>
      */
     public static Collector<Double, ?, Double> factory()
     {
-        return new CSum();
+        return new CSquaredDifferenceSum();
     }
 
 }

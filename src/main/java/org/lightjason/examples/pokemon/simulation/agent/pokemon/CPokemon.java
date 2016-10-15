@@ -103,6 +103,10 @@ public final class CPokemon extends IBaseAgent
      */
     private static final String ATTRIBUTE_RATINGINFLECTIONPOINT = "ratinginflectionpoint";
     /**
+     * visual range attribute
+     */
+    private static final String ATTRIBUTE_VISUALRANGE = "viewrange";
+    /**
      * social force metric
      */
     private static final IMetric SOCIALFORCEMETRIC = new CNCD();
@@ -134,6 +138,10 @@ public final class CPokemon extends IBaseAgent
      * social-force potential rating function
      */
     private final CRating m_socialforcepotentialrating;
+    /**
+     * social-force visual-range distance
+     */
+    private final AtomicDouble m_socialforcedistance = new AtomicDouble();
     /**
      * social-force metric
      */
@@ -226,6 +234,7 @@ public final class CPokemon extends IBaseAgent
         // update social-force elements
         m_socialforcepotential.call();
         m_socialforcepotentialrating.call();
+        m_socialforcedistance.set( m_attribute.getOrDefault( ATTRIBUTE_VISUALRANGE, new MutablePair<>( EAccess.READ, 0 )  ).getValue().doubleValue() );
 
         return this;
     }
@@ -410,8 +419,7 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final BiFunction<IElement, IElement, Double> distancescale()
     {
-        //@bug distance normalized to maximum view range
-        return (i, j) -> CMath.ALGEBRA.norm2( new DenseDoubleMatrix1D( i.position().toArray() ).assign( j.position(), Functions.minus ) );
+        return (i, j) -> 1 - CMath.ALGEBRA.norm2( new DenseDoubleMatrix1D( i.position().toArray() ).assign( j.position(), Functions.minus ) ) / m_socialforcedistance.get();
     }
 
     @Override

@@ -53,7 +53,7 @@ public final class CCubicSum implements Collector<Double, CMutableDouble, Double
     @Override
     public final BiConsumer<CMutableDouble, Double> accumulator()
     {
-        return (i, j) -> i.set( ( i.doubleValue() + j ) * ( i.doubleValue() + j ) * ( i.doubleValue() + j ));
+        return (i, j) -> i.set( ( i.doubleValue() + j ) * ( i.doubleValue() + j ) * ( i.doubleValue() + j ) );
     }
 
     @Override

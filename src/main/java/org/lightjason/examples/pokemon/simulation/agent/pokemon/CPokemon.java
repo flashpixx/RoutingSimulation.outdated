@@ -411,7 +411,7 @@ public final class CPokemon extends IBaseAgent
     public final BiFunction<IElement, IElement, Double> distancescale()
     {
         //@bug distance normalized to maximum view range
-        return (i, j) -> 0.0;
+        return (i, j) -> CMath.ALGEBRA.norm2( new DenseDoubleMatrix1D( i.position().toArray() ).assign( j.position(), Functions.minus ) );
     }
 
     @Override

@@ -294,6 +294,62 @@ public final class CPokemon extends IBaseAgent
                : m_attribute.getOrDefault( ATTRIBUTE_NEARBY, new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
     }
 
+    /**
+     * environment perceiving
+     *
+     * @return stream with symbolic environment literals
+     */
+    protected Stream<IElement> perceive()
+    {
+        // read attribute data
+        final DoubleMatrix1D l_position = m_position;
+        final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
+        final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
+
+        // rotate view-range into the direction of the next goal-position
+        // calculate angle from current position to goal-position
+        final Pair<Double, Boolean> l_direction = CMath.angel(
+            new DenseDoubleMatrix1D( this.goal().toArray() )
+                .assign( l_position, Functions.minus ),
+            new DenseDoubleMatrix1D( new double[]{0, l_radius} )
+        );
+        if ( !l_direction.getRight() )
+            return Stream.of();
+
+        // rote current position of the agent into view direction
+        final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), l_position );
+
+
+        // iterate over the possible cells of the grid to read other elements,
+        // center is the rotated view point and iterate the sequare with radius size
+        return IntStream.rangeClosed( -l_radius, l_radius )
+                        .parallel()
+                        .boxed()
+                        .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
+                                                .boxed()
+                                                .filter( x -> positioninsideangle( y, x, l_angle ) )
+                                                .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
+                                                .filter( m_environment::isinside )
+                                                .map( m_environment::get )
+                                                .filter( Objects::nonNull )
+                        );
+    }
+
+    /**
+     * checks if a point is within the angel of the visual range
+     *
+     * @param p_ypos y-position of the point (relative position [-radius, +radius])
+     * @param p_xpos x-position of the point (relative position [-radius, +radius])
+     * @param p_angle angle of the view-range in degree
+     * @return boolean if the position is inside
+     */
+    private static boolean positioninsideangle( final double p_ypos, final double p_xpos, final double p_angle )
+    {
+        final double l_segment = 0.5 * p_angle;
+        final double l_angle = Math.toDegrees( Math.atan( Math.abs( p_ypos ) / Math.abs( p_xpos ) ) );
+        return !Double.isNaN( l_angle ) && ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
+    }
+
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -390,64 +446,6 @@ public final class CPokemon extends IBaseAgent
     {
 
     }
-
-
-    /**
-     * environment perceiving
-     *
-     * @return stream with symbolic environment literals
-     */
-    protected Stream<IElement> perceive()
-    {
-        // read attribute data
-        final DoubleMatrix1D l_position = m_position;
-        final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
-        final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
-
-        // rotate view-range into the direction of the next goal-position
-        // calculate angle from current position to goal-position
-        final Pair<Double, Boolean> l_direction = CMath.angel(
-            new DenseDoubleMatrix1D( this.goal().toArray() )
-                .assign( l_position, Functions.minus ),
-            new DenseDoubleMatrix1D( new double[]{0, l_radius} )
-        );
-        if ( !l_direction.getRight() )
-            return Stream.of();
-
-        // rote current position of the agent into view direction
-        final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), l_position );
-
-
-        // iterate over the possible cells of the grid to read other elements,
-        // center is the rotated view point and iterate the sequare with radius size
-        return IntStream.rangeClosed( -l_radius, l_radius )
-                        .parallel()
-                        .boxed()
-                        .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
-                                                .boxed()
-                                                .filter( x -> positioninsideangle( y, x, l_angle ) )
-                                                .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
-                                                .filter( m_environment::isinside )
-                                                .map( m_environment::get )
-                                                .filter( Objects::nonNull )
-                        );
-    }
-
-    /**
-     * checks if a point is within the angel of the visual range
-     *
-     * @param p_ypos y-position of the point (relative position [-radius, +radius])
-     * @param p_xpos x-position of the point (relative position [-radius, +radius])
-     * @param p_angle angle of the view-range in degree
-     * @return boolean if the position is inside
-     */
-    private static boolean positioninsideangle( final double p_ypos, final double p_xpos, final double p_angle )
-    {
-        final double l_segment = 0.5 * p_angle;
-        final double l_angle = Math.toDegrees( Math.atan( Math.abs( p_ypos ) / Math.abs( p_xpos ) ) );
-        return !Double.isNaN( l_angle ) && ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
-    }
-
 
     // --- social-force model structure ------------------------------------------------------------------------------------------------------------------------
 

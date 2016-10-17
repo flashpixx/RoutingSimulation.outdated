@@ -228,6 +228,8 @@ public final class CPokemon extends IBaseAgent
         // level-up if needed
         this.levelup();
 
+        // calculating force and build trigger
+
         // run cycle
         super.call();
 
@@ -390,6 +392,63 @@ public final class CPokemon extends IBaseAgent
     }
 
 
+    /**
+     * environment perceiving
+     *
+     * @return stream with symbolic environment literals
+     */
+    protected Stream<IElement> perceive()
+    {
+        // read attribute data
+        final DoubleMatrix1D l_position = m_position;
+        final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
+        final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
+
+        // rotate view-range into the direction of the next goal-position
+        // calculate angle from current position to goal-position
+        final Pair<Double, Boolean> l_direction = CMath.angel(
+            new DenseDoubleMatrix1D( this.goal().toArray() )
+                .assign( l_position, Functions.minus ),
+            new DenseDoubleMatrix1D( new double[]{0, l_radius} )
+        );
+        if ( !l_direction.getRight() )
+            return Stream.of();
+
+        // rote current position of the agent into view direction
+        final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), l_position );
+
+
+        // iterate over the possible cells of the grid to read other elements,
+        // center is the rotated view point and iterate the sequare with radius size
+        return IntStream.rangeClosed( -l_radius, l_radius )
+                        .parallel()
+                        .boxed()
+                        .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
+                                                .boxed()
+                                                .filter( x -> positioninsideangle( y, x, l_angle ) )
+                                                .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
+                                                .filter( m_environment::isinside )
+                                                .map( m_environment::get )
+                                                .filter( Objects::nonNull )
+                        );
+    }
+
+    /**
+     * checks if a point is within the angel of the visual range
+     *
+     * @param p_ypos y-position of the point (relative position [-radius, +radius])
+     * @param p_xpos x-position of the point (relative position [-radius, +radius])
+     * @param p_angle angle of the view-range in degree
+     * @return boolean if the position is inside
+     */
+    private static boolean positioninsideangle( final double p_ypos, final double p_xpos, final double p_angle )
+    {
+        final double l_segment = 0.5 * p_angle;
+        final double l_angle = Math.toDegrees( Math.atan( Math.abs( p_ypos ) / Math.abs( p_xpos ) ) );
+        return !Double.isNaN( l_angle ) && ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
+    }
+
+
     // --- social-force model structure ------------------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -498,8 +557,6 @@ public final class CPokemon extends IBaseAgent
         }
 
     }
-
-
 
     // --- on-demand beliefbases -------------------------------------------------------------------------------------------------------------------------------
 
@@ -768,7 +825,12 @@ public final class CPokemon extends IBaseAgent
             final DoubleMatrix1D l_goal = new DenseDoubleMatrix1D( CPokemon.this.goal().toArray() );
             final DoubleMatrix1D l_position = new DenseDoubleMatrix1D( CPokemon.this.position().toArray() );
 
-            return Stream.concat( this.self( l_position, l_goal ), this.perceive( l_position, l_goal ) );
+            return Stream.concat(
+                this.self( l_position, l_goal ),
+                CPokemon.this.perceive()
+                             .map( i -> this.elementliteral( i, i.position() ) )
+                             .filter( Objects::nonNull )
+            );
         }
 
         @Override
@@ -804,49 +866,6 @@ public final class CPokemon extends IBaseAgent
             );
         }
 
-
-        /**
-         * environment perceiving
-         *
-         * @param p_position current agent position
-         * @param  p_goal current goal position
-         * @return stream with symbolic environment literals
-         */
-        private Stream<ILiteral> perceive( final DoubleMatrix1D p_position, final DoubleMatrix1D p_goal )
-        {
-            // read attribute data
-            final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
-            final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
-
-
-            // rotate view-range into the direction of the next goal-position
-            // calculate angle from current position to goal-position
-            final Pair<Double, Boolean> l_direction = CMath.angel(
-                                                                    new DenseDoubleMatrix1D( p_goal.toArray() )
-                                                                        .assign( p_position, Functions.minus ),
-                                                                    new DenseDoubleMatrix1D( new double[]{0, l_radius} )
-            );
-            if ( !l_direction.getRight() )
-                return Stream.of();
-
-            // rote current position of the agent into view direction
-            final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), p_position );
-
-
-            // iterate over the possible cells of the grid to read other elements,
-            // center is the rotated view point and iterate the sequare with radius size
-            return IntStream.rangeClosed( -l_radius, l_radius )
-                       .parallel()
-                       .boxed()
-                       .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
-                                          .boxed()
-                                          .filter( x -> this.positioninsideangle( y, x, l_angle ) )
-                                          .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
-                                          .filter( m_environment::isinside )
-                                          .map( i -> this.elementliteral( m_environment.get( i ), i ) )
-                                          .filter( Objects::nonNull )
-                       );
-        }
 
         /**
          * generates the literal of an object
@@ -897,20 +916,6 @@ public final class CPokemon extends IBaseAgent
             );
         }
 
-        /**
-         * checks if a point is within the angel of the visual range
-         *
-         * @param p_ypos y-position of the point (relative position [-radius, +radius])
-         * @param p_xpos x-position of the point (relative position [-radius, +radius])
-         * @param p_angle angle of the view-range in degree
-         * @return boolean if the position is inside
-         */
-        private boolean positioninsideangle( final double p_ypos, final double p_xpos, final double p_angle )
-        {
-            final double l_segment = 0.5 * p_angle;
-            final double l_angle = Math.toDegrees( Math.atan( Math.abs( p_ypos ) / Math.abs( p_xpos ) ) );
-            return !Double.isNaN( l_angle ) && ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
-        }
     }
 
 }

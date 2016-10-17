@@ -26,6 +26,7 @@ package org.lightjason.examples.pokemon.simulation.algorithm.force.collectors;
 /**
  * mutable double structure
  */
+@SuppressWarnings( "serial" )
 final class CMutableDouble extends Number
 {
     /**

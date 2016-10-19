@@ -108,7 +108,7 @@ public final class CMath
      * @param p_second second vector
      * @return pair of angel in radians and boolean for calulation correctness
      */
-    public static Pair<Double, Boolean> angel( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
+    public static Pair<Double, Boolean> angle( final DoubleMatrix1D p_first, final DoubleMatrix1D p_second )
     {
         final double l_first = ALGEBRA.norm2( p_first );
         final double l_second = ALGEBRA.norm2( p_second );

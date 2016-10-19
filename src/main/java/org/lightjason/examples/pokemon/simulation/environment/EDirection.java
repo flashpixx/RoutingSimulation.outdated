@@ -32,7 +32,7 @@ import cern.jet.math.Functions;
 
 
 /**
- * direction enum
+ * direction enum (counter clockwise)
  */
 public enum EDirection
 {
@@ -84,6 +84,24 @@ public enum EDirection
                               .assign( Functions.mult( p_speed ) )
                               .assign( p_position, Functions.plus )
                               .assign( Math::round );
+    }
+
+
+    /**
+     * returns the direction by an angle (in degree)
+     *
+     * @param p_angle angle in degree
+     * @return direction
+     */
+    public static EDirection byAngle( final double p_angle )
+    {
+        return EDirection.values()[
+            (int) (
+                    p_angle < 0
+                    ? 360 + p_angle
+                    : p_angle
+                  ) / 45
+        ];
     }
 
 }

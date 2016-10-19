@@ -228,7 +228,8 @@ public final class CPokemon extends IBaseAgent
         // level-up if needed
         this.levelup();
 
-        // calculating force and build trigger
+        // calculating force and build trigger (determine viewvector and object position the angel
+        //CMath.angle()
 
         // run cycle
         super.call();
@@ -308,7 +309,7 @@ public final class CPokemon extends IBaseAgent
 
         // rotate view-range into the direction of the next goal-position
         // calculate angle from current position to goal-position
-        final Pair<Double, Boolean> l_direction = CMath.angel(
+        final Pair<Double, Boolean> l_direction = CMath.angle(
             new DenseDoubleMatrix1D( this.goal().toArray() )
                 .assign( l_position, Functions.minus ),
             new DenseDoubleMatrix1D( new double[]{0, l_radius} )
@@ -316,7 +317,7 @@ public final class CPokemon extends IBaseAgent
         if ( !l_direction.getRight() )
             return Stream.of();
 
-        // rote current position of the agent into view direction
+        // rotate current position of the agent into view direction
         final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), l_position );
 
 

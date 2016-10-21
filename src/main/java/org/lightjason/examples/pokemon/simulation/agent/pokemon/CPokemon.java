@@ -28,7 +28,6 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.jet.math.Functions;
 import com.google.common.util.concurrent.AtomicDouble;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.consistency.metric.CNCD;
@@ -175,7 +174,9 @@ public final class CPokemon extends IBaseAgent
      * @param p_pokemon pokemon name
      */
     @SuppressWarnings( "unchecked" )
-    public CPokemon( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration, final DoubleMatrix1D p_position, final String p_pokemon )
+    public CPokemon( final IEnvironment p_environment, final IAgentConfiguration<IAgent> p_agentconfiguration,
+                     final DoubleMatrix1D p_position, final String p_pokemon
+    )
     {
         super( p_environment, p_agentconfiguration, p_position );
 
@@ -231,12 +232,20 @@ public final class CPokemon extends IBaseAgent
         // level-up if needed
         this.levelup();
 
-        // calculating force and build trigger (determine viewvector and object position the angel
+        // calculating force and build trigger (determine view vector and object position the angle)
+        final CViewDirection l_viewdirection = CViewDirection.generate(
+            m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue(),
+            m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue(),
+            m_position,
+            this.goal()
+        );
+
         final CForceGenerator l_forceliteralgenerator = CForceGenerator.generate( this );
         m_environmentliteral.clear();
+
         Stream.concat(
             CCommon.literalpokemon( m_position, this.goal(), m_pokemon ),
-            this.perceive()
+            this.perceive( l_viewdirection )
                 //.map( l_forceliteralgenerator::push )
                 .map( CCommon::elementliteral )
                 .filter( Objects::nonNull )
@@ -310,38 +319,28 @@ public final class CPokemon extends IBaseAgent
     /**
      * environment perceiving
      *
+     * @param p_direction structure
      * @return stream with symbolic environment literals
      */
-    protected Stream<IElement> perceive()
+    private Stream<IElement> perceive( final CViewDirection p_direction )
     {
-        // read attribute data
-        final DoubleMatrix1D l_position = m_position;
-        final int l_radius = m_attribute.getOrDefault( "viewrange", new MutablePair<>( EAccess.READ, 1 ) ).getRight().intValue();
-        final double l_angle = m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue();
-
-        // rotate view-range into the direction of the next goal-position
-        // calculate angle from current position to goal-position
-        final Pair<Double, Boolean> l_direction = CMath.angle(
-            new DenseDoubleMatrix1D( this.goal().toArray() )
-                .assign( l_position, Functions.minus ),
-            new DenseDoubleMatrix1D( new double[]{0, l_radius} )
-        );
-        if ( !l_direction.getRight() )
+        if ( !p_direction.error() )
             return Stream.of();
-
-        // rotate current position of the agent into view direction
-        final DoubleMatrix1D l_viewposition = CMath.ALGEBRA.mult( CMath.rotationmatrix( l_direction.getLeft() ), l_position );
-
 
         // iterate over the possible cells of the grid to read other elements,
         // center is the rotated view point and iterate the sequare with radius size
-        return IntStream.rangeClosed( -l_radius, l_radius )
+        return IntStream.rangeClosed( -p_direction.radius(), p_direction.radius() )
                         .parallel()
                         .boxed()
-                        .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
+                        .flatMap( y -> IntStream.rangeClosed( -p_direction.radius(), p_direction.radius() )
                                                 .boxed()
-                                                .filter( x -> CCommon.positioninsideangle( y, x, l_angle ) )
-                                                .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
+                                                .filter( x -> CCommon.positioninsideangle( y, x, p_direction.angle() ) )
+                                                .map( x -> new DenseDoubleMatrix1D(
+                                                               new double[]{
+                                                                   y + p_direction.direction().getQuick( 0 ),
+                                                                   x + p_direction.direction().getQuick( 1 )}
+                                                               )
+                                                )
                                                 .filter( m_environment::isinside )
                                                 .map( m_environment::get )
                                                 .filter( Objects::nonNull )

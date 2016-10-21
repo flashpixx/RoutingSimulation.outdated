@@ -25,6 +25,7 @@ package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
+import cern.jet.math.Functions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import org.lightjason.agentspeak.language.CLiteral;
@@ -38,7 +39,9 @@ import org.lightjason.examples.pokemon.simulation.environment.EDirection;
 import java.util.stream.Stream;
 
 
-
+/**
+ * class to generate force literal
+ */
 final class CForceGenerator
 {
     /**
@@ -66,16 +69,21 @@ final class CForceGenerator
     /**
      * pass a literal
      *
-     * @param p_direction direction
+     * @param p_viewdirection view direction
      * @param p_element literal
      * @return literal
      */
-    final IElement push( final DoubleMatrix1D p_direction, final IElement p_element )
+    final IElement push( final DoubleMatrix1D p_viewdirection, final IElement p_element )
     {
         if ( p_element != null )
             m_direction.put(
                 EDirection.byAngle(
-                    Math.toDegrees( CMath.angle( p_direction, new DenseDoubleMatrix1D( p_element.position().toArray() ).assign( p_direction ) ).getKey() )
+                    Math.toDegrees(
+                        CMath.angle(
+                            p_viewdirection,
+                            new DenseDoubleMatrix1D( p_element.position().toArray() )
+                                .assign( m_source.position(), Functions.minus )
+                        ).getKey() )
                 ),
                 p_element
             );
@@ -93,11 +101,10 @@ final class CForceGenerator
         return CLiteral.from(
             FUNCTOR,
             m_direction.asMap().entrySet().stream()
-                       .map(
-                            i -> CLiteral.from(
-                                i.getKey().name(),
-                                Stream.of( CRawTerm.from( EForceModelFactory.DEFAULT.get().apply( m_source, i.getValue().stream() ) ) )
-                            )
+                       .map( i -> CLiteral.from(
+                                     i.getKey().name(),
+                                     Stream.of( CRawTerm.from( EForceModelFactory.DEFAULT.get().apply( m_source, i.getValue().stream() ) ) )
+                                  )
                        )
         );
     }

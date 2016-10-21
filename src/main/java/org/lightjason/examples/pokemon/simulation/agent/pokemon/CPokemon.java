@@ -232,10 +232,12 @@ public final class CPokemon extends IBaseAgent
         this.levelup();
 
         // calculating force and build trigger (determine viewvector and object position the angel
+        final CForceGenerator l_forceliteralgenerator = CForceGenerator.generate( this );
         m_environmentliteral.clear();
         Stream.concat(
             CCommon.literalpokemon( m_position, this.goal(), m_pokemon ),
             this.perceive()
+                //.map( l_forceliteralgenerator::push )
                 .map( CCommon::elementliteral )
                 .filter( Objects::nonNull )
         )

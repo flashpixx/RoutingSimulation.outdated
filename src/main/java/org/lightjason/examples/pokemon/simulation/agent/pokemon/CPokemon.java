@@ -27,7 +27,9 @@ package org.lightjason.examples.pokemon.simulation.agent.pokemon;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.jet.math.Functions;
 import com.google.common.util.concurrent.AtomicDouble;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lightjason.agentspeak.action.binding.IAgentAction;
 import org.lightjason.agentspeak.action.binding.IAgentActionFilter;
 import org.lightjason.agentspeak.consistency.metric.CNCD;
@@ -246,11 +248,13 @@ public final class CPokemon extends IBaseAgent
         Stream.concat(
             CCommon.literalpokemon( m_position, this.goal(), m_pokemon ),
             this.perceive( l_viewdirection )
-                //.map( l_forceliteralgenerator::push )
+                .map( i -> l_forceliteralgenerator.push( l_viewdirection.direction(), i.getKey(), i.getValue() ) )
                 .map( CCommon::elementliteral )
                 .filter( Objects::nonNull )
         )
             .forEach( i -> m_environmentliteral.putIfAbsent( i.functor(), i ) );
+
+        //System.out.println( l_forceliteralgenerator.get() );
 
         // run cycle
         super.call();
@@ -320,9 +324,9 @@ public final class CPokemon extends IBaseAgent
      * environment perceiving
      *
      * @param p_direction structure
-     * @return stream with symbolic environment literals
+     * @return stream with pair of element and position
      */
-    private Stream<IElement> perceive( final CViewDirection p_direction )
+    private Stream<Pair<IElement, DoubleMatrix1D>> perceive( final CViewDirection p_direction )
     {
         if ( !p_direction.error() )
             return Stream.of();
@@ -342,7 +346,9 @@ public final class CPokemon extends IBaseAgent
                                                                )
                                                 )
                                                 .filter( m_environment::isinside )
-                                                .map( m_environment::get )
+                                                .map( i -> i == null
+                                                           ? null
+                                                           : new ImmutablePair<IElement, DoubleMatrix1D>( m_environment.get( i ), i ) )
                                                 .filter( Objects::nonNull )
                         );
     }

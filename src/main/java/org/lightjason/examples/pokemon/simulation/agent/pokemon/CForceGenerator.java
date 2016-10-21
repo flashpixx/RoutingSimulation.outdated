@@ -70,10 +70,11 @@ final class CForceGenerator
      * pass a literal
      *
      * @param p_viewdirection view direction
-     * @param p_element literal
+     * @param p_element element object
+     * @param p_elementposition position of the element within the viewrange
      * @return literal
      */
-    final IElement push( final DoubleMatrix1D p_viewdirection, final IElement p_element )
+    final IElement push( final DoubleMatrix1D p_viewdirection, final IElement p_element, final DoubleMatrix1D p_elementposition )
     {
         if ( p_element != null )
             m_direction.put(
@@ -81,7 +82,7 @@ final class CForceGenerator
                     Math.toDegrees(
                         CMath.angle(
                             p_viewdirection,
-                            new DenseDoubleMatrix1D( p_element.position().toArray() )
+                            new DenseDoubleMatrix1D( p_elementposition.toArray() )
                                 .assign( m_source.position(), Functions.minus )
                         ).getKey() )
                 ),
@@ -102,7 +103,7 @@ final class CForceGenerator
             FUNCTOR,
             m_direction.asMap().entrySet().stream()
                        .map( i -> CLiteral.from(
-                                     i.getKey().name(),
+                                     i.getKey().name().toLowerCase(),
                                      Stream.of( CRawTerm.from( EForceModelFactory.DEFAULT.get().apply( m_source, i.getValue().stream() ) ) )
                                   )
                        )

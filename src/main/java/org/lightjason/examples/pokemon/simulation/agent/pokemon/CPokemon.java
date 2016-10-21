@@ -44,7 +44,6 @@ import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.rati
 import org.lightjason.examples.pokemon.simulation.environment.IEnvironment;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.lightjason.agentspeak.action.binding.IAgentActionName;
-import org.lightjason.agentspeak.beliefbase.IBeliefbaseOnDemand;
 import org.lightjason.agentspeak.configuration.IAgentConfiguration;
 import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
@@ -52,7 +51,6 @@ import org.lightjason.agentspeak.language.ILiteral;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.CTrigger;
 import org.lightjason.agentspeak.language.instantiable.plan.trigger.ITrigger;
-import org.lightjason.examples.pokemon.simulation.item.CStatic;
 import org.lightjason.examples.pokemon.ui.CParticleSystem;
 
 import java.math.BigInteger;
@@ -62,6 +60,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -130,6 +129,10 @@ public final class CPokemon extends IBaseAgent
      * attribute map
      */
     private final Map<String, MutablePair<EAccess, Number>> m_attribute;
+    /**
+     * current objects within the view-range
+     */
+    private final Map<String, ILiteral> m_environmentliteral = new ConcurrentHashMap<>();
     /**
      * social-force potential function
      */
@@ -229,7 +232,14 @@ public final class CPokemon extends IBaseAgent
         this.levelup();
 
         // calculating force and build trigger (determine viewvector and object position the angel
-        //CMath.angle()
+        m_environmentliteral.clear();
+        Stream.concat(
+            CCommon.literalpokemon( m_position, this.goal(), m_pokemon ),
+            this.perceive()
+                .map( CCommon::elementliteral )
+                .filter( Objects::nonNull )
+        )
+            .forEach( i -> m_environmentliteral.putIfAbsent( i.functor(), i ) );
 
         // run cycle
         super.call();
@@ -328,7 +338,7 @@ public final class CPokemon extends IBaseAgent
                         .boxed()
                         .flatMap( y -> IntStream.rangeClosed( -l_radius, l_radius )
                                                 .boxed()
-                                                .filter( x -> positioninsideangle( y, x, l_angle ) )
+                                                .filter( x -> CCommon.positioninsideangle( y, x, l_angle ) )
                                                 .map( x -> new DenseDoubleMatrix1D( new double[]{y + l_viewposition.getQuick( 0 ), x + l_viewposition.getQuick( 1 )} ) )
                                                 .filter( m_environment::isinside )
                                                 .map( m_environment::get )
@@ -336,20 +346,7 @@ public final class CPokemon extends IBaseAgent
                         );
     }
 
-    /**
-     * checks if a point is within the angel of the visual range
-     *
-     * @param p_ypos y-position of the point (relative position [-radius, +radius])
-     * @param p_xpos x-position of the point (relative position [-radius, +radius])
-     * @param p_angle angle of the view-range in degree
-     * @return boolean if the position is inside
-     */
-    private static boolean positioninsideangle( final double p_ypos, final double p_xpos, final double p_angle )
-    {
-        final double l_segment = 0.5 * p_angle;
-        final double l_angle = Math.toDegrees( Math.atan( Math.abs( p_ypos ) / Math.abs( p_xpos ) ) );
-        return !Double.isNaN( l_angle ) && ( l_angle >= 360 - l_segment ) || ( l_angle <= l_segment );
-    }
+
 
     // --- agent actions ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -558,42 +555,6 @@ public final class CPokemon extends IBaseAgent
     }
 
     // --- on-demand beliefbases -------------------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * abstract class for demand-beliefbase
-     */
-    private abstract static class IDemandBeliefbase extends IBeliefbaseOnDemand<IAgent>
-    {
-        @Override
-        public ILiteral add( final ILiteral p_literal )
-        {
-            return p_literal;
-        }
-
-        @Override
-        public final ILiteral remove( final ILiteral p_literal )
-        {
-            return p_literal;
-        }
-
-        /**
-         * creates a literal
-         *
-         * @param p_key string name
-         * @param p_value value
-         * @return literal
-         */
-        final ILiteral numberliteral( final String p_key, final Number p_value )
-        {
-            return CLiteral.from( p_key, Stream.of( CRawTerm.from( p_value.doubleValue() ) ) );
-        }
-
-        @Override
-        public final String toString()
-        {
-            return this.streamLiteral().collect( Collectors.toSet() ).toString();
-        }
-    }
 
     /**
      * beliefbase of the motivation elements
@@ -821,98 +782,16 @@ public final class CPokemon extends IBaseAgent
         @Override
         public Stream<ILiteral> streamLiteral()
         {
-            final DoubleMatrix1D l_goal = new DenseDoubleMatrix1D( CPokemon.this.goal().toArray() );
-            final DoubleMatrix1D l_position = new DenseDoubleMatrix1D( CPokemon.this.position().toArray() );
-
-            return Stream.concat(
-                this.self( l_position, l_goal ),
-                CPokemon.this.perceive()
-                             .map( i -> this.elementliteral( i, i.position() ) )
-                             .filter( Objects::nonNull )
-            );
+            return m_environmentliteral.values().stream();
         }
 
         @Override
         public final Collection<ILiteral> literal( final String p_key )
         {
-            switch ( p_key )
-            {
-                case "myposition" : return Stream.of( this.literalposition( "myposition", CPokemon.this.position() ) ).collect( Collectors.toSet() );
-                case "mygoal" : return Stream.of( this.literalposition( "mygoal", CPokemon.this.goal() ) ).collect( Collectors.toSet() );
-                case "ima" : return Stream.of( CLiteral.from( "ima", Stream.of( CLiteral.from( m_pokemon.toLowerCase() ) ) ) ).collect( Collectors.toSet() );
-
-                default: return super.literal( p_key );
-            }
-        }
-
-        /**
-         * environment self-perceiving
-         *
-         * @return individual environment symbolic literals
-         */
-        private Stream<ILiteral> self( final DoubleMatrix1D p_position, final DoubleMatrix1D p_goal )
-        {
-            return Stream.of(
-
-                // current position within the environment
-                this.literalposition( "myposition", p_position ),
-
-                // next goal-position
-                this.literalposition( "mygoal", p_goal ),
-
-                // pokemon type
-                CLiteral.from( "ima", Stream.of( CLiteral.from( m_pokemon.toLowerCase() ) ) )
-            );
-        }
-
-
-        /**
-         * generates the literal of an object
-         *
-         * @param p_element element or null
-         * @param p_position position
-         * @return null or literal
-         */
-        @SuppressWarnings( "unchecked" )
-        private ILiteral elementliteral( final IElement p_element, final DoubleMatrix1D p_position )
-        {
-            if ( p_element instanceof CPokemon )
-                return CLiteral.from(
-                    "pokemon",
-                    Stream.of(
-                        this.literalposition( "position", p_position ),
-                        CLiteral.from( "attribute", p_element.attribute() )
-                    )
-                );
-
-            if ( p_element instanceof CStatic )
-                return CLiteral.from(
-                    "obstacle",
-                    Stream.of(
-                        this.literalposition( "position", p_position ),
-                        CLiteral.from( "attribute", p_element.attribute() )
-                    )
-                );
-
-            return null;
-        }
-
-        /**
-         * generate position literal
-         *
-         * @param p_functor functor name
-         * @param p_position position vector
-         * @return position literal
-         */
-        private ILiteral literalposition( final String p_functor, final DoubleMatrix1D p_position )
-        {
-            return CLiteral.from(
-                p_functor,
-                Stream.of(
-                    CLiteral.from( "y", Stream.of( CRawTerm.from( (int) p_position.getQuick( 0 ) ) ) ),
-                    CLiteral.from( "x", Stream.of( CRawTerm.from( (int) p_position.getQuick( 1  ) ) ) )
-                )
-            );
+            final ILiteral l_literal = m_environmentliteral.get( p_key );
+            return l_literal == null
+                   ? Collections.emptySet()
+                   : Stream.of( l_literal ).collect( Collectors.toSet() );
         }
 
     }

@@ -14,6 +14,13 @@
 
 // --- movement plans ------------------------------------------------------------------------------------------------------------------------------------------
 
+
++!movement/force(X)
+    <-
+        generic/print("force", X)
+.
+
+
 // walk straight forward into the direction of the goal-position
 +!movement/walk/forward
     <-

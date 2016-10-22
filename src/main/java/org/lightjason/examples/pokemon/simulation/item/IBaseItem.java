@@ -33,6 +33,8 @@ import org.lightjason.agentspeak.language.CLiteral;
 import org.lightjason.agentspeak.language.CRawTerm;
 import org.lightjason.agentspeak.language.ITerm;
 import org.lightjason.examples.pokemon.simulation.IElement;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.collectors.CSum;
+import org.lightjason.examples.pokemon.simulation.algorithm.force.potential.IExponential;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +53,10 @@ import java.util.stream.Stream;
  */
 public abstract class IBaseItem implements IItem
 {
+    /**
+     * potential function
+     */
+    private static final UnaryOperator<Double> POTENTIAL = new CPotential();
     /**
      * defines the left upper position (row / column / height in cells / width in cells )
      */
@@ -180,37 +186,57 @@ public abstract class IBaseItem implements IItem
     @Override
     public final Function<IElement, Double> metric()
     {
-        return null;
+        return ( i ) -> 1.0;
     }
 
     @Override
     public final UnaryOperator<Double> potential()
     {
-        return null;
+        return POTENTIAL;
     }
 
     @Override
     public final BiFunction<Double, Double, Double> potentialrating()
     {
-        return null;
+        return (i, j) -> 1.0;
     }
 
     @Override
     public final Collector<Double, ?, Double> potentialreduce()
     {
-        return null;
+        return CSum.factory();
     }
 
     @Override
     public final BiFunction<IElement, IElement, Double> distancescale()
     {
-        return null;
+        return (i, j) -> 1.0;
     }
 
     @Override
     public final Collector<Double, ?, Double> forceresult()
     {
-        return null;
+        return CSum.factory();
+    }
+
+    /**
+     * fixed exponential class
+     */
+    private static final class CPotential extends IExponential
+    {
+
+        @Override
+        protected final double maximum()
+        {
+            return 5;
+        }
+
+        @Override
+        protected double scale()
+        {
+            return 1;
+        }
+
     }
 
 }

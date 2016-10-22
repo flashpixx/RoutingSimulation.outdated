@@ -47,7 +47,7 @@ final class CForceGenerator
     /**
      * functor name
      */
-    private static final String FUNCTOR = "force";
+    private static final String FUNCTOR = "movement/force";
     /**
      * source element
      */
@@ -59,6 +59,7 @@ final class CForceGenerator
 
     /**
      * ctor
+     *
      * @param p_source source element
      */
     private CForceGenerator( final IElement p_source )
@@ -101,12 +102,17 @@ final class CForceGenerator
     {
         return CLiteral.from(
             FUNCTOR,
-            m_direction.asMap().entrySet().stream()
-                       .map( i -> CLiteral.from(
-                                     i.getKey().name().toLowerCase(),
-                                     Stream.of( CRawTerm.from( EForceModelFactory.DEFAULT.get().apply( m_source, i.getValue().stream() ) ) )
-                                  )
-                       )
+            Stream.of(
+                CLiteral.from(
+                    "direction",
+                    m_direction.asMap().entrySet().stream()
+                               .map( i -> CLiteral.from(
+                                   i.getKey().name().toLowerCase(),
+                                   Stream.of( CRawTerm.from( EForceModelFactory.DEFAULT.get().apply( m_source, i.getValue().stream() ) ) )
+                                     )
+                               )
+                )
+            )
         );
     }
 

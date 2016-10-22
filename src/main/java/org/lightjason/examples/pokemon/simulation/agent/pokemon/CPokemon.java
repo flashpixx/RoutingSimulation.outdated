@@ -254,7 +254,7 @@ public final class CPokemon extends IBaseAgent
         )
             .forEach( i -> m_environmentliteral.putIfAbsent( i.functor(), i ) );
 
-        //System.out.println( l_forceliteralgenerator.get() );
+        this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, l_forceliteralgenerator.get() ) );
 
         // run cycle
         super.call();
@@ -481,7 +481,13 @@ public final class CPokemon extends IBaseAgent
     @Override
     public final BiFunction<IElement, IElement, Double> distancescale()
     {
-        return (i, j) -> 1 - CMath.ALGEBRA.norm2( new DenseDoubleMatrix1D( i.position().toArray() ).assign( j.position(), Functions.minus ) ) / m_socialforcedistance.get();
+        return (i, j) -> 1 - CMath.ALGEBRA.norm2(
+                                                     new DenseDoubleMatrix1D( i.position().toArray() )
+                                                         .assign(
+                                                                      new DenseDoubleMatrix1D( new double[]{j.position().getQuick( 0 ), j.position().getQuick( 1 ) } ),
+                                                                      Functions.minus
+                                                         )
+                        ) / m_socialforcedistance.get();
     }
 
     @Override

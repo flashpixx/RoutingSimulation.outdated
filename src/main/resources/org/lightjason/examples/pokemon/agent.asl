@@ -15,9 +15,10 @@
 
 
 // plan to deal with force information
-+!movement/force(X)
-    <-
-        generic/print("force", X)
++!movement/force(D)
+    : >>( force(F), D )
+        <-
+            generic/print("force", F)
 .
 
 

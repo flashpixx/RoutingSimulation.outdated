@@ -5,7 +5,7 @@ logging : false
 stacktrace : true
 
 # agent print call will be shown
-agentprint : true
+agentprint : false
 
 
 

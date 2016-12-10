@@ -49,15 +49,15 @@ public final class CEvaluation implements Callable<CEvaluation>
      */
     public CEvaluation( final Stream<IAgent> p_agents )
     {
-        p_agents.forEach( m_plans::add );
+        //p_agents.forEach( m_plans::add );
     }
 
 
     @Override
     public final CEvaluation call() throws Exception
     {
-        m_plans.call();
-        System.out.println( m_plans.statistic().getStandardDeviation() + "    " + m_plans.statistic().getVariance() );
+        //m_plans.call();
+        //System.out.println( m_plans.statistic().getStandardDeviation() + "    " + m_plans.statistic().getVariance() );
 
         return this;
     }

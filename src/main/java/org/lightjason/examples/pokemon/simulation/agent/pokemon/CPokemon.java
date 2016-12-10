@@ -234,6 +234,7 @@ public final class CPokemon extends IBaseAgent
         // level-up if needed
         this.levelup();
 
+        /*
         // calculating force and build trigger (determine view vector and object position the angle)
         final CViewDirection l_viewdirection = CViewDirection.generate(
             m_attribute.getOrDefault( "viewangle", new MutablePair<>( EAccess.READ, 0 ) ).getRight().doubleValue(),
@@ -255,14 +256,17 @@ public final class CPokemon extends IBaseAgent
             .forEach( i -> m_environmentliteral.putIfAbsent( i.functor(), i ) );
 
         this.trigger( CTrigger.from( ITrigger.EType.ADDGOAL, l_forceliteralgenerator.get() ) );
+        */
 
         // run cycle
         super.call();
 
         // update social-force elements
+        /*
         m_socialforcepotential.call();
         m_socialforcepotentialrating.call();
         m_socialforcedistance.set( m_attribute.getOrDefault( ATTRIBUTE_VISUALRANGE, new MutablePair<>( EAccess.READ, 0 )  ).getValue().doubleValue() );
+        */
 
         return this;
     }

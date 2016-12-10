@@ -6,7 +6,8 @@
     <-
     route/set/start( 140, 140 );
     T = route/estimatedtime();
-    generic/print("estimated time of the current route [", T , "]")
+    generic/print("estimated time of the current route [", T , "]");
+    !movement/walk/forward
 .
 
 
@@ -81,7 +82,8 @@
         <-
             generic/print( "standstill - increment speed with 1 in cycle [", Cycle, "]" );
             S++;
-            +attribute/speed( S )
+            +attribute/speed( S );
+            !movement/walk/forward
 .
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -128,7 +130,8 @@
     <-
         generic/print( "position beyond [", P, "] - set speed to 1 in cycle [", Cycle, "]" );
         +attribute/speed( 1 );
-        route/next
+        route/next;
+        !movement/walk/forward
 .
 
 
@@ -137,7 +140,8 @@
 +!wakeup
     <-
         generic/print("wakeup - set speed to 1 in cycle [", Cycle, "]");
-        +attribute/speed( 1 )
+        +attribute/speed( 1 );
+        !movement/walk/forward
 .
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------

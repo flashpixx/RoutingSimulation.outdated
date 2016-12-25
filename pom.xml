@@ -38,19 +38,19 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
-            <version>1.9.4</version>
+            <version>1.9.5</version>
         </dependency>
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>1.9.4</version>
+            <version>1.9.5</version>
         </dependency>
 
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-platform</artifactId>
-            <version>1.9.4</version>
+            <version>1.9.5</version>
 
             <!-- defines the binary version of the component -->
             <classifier>natives-desktop</classifier>
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>20.0</version>
+            <version>21.0-rc1</version>
         </dependency>
 
 
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>com.codepoetics</groupId>
             <artifactId>protonpack</artifactId>
-            <version>1.10</version>
+            <version>1.11</version>
         </dependency>
 
 

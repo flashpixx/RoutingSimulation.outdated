@@ -67,7 +67,7 @@ test:
         - mv -f .gitignore /tmp
         - git checkout master
         - git push origin :binary-master || true
-        - git -D binary-master || true
+        - git branch -D binary-master || true
         - git checkout --orphan binary-master
         - rm -Rf *
         - mv -f /tmp/.gitignore .

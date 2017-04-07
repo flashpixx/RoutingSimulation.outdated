@@ -215,10 +215,10 @@ public final class TestCForce
     private enum EMetric
     {
         NCD_BZIP( new CNCD() ),
-        NCD_GZIP( new CNCD( CNCD.ECompression.GZIP ) ),
-        NCD_DEFLATE( new CNCD( CNCD.ECompression.DEFLATE ) ),
-        NCD_XZ( new CNCD( CNCD.ECompression.XZ ) ),
-        NCD_PACK200( new CNCD( CNCD.ECompression.PACK200 ) ),
+        NCD_GZIP( new CNCD( org.lightjason.agentspeak.language.CCommon.ECompression.GZIP ) ),
+        NCD_DEFLATE( new CNCD( org.lightjason.agentspeak.language.CCommon.ECompression.DEFLATE ) ),
+        NCD_XZ( new CNCD( org.lightjason.agentspeak.language.CCommon.ECompression.XZ ) ),
+        NCD_PACK200( new CNCD( org.lightjason.agentspeak.language.CCommon.ECompression.PACK200 ) ),
         LEVENSHTEIN( new CLevenshteinDistance() ),
         SYMMETRICDIFFERENCE( new CSymmetricDifference() ),
         WEIGHTEDDIFFERENCE( new CWeightedDifference() );
